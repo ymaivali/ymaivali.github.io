@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methodology - 9&nbsp; 7. Multilevel models.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10-appendix-best-practices.html" rel="next">
+<link href="./08-glm.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./09-multilevel.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Methodology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">2. Rational thinking under certainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#anova-like-models-for-fighting-false-alarms" id="toc-anova-like-models-for-fighting-false-alarms" class="nav-link active" data-scroll-target="#anova-like-models-for-fighting-false-alarms"><span class="header-section-number">9.1</span> 7.1. ANOVA-like models for fighting false alarms</a></li>
+  <li><a href="#multilevel-regression-models-free-intercepts" id="toc-multilevel-regression-models-free-intercepts" class="nav-link" data-scroll-target="#multilevel-regression-models-free-intercepts"><span class="header-section-number">9.2</span> 7.2. Multilevel regression models: free intercepts</a></li>
+  <li><a href="#free-intercepts-and-slopes" id="toc-free-intercepts-and-slopes" class="nav-link" data-scroll-target="#free-intercepts-and-slopes"><span class="header-section-number">9.3</span> 7.3. Free intercepts and slopes</a></li>
+  <li><a href="#the-variance-covariance-matrix-for-classical-regression" id="toc-the-variance-covariance-matrix-for-classical-regression" class="nav-link" data-scroll-target="#the-variance-covariance-matrix-for-classical-regression"><span class="header-section-number">9.4</span> The variance-covariance matrix for classical regression</a></li>
+  <li><a href="#the-free-intercept-free-slopes-model" id="toc-the-free-intercept-free-slopes-model" class="nav-link" data-scroll-target="#the-free-intercept-free-slopes-model"><span class="header-section-number">9.5</span> The free intercept, free slopes model</a></li>
+  <li><a href="#recap-multilevel-structures" id="toc-recap-multilevel-structures" class="nav-link" data-scroll-target="#recap-multilevel-structures"><span class="header-section-number">9.6</span> Recap: multilevel structures</a></li>
+  <li><a href="#prediction-from-multilevel-models" id="toc-prediction-from-multilevel-models" class="nav-link" data-scroll-target="#prediction-from-multilevel-models"><span class="header-section-number">9.7</span> 7.4. Prediction from multilevel models</a>
+  <ul class="collapse">
+  <li><a href="#conditional-effects-for-a-single-new-hypothetical-group-either-typical-or-brand-new" id="toc-conditional-effects-for-a-single-new-hypothetical-group-either-typical-or-brand-new" class="nav-link" data-scroll-target="#conditional-effects-for-a-single-new-hypothetical-group-either-typical-or-brand-new"><span class="header-section-number">9.7.1</span> Conditional effects for a single new hypothetical group, either typical or brand new</a></li>
+  </ul></li>
+  <li><a href="#multi-level-change-over-time-models" id="toc-multi-level-change-over-time-models" class="nav-link" data-scroll-target="#multi-level-change-over-time-models"><span class="header-section-number">9.8</span> 7.5 Multi-level change-over-time models</a>
+  <ul class="collapse">
+  <li><a href="#single-level-autoregressive-models-and-arma" id="toc-single-level-autoregressive-models-and-arma" class="nav-link" data-scroll-target="#single-level-autoregressive-models-and-arma"><span class="header-section-number">9.8.1</span> single-level autoregressive models and ARMA</a></li>
+  </ul></li>
+  <li><a href="#overdispersed-count-models" id="toc-overdispersed-count-models" class="nav-link" data-scroll-target="#overdispersed-count-models"><span class="header-section-number">9.9</span> 7.6. Overdispersed count models</a></li>
+  <li><a href="#negative-binomial-or-gamma-poisson." id="toc-negative-binomial-or-gamma-poisson." class="nav-link" data-scroll-target="#negative-binomial-or-gamma-poisson."><span class="header-section-number">9.10</span> Negative-binomial or gamma-Poisson.</a></li>
+  <li><a href="#beta-distribution-and-beta-binomial-distribution" id="toc-beta-distribution-and-beta-binomial-distribution" class="nav-link" data-scroll-target="#beta-distribution-and-beta-binomial-distribution"><span class="header-section-number">9.11</span> Beta distribution and beta-binomial distribution</a>
+  <ul class="collapse">
+  <li><a href="#the-beta-prior" id="toc-the-beta-prior" class="nav-link" data-scroll-target="#the-beta-prior"><span class="header-section-number">9.11.1</span> The Beta prior</a></li>
+  <li><a href="#the-beta-binomial-likelihood" id="toc-the-beta-binomial-likelihood" class="nav-link" data-scroll-target="#the-beta-binomial-likelihood"><span class="header-section-number">9.11.2</span> The Beta-binomial likelihood</a></li>
+  </ul></li>
+  <li><a href="#zero-inflated-models" id="toc-zero-inflated-models" class="nav-link" data-scroll-target="#zero-inflated-models"><span class="header-section-number">9.12</span> Zero-inflated models</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Multilevel models are used to model data that falls naturally into groups. In these cases we can partition variation (i) into data level variation and (ii) into between-groups variation. The data level variation is captured by SD, as in ordinary single-level regression, and the between-groups variation is really the SD of group means. So if we have 100 test scores from 10 schools, then this between-schools variation is calculated as standard deviation from 10 estimated school mean scores (and the data level variation comes from the 100 tests). Technically, this means that we treat the school means as parameters to be estimated on data (individual test scores), but at the same time we also treat the school means as data in their own right, which we use to estimate a meta-parameter, <span class="math inline">\(\sigma_{school}\)</span> (the SD of school means). Thus, in their data guise, we model the school means as sampled from a gaussian meta-distribution of school means (called “meta-prior”).</p>
+<p>The beauty of this approach is that during fitting of the model, information flows from the data into all levels of the model (individual level and the school level) and also moves between the levels. So the parameters for each school are informed both by data coming from this school, and data coming from all other schools. This way we use data more efficiently.</p>
+<section id="anova-like-models-for-fighting-false-alarms" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="anova-like-models-for-fighting-false-alarms"><span class="header-section-number">9.1</span> 7.1. ANOVA-like models for fighting false alarms</h2>
+<p>We have a table containing i rows, where for each row corresponds to (1) a single pupils math score, (2) his/hers school name, (3) sex and (4) as a school-level variable the number of pupils in that school. There are j schools in this four-column table and each pupil has a single score from a single school. For brevity lets name the columns as follows:</p>
+<p>y - score</p>
+<p>sch - school name (index) as a factor</p>
+<p>We start, again, by simply modeling y as a normal distribution. This model says that the scores are randomly drawn from a normal distribution of scores, whose parameters are determined on the actual scores.</p>
+<p>The model looks like this</p>
+<p><span class="math display">\[ y_i \sim N(\mu, \sigma)\]</span> <span class="math display">\[\mu = \alpha\]</span> or written more concisely in a single line:</p>
+<p><span class="math display">\[ y_i \sim N(\alpha, \sigma)\]</span></p>
+<p>Here we simply redefine <span class="math inline">\(\mu\)</span> as <span class="math inline">\(\alpha\)</span> or intercept.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This is mathematically meaningless, but will come handy later, when we start adding predictors to the model. <em>N</em> stands for <em>Normal distribution</em>, plus priors for the 2 parameters (<span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>). In R modelling language this can be written as <span class="math inline">\(y \sim 1\)</span>. This model knows nothing about pupils belonging to different schools and it is the <em>complete pooling model</em>.</p>
+<p>The opposite, <em>no-pooling model</em>, models the mean of each schools score completely independently from other schools (but it may or may not model the pupil level SD as identical across the scools, a.k.a. as full data average):</p>
+<p><span class="math display">\[within ~school~ j: y \sim N(\alpha_j, \sigma_y)\]</span></p>
+<p>This mathematical description means that there are as many models as there are schools (thus j models), each with its own <span class="math inline">\(\mu\)</span>, which is renamed as <span class="math inline">\(\alpha\)</span> or intercept in the regression language. <span class="math inline">\(\alpha_j\)</span> means that there are j different alpha coefficients, each standing in for a mean score of a different school. There is also a single data level SD of all scores for all schools, <span class="math inline">\(\sigma_y\)</span>, which is the same thing as the <span class="math inline">\(\sigma\)</span> in the previous model.<br>
+In R language this model is <span class="math inline">\(y \sim 0 + sch\)</span>.</p>
+<p>And the version where both mean and SD are modelled completely independently looks like this:</p>
+<p><span class="math display">\[y_i \sim N(\alpha_j, \sigma_{y[j]})\]</span> or <span class="math inline">\(bf(y \sim 0 + sch, sigma \sim 0 + sch)\)</span> (This version works in brms).</p>
+<p>If there are plenty of data for each school, then this sort of model would be good for assessing the mean test result for each school.</p>
+<p>But what, if some schools have only a few datapoints? Then there we will see some schools, where only a few students took the test and where the results might not be representative of the actual quality of the school. We are wary of extreme results from such schools, but we do not want to ignore them either. What we can do instead, is to build a model where estimates of the mean scores for all schools are shrunk towards the mean score of all schools. We do this by adding another 2nd level regression model.</p>
+<p><span class="math display">\[y_i \sim N(\alpha_j, \sigma_y)\]</span> <span class="math display">\[\alpha_j \sim N(\mu_{\alpha}, \sigma_{\alpha})\]</span></p>
+<p>in brms this 2-level model reads as <span class="math inline">\(y \sim 0 + (1 \vert sch)\)</span></p>
+<p>The second row of this model says that the school-specific mean scores themselves come from a normally distributed infinite population of mean scores.</p>
+<p>This model has j + 3 parameters:</p>
+<ul>
+<li><p>j <span class="math inline">\(\alpha\)</span>-s - j mean scores, one for each school,</p></li>
+<li><p><span class="math inline">\(\sigma_y\)</span> - SD of the scores (showing the distribution of the scores),</p></li>
+<li><p><span class="math inline">\(\sigma_{\alpha}\)</span> - SD of the school-specific mean scores, not individual scores,</p></li>
+<li><p><span class="math inline">\(\mu_{\alpha}\)</span> - the mean of the j <span class="math inline">\(\alpha\)</span> coefficients of the individual schools, which is not the mean(score), but the mean of the mean scores.</p></li>
+</ul>
+<p>We can re-write the previous model like this:</p>
+<p><span class="math display">\[y_i \sim N(\alpha + \alpha_j, \sigma_y)\]</span> <span class="math display">\[\alpha_j \sim N(0, \sigma_{\alpha})\]</span></p>
+<p>Here we get the common mean score over all schools as <span class="math inline">\(\alpha\)</span> and deflections from this for each individual schools (<span class="math inline">\(\alpha_j\)</span>), which should be added together, to get the estimate for j-th school. In brms this model is <span class="math inline">\(y \sim 1 + (1 \vert sch)\)</span>. This form of the model, while mathematically equivalent, is a bit easier to fit, and arguably to work with.</p>
+<p>To recap:</p>
+<ul>
+<li><p>In the no-pooling model, the <span class="math inline">\(\alpha_j\)</span>-s correspond to j school means.</p></li>
+<li><p>With complete pooling the <span class="math inline">\(\alpha_j\)</span>-s are all fixed at a common <span class="math inline">\(\alpha\)</span>.</p></li>
+<li><p>In the multilevel model <span class="math inline">\(\alpha_j\)</span>-s are assigned a probability distribution, whose 2 parameters are estimated directly from data. The distribution pulls the estimates of <span class="math inline">\(\alpha_j\)</span> toward the mean level <span class="math inline">\(\mu_{\alpha}\)</span>, but not all the way.</p></li>
+<li><p>If <span class="math inline">\(\sigma_{\alpha} \rightarrow \infty\)</span>, there is no pooling;</p></li>
+<li><p>If <span class="math inline">\(\sigma_{\alpha} \rightarrow 0\)</span>, the estimates are pulled to zero, giving complete pooling.</p></li>
+</ul>
+<p>The last 2 points mean that single-level models can be viewed as special cases of multilevel models. Thus, even if we only have 2 groups, or many of the groups have very small N, the multi-level model is at least as good as the corresponding single-level model!</p>
+<p>One way to interpret the variation between schools, <span class="math inline">\(\sigma_{\alpha}\)</span>, is through the ratio, <span class="math inline">\(\sigma_{\alpha}/\sigma_y\)</span>. If the ratio is small, then most of the variation in scores is at the pupil level and the schools are very similar to each others. Otherwise, different schools have different mean scores. The goal of the model is to look beyond the samples of scores from each school and into the true mean ability of each schools students, as if each school contained an infinite number of test takers whose average ability is the issue.</p>
+<p>Lets suppose that the fitted data level SD, <span class="math inline">\(\sigma_y\)</span>, is 0.74 and the SD for the mean scores, <span class="math inline">\(\sigma_{\alpha}\)</span>, is 0.33. Then we can see that to get from 0.74 to 0.33, we have to divide 0.74 with square root of 5. This means that the SD of mean scores is the same as the SD of 5 individual score measurements, and that the amount of information in this 2nd level distribution of the means is the same as that in 5 measurements within a school. Thus, a school with &lt;5 scores, puts more information into the group-level model than into the schools own model (in the sense of providing a higher-SD estimate of the schools mean score). As a result, the mean score estimate in an N&lt;5 school is closer to the complete-pooling estimate, and closer to the no-pooling estimate when N&gt;5.</p>
+<hr>
+<p>We can express this very same 2-level model in an alternative way by putting priors on priors, that is, by using meta-priors. With the meta-priors we assume that the scores of each school have their own distribution that partially overlaps with the other schools, and that these school-specific distributions of test scores come from a single overarching meta-distribution, defined by the meta-prior.</p>
+<p>By using the meta prior, we turn our usual school-specific prior, over which the meta-prior arches, into an adaptive prior. For this we take the school-specific prior <span class="math inline">\(\alpha_{j} \sim normal(0, .)\)</span>, where the dot stands for some concrete sigma value that you care to put there, and substitute this value with another parameter, <span class="math inline">\(\sigma_{sch}\)</span>, that needs to be fitted on data (on j school means). Tis way the adaptive prior will contain an additional parameter, which in turn needs a meta-prior to be fitted.</p>
+<p>During fitting the meta-prior allows using school-specific information laterally, across the schools, leading to partial pooling of information and to shrinkage. Information flows from an individual school up to the meta-prior, and down again to other schools.</p>
+<hr>
+<p><span class="math display">\[y_i \sim N(\mu, \sigma)\]</span> <span class="math display">\[\mu = \alpha + \alpha_{j}\]</span> <span class="math display">\[\alpha \sim N(.,.) \]</span> <span class="math display">\[\alpha_{j} \sim normal(0, \sigma_{sch})\]</span> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math display">\[\sigma_{school} \sim cauchy(.)\]</span> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> <span class="math display">\[\sigma \sim exponential()\]</span> <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><embed src="figures/anova_fig.pdf" class="img-fluid" style="width:100.0%"></p>
+<figcaption>Schemes of the non-adaptive 1-level model and of the adaptive 2-level model.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It is easy to expand this model by adding another level. If we suppose that the meta-prior denotes school district, we cold simply turn it into another adaptive prior by putting another 2nd-level parameter into it, and then adding another meta prior (3d level), to denote the city. Then we have each school under 2 levels: schools belong to school districts, and school districts belong to the city.</p>
+<p>When to use multi-level models? The answer is that using them should be your default position whenever data generating process contains grouping structures that have distinct variations. Such groups can be defined by schools, cities, countries, enzyme batches, study centers, experimenters.</p>
+<blockquote class="blockquote">
+<p>If you think that there is something in common between the groups, but also something different, consider using a multi-level model. If you think that there is everything in common (the variation of each group is identical to all others), then ignoring the groups and running a single 1-level model should not change the result.</p>
+</blockquote>
+<p>Simple single-level models are often bad for hierarchical data: with few parameters, they cannot fit large datasets well, whereas with many parameters, they tend to overfit. Multilevel models can have enough parameters to fit the data well, while using a population distribution helps to avoid overfitting. It is often sensible to fit hierarchical models with more parameters than there are data points.</p>
+<p>When j is small, it is difficult to estimate the <span class="math inline">\(\sigma_{\alpha}\)</span> and multilevel modeling often adds little beyond no-pooling models. When <span class="math inline">\(\sigma_{\alpha}\)</span> cannot be estimated well, it tends to be overestimated, and so lead to no pooling. With 1 or 2 groups multilevel modeling reduces to classical regression. Even 2 observations per group is enough to fit a multilevel model. It is even acceptable to have 1 observation in many of the groups. When groups have few observations, their means won’t be estimated precisely, but they can still provide information that allows estimation of the coefficients and variance parameters.</p>
+<p>Multi-level models carry 6 main advantages:</p>
+<ol type="1">
+<li><p>a multi-level model gives more honest posteriors (CIs) for higher-level estimates (in our example, the estimated city-wide mean test score). These posteriors tend to be wider than the ones calculated from a single-level model.</p></li>
+<li><p>A multi-level model allows to estimate at each level – you get an estimate for each school, for each district, and for the whole city.</p></li>
+<li><p>A multi-level model defends against false alarms by shrinkage of the estimates. This is usually more efficient and also better interpretation-wise, than correcting for multiple testing by adjusting p values/CI-s – but leaving the actual effect sizes at their raw data level.</p></li>
+<li><p>A multi-level model more accurately reflects clumpy data generating mechanisms in the wild. This makes it easier to give scientific interpretations to it.</p></li>
+<li><p>A multi-level model allows to find batch effects and other anomalies of experimentation.</p></li>
+<li><p>A multi-level model allows to generate new <em>in silico</em> data at every level, including generating new groups.</p></li>
+</ol>
+<p>The multi-level model we introduced is a kind of Bayesian one-way ANOVA analogue (only ANOVA does not provide shrinkage). This model is much easier to expand than ANOVA models. We can substitute the normal likelihood with biomial likelihood, for example to do a similar shrinkage model for fractions, and/or we can easily turn this into a full linear, or generalized linear, or even non-linear regression model (see next chapters). All of these models provide shrinkage and take into account the clumpiness in your data.</p>
+<p>When not to use multi-level models? Avoid them if your groups do not come from a single overarching super-group. For example, if you have several control groups and a single experimental group, then putting them together under a single meta-prior can lead to too much shrinkage for the experimental group. But if you have several control groups and several experimental groups, then its perfectly all right to put both kinds of groups under their own meta-prior.</p>
+<hr>
+<p>To test our intuition, lets build an artificial dataset of 10 schools that have identical “true” means of test results, each = 100, drawn from a normal distribution with SD=25. The 10 schools have different numbers of test-takers: 1 in school 1, 2 in school 2, 3 in school 3, …, 10 in school 10.</p>
+<p>Here are the first 6 rows</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">value</th>
+<th style="text-align: left;">ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">120.00000</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100.46865</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">95.39369</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">65.71674</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">85.02081</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">107.36363</td>
+<td style="text-align: left;">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>The empirical sample means of the 10 schools. All samples have randomly drawn from the same population (mean = 100, SD = 25). The global sample mean, at 94, is shown as dotted line</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In the next graphs we are going to show not the full means, but school-specific estimates of deflections from the overall mean (over all the schools).</p>
+<p>Our first model treats all schools completely independently. There is no information transfer between schools. We use reasonable priors (not very strong, but not very weak either) for mean and SD. This considerably narrows our estimates in schools where N is very small.</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>The estimates for mean test result with 95 percent CIs for each school, modeled completely independently.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In school 1, where a single student took the test, thanks to the prior we still have a reasonably informative estimate for that school – we believe that this school could be somewhere from 25% below average to about 50% above average. With a single student it would be strange, if our estimate would be much more precise.</p>
+<p>Next we present a model, where school means are completely independent, but school SD-s are completely pooled.</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Classical linear regression estimates the means independently, while completely pooling information on variation across the schools.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The pooling of variation information narrows our CIs a bit, but not that much.</p>
+<p>And now a 2-level model, which partially pools information on the means, leading to shrinkage towards the global mean.</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>The 2-level model results in shrunk estimates.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Here the CI-s are clearly narrower.</p>
+<p>Finally we plot out the actual shrinkage for each school</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The school 1, which had a single datapoint, clearly gives the most shrinkage, while its CI-s are now very close to other schools with more data. School 2, which only has 2 datapoints, happens to be close to overall mean at the raw data level, and therefore gives the least shrinkage. (Shrinkage is shown by the red points with their estimation uncertainty cptured by 95% CI.)</p>
+</section>
+<section id="multilevel-regression-models-free-intercepts" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="multilevel-regression-models-free-intercepts"><span class="header-section-number">9.2</span> 7.2. Multilevel regression models: free intercepts</h2>
+<p>Now we add two predictors to our schools example: X - is students sex (male = 1 or female = 0) and S - is the school type (gymnasium or not). S is a group-level predictor, so there is only one S value per school, which is repeated in the table for all pupils in this school.</p>
+<p>We start with converting the simple regression <span class="math inline">\(y = \alpha + \beta_1x + \beta_2s + \beta_3sch + error\)</span> into a 2-level model. In brms notation this model is <span class="math inline">\(y \sim x + s + (1 \vert sch)\)</span>.</p>
+<p><span class="math display">\[Within ~school ~j: y_i \sim \alpha + \alpha_j + \beta x_i + N(0, \sigma_y)\]</span></p>
+<p><span class="math display">\[\alpha_j \sim \gamma_0 + \gamma_1 s_j+ N(0, \sigma_{\alpha})\]</span></p>
+<p>The student-level predictor is in the 1st level and the school-level predictor is in the 2nd level of the model. There are j intercepts but only one slope for both predictors, which means that the model says that whatever the schools mean score, it will have the same difference between the sexes and the same dependence on the size of the school. We will relax this strong assumption in chapter 6.3. The 2nd level model models the J school means as dependent on the intercept and slope of the school size regressor. The multilevel model combines the J local models in two ways: first, the local slopes are the same in all J models. Second, the J intercepts are connected through the group-level model. The meaning of <span class="math inline">\(\sigma_y\)</span> and <span class="math inline">\(\sigma_{\alpha}\)</span> is the same as before (see chapter 6.1.), except the variance is estimated after conditioning for various predictors. Group-level predictors reduce the unexplained group-level variation and thus the group-level SD of <span class="math inline">\(\sigma_{\alpha}\)</span>, thus leading to more shrinkage and to more precise estimates of the group means, especially for groups with small N. Adding predictors at the individual and group levels typically reduces the unexplained variance at each level (adding a group-level predictor can also increase the unexplained variance).</p>
+</section>
+<section id="free-intercepts-and-slopes" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="free-intercepts-and-slopes"><span class="header-section-number">9.3</span> 7.3. Free intercepts and slopes</h2>
+</section>
+<section id="the-variance-covariance-matrix-for-classical-regression" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="the-variance-covariance-matrix-for-classical-regression"><span class="header-section-number">9.4</span> The variance-covariance matrix for classical regression</h2>
+<p>In typical classical regression settings the model <span class="math inline">\(y \sim N(\beta_0 + \beta_1x, \sigma)\)</span> the variation, sigma, is modelled to be the same for each level of the predictor(s). We can write this out as sigma becoming a variance covariance matrix</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span><span class="er">$</span> V <span class="ot">=</span> cov <span class="ot">=</span> \begin{equation}</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  \begin{pmatrix}</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    \sigma <span class="sc">&amp;</span> <span class="dv">0</span> <span class="sc">&amp;</span> \ldots <span class="sc">&amp;</span> <span class="dv">0</span> \\</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span> <span class="sc">&amp;</span> \sigma <span class="sc">&amp;</span> \ldots <span class="sc">&amp;</span> <span class="dv">0</span> \\</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    \vdots <span class="sc">&amp;</span> \vdots <span class="sc">&amp;</span> \ddots <span class="sc">&amp;</span> \vdots \\</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span> <span class="sc">&amp;</span> <span class="dv">0</span> <span class="sc">&amp;</span> \ldots <span class="sc">&amp;</span> \sigma</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  \end{pmatrix}</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>\end{equation}<span class="sc">$</span><span class="er">$</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><span class="math display">\[ V = cov = \begin{equation}
+  \begin{pmatrix}
+    \sigma &amp; 0 &amp; \ldots &amp; 0 \\
+    0 &amp; \sigma &amp; \ldots &amp; 0 \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+    0 &amp; 0 &amp; \ldots &amp; \sigma
+  \end{pmatrix}
+\end{equation}\]</span> where sigma-s on the diagonal denote SD-s and zeros denote correlations <span class="math inline">\(\rho\)</span> between predicted values at different predictor values. These fixed zero-correlations mean that the model knows data to be independent. The model also knows that all sigmas are equal, hence the homogeneity of variance.</p>
+<p>Now, in the multilevel model we have dissected the 2nd level variation between two sigmas, one for the variation of intercepts, and another for the variation of slopes, so the matrix loses its zero-correlations and gets a parameter for each correlation to be estimated. These parameters are identical below and above the diagonal of the matrix. The simple case of sigmas for intercept and slope is shown right below.</p>
+</section>
+<section id="the-free-intercept-free-slopes-model" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="the-free-intercept-free-slopes-model"><span class="header-section-number">9.5</span> The free intercept, free slopes model</h2>
+<p>First the model without school-level variable S – <span class="math inline">\(y \sim 0 + x + (x \vert sch)\)</span> in brms syntax.</p>
+<p><span class="math display">\[y_i \sim N(\alpha_{j[i]} + \beta_{j[i]} x_i, \sigma_y)\]</span> <span class="math display">\[\binom{\alpha_j}{\beta_j} \sim MVN(\binom{\mu_{\alpha}}{\mu_{\beta}}, \binom{\sigma_{\alpha}~~~~~\rho_{\sigma_{\alpha} \sigma_{\beta}} }{\rho_{\sigma_{\alpha} \sigma_{\beta}}  ~~~~~ \sigma_{\beta}})\]</span></p>
+<p>where <span class="math inline">\(\rho\)</span> models between-the-groups correlation. Here we have the two 2nd level regressions (the 1st of which treats intercepts as the predicted variable and the 2nd does the same for slopes) modelled within the same equation, with correlations between the two predicted variables (intercepts and slopes) modelled. This means that we model the school specific intercepts and slopes together, so that there is also partial pooling of information between intercepts and slopes, and we estimate the correlation between mean scores and the rate of change in the mean scores accross schools. The likelihood here is multivariate normal (MVN).</p>
+<p>If we have population-level intercept and slope in the model like this <span class="math display">\[y_i \sim N(\alpha_i +  \alpha_{j[i]} + \beta_i + \beta_{j[i]} x_i, \sigma_y)\]</span> then the second level gets to be simpler:</p>
+<p><span class="math display">\[\binom{\alpha_j}{\beta_j} \sim N(\binom{0}{0}, \binom{\sigma_{\alpha}~~~~~~~~~\rho_{\sigma_{\alpha} \sigma_{\beta}} }{\rho_{\sigma_{\alpha} \sigma_{\beta}}  ~~~~~~~~~ \sigma_{\beta}})\]</span></p>
+<p>The brms notation is <span class="math inline">\(y \sim x + (x \vert sch)\)</span>.</p>
+<p>We now expand this 2nd part of the model to include the school-level predictor S.</p>
+<p><span class="math display">\[\binom{\alpha_j}{\beta_j} \sim N(\binom{\gamma_0{^ \alpha} + \gamma_1 {^ \alpha} u_j}{\gamma_0{^ \beta} + \gamma_1 {^ \beta} u_j}, \binom{\sigma_{\alpha}~~~~~~~~~\rho \sigma_{\alpha} \sigma_{\beta}}{\rho \sigma_{\alpha} \sigma_{\beta} ~~~~~~~~~ \sigma_{\beta}})\]</span> Its brms version reads <span class="math inline">\(y \sim x + s + x:s + (x \vert sch)\)</span>, so we have an interaction between the school type and sex of the pupil. Varying slopes can be considered as interactions between group indicators and an individual-level predictor.</p>
+<p>Sometimes it might be reasonable to allow the slope, but not the intercept, to vary. When J separate experiments are performed on samples from a common population, with each experiment randomly assigning a control condition to half its subjects and a treatment to the other half, while the “controls” are the same for each experiment but the “treatments” vary. Then we remove the intercept from the group of coefficients that vary by group <span class="math inline">\(y \sim T + (T - 1 \vert sch)\)</span> where T is the treatment variable <span class="math inline">\({0, 1}\)</span>. Now we get a different treatment effect for each school.</p>
+<p>And here is a model with an individual-level predictor x: <span class="math inline">\(y \sim x + T + (T + x:T - 1 \vert sch)\)</span>, where the treatment effect and its interaction with x vary by school</p>
+<p>There is nothing wrong with a high correlation between the <span class="math inline">\(\alpha\)</span>s and <span class="math inline">\(\beta\)</span>s. As with interaction models in classical regression, centering the predictor(s) may not remove these correlations, but the correlation is easier to interpret.</p>
+</section>
+<section id="recap-multilevel-structures" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="recap-multilevel-structures"><span class="header-section-number">9.6</span> Recap: multilevel structures</h2>
+<p>Imagine that you have student scores from 10 schools. If score variable is y, then the model is</p>
+<p>for j-th school:</p>
+<p><span class="math display">\[y_i = \beta_{j} +  N(0, \sigma) ~~or~~ y_i \sim N(\beta_j, \sigma)\]</span></p>
+<p>or</p>
+<p><span class="math display">\[y_i \sim N(\mu, \sigma)\]</span> <span class="math display">\[\mu = \beta_j\]</span></p>
+<p>where i is the student index (a.k.a. row index in the data table) and j {1 … 10} is the school index. There are 10 separate models, one for each school, where parameters <span class="math inline">\(\beta_1\)</span> to <span class="math inline">\(\beta_{10}\)</span> are schools-specific mean scores and the parameter <span class="math inline">\(\sigma\)</span> marks the identical SD of scores for all 10 schools. If we have 10 intercepts/means, then we can imagine the distribution of intercepts as</p>
+<p><span class="math display">\[\beta_j \sim N(\mu_{mean}, \sigma_{mean})\]</span></p>
+<p>The distribution has 2 parameters, <span class="math inline">\(\mu_{mean}\)</span> and <span class="math inline">\(\sigma_{mean}\)</span>. This meta-distribution of means can be constructed from observed data means, but it also doubles as a prior for the school-specific intercept. This leads to a situation, where in the model we have an ordinary prior for <span class="math inline">\(\sigma\)</span>, where the parameters are fixed, based on our prior knowledge that is independent of data. And then we have this strange prior where instead of fixed coefficients we have parameters to be estimated on data. This prior we call the <em>adaptive prior</em>, because it adapts its shape on the data. So the full model becomes</p>
+<p><span class="math display">\[y_i \sim N(\beta_j, \sigma)\]</span> <span class="math display">\[\beta_j \sim N(\mu_{mean}, \sigma_{mean})\]</span> and the priors for <span class="math inline">\(\sigma, \sigma_{mean}, \mu_{mean}\)</span>, where the last 2 priors are meta-priors. They are meta, because these priors are set on the parameters of another (adaptive) prior. In brms notation this is</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>score<span class="sc">~</span><span class="dv">0</span> <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>school)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#or</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>score<span class="sc">~</span>(<span class="dv">1</span><span class="sc">|</span>school) <span class="sc">-</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>In this model interesting stuff starts to happen. The adaptive prior is fitted on data (and on its meta-priors, of course), which means that information moves up from the individual school level into the 2nd level adaptive prior. But then, as this is still a prior, it is also used for fitting the 1st level model of individual schools. So the information also flows the other way, from the adaptive prior down to individual schools, whose score means are calculated partly on information encoded in the shape of the adaptive prior. Because of this up-and-then-down information flow, the data coming from a school, which is used to estimate the mean score of this particular school, is also used to fit the adaptive prior. Thus information coming from any school affects the estimation of all other schools means, to some extent. So every school has an influence on all other schools. This partial pooling of information between school means leads to shrinkage of the <span class="math inline">\(\beta_j\)</span> coefficients towards a common mean.</p>
+<p>As with ordinary priors, the strength of the influence that an adaptive prior has on the final estimation depends both on how much information we put into this prior, as well as on how much information is contained in data for every individual school (and by implication, in the likelihood function). As the adaptive prior gets its information from school means, the more schools there are, the more informative (narrower) this prior will be. Also, the less variation there is between the school means, the narrower the adaptive prior will be, and thus the more influence (more shrinkage) it will have on the school-specific posteriors. On the other hand, the more scores go into the likelihood for a given school, and the less variation there is within these scores, the more will the posterior depend on the schools own scores, which means that there will be less shrinkage for these particular schools.</p>
+<p>We can reduce the number of parameters that are estimated by providing a common intercept <span class="math inline">\(\beta_0\)</span> for all schools, to which individual school-specific intercepts are then added to yield a schools mean score (mean score for j-th school = <span class="math inline">\(\beta_0 + \beta_j\)</span>).</p>
+<p><span class="math display">\[score \sim N(\beta_0 + \beta_j, \sigma)\]</span> <span class="math display">\[\beta_j \sim N(0, \sigma_{mean})\]</span> and priors for <span class="math inline">\(\sigma, \beta_0, \sigma_{mean}\)</span>.</p>
+<p>There are j - 1 parameters less in this otherwise equivalent model, and the brms notation is</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>score<span class="sc">~</span><span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>school)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#or</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>score<span class="sc">~</span>(<span class="dv">1</span><span class="sc">|</span>school)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Next we relax the stupid assumption that all schools have identical SD of scores. Now we have 2 adaptive priors, one of which models the distribution of mean scores for each school and the other the distribution of SD-s of scores for each school. Of corse both distributions, modelled as normal, have their own mu and sigma parameters.</p>
+<p><span class="math display">\[score \sim N(\mu, \sigma)\]</span> <span class="math display">\[\mu = \beta_j\]</span> <span class="math display">\[\sigma = \beta_{s[j]}\]</span> <span class="math display">\[\beta_j \sim N(\mu_{mean}, \sigma_{mean})\]</span> <span class="math display">\[\beta_{s[j]} \sim N(\mu_{sd}, \sigma_{sd})\]</span></p>
+<p>and the priors for <span class="math inline">\(\mu_{mean}, \sigma_{mean}, \mu_{sd}, \sigma_{sd}\)</span>. We can get rid of the <span class="math inline">\(\mu_{mean}\)</span> and <span class="math inline">\(\mu_{sd}\)</span> parameters as we did before.</p>
+<p>Now the respective brs models are</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(score<span class="sc">~</span><span class="dv">0</span> <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>school), sigma<span class="sc">~</span><span class="dv">0</span> <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>school))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#and</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(score<span class="sc">~</span>(<span class="dv">1</span><span class="sc">|</span>school), sigma<span class="sc">~</span>(<span class="dv">1</span><span class="sc">|</span>school))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>So now we start our model description with the likelihood, followed by 2 re-definitions of parameters, followed by 2 adaptive-priors, followed by 4 ordinary priors, followed by 4 meta-priors.</p>
+<p>If in addition we want to model the correlations between the mean scores and within-school variarion in scores, then the model becomes</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(score<span class="sc">~</span>(<span class="dv">1</span> <span class="sc">|</span>id<span class="sc">|</span> school),</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>   sigma<span class="sc">~</span>age <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span>id<span class="sc">|</span> school))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Where “id” denotes any string that must be the same in both submodels.</p>
+<p>We next add a student-level predictor: students age. For modelling convenience, we standardize the ages, so that they would have a mean = 0 and sd = 1. Now, we can model these data for the 1st school as</p>
+<p><span class="math display">\[score = \beta_0 + \beta_{sch1} +  b_{age} \times age + N(0, \sigma)\]</span>.</p>
+<p>For the next school there will be another equation</p>
+<p><span class="math display">\[score = \beta_0 + \beta_{sch2} +  b_{age} \times age + N(0, \sigma)\]</span></p>
+<p>and so on. Again, while there are parameters that are the same for each school (<span class="math inline">\(\beta_0\)</span> - the common intercept, <span class="math inline">\(b_{age}\)</span> - the slope for the age variable, and <span class="math inline">\(\sigma\)</span> - the common SD for all schools), each school has its own intercept. So we have 10 regression equations, where there are 10 equation-specific parameters (the beta-schools) and 3 parameters (<span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_{age}\)</span> and <span class="math inline">\(\sigma\)</span>) common to all equations. In this equation the 2nd schools intercept (mean score if age is at its mean level, e.g.&nbsp;age = 0) equals <span class="math inline">\(\beta_0 + \beta_{sch2}\)</span>. (This is why we standardized the age-variable.) And the mean score for the 2nd school, if the age is two years over the mean age, equals <span class="math inline">\(\beta_0 + \beta_{sch2} + 2 \times \beta_{age}\)</span>.</p>
+<p>As we have 10 beta-schools coefficients, we can again build a distribution of school intercepts, which is the same as saying that we can build a distribution of school means for the situation where age = 0 = mean(age).</p>
+<p>So far the picture looks like this</p>
+<p>for each school:</p>
+<p><span class="math display">\[score \sim N(\mu, \sigma)\]</span> <span class="math display">\[\mu = \beta_0 + \beta_j +  \beta_{age} \times age\]</span> <span class="math display">\[\beta_j \sim N(0, \sigma_{means})\]</span></p>
+<p>and priors for <span class="math inline">\(\sigma_{means}\)</span>, <span class="math inline">\(\beta_{age}\)</span>, <span class="math inline">\(\beta_0\)</span>, and <span class="math inline">\(\sigma\)</span>.</p>
+<p>These are called the <em>meta-priors</em>, as they are priors set on parameters of another prior. Now we have the full system.</p>
+<p>Now lets make the SD-s vary by school as well. Thus we have 2 adaptive priors: we have the distribution of school-means and we have another distribution of school-SDs. So the model loses the common <span class="math inline">\(\sigma\)</span> and at the same time gains another adaptive prior and 2 additional meta-priors.</p>
+<p>for each school: <span class="math display">\[score \sim N(\mu, \sigma)\]</span> <span class="math display">\[\mu = \beta_0 + \beta_j +  \beta_{age} \times age\]</span> <span class="math display">\[\sigma = \beta_{0.s} + \beta_{j.s} +  \beta_{age.s} \times age\]</span> <span class="math display">\[\beta_j \sim N(0, \sigma_{mean})\]</span> <span class="math display">\[\beta_{j.s} \sim N(0, \sigma_{sd})\]</span></p>
+<p>and priors for <span class="math inline">\(\sigma_{sd}\)</span>, <span class="math inline">\(\sigma_{mean}\)</span>, <span class="math inline">\(\beta_{age.s}\)</span>, <span class="math inline">\(\beta_{age}\)</span>, <span class="math inline">\(\beta_{0.s}\)</span>, and <span class="math inline">\(\beta_0\)</span>.</p>
+<p>So now we start our model description with the likelihood, followed by 2 re-definitions of parameters, followed by 2 adaptive-priors, followed by 4 ordinary priors, followed by 2 meta-priors.</p>
+<p>In this model we have liberated the intercepts to vary between schools. In brms notation the models are</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">~</span> age <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> school)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>and</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(score<span class="sc">~</span>age <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> school),</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>   sigma<span class="sc">~</span>age <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> school))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We can, and will, as easily liberate the slopes as well, by giving them adaptive priors of their own. Then we will have our final model with 4 adaptive priors and with the corresponding 8 meta-priors. In brms notation this model looks like this</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(score<span class="sc">~</span>age <span class="sc">+</span> (age <span class="sc">||</span> school),</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>   sigma<span class="sc">~</span>age <span class="sc">+</span> (age <span class="sc">||</span> school))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>In this model both intercepts and slopes vary accross schools. Two vertical lines mean that the correlation between schools intercepts and slopes (mean score at mean age vs.&nbsp;change in the mean score when age is changed) is not modelled. We can incorporate this correlation into the model like this</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(score<span class="sc">~</span>age <span class="sc">+</span> (age <span class="sc">|</span> school),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   sigma<span class="sc">~</span>age <span class="sc">+</span> (age <span class="sc">|</span> school))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>In this model we also estimate the correlation between the intercepts and slopes of the school means (the 1st submodel) and simultaneously the correlation between intercepts and slopes of the school SDs (the 2nd submodel). If the schools means submodel intercepts and slopes are positively correlated, then the schools with higher scores also tend to have faster growth of scores, as the students get older. If the schools SD submodel intercepts and slopes are positively correlated, then the schools with higher within-school variation between scores also tend to have faster growth of this variation, as the students get older.</p>
+<p>We can add another layer of correlations to this model like this</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(score<span class="sc">~</span>age <span class="sc">+</span> (age <span class="sc">|</span>id<span class="sc">|</span> school),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>   sigma<span class="sc">~</span>age <span class="sc">+</span> (age <span class="sc">|</span>id<span class="sc">|</span> school))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Where “id” denotes any string that must be the same in both submodels. Now we estimate the same correlations as before, but in addition also the correlations between the submodels. For instance there might be a negative correlation between schools mean scores and variation within schools so that schools that have higher mean scores tend to have less variation between the scores.</p>
+<p>And finally, lets incorporate a school-level variable Z, school size (the nr of students) into the regression. For simplicity we are using the free intercept model that assumes equal variance for all schools.</p>
+<p>for each school:</p>
+<p><span class="math display">\[y_i \sim N(\mu, \sigma)\]</span> <span class="math display">\[\mu = \beta_0 + \beta_j +  \beta_{age} \times age_i\]</span> <span class="math display">\[\beta_j \sim N(\mu_{mean}, \sigma_{mean})\]</span> <span class="math display">\[\mu_{mean} = \beta_{mean} + \beta_z \times z_j\]</span></p>
+<p>and the priors for every parameter and meta-parameter: <span class="math inline">\(\beta_0, \beta_{mean}, \beta_z, \beta_{age}, \sigma_{mean}, \sigma, \beta_z:\beta_{age}\)</span>.</p>
+<p>In brms notation:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>score<span class="sc">~</span>age <span class="sc">+</span> z <span class="sc">+</span> age <span class="sc">*</span> z <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>school)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>As you can see, this is an interaction model, where the z variable, which is modelled at the 2nd level, interacts with the age variable, which is modelled at the first level. The group-specific variables have a single value per group, and they naturally belong to the group-level model.</p>
+<p>Finally, as a comparison, lets have another look at a single-level interaction model:</p>
+<p><span class="math display">\[y_i \sim N(\mu, \sigma)\]</span> <span class="math display">\[\mu = b_0 + \gamma \times x + b_2 \times Z \]</span> <span class="math display">\[\gamma = b_1 + b_3 \times Z\]</span></p>
+<p>and priors for 4 betas and 1 sigma. This model can be re-written in a single line as <span class="math inline">\(y = b_0 + b_1X + b_2Z + b_3XZ + N(0, \sigma)\)</span>, as any multilevel model can be turned into a single-line expression. The main goal in doing an interaction model vs a multilevel model is basically the same - to model how the slope on X varies by the levels of the Z variable, and the main difference from multilevel models is that in the single-level interaction model the influence of Z on X is modeled as deterministic. Thus, there are no adaptive priors, no partitioning of variation, no partial pooling of information, and no shrinkage.</p>
+</section>
+<section id="prediction-from-multilevel-models" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="prediction-from-multilevel-models"><span class="header-section-number">9.7</span> 7.4. Prediction from multilevel models</h2>
+<p>predict the test score for a schools males (x = 1) in j = 6. Conditional on the model parameters, the predicted value has a mean of <span class="math inline">\(\alpha_{6} + \beta\)</span> and <span class="math inline">\(\alpha\)</span> sd of <span class="math inline">\(\sigma_y\)</span>.</p>
+<p><span class="math display">\[y \vert \theta \sim N(\alpha_6 + \beta x, \sigma_y)\]</span></p>
+<p>where <span class="math inline">\(\theta\)</span> represents the vector of model parameters. to predict the score for a male student, but in an unmeasured school, we generate a new school-level error term, <span class="math inline">\(\alpha\)</span>, which we sample from its <span class="math inline">\(N(\gamma_0 + \gamma_1 u_j, \sigma_{\alpha})\)</span> distribution. The prediction will be less certain than for a student in a measured school, since we lack information about <span class="math inline">\(\alpha\)</span>. From the fitted model, the within-school (residual) sd is <span class="math inline">\(\sigma_y\)</span>, and the between-county sd is <span class="math inline">\(\sigma_{\alpha}\)</span>. The score for a new student in a measured school can be measured to an accuracy of about +/- <span class="math inline">\(\sigma_y\)</span>. The score for a new student in an unmeasured school can be predicted to an accuracy of <span class="math inline">\(\sqrt{\sigma_y + \sigma_{\alpha}}\)</span>. The equation <span class="math inline">\(\frac{\sqrt{\sigma_y + \sigma_{\alpha}}}{\sigma_y} - 1\)</span> gives the percentage by which a predictive interval for a new student in an unmeasured school is wider than that of a new student in a measured school.</p>
+<hr>
+<p>In principle there are 3 ways how to predict from multi-level models. When we talk about average marginal effects, we have to be explicit about what kinds of averages we are working with. We can calculate</p>
+<ol type="1">
+<li><p>Global grand mean</p></li>
+<li><p>Conditional effects for existing groups</p></li>
+<li><p>Conditional effects for a single hypothetical group, either typical or brand new.</p></li>
+</ol>
+<p>For posterior prediction for a global grand mean, we calculate the mean score while ignoring any school-specific deviations of the intercept or slope. We do not incorporate school-specific information from the model into the predictions. The resulting average transcends school differences. Although the global mean only uses the “fixed” effects part of the model, these fixed effect estimates are themselves conditional on the random effects, so you still end up with a conditional prediction.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sch <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/schools.csv"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sch<span class="sc">$</span>school <span class="ot">&lt;-</span> <span class="fu">as.character</span>(sch<span class="sc">$</span>school)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sch<span class="sc">$</span>sex <span class="ot">&lt;-</span> <span class="fu">as.character</span>(sch<span class="sc">$</span>sex)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>l8_m1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(score1<span class="sc">~</span>sex<span class="sc">+</span> (sex<span class="sc">|</span>school), <span class="at">data=</span>sch, <span class="at">file=</span><span class="st">"models/l8_m1"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">conditional_effects</span>(l8_m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We must include <code>re_formula=NA</code> explicitly, so that group level effects are ignored and school variable id is not asked for in the newdata argument.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nd1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sex=</span><span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">fitted</span>(l8_m1, <span class="at">re_formula=</span><span class="cn">NA</span>, <span class="at">newdata =</span> nd1) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(nd1, pr1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  sex Estimate Est.Error     Q2.5    Q97.5
+1   0 49.20666  1.036215 47.15468 51.27576
+2   1 46.72225  0.995492 44.75680 48.80006</code></pre>
+</div>
+</div>
+<p>and the overall effect size is …</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nd1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sex=</span><span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(l8_m1, <span class="at">re_formula=</span><span class="cn">NA</span>, <span class="at">newdata =</span> nd1) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(pr1<span class="sc">$</span>V1 <span class="sc">-</span> pr1<span class="sc">$</span>V2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Estimate Est.Error     Q2.5    Q97.5
+[1,]  2.48441  0.667096 1.215459 3.850945</code></pre>
+</div>
+</div>
+<p>Posterior prediction for same clusters: When working with the same clusters that were used to fit the model, varying intercepts are just parameters. The only trick is to ensure that you use the right intercept for each case in the data. Instead of calculating a grand mean without any group information, we can incorporate school effects into our predictions. We can create conditional effects for specific schools that already exist in the data, incorporating their school-specific deviations in slope and intercept.</p>
+<p>we feed brms new data that does include one or more schools that are already in the data, and we tell it to incorporate the random effects into its predictions by including re_formula = NULL.</p>
+<p>We can also be more explicit about which group effects to include. When using re_formula = NULL, all group effects are included. If we made a model with both region and year effects, for instance, and only wanted to predict using the region effects, we could use <span class="math inline">\(re_formula = \sim (1 \vert region)\)</span>. Or if we do not want to remember that NULL means “everything”, we could also just use <span class="math inline">\(re_formula = \sim (1 \vert region)\)</span> on our basic model with just school effects. It is all the same.</p>
+<p>for predicting the mean scores for school no 20920:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>nd1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">expand_grid</span>(<span class="at">school=</span> <span class="st">"20920"</span>, <span class="at">sex=</span><span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">fitted</span>(l8_m1, <span class="at">newdata =</span> nd1, <span class="at">re_formula =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(nd1, pr1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  school sex Estimate Est.Error     Q2.5    Q97.5
+1  20920   0 38.81664  4.420023 29.96680 47.27831
+2  20920   1 37.08608  4.213951 28.70682 45.34600</code></pre>
+</div>
+</div>
+<p>and we create 4000 new students for school no. 20920. re_formula = NULL! these are “predicted draws from posterior predictive distribiution”</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>nd1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">expand_grid</span>(<span class="at">school=</span> <span class="st">"20920"</span>, <span class="at">sex=</span><span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(l8_m1, <span class="at">newdata =</span> nd1, <span class="at">re_formula =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pr1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(pr1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Estimate Est.Error     Q2.5    Q97.5
+0 38.80425  12.31615 14.55952 62.68050
+1 37.13416  11.86526 13.98128 60.24196</code></pre>
+</div>
+</div>
+<p>And this is the prediction of the mean scores for the same schools - see how the intervals for the mean are much narrower than for individual students. these are “fitted draws from posterior predictive distribution”.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>nd1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">expand_grid</span>(<span class="at">school=</span> <span class="st">"20920"</span>, <span class="at">sex=</span><span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(l8_m1, <span class="at">newdata =</span> nd1, <span class="at">re_formula =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pr1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(pr1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Estimate Est.Error     Q2.5    Q97.5
+0 38.81664  4.420023 29.96680 47.27831
+1 37.08608  4.213951 28.70682 45.34600</code></pre>
+</div>
+</div>
+<section id="conditional-effects-for-a-single-new-hypothetical-group-either-typical-or-brand-new" class="level3" data-number="9.7.1">
+<h3 data-number="9.7.1" class="anchored" data-anchor-id="conditional-effects-for-a-single-new-hypothetical-group-either-typical-or-brand-new"><span class="header-section-number">9.7.1</span> Conditional effects for a single new hypothetical group, either typical or brand new</h3>
+<p>Making predictions for new clusters is a problem of generalizing from the sample. there is no unique procedure for this. As we want a single mean that also includes regional effects, we will create a new school and make predictions based on it. The thing to do depends upon the causal model, the statistical model, and your goals. If we want a single mean that also includes school effects, we simulate a hypothetical school and make predictions based on it. The difference is in how we construct this new school and think about its variation. We can build its SD based on an average SD of the existing schools, or we can simulate a new SD.</p>
+<p>To do this, we need to include the new school in the newdata argument, but we need to include a name of a school that does not exist (or alternatively, <code>school = NA</code>). To make these extrapolated predictions, include <code>allow_new_levels = TRUE</code>. We include the random effects for school by setting <code>re_formula = NULL</code>.</p>
+<p>Finally, we specify how to handle the variation for this imaginary new group. We either draw from the variation in all the other schools by setting <code>sample_new_levels = "uncertainty"</code> (the default), or we simulate a whole new kind of schools uncertainty using <code>sample_new_levels = "gaussian"</code>. The documentation is in <code>?brms::prepare_predictions</code>.</p>
+<p>In summary, we have these two general approaches:</p>
+<ol type="1">
+<li>Create a hypothetical school that is based on the observed variation in the existing schools with <code>school = "a"</code> in the new data and <code>re_formula = NULL</code>, <code>allow_new_levels = TRUE</code>, <code>sample_new_levels = "uncertainty"</code> in the prediction function. This creates a “typical” school. How does “uncertainty” include group-level uncertainty based on the variation of the existing levels? “uncertainty” fullfills a similar purpose as “gaussian” but instead of using a gaussian distribution to sample from (which may or may not be a good representation of the group-level effects distribution), we sample from the distribution directly implied by the old levels in a bootstrap kind of fashion. Suppose grp has 3 levels, call them a, b, and c and suppose we have 5 posterior draws for these levels:</li>
+</ol>
+<p>a: 1 2 3 4 5</p>
+<p>b: 6 7 8 9 10</p>
+<p>c: 11 12 13 14 15</p>
+<p>Then, in “uncertainty”, for the first posterior draw, we choose one from (1, 6, 11), in the second we choose one from (2, 7, 12), in the third we choose one from (3, 8, 13), etc. If we had enough levels of grp and those levels were normally distributed, then this approach would come to very similar conclusions as the “gaussian” approach.</p>
+<ol start="2" type="1">
+<li>Create a hypothetical school that is completely new with <code>school = "a"</code> in the newdata and <code>re_formula = NULL</code>, <code>allow_new_levels = TRUE</code>, <code>sample_new_levels = "gaussian"</code>. This creates a “brand new” school. “gaussian”, for a term like (1 | grp), returns something like <code>rnorm(n_draws, 0, sd_grp__Intercept)</code>.</li>
+</ol>
+<p>As a third possible approach, maybe you simple want the new group to be as typical as possible for the old groups. Then simply choose an old group that is closest to the mean or median or whatever statistic you prefer of all old groups used to fit the model, and predict for this group.</p>
+<p>We predict a mean score for new schools.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>nd <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">expand_grid</span>(<span class="at">school=</span><span class="st">"a"</span>, <span class="at">sex=</span><span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>)))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">fitted</span>(l8_m1, <span class="at">newdata =</span> nd, <span class="at">re_formula =</span> <span class="cn">NULL</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                        </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">allow_new_levels=</span><span class="cn">TRUE</span>, <span class="at">sample_new_levels =</span> <span class="st">"gaussian"</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>pr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Estimate Est.Error     Q2.5    Q97.5
+1 48.99719  7.420108 34.73443 63.47877
+2 46.48395  7.301380 32.65760 60.74683</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="multi-level-change-over-time-models" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="multi-level-change-over-time-models"><span class="header-section-number">9.8</span> 7.5 Multi-level change-over-time models</h2>
+<p>Here the first level is individual level time points and regressors that have different values at different time points. The grouping factor is the individuals id and the 2nd level regressors do not vary within individuals. If there is an experimental treatment, that is applied to some individuals, this would be a 2nd level regressor, that is then put into interaction with time variable.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> time <span class="sc">+</span> treatment <span class="sc">+</span> time<span class="sc">:</span>treatment <span class="sc">+</span> (time <span class="sc">|</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This model naturally incorporates auto-regressive structures and unequal variance (heteroscedasticity) within individuals, so it is preferable to single-level autoregressive ar() models.</p>
+<section id="single-level-autoregressive-models-and-arma" class="level3" data-number="9.8.1">
+<h3 data-number="9.8.1" class="anchored" data-anchor-id="single-level-autoregressive-models-and-arma"><span class="header-section-number">9.8.1</span> single-level autoregressive models and ARMA</h3>
+<p>An autoregressive model is a model where a value from a time series is regressed on previous values from same time series.</p>
+<p><span class="math display">\[y_t=\alpha+\beta_1 y_{t-1}+\epsilon_t\]</span></p>
+<p>In autoregressive models the independence of data points – remember those zeros in the variance-covariance matrix – is violated. Instead of a bunch of zeros, we now have to model a fairly simple pattern of correlations that decreases over time. So this situation is easier that modelling each correlation with its own rho-parameter, as we do in the multi-level modelling paradigm. Also, this means that a full multi-level model can do the job of an autoregressive model!</p>
+<p>Anyhow, in the simplest AR model, the first order autoregressive (AR1) structure, the exponent on the correlation between time-points declines linearly according to the time lag. Here we are also assuming stationarity, i.e.&nbsp;that the degree of correlation is dependent only on the lag and not on when the lag occurs. All lag 1 residual pairs will have the same degree of correlation, all the lag 2 pairs will have the same correlation and so on.</p>
+<p>We could accommodate autoregressive data by fitting a model that incorporates a AR1 variance-covariance structure. Alternatively, we fit a model where the response variable from previous time period has become the predictor.</p>
+<p>The order of an autoregression is the number of immediately preceding values in the series that are used to predict the value at the present time.</p>
+<p><span class="math display">\[y_t=\alpha+\beta_1 y_{t-1}+\epsilon_t\]</span></p>
+<p>The preceding model is a first-order autoregression, written as AR(1).</p>
+<p>If we want to predict y using two previous time periods (y_t-1, y_t-2), the AR(2) model becomes:</p>
+<p><span class="math display">\[y_t=\alpha+\beta_1 y_{t-1}+\beta_2 y_{t-2}+\epsilon_t\]</span></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tapmised <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"data/tapmised/Sheet 3-Table 1.csv"</span>, </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">delim =</span> <span class="st">";"</span>, <span class="at">escape_double =</span> <span class="cn">FALSE</span>, <span class="at">trim_ws =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">colSums</span>(tapmised[,<span class="sc">-</span><span class="dv">1</span>]) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>()</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(tt) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"yr"</span>, <span class="st">"events"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>tt <span class="ot">&lt;-</span> tt <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">yr =</span> <span class="fu">parse_number</span>(yr))</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#get_prior(formula = events~ yr + ar(yr, p=1), tt, family = poisson())</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="st">"normal(0, 10)"</span>, <span class="at">class =</span> <span class="st">"ar"</span>),</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="st">"normal(0, 10)"</span>, <span class="at">class =</span> <span class="st">"b"</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>m_ar1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> events<span class="sc">~</span> yr <span class="sc">+</span> <span class="fu">ar</span>(yr, <span class="at">p=</span><span class="dv">1</span>, <span class="at">cov =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> tt, </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(),</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> priors,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">3</span>,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/m_ar1"</span>,</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#file_refit = "on_change",</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">yr =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2002</span>, <span class="at">to =</span> <span class="dv">2025</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">add_epred_draws</span>(m_ar1) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">mean_qi</span>(.epred) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(yr, .epred)) <span class="sc">+</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> .lower, <span class="at">ymax =</span> .upper), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get_prior(formula = events~ yr + arma(yr, p=1), tt, family = poisson())</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="st">"normal(0, 10)"</span>, <span class="at">class =</span> <span class="st">"ar"</span>),</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="st">"normal(0, 10)"</span>, <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="st">"normal(0, 10"</span>, <span class="at">class =</span><span class="st">"ma"</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>m_arma1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> events<span class="sc">~</span> yr <span class="sc">+</span> <span class="fu">arma</span>(yr, <span class="at">p=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">1</span>, <span class="at">cov =</span> <span class="cn">TRUE</span>), tt, <span class="at">family =</span> <span class="fu">poisson</span>(),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> priors,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">3</span>,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/m_arma1"</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#file_refit = "on_change",</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_pars =</span> <span class="fu">save_pars</span>(<span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">yr =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2002</span>, <span class="at">to =</span> <span class="dv">2025</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">add_epred_draws</span>(m_arma1) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">mean_qi</span>(.epred) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(yr, .epred)) <span class="sc">+</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> .lower, <span class="at">ymax =</span> .upper), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="overdispersed-count-models" class="level2" data-number="9.9">
+<h2 data-number="9.9" class="anchored" data-anchor-id="overdispersed-count-models"><span class="header-section-number">9.9</span> 7.6. Overdispersed count models</h2>
+<p>When counts arise from a mixture of different Poisson or binomial processes, there will be thicker tails than in pure distributions. This is called over-dispersion (the variance of a variable is its dispersion). For a counting process, the variance is a function of the same parameters as the expected value. For example, the expected value of a binomial is Np and its variance is Np(1 - p). When, after conditioning on the predictors, the observed variance exceeds this amount, then an omitted variable is producing additional dispersion in the observed counts. Thus, ignoring over-dispersion leads to the same problems as ignoring a predictor variable (confounding, masking true effects).</p>
+</section>
+<section id="negative-binomial-or-gamma-poisson." class="level2" data-number="9.10">
+<h2 data-number="9.10" class="anchored" data-anchor-id="negative-binomial-or-gamma-poisson."><span class="header-section-number">9.10</span> Negative-binomial or gamma-Poisson.</h2>
+<p>A negative-binomial likelihood, also known as gamma-Poisson, assumes that each Poisson count observation has its own rate. It estimates the shape of the gamma distribution to describe the Poisson rates across cases. We assume that each event has its own rate or <span class="math inline">\(\lambda\)</span>. The distribution of these lambdas is described by the Gamma distribution. So, the gamma distribution does not describe our data, but the rate parameters of N Poisson distributions, which we assume made our N data points.</p>
+<p><code>dgamma()</code> allows 2 parametrizations: shape (alpha)/rate (beta), and shape (alpha)/scale (1/alpha) where scale = 1/shape. As a third parametrization there is mean (mu)/shape (alpha).</p>
+<p>In brms this is the model:</p>
+<p><span class="math display">\[y_i \sim GammaPois(\mu, \alpha)\]</span></p>
+<p><span class="math display">\[log(\mu) = \beta_0\]</span></p>
+<p>Where <span class="math inline">\(\mu\)</span> takes the place of <span class="math inline">\(\lambda\)</span> for Poisson distribution. After fitting the model, the intercept (mu) should be back-transformed as <span class="math inline">\(exp(mu)\)</span>. The shape parameter is assigned a <code>gamma(0.01, 0.01)</code> prior by brms, based on shape/rate (<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\theta\)</span>).</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Brms family is <code>family = negbinomial</code> where mu is log-linked.</p>
+<p>To use alpha (shape) and mu parameters estimates to visualize the model-implied gamma distribution of lambdas, we have to transform the <span class="math inline">\(\mu\)</span> to theta (rate) like this: <span class="math inline">\(\theta = \mu/\alpha\)</span>; base::dgamma() takes theta and alpha (the shape/rate parametrization).</p>
+</section>
+<section id="beta-distribution-and-beta-binomial-distribution" class="level2" data-number="9.11">
+<h2 data-number="9.11" class="anchored" data-anchor-id="beta-distribution-and-beta-binomial-distribution"><span class="header-section-number">9.11</span> Beta distribution and beta-binomial distribution</h2>
+<section id="the-beta-prior" class="level3" data-number="9.11.1">
+<h3 data-number="9.11.1" class="anchored" data-anchor-id="the-beta-prior"><span class="header-section-number">9.11.1</span> The Beta prior</h3>
+<p>Beta story: You wait for 2 Poisson processes to arrive. The individual steps of each process happen at the same rate, but the first multistep process requires <span class="math inline">\(\alpha\)</span> steps and the second requires <span class="math inline">\(\beta\)</span> steps. The fraction of the total waiting time taken by the first process is Beta distributed. <span class="math inline">\(\alpha &gt; 0\)</span>, <span class="math inline">\(\beta &gt; 0\)</span>, covers interval 0 to 1. This makes it a good prior on probability scale.</p>
+<p>PDF:</p>
+<p><span class="math display">\[Beta(y) = \frac{y^{\alpha - 1}(1 - y)^{\beta - 1}}{B(\alpha, \beta)}\]</span></p>
+<p>where B stands for the Beta function, which computes a normalizing constant. The base::dbeta() takes <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> as shape1 and shape2 parameters.</p>
+<p><span class="math display">\[E(X) = \frac{\alpha}{\alpha + \beta}\]</span></p>
+<p><span class="math display">\[SD(X) = \frac{\alpha \beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}\]</span></p>
+<p>The uniform distribution is a special case of Beta distribution with <span class="math inline">\(\alpha = \beta = 1\)</span>.</p>
+<p>If <span class="math inline">\(\alpha = \beta = 0\)</span>, the PDF cannot be normalized. This is used as an improper prior (Haldane prior). If <span class="math inline">\(\alpha = \beta = 0.5\)</span>, then we have the Jeffreys prior.</p>
+<p>base::R</p>
+<ul>
+<li><p>dbeta(x, shape1, shape2, ncp = 0, log = FALSE)</p></li>
+<li><p>pbeta(q, shape1, shape2, ncp = 0, lower.tail = TRUE, log.p = FALSE)</p></li>
+<li><p>qbeta(p, shape1, shape2, ncp = 0, lower.tail = TRUE, log.p = FALSE)</p></li>
+<li><p>rbeta(n, shape1, shape2, ncp = 0)</p></li>
+</ul>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(x, <span class="fl">0.5</span>, <span class="fl">0.5</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>The Jeffreys horseshoe prior</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(x, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>The Haldane prior</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If we give binomial likelihood a beta prior, the the peak of the posterior is at <span class="math inline">\(\frac{\alpha + y}{\alpha + \beta + n}\)</span> and it stays between the sample proportion <span class="math inline">\(y/n\)</span> and the E(X) of prior <span class="math inline">\(\alpha /(\alpha + \beta)\)</span>. SD of posterior is given by <span class="math inline">\(\sqrt{\frac{(\alpha + y)(\beta + n -y)}{(\alpha + \beta + n) ^2(\alpha + \beta + n +1)}}\)</span> and it approximates normal, as n increases. This approximation to normal happens sooner, if we use the logit link for the probability: <span class="math inline">\(log(p/(1-p))\)</span>.</p>
+<p>The beta distribution can be reparametrized with location parameter <span class="math inline">\(\phi\)</span> (the expeced value or mean) and concentration (a.k.a. spread) <span class="math inline">\(\kappa\)</span>. This parametrization is used by the brms. McElreath also uses this parametization, while renaming <span class="math inline">\(\phi\)</span> as <span class="math inline">\(\mu\)</span> and “pbar” and <span class="math inline">\(\kappa\)</span> as “theta”. <code>rethinking::dbeta2()</code> is the relevant function. For a beta distribution with E(x) = 0.1, pbar = 0.1. To narrow the distribution, decrease the theta.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pbar  <span class="ot">&lt;-</span> .<span class="dv">4</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">by =</span> .<span class="dv">01</span>)),</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> rethinking<span class="sc">::</span><span class="fu">dbeta2</span>(x, pbar, theta))) <span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>()<span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="cn">NULL</span>, <span class="at">breaks =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"The Beta distribution"</span>,</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="fu">expression</span>(<span class="st">"Defined in terms of "</span><span class="sc">*</span>mu<span class="sc">*</span><span class="st">" (pbar) and "</span><span class="sc">*</span>kappa<span class="sc">*</span><span class="st">" (theta)"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><span class="math display">\[\phi = \frac{\alpha}{\alpha + \beta}\]</span></p>
+<p><span class="math display">\[\kappa = \alpha + \beta\]</span></p>
+<p><span class="math display">\[\alpha = \phi \kappa\]</span></p>
+<p><span class="math display">\[\beta = (1 - \phi ) \kappa\]</span></p>
+<p><span class="math display">\[\sigma = \sqrt{(\phi(1-\phi)/(\kappa +1))}\]</span></p>
+<p>To get back to alpha and beta parametrization (code from the Kruschke textbook):</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>betaABfromMeanKappa <span class="ot">&lt;-</span> <span class="cf">function</span>(mean, kappa) {</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (mean <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">|</span> mean <span class="sc">&gt;=</span> <span class="dv">1</span>) <span class="fu">stop</span>(<span class="st">"must have 0 &lt; mean &lt; 1"</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;=</span> <span class="dv">0</span>) <span class="fu">stop</span>(<span class="st">"kappa must be &gt; 0"</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> mean <span class="sc">*</span> kappa</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> (<span class="fl">1.0</span> <span class="sc">-</span> mean) <span class="sc">*</span> kappa</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">a =</span> a, <span class="at">b =</span> b))</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">betaABfromMeanKappa</span>(<span class="fl">0.4</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$a
+[1] 2
+
+$b
+[1] 3</code></pre>
+</div>
+</div>
+</section>
+<section id="the-beta-binomial-likelihood" class="level3" data-number="9.11.2">
+<h3 data-number="9.11.2" class="anchored" data-anchor-id="the-beta-binomial-likelihood"><span class="header-section-number">9.11.2</span> The Beta-binomial likelihood</h3>
+<p>A beta-binomial model is a mixture of binomial distributions. It is not the same as Beta distribution. It assumes that each binomial count observation has its own probability of success. We estimate the distribution of probabilities of success (as a beta distribution), instead of a single probability of success. Any predictor variables describe the shape of this distribution.</p>
+<p><span class="math display">\[y_i \sim BetaBin(n_i, \hat p_i, \phi)\]</span> <span class="math display">\[logit(\hat p_i) = \alpha_{i}\]</span></p>
+<p>Beta binomial has to be made a custom family in brms.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>beta_binomial2 <span class="ot">&lt;-</span> <span class="fu">custom_family</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"beta_binomial2"</span>, <span class="at">dpars =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"phi"</span>),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">links =</span> <span class="fu">c</span>(<span class="st">"logit"</span>, <span class="st">"log"</span>), <span class="at">lb =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">2</span>),</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"int"</span>, <span class="at">vars =</span> <span class="st">"vint1[n]"</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>stan_funs <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_binomial2_lpmf(int y, real mu, real phi, int T) {</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="st">    return beta_binomial_lpmf(y | T, mu * phi, (1 - mu) * phi);</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="st">  int beta_binomial2_rng(real mu, real phi, int T) {</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="st">    return beta_binomial_rng(T, mu * phi, (1 - mu) * phi);</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>stanvars <span class="ot">&lt;-</span> <span class="fu">stanvar</span>(<span class="at">scode =</span> stan_funs, <span class="at">block =</span> <span class="st">"functions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Instead using the <span class="math inline">\(y \vert trials() \sim\)</span> , we are replacing <code>trials()</code> with <code>vint()</code>, which can only be used in custom families.</p>
+</section>
+</section>
+<section id="zero-inflated-models" class="level2" data-number="9.12">
+<h2 data-number="9.12" class="anchored" data-anchor-id="zero-inflated-models"><span class="header-section-number">9.12</span> Zero-inflated models</h2>
+<p>the zero-inflated Poisson</p>
+<p><span class="math display">\[y_i \sim ZIPoisson(p_i, \lambda_i)\]</span> <span class="math display">\[logit(p_i)= \alpha_p + \beta_p x_i\]</span> <span class="math display">\[log(\lambda_i)=\alpha_{\lambda} + \beta_{\lambda} x_i\]</span> where both parameters in the likelihood get their own statistical model. In brms, <span class="math inline">\(p_i\)</span> is denoted <span class="math inline">\(zi\)</span>. <code>family = zero_inflated_poisson</code>. To use a non-default (beta) prior for zi, indicate <code>class = zi</code> within <code>prior()</code>. zi is presented in the probability scale, unless there are predictors for zi in the model (while mu is always in the log-scale).</p>
+<p>The <code>tidybayes::parse_dist()</code> takes the kind of string specifications you include in the <code>brms::prior()</code> and converts them into a format one can plot with.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">beta</span>(<span class="dv">1</span>, <span class="dv">1</span>), <span class="at">class =</span> zi),</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">beta</span>(<span class="dv">2</span>, <span class="dv">6</span>), <span class="at">class =</span> zi))</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>priors <span class="sc">%&gt;%</span> tidybayes<span class="sc">::</span><span class="fu">parse_dist</span>(prior) <span class="sc">%&gt;%</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> prior, <span class="at">dist =</span> .dist, <span class="at">args =</span> .args))<span class="sc">+</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_dist_halfeye</span>(<span class="at">.width =</span> .<span class="dv">95</span>)<span class="sc">+</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="cn">NULL</span>)<span class="sc">+</span> <span class="fu">xlab</span>(<span class="cn">NULL</span>)<span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-multilevel_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>In the model description equal sign (=) means deterministic redefinition, tilde (<span class="math inline">\(\sim\)</span>) means stochastic relation.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>adaptive prior for each school<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>meta-prior<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>prior for the student-level SD<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./08-glm.html" class="pagination-link" aria-label="6. Generalized linear models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./10-appendix-best-practices.html" class="pagination-link" aria-label="Appendix: Statistical Best Practices">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

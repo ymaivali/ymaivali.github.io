@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methodology - 12&nbsp; Appendix 3: brm model syntax</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./13-appendix-mcmc.html" rel="next">
+<link href="./11-appendix-brms.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./12-appendix-brm-syntax.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Methodology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">2. Rational thinking under certainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#nested-crossed-random-effects" id="toc-nested-crossed-random-effects" class="nav-link active" data-scroll-target="#nested-crossed-random-effects"><span class="header-section-number">12.1</span> Nested &amp; crossed random effects</a></li>
+  <li><a href="#time-courses" id="toc-time-courses" class="nav-link" data-scroll-target="#time-courses"><span class="header-section-number">12.2</span> Time courses</a></li>
+  <li><a href="#details-for-brms" id="toc-details-for-brms" class="nav-link" data-scroll-target="#details-for-brms"><span class="header-section-number">12.3</span> Details for brms()</a>
+  <ul class="collapse">
+  <li><a href="#multilevel-model-with-smoothing-terms" id="toc-multilevel-model-with-smoothing-terms" class="nav-link" data-scroll-target="#multilevel-model-with-smoothing-terms"><span class="header-section-number">12.3.1</span> multilevel model with smoothing terms</a></li>
+  <li><a href="#additionally-predict-sigma" id="toc-additionally-predict-sigma" class="nav-link" data-scroll-target="#additionally-predict-sigma"><span class="header-section-number">12.3.2</span> additionally predict ‘sigma’</a></li>
+  <li><a href="#incorporate-censoring" id="toc-incorporate-censoring" class="nav-link" data-scroll-target="#incorporate-censoring"><span class="header-section-number">12.3.3</span> incorporate censoring</a></li>
+  <li><a href="#define-a-simple-non-linear-model" id="toc-define-a-simple-non-linear-model" class="nav-link" data-scroll-target="#define-a-simple-non-linear-model"><span class="header-section-number">12.3.4</span> define a simple non-linear model</a></li>
+  <li><a href="#define-a-multivariate-model" id="toc-define-a-multivariate-model" class="nav-link" data-scroll-target="#define-a-multivariate-model"><span class="header-section-number">12.3.5</span> define a multivariate model</a></li>
+  <li><a href="#define-a-zero-inflated-model" id="toc-define-a-zero-inflated-model" class="nav-link" data-scroll-target="#define-a-zero-inflated-model"><span class="header-section-number">12.3.6</span> define a zero-inflated model</a></li>
+  <li><a href="#specify-a-predictor-as-monotonic" id="toc-specify-a-predictor-as-monotonic" class="nav-link" data-scroll-target="#specify-a-predictor-as-monotonic"><span class="header-section-number">12.3.7</span> specify a predictor as monotonic</a></li>
+  <li><a href="#for-ordinal-models-only-specify-a-predictor-as-category-specific" id="toc-for-ordinal-models-only-specify-a-predictor-as-category-specific" class="nav-link" data-scroll-target="#for-ordinal-models-only-specify-a-predictor-as-category-specific"><span class="header-section-number">12.3.8</span> for ordinal models only: specify a predictor as category specific</a></li>
+  <li><a href="#specify-different-predictors-for-different-mixture-components" id="toc-specify-different-predictors-for-different-mixture-components" class="nav-link" data-scroll-target="#specify-different-predictors-for-different-mixture-components"><span class="header-section-number">12.3.9</span> specify different predictors for different mixture components</a></li>
+  <li><a href="#use-the-operator-to-specify-models" id="toc-use-the-operator-to-specify-models" class="nav-link" data-scroll-target="#use-the-operator-to-specify-models"><span class="header-section-number">12.3.10</span> use the ‘+’ operator to specify models</a></li>
+  <li><a href="#specify-a-multivariate-model-using-the-operator" id="toc-specify-a-multivariate-model-using-the-operator" class="nav-link" data-scroll-target="#specify-a-multivariate-model-using-the-operator"><span class="header-section-number">12.3.11</span> specify a multivariate model using the ‘+’ operator</a></li>
+  <li><a href="#specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" id="toc-specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" class="nav-link" data-scroll-target="#specify-correlated-residuals-of-a-gaussian-and-a-poisson-model"><span class="header-section-number">12.3.12</span> specify correlated residuals of a gaussian and a poisson model</a></li>
+  </ul></li>
+  <li><a href="#model-missing-values-in-predictors" id="toc-model-missing-values-in-predictors" class="nav-link" data-scroll-target="#model-missing-values-in-predictors"><span class="header-section-number">12.4</span> model missing values in predictors</a></li>
+  <li><a href="#model-sigma-as-a-function-of-the-mean" id="toc-model-sigma-as-a-function-of-the-mean" class="nav-link" data-scroll-target="#model-sigma-as-a-function-of-the-mean"><span class="header-section-number">12.5</span> model sigma as a function of the mean</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./12-appendix-brm-syntax.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<ol type="1">
+<li><span class="math display">\[y \sim 1\]</span></li>
+</ol>
+<p><span class="math inline">\(y = \beta_0 + N(0, \sigma)\)</span></p>
+<p>This is a intercept-only model that estimates population mean Y, individual-level sd(Y) and our uncertainties about the true values of both parameters (the posteriors).</p>
+<ol start="2" type="1">
+<li><span class="math display">\[y \sim x_1\]</span></li>
+</ol>
+<p><span class="math inline">\(y = \beta_0 + \beta_1x + N(0, \sigma)\)</span></p>
+<p>This is a simple single-predictor linear model where data variation (sigma) is constrained to be equal at all values of X. 3 parameters are estimated with posteriors.</p>
+<ol start="3" type="1">
+<li><span class="math display">\[y \sim x_1 + x_2\]</span></li>
+</ol>
+<p><span class="math inline">\(y = \beta_0 + \beta_1x + \beta_2x_2 + N(0, \sigma)\)</span></p>
+<p>This is an additive two-predictor model, where slopes for both predictors are constrained to be parallel and where sigma is constrained to be equal for all values of X.</p>
+<ol start="4" type="1">
+<li><span class="math display">\[bf(y \sim x_1 + x_2, ~ sigma \sim x_1)\]</span></li>
+</ol>
+<p><span class="math inline">\(y \sim N(\mu, \sigma)\)</span></p>
+<p><span class="math inline">\(\mu = \beta_0 + \beta_1x + \beta_2x_2\)</span></p>
+<p><span class="math inline">\(\sigma = \beta_0 + \beta_1x\)</span></p>
+<p>This is an additive two-predictor model, where slopes for both predictors are constrained to be parallel and sigma is allowed to vary over values of <span class="math inline">\(x_1\)</span>, but is constrained to be identical over values of <span class="math inline">\(x_2\)</span>.</p>
+<ol start="5" type="1">
+<li><span class="math display">\[y \sim x_1*x_2 \]</span></li>
+</ol>
+<p><span class="math inline">\(y= \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_1x_2 + N(0, \sigma)\)</span></p>
+<p>or</p>
+<p><span class="math inline">\(y = \beta_0 + \gamma x_1 + \beta_2x_2+ N(0, \sigma)\)</span></p>
+<p><span class="math inline">\(\gamma = \beta_1 + \beta_3x_2\)</span></p>
+<p>This is a interaction model where the slope of one predictor depends on the value of the other predictor. The slopes are no longer constrained to be parallel (they vary). sd(Y) is constrained to be identical to for all values of predictors.</p>
+<ol start="6" type="1">
+<li><span class="math display">\[y \sim 0 + x_1:x_2 \]</span></li>
+</ol>
+<p><span class="math inline">\(y= \beta_3x_1x_2 + N(0, \sigma)\)</span> When x_1 and x_2 are both categorical unordered vars, this will model all combinations of their levels so, that means are completely independent, but sd(Y) is constrained to be the same at every combination.</p>
+<ol start="7" type="1">
+<li><span class="math display">\[bf(y \sim 0 + x_1:x_2, ~ sigma \sim 0 + x_1:x_2)\]</span></li>
+</ol>
+<p>When x_1 and x_2 are both categorical unordered vars, this will model all combinations of their levels so, that means and sd-s are completely independent.</p>
+<ol start="8" type="1">
+<li><span class="math display">\[y \sim x_1 + (1 \vert x_2)\]</span></li>
+</ol>
+<p>Here <span class="math inline">\(x_2\)</span> must be a categorical non-ordered variable.</p>
+<p><span class="math inline">\(y = (\beta_0 + \beta_{gr,0gr}) + \beta_1x + \epsilon_{si}\)</span></p>
+<p>This is a intercept-only shrinkage model, akin to 3.</p>
+<ol start="9" type="1">
+<li><span class="math display">\[y \sim x_1 + (0 + x_1 \vert g)\]</span></li>
+</ol>
+<p>Here the slopes of <span class="math inline">\(X_1\)</span> are allowed shrinkage, but the intercept is fixed for all levels of <span class="math inline">\(g\)</span> (it is the same for all <span class="math inline">\(g\)</span>).</p>
+<ol start="10" type="1">
+<li><span class="math display">\[y \sim x_1 + (x_1 \vert \vert g)\]</span></li>
+</ol>
+<p>Here both intercepts and slopes for the mean are given shrinkage and vary across levels of <span class="math inline">\(g\)</span>. The correlation between slopes and intercepts is constrained to be zero.</p>
+<ol start="11" type="1">
+<li><span class="math display">\[y \sim x_1 + (x_1 \vert g)\]</span></li>
+</ol>
+<p>Here both intercepts and slopes for the mean are given shrinkage and vary across levels of <span class="math inline">\(g\)</span>. The correlation between slopes and intercepts is estimated.</p>
+<ol start="12" type="1">
+<li><span class="math display">\[bf(y \sim x_1 + (x_1 \vert g), ~ sigma \sim x_1 + (x_1 \vert g))\]</span></li>
+</ol>
+<p>Here both intercepts and slopes for the mean and for the sd are given shrinkage and vary across levels of <span class="math inline">\(g\)</span>. The correlation between slopes and intercepts is estimated. The correlation between sd-s and means is constrained to be zero</p>
+<ol start="13" type="1">
+<li><span class="math display">\[bf(Y \sim X_1 + (X_1 \vert id \vert g), ~ sigma \sim X_1 + (X_1 \vert id \vert g))\]</span></li>
+</ol>
+<p>Here both intercepts and slopes for the mean and for the sd are given shrinkage and vary across levels of <span class="math inline">\(x_2\)</span>. The correlation between slopes and intercepts is estimated. The correlation between sd-s and means is estimated.</p>
+<ol start="14" type="1">
+<li><span class="math display">\[Y \sim (1 \vert school/class) = (1 \vert school) + (1 \vert school:class)\]</span></li>
+</ol>
+<p>Intercept varies among schools and among classes within these schools (nested design, hierarhical model)</p>
+<ol start="15" type="1">
+<li><span class="math display">\[Y \sim school + (1 \vert school:class)\]</span></li>
+</ol>
+<p>fixed effects of schools plus variation of intercepts among classes within schools</p>
+<ol start="16" type="1">
+<li><span class="math display">\[Y \sim X + (X \vert school/class) = X + (X \vert school) + (X \vert school:class)\]</span></li>
+</ol>
+<p>Nested design. slopes and intercepts vary among classes and among schools. Each class belongs to a single school.</p>
+<ol start="17" type="1">
+<li><span class="math display">\[Y \sim (X_1 \vert school) + (X_2 \vert class)\]</span></li>
+</ol>
+<p>two predictors vary at different levels</p>
+<ol start="18" type="1">
+<li><span class="math display">\[Y \sim X * school + (X \vert school:class)\]</span></li>
+</ol>
+<p>fixed effect variation of slope and intercept varying among schools and random effect (shrinkage) variation of slope and intercept among classes within schools.</p>
+<ol start="19" type="1">
+<li><span class="math display">\[Y \sim (1 \vert school)+ (1 \vert year)\]</span></li>
+</ol>
+<p><span class="math inline">\((\beta_0 + \beta_{school,0_{school}} + \beta_{class, 0_{class}}) + e_{school,i}\)</span> Intercepts vary among crossed random effects (e.g.&nbsp;school, year).</p>
+<ol start="20" type="1">
+<li><p><span class="math display">\[Y \sim X + (1 \vert school)+ (1 \vert class)\]</span> <span class="math inline">\((\beta_0 + \beta_{school,0_{school}} + \beta_{class, 0_{class}}) + \beta_1 X + e_{school,i}\)</span></p></li>
+<li><p><span class="math display">\[Y \sim X + (0 + x\vert school)+ (1 \vert class)\]</span> <span class="math inline">\((\beta_0 + \beta_{class,0_i}) + (\beta_1 + \beta_{school,1_{school}})X_i + e_{school,i}\)</span></p></li>
+<li><p><span class="math display">\[Y \sim X_1*X_2 + (X_1*X_2 \vert school)\]</span></p></li>
+</ol>
+<p>(naturally, <span class="math inline">\(Y \sim X_1 + X_2 + (X_1 + X_2 \vert school)\)</span> is also worth consideration as a simpler model)</p>
+<p>This model estimates:</p>
+<ol type="1">
+<li><p>A global intercept</p></li>
+<li><p>A single global estimate for the effect of X1</p></li>
+<li><p>A single global estimate for the effect of X2</p></li>
+<li><p>A single global estimate for the interaction between X1 and X2</p></li>
+<li><p>Deviations of the intercept from global intercept for each school</p></li>
+<li><p>Deviations of the X1 effect from global slope for X1 for each school</p></li>
+</ol>
+<p>7 Deviations of the X2 effect from global slope of X2 for each school</p>
+<ol start="8" type="1">
+<li><p>Deviations of the X1-by-X2 interaction from global interaction estimate for each school</p></li>
+<li><p>Correlation between 5. and 6. across levels of schools</p></li>
+<li><p>Correlation between 5. and 7. across levels of schools</p></li>
+<li><p>Correlation between 5. and 8. across levels of schools</p></li>
+<li><p>Correlation between 6. and 7. across levels of schools</p></li>
+<li><p>Correlation between 6. and 8. across levels of schools</p></li>
+<li><p>Correlation between 7. and 8. across levels of schools</p></li>
+<li><p>plus the variance parameters estimated by the model.</p></li>
+<li><p><span class="math display">\[y \sim time + (time \vert g) + ar(time, person, p=2))\]</span></p></li>
+<li><p><span class="math display">\[y \sim (1 \vert mm(g1, g2))\]</span></p></li>
+</ol>
+<p>Multi-membership model, where individuals may belong to more than one group.</p>
+<ol start="25" type="1">
+<li><span class="math display">\[y \sim sex + (1 \vert gr(school, by = sex))\]</span></li>
+</ol>
+<p>the intercepts are shrunk for males and females separately in each schools</p>
+<ol start="26" type="1">
+<li>non-linear</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  y  <span class="sc">~</span> a1 <span class="sc">-</span> a2<span class="sc">^</span>x, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  a1 <span class="sc">~</span> <span class="dv">1</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  a2 <span class="sc">~</span> x <span class="sc">+</span> (x <span class="sc">|</span> g), </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">nl =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="27" type="1">
+<li>For censored data, supply the censoring variables as you would in a survival/event-history model.</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(y <span class="sc">|</span> <span class="fu">cens</span>(censor_variable) <span class="sc">~</span> x <span class="sc">+</span> z <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> g), <span class="at">family =</span> lognormal)  <span class="co"># frailty</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># see also stan_jm in the rstanarm package for joint models</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="28" type="1">
+<li>For tuncated models, specify the lower bound, upper bound, or both.</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>count <span class="sc">|</span> <span class="fu">trunc</span>(<span class="at">ub =</span> <span class="dv">10</span>) <span class="sc">~</span> x <span class="sc">*</span> z <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> g), family <span class="ot">=</span> poisson</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="29" type="1">
+<li>Measurement error</li>
+</ol>
+<p>If we know that one predictor variable is measured with error, such as the mean of several trials. In the following, sdx is the known standard deviation for x, which may be constant or vary by observation.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> <span class="fu">me</span>(x, sdx) <span class="sc">+</span> z <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>If a predicted (responce) variable is with error, which is recorded in variable called error</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">|</span> <span class="fu">resp_se</span>(error, <span class="at">sigma =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>this does missing data imputation for the y-variable and at the same time uses the known measurement error, which is treated as standard deviation.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">|</span> <span class="fu">resp_mi</span>(<span class="at">sdy=</span>error)<span class="sc">~</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>y | resp_mi(sdy = error) ~ x</code></pre>
+</div>
+</div>
+<ol start="30" type="1">
+<li>Mixture models</li>
+</ol>
+<p>Two clusters specified by multiple families along with mixture. So I guess this is technically a mixture mixed model.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">brm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> g), <span class="at">family =</span> <span class="fu">mixture</span>(gaussian, gaussian))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a growth mixture model:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">brm</span>(y <span class="sc">~</span> time <span class="sc">+</span> z <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> time <span class="sc">|</span> g), <span class="at">family =</span> <span class="fu">mixture</span>(gaussian, gaussian))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="31" type="1">
+<li>Missing Values imputation</li>
+</ol>
+<p>We can construct the model formula for missing values as follows, including using a mixed model as the imputation model (for x).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(y <span class="sc">~</span> <span class="fu">mi</span>(x) <span class="sc">+</span> z <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> g)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(x <span class="sc">|</span> <span class="fu">mi</span>() <span class="sc">~</span> z <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> g)) <span class="sc">+</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_rescor</span>(<span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="nested-crossed-random-effects" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="nested-crossed-random-effects"><span class="header-section-number">12.1</span> Nested &amp; crossed random effects</h2>
+<p>Random effects (factors) can be crossed or nested - it depends on the relationship between random-effect variables and your research question. Think of the hierarchy within a company on different management levels. Every worker belongs to a department and has only one boss. All the department bosses also have one boss. Random effect is nested if it appears in only one of the higher hierarchy levels. If you think about the data, then level simply means category or group of a categorical variable. Thus, one observation (data row) can only be part of one particular category of a variable (data column), and be part of several columns.</p>
+<p><strong>Nested Mixed Effect Model</strong> will look like:</p>
+<p><code>y ~ predictor + (1|doctor/patient)</code></p>
+<p>You know that every school, has the same hierarchy of classes, e.g. Class 1, Class 2 etc. The random effects of classes within the schools are crossed. Now, imagine the doctors started to switch shifts in the hospital, and any patient could now get to any of the doctors. A good indicator for the crossed effect is a completely filled (no zeros, like in the former example) cross table. As you can see, random effect is crossed if it appears in more then one of the higher hierarchy levels.</p>
+<p><strong>Crossed random effect</strong> can be fully crossed (every low level (e.g. patient) appears in every higher level (doctors)), or partially crossed (low levels appear in more then one of the higher hierarchy levels but not in all).</p>
+<p><code>y ~ x + (1|doctor) + (1|patient)</code></p>
+<p>Crossed and Nested effects could be necessary in the model at the same time, but on different levels.</p>
+<p>Crossed and Nested at the same time</p>
+<p><code>y ~ x + (1|doctor/patient)) + (1|season)</code></p>
+<p>Another example would be patients which are only allowed to go to their local hospital, making them nested <code>(1|hospital/patient)</code>. However the doctor are allowed to work at several hospitals, making this part of random effect crossed: <code>(1|hospital/patient) + (1|doctor)</code>.</p>
+<p>Or, think about the school students: every student can belong to only one class and to only one school, thus the effect is nested, while, as picture above shows, every school has “Class 1”, thus such effect is crossed.</p>
+<p><code>y ~ x + (1|school/class/student) + (1|class)) + (1|school)</code></p>
+<p>The golden rule: if random effects aren’t nested, they are crossed!</p>
+<p>Important to know, that without knowledge about the experimental design, it might be impossible to figure out whether the effects are nested or crossed from the data alone (the data could have been recorded wrongly).</p>
+</section>
+<section id="time-courses" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="time-courses"><span class="header-section-number">12.2</span> Time courses</h2>
+<p>This part is modified from: <a href="https://rpsychologist.com/r-guide-longitudinal-lme-lmer" class="uri">https://rpsychologist.com/r-guide-longitudinal-lme-lmer</a> Look up the more mathy model descriptions from there.</p>
+<ul>
+<li><p>class (3d level)</p></li>
+<li><p>student (2nd level)</p></li>
+<li><p>several individual measurements for each student (1st level)</p></li>
+<li><p>tr - tr=1 is treatment A (drinking fish oil), tr=0 is treatment B (control condition)</p></li>
+<li><p>time - individual measurements for each student are done as a time course</p></li>
+<li><p>y - test score</p></li>
+</ul>
+<ol type="1">
+<li><span class="math display">\[y \sim time * tr + (time | class/student)\]</span></li>
+</ol>
+<p>In a nested design each class provides a single type of treatment (tr).</p>
+<ol start="2" type="1">
+<li><span class="math display">\[y \sim time * tr + (time \vert class:student) + (time * tr \vert \vert class)\]</span></li>
+</ol>
+<p>Here we have in each class (3d level) both treatment and control administered to different students. Each student (level 2) belongs to a single class and is measured several times over a time course (level 1). We estimate no covariances at level 3. However, at the class level we have random effects for time, treatment and time * treatment.</p>
+<ol start="3" type="1">
+<li><span class="math display">\[y ~ time * tr + (time \vert class:student) + (time \vert class) + (0 + tr + time:tr \vert class)\]</span></li>
+</ol>
+<p>We might hypothesize that classes that are allocated students that report worse outcomes at treatment start have better outcomes (more room for improvement)</p>
+<ol start="4" type="1">
+<li><p><span class="math display">\[y \sim time * tr + (time \vert class:student) + (time * tr \vert class)\]</span> In addition, we could look at if classes whos students are more successful after Treatment A are also more successful with Treatment B</p></li>
+<li><p><span class="math display">\[y \sim time * tr + (1 \vert class:student) + (0 + time \vert class:student) + (0 + time:tr \vert class) + (0 + tr \vert class)\]</span></p></li>
+</ol>
+<p>Partial nesting occurs when we have nesting in one group but not the other. For instance, we might compare a treatment group to a control group. Subjects in the control group will not be nested, but subjects in treatment group will be nested within classes</p>
+<ol start="6" type="1">
+<li><span class="math display">\[y \sim poly(time, 2) * tr + (poly(time, 2) \vert student)\]</span></li>
+</ol>
+<p>polynomial model for time course.</p>
+<ol start="7" type="1">
+<li><span class="math display">\[y \sim (time1 + time2) * tr +  (time1 + time2 | student)\]</span></li>
+</ol>
+<p>Piecewise growth curve: segmenting the time trend into different pieces. We replace time with two dummy variables time1 and time2, that represent the different time periods. A common scenario is that the first piece represents the acute treatment phase, and piece 2 represent the follow-up phase. time1 and time2 differ in the interpretation of the regression coefficients. In time1 the two slope coefficients represent the actual slope in the respective time period. Whereas the coefficient for time 2 represents the deviation from the slope in period 1, i.e.&nbsp;if the estimate is 0 then the rate of change is the same in both periods.</p>
+<ol start="8" type="1">
+<li><span class="math display">\[y \sim (time1 + time2) * tr + (time1 \vert student) + (0 + time2  \vert student)\]</span></li>
+</ol>
+<p>If you want to have a correlation between the random intercept and time piece 1, but no correlation between time piece 2 and the other effects.</p>
+<ol start="9" type="1">
+<li><span class="math display">\[y \sim (poly(time1, 2) + time2) * tr + (poly(time1, 2) + time2 \vert student)\]</span></li>
+</ol>
+<p>We could extend the two-part piecewise growth model to allow for non-linear change during one or both of the pieces. Here we allow for quadratic change during piece 1.</p>
+</section>
+<section id="details-for-brms" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="details-for-brms"><span class="header-section-number">12.3</span> Details for brms()</h2>
+<p>The formula argument accepts formulas of the following syntax:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>response <span class="sc">|</span> aterms <span class="sc">~</span> pterms <span class="sc">+</span> (gterms <span class="sc">|</span> group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>response | aterms ~ pterms + (gterms | group)</code></pre>
+</div>
+</div>
+<p>The pterms part contains effects that are assumed to be the same across observations. We call them population-level or overall effects, or fixed effects. The gterms may contain effects that are assumed to vary across grouping variables specified in group. We call them group-level or varying effects.</p>
+<p><strong>Group-level terms</strong></p>
+<ul>
+<li><p>Instead of <code>|</code> use <code>||</code> in grouping terms to prevent correlations from being modeled. <code>(1 + x || g)</code> is equivalent to <code>(1 + x | gr(g, cor = FALSE))</code>.</p></li>
+<li><p>To model different group-level terms of the same grouping factor as correlated (even across different formulas) use <code>|&lt;ID&gt;|</code> instead of <code>|</code>. All group-level terms sharing the same ID will be modeled as correlated. If, for instance, one specifies the terms <code>(1+x|i|g)</code> and <code>(1+z|i|g)</code>, correlations between the corresponding group-level effects will be estimated. i is just a symbol to indicate correlations between multiple group-level terms.</p></li>
+<li><p>If levels of the grouping factor belong to different sub-populations, you may assume a different covariance matrix for each of the sub-populations. For instance, the variation within the treatment group and within the control group in a randomized control trial might differ. If x indicates treatment, we could estimate different hyper-parameters of the varying effects (in this case a varying intercept) for treatment and control group via <code>y ~ x + (1 | gr(subject, by = x))</code>.</p></li>
+<li><p>A multi-membership term with two members is <code>(1 | mm(g1, g2))</code>, where g1 and g2 specify the first and second member, respectively. If a covariate x varies across the levels of the grouping-factors g1 and g2, we can save the respective covariate values in the variables x1 and x2 and then model the varying effect as <code>(1 + mmc(x1, x2) | mm(g1, g2))</code>.</p></li>
+</ul>
+<p><strong>Special predictor terms</strong></p>
+<ul>
+<li><p>Flexible non-linear smooth terms can modeled using the s and t2 functions in the pterms. This allows to fit generalized additive mixed models (GAMMs).</p></li>
+<li><p>Gaussian process terms can be fitted using the gp function in the pterms. Similar to smooth terms, Gaussian processes can be used to model complex non-linear relationships, for instance temporal or spatial autocorrelation. They are computationally demanding.</p></li>
+<li><p>The pterms and gterms may contain four non-standard effect types: monotonic, measurement error, missing value, and category specific effects, which can be specified using terms of the form mo(predictor), me(predictor, sd_predictor), mi(predictor), and cs(<predictors>), respectively. Category specific effects can only be estimated in ordinal models and are explained in <code>vignette("brms_overview")</code>. The other three effect types are explained in the following.</predictors></p></li>
+<li><p>A monotonic predictor must either be integer or an ordered factor. Predictor categories (or integers) are not assumed to be equidistant with respect to their effect on the response variable. The distance between adjacent predictor categories (or integers) is estimated from the data and may vary across categories. This is realized by parameterizing as follows: One parameter takes care of the direction and size of the effect similar to an ordinary regression parameter, while an additional parameter vector estimates the normalized distances between consecutive predictor categories. A main application of monotonic effects are ordinal predictors. See <code>vignette("brms_monotonic")</code>.</p></li>
+<li><p>Quite often, predictors naturally contain measurement error. Effects of noise-free predictors can be modeled using the me (for ‘measurement error’) function. If, say, y is the response variable and x is a measured predictor with known measurement error sdx, we can simply include it on the right-hand side of the model formula via <code>y ~ me(x, sdx)</code>. If x2 is another measured predictor with corresponding error sdx2 and z is a predictor without error (e.g., an experimental setting), we can model all main effects and interactions of the three predictors: <code>y ~ me(x, sdx) * me(x2, sdx2) * z</code>. The me function is soft deprecated in favor of the more flexible and consistent mi function (see below).</p></li>
+<li><p>When a variable contains missing values, the corresponding rows will be excluded from the data by default (row-wise exclusion). However, often we want to keep these rows. There are two approaches for this:</p>
+<ol type="a">
+<li>Impute missing values before the model fitting for instance via multiple imputation (brm_multiple handles multiple imputed datasets). (b) Impute missing values on the fly during model fitting. Using a variable with missing values as predictors requires two things, First, we need to specify that the predictor contains missings that should to be imputed. If, say, x is a predictor with missings and z is a predictor without missings, we go for <code>y ~ mi(x) + z</code>. Second, we need to model x as an additional response with corresponding predictors and the addition term <code>mi()</code>. In our example, we could write <code>x | mi() ~ z</code>. Measurement error may be included via the sdy argument, say, <code>x | mi(sdy = se) ~ z</code>. See mi for examples with real data.</li>
+</ol></li>
+</ul>
+<p><strong>Autocorrelation terms</strong></p>
+<p>Autocorrelation terms can be directly specified inside the pterms part as well. Details can be found in autocor-terms.</p>
+<p><strong>Additional response information</strong></p>
+<p>Another special of the brms formula syntax is the optional aterms part, which may contain multiple terms of the form <code>fun(&lt;variable&gt;)</code> separated by + each providing special information on the response variable. fun can be replaced with either <code>se</code>, <code>weights</code>, <code>subset</code>, <code>cens</code>, <code>trunc</code>, <code>trials</code>, <code>cat</code>, <code>dec</code>, <code>rate</code>, <code>vreal</code>, or <code>vint</code>.</p>
+<ul>
+<li><p>For families gaussian, student and skew_normal, it is possible to specify standard errors of the observations, thus allowing to perform meta-analysis. Suppose that the variable yi contains the effect sizes from the studies and sei the corresponding standard errors. Then, fixed and random effects meta-analyses can be conducted using the formulas <code>yi | se(sei) ~ 1</code> and <code>yi | se(sei) ~ 1 + (1|study)</code>, respectively, where study is a variable uniquely identifying every study. If desired, meta-regression can be performed via <code>yi | se(sei) ~ 1 + mod1 + mod2 + (1|study)</code> or <code>yi | se(sei) ~ 1 + mod1 + mod2 + (1 + mod1 + mod2|study)</code>, where mod1 and mod2 represent moderator variables. By default, the standard errors replace the parameter sigma. To model sigma in addition to the known standard errors, set argument sigma in function se to TRUE, for instance, <code>yi | se(sei, sigma = TRUE) ~ 1</code>.</p></li>
+<li><p>For all families, weighted regression may be performed using weights in the aterms part. Internally, this is implemented by multiplying the log-posterior values of each observation by their corresponding weights. If variable wei contains the weights, <code>y | weights(wei) ~ predictors</code> implements a weighted regression.</p></li>
+<li><p>For multivariate models, subset may be used in the aterms part, to use different subsets of the data in different univariate models. For instance, if sub is a logical variable and y is the response of one of the univariate models, we may write <code>y | subset(sub) ~ predictors</code> so that y is predicted only for those observations for which sub evaluates to TRUE.</p></li>
+<li><p>For log-linear models such as poisson models, rate may be used in the aterms part to specify the denominator of a response that is expressed as a rate. The numerator is given by the actual response variable and has a distribution according to the family as usual. Use <code>rate(denom)</code>.</p></li>
+<li><p>With the exception of categorical and ordinal families, left, right, and interval censoring can be modeled through <code>y | cens(censored) ~ predictors</code>. The censoring variable (named censored in this example) should contain the values ‘left’, ‘none’, ‘right’, and ‘interval’ (or equivalently -1, 0, 1, and 2) to indicate that the corresponding observation is left censored, not censored, right censored, or interval censored. For interval censored data, a second variable, y2, has to be passed to cens: <code>y | cens(censored, y2) ~ predictors</code>. While the lower bounds are given in y, the upper bounds are given in y2 for interval censored data. Intervals are assumed to be open on the left and closed on the right: (y, y2].</p></li>
+<li><p>With the exception of categorical and ordinal families, the response distribution can be truncated using the trunc function in the addition part. If the response variable is truncated between, say, 0 and 100, we can specify this via <code>y | trunc(lb = 0, ub = 100) ~ predictors</code>. Instead of numbers, variables in the data set can also be passed allowing for varying truncation points across observations. Defining only one of the two arguments in trunc leads to one-sided truncation.</p></li>
+<li><p>For families binomial and zero_inflated_binomial, addition should contain a variable indicating the number of trials underlying each observation <code>success | trials(n)</code>. If the number of trials is constant across all observations, say 10, we may also write <code>success | trials(10)</code>.</p></li>
+<li><p>For all ordinal families, aterms may contain a term <code>thres(number)</code> to specify the number thresholds (e.g, thres(6)), which should be equal to the total number of response categories - 1. If not given, the number of thresholds is calculated from the data. If different threshold vectors should be used for different subsets of the data, the gr argument can be used to provide the grouping variable (e.g, <code>thres(6, gr = item)</code>, if item is the grouping variable). In this case, the number of thresholds can also be a variable in the data with different values per group.</p></li>
+<li><p>In Wiener diffusion models (family wiener) the addition term dec is mandatory to specify the (vector of) binary decisions corresponding to the reaction times. Non-zero values will be treated as a response on the upper boundary of the diffusion process and zeros will be treated as a response on the lower boundary. Alternatively, the variable passed to dec might also be a character vector consisting of ‘lower’ and ‘upper’.</p></li>
+<li><p>For custom families, it is possible to pass an arbitrary number of real and integer vectors via the addition terms vreal and vint, respectively: <code>vignette('brms_customfamilies')</code>. To pass multiple vectors of the same data type, provide them separated by commas inside a single vreal or vint statement.</p></li>
+<li><p>Multiple addition terms of different types may be specified at the same time using the + operator. For example, the formula <code>y | se(sei) + cens(censored) ~ 1</code> implies a censored meta-analytic model.</p></li>
+<li><p>The addition argument disp (short for dispersion) has been removed in version 2.0. You may instead use the distributional regression approach by specifying <code>sigma ~ 1 + offset(log(xdisp))</code> or <code>shape ~ 1 + offset(log(xdisp))</code>, where xdisp is the variable being previously passed to disp.</p></li>
+</ul>
+<p><strong>Parameterization of the population-level intercept</strong></p>
+<p>By default, the population-level intercept is estimated separately and not as part of population-level parameter vector b As a result, priors on the intercept also have to be specified separately. Furthermore, to increase sampling efficiency, the population-level design matrix X is centered around its column means X_means if the intercept is incorporated. This leads to a temporary bias in the intercept equal to &lt;X_means, b&gt;, where &lt;,&gt; is the scalar product. The bias is corrected after fitting the model, but be aware that you are effectively defining a prior on the intercept of the centered design matrix not on the real intercept. You can turn off this special handling of the intercept by setting argument center to FALSE. For more details on setting priors on population-level intercepts, see set_prior.</p>
+<p>This behavior can be avoided by using the reserved (and internally generated) variable Intercept. Instead of <code>y ~ x</code>, you may write <code>y ~ 0 + Intercept + x</code>. This way, priors can be defined on the real intercept, directly. In addition, the intercept is just treated as an ordinary population-level effect and thus priors defined on b will also apply to it. Note that this parameterization may be less efficient than the default parameterization discussed above.</p>
+<p><strong>Formula syntax for non-linear models</strong></p>
+<p>The non-linear model. x is linked to y through y = alpha - beta * lambda^x, with parameters alpha, beta, and lambda. This is a non-linear model being defined via formula = y ~ alpha - beta * lambda^x. We set argument nl to TRUE. Now we have to specify a model for each of the non-linear parameters. Let’s say we just want to estimate those three parameters with no further covariates or random effects. Then we can pass <code>alpha + beta + lambda ~ 1</code> or equivalently (and more flexible) <code>alpha ~ 1, beta ~ 1, lambda ~ 1</code>. If we have another predictor z and observations nested within the grouping factor g, we may write <code>alpha ~ 1, beta ~ 1 + z + (1|g), lambda ~ 1</code>. In this example, we are using z and g only for the prediction of beta, but we might also use them for the other non-linear parameters. By default, non-linear covariates are treated as real vectors in Stan. However, if the data of the covariates is of type ‘integer’ in R (which can be enforced by the ‘as.integer’ function), the Stan type will be changed to an integer array. That way, covariates can also be used for indexing purposes in Stan. It is mandatory to specify priors on the non-linear parameters. For instructions on how to do that, see set_prior. For some examples of non-linear models, see <code>vignette("brms_nonlinear")</code>.</p>
+<p><strong>Formula syntax for predicting distributional parameters</strong></p>
+<p>to predict parameters of the response distribution such as the residual standard deviation sigma in gaussian models or the hurdle probability hu in hurdle models. The syntax closely resembles that of a non-linear parameter, for instance <code>sigma ~ x + s(z) + (1+x|g)</code>. For examples of distributional models, see <code>vignette("brms_distreg")</code>.</p>
+<p>Parameter mu exists for every family and can be used as an alternative to specifying terms in formula. If both mu and formula are given, the right-hand side of formula is ignored. Accordingly, specifying terms on the right-hand side of both formula and mu at the same time is deprecated. In future versions, formula might be updated by mu.</p>
+<p>The following are distributional parameters of specific families (all other parameters are treated as non-linear parameters): sigma (residual standard deviation or scale of the gaussian, student, skew_normal, lognormal exgaussian, and asym_laplace families); shape (shape parameter of the Gamma, weibull, negbinomial, and related zero-inflated / hurdle families); nu (degrees of freedom parameter of the student and frechet families); phi (precision parameter of the beta and zero_inflated_beta families); kappa (precision parameter of the von_mises family); beta (mean parameter of the exponential component of the exgaussian family); quantile (quantile parameter of the asym_laplace family); zi (zero-inflation probability); hu (hurdle probability); zoi (zero-one-inflation probability); coi (conditional one-inflation probability); disc (discrimination) for ordinal models; bs, ndt, and bias (boundary separation, non-decision time, and initial bias of the wiener diffusion model). By default, distributional parameters are modeled on the log scale if they can be positive only or on the logit scale if the can only be within the unit interval.</p>
+<p>Alternatively, one may fix distributional parameters to certain values. This is mainly useful when models become too complicated and otherwise have convergence issues. The quantile parameter of the asym_laplace distribution is a good example where it is useful. By fixing quantile, one can perform quantile regression for the specified quantile. For instance, quantile = 0.25 allows predicting the 25%-quantile. Furthermore, the bias parameter in drift-diffusion models, is assumed to be 0.5 (i.e.&nbsp;no bias) in many applications. To achieve this, simply write bias = 0.5. Other possible applications are the Cauchy distribution as a special case of the Student-t distribution with nu = 1, or the geometric distribution as a special case of the negative binomial distribution with shape = 1. Furthermore, the parameter disc (‘discrimination’) in ordinal models is fixed to 1 by default and not estimated, but may be modeled as any other distributional parameter if desired.</p>
+<p>In categorical models, distributional parameters do not have fixed names. Instead, they are named after the response categories (excluding the first one, which serves as the reference category), with the prefix ‘mu’. If, for instance, categories are named cat1, cat2, and cat3, the distributional parameters will be named mucat2 and mucat3.</p>
+<p>Some distributional parameters currently supported by brmsformula have to be positive (a negative standard deviation or precision parameter does not make any sense) or are bounded between 0 and 1 (for zero-inflated / hurdle probabilities, quantiles, or the initial bias parameter of drift-diffusion models). However, linear predictors can be positive or negative, and thus the log link (for positive parameters) or logit link (for probability parameters) are used by default to ensure that distributional parameters are within their valid intervals. This implies that, by default, effects for such distributional parameters are estimated on the log / logit scale and one has to apply the inverse link function to get to the effects on the original scale. Alternatively, it is possible to use the identity link to predict parameters on their original scale, directly. However, this is much more likely to lead to problems in the model fitting, if the parameter actually has a restricted range. See also brmsfamily for an overview of valid link functions.</p>
+<p><strong>Formula syntax for mixture models</strong></p>
+<p>If not specified otherwise, all mean parameters of the mixture components are predicted using the right-hand side of formula. All types of predictor terms allowed in non-mixture models are allowed in mixture models as well.</p>
+<p>Distributional parameters of mixture distributions have the same name as those of the corresponding ordinary distributions, but with a number at the end to indicate the mixture component. For instance, if you use family <code>mixture(gaussian, gaussian)</code>, the distributional parameters are sigma1 and sigma2. Distributional parameters of the same class can be fixed to the same value. For the above example, we could write sigma2 = “sigma1” to make sure that both components have the same residual standard deviation, which is in turn estimated from the data.</p>
+<p>In addition, there are two types of special distributional parameters. The first are named mu<id>, that allow for modeling different predictors for the mean parameters of different mixture components. For instance, if you want to predict the mean of the first component using predictor x and the mean of the second component using predictor z, you can write <code>mu1 ~ x</code> as well as <code>mu2 ~ z</code>. The second are named theta<id>, which constitute the mixing proportions. If the mixing proportions are fixed to certain values, they are internally normalized to form a probability vector. If one seeks to predict the mixing proportions, all but one of the them has to be predicted, while the remaining one is used as the reference category to identify the model. The softmax function is applied on the linear predictor terms to form a probability vector. For more information on mixture models, see the documentation of mixture.</id></id></p>
+<p><strong>Formula syntax for multivariate models</strong></p>
+<p>Multivariate models may be specified using <code>mvbind</code> notation or with help of the mvbf function. Suppose that y1 and y2 are response variables and x is a predictor. Then <code>mvbind(y1, y2) ~ x</code> specifies a multivariate model. The effects of all terms specified at the RHS of the formula are assumed to vary across response variables. For instance, two parameters will be estimated for x, one for the effect on y1 and another for the effect on y2. This is also true for group-level effects. When writing, for instance, <code>mvbind(y1, y2) ~ x + (1+x|g)</code>, group-level effects will be estimated separately for each response. To model these effects as correlated across responses, use the ID syntax (see above). For the present example, this would look as follows: <code>mvbind(y1, y2) ~ x + (1+x|id|g)</code>.</p>
+<p>It is also possible to specify different formulas for different responses. If, for instance, y1 should be predicted by x and y2 should be predicted by z, we could write <code>mvbf(y1 ~ x, y2 ~ z)</code>. Alternatively, multiple brmsformula objects can be added to specify a joint multivariate model.</p>
+<section id="multilevel-model-with-smoothing-terms" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="multilevel-model-with-smoothing-terms"><span class="header-section-number">12.3.1</span> multilevel model with smoothing terms</h3>
+<p><code>y ~ x1*x2 + s(z) + (1+x1|1) + (1|g2)</code></p>
+</section>
+<section id="additionally-predict-sigma" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="additionally-predict-sigma"><span class="header-section-number">12.3.2</span> additionally predict ‘sigma’</h3>
+<p><code>y ~ x1*x2 + s(z) + (1+x1|1) + (1|g2), sigma ~ x1 + (1|g2)</code></p>
+<p>use the shorter alias ‘bf’ <code>formula1 &lt;- brmsformula(y ~ x + (x|g))</code> <code>formula2 &lt;- bf(y ~ x + (x|g))</code> will be TRUE <code>identical(formula1, formula2)</code></p>
+</section>
+<section id="incorporate-censoring" class="level3" data-number="12.3.3">
+<h3 data-number="12.3.3" class="anchored" data-anchor-id="incorporate-censoring"><span class="header-section-number">12.3.3</span> incorporate censoring</h3>
+<p><code>bf(y | cens(censor_variable) ~ predictors)</code></p>
+</section>
+<section id="define-a-simple-non-linear-model" class="level3" data-number="12.3.4">
+<h3 data-number="12.3.4" class="anchored" data-anchor-id="define-a-simple-non-linear-model"><span class="header-section-number">12.3.4</span> define a simple non-linear model</h3>
+<p><code>bf(y ~ a1 - a2^x, a1 + a2 ~ 1, nl = TRUE)</code> predict a1 and a2 differently <code>bf(y ~ a1 - a2^x, a1 ~ 1, a2 ~ x + (x|g), nl = TRUE)</code> correlated group-level effects across parameters <code>bf(y ~ a1 - a2^x, a1 ~ 1 + (1 |2| g), a2 ~ x + (x |2| g), nl = TRUE)</code> alternative but equivalent way to specify the above model <code>bf(y ~ a1 - a2^x, a1 ~ 1 + (1 | gr(g, id = 2)), a2 ~ x + (x | gr(g, id = 2)), nl = TRUE)</code></p>
+</section>
+<section id="define-a-multivariate-model" class="level3" data-number="12.3.5">
+<h3 data-number="12.3.5" class="anchored" data-anchor-id="define-a-multivariate-model"><span class="header-section-number">12.3.5</span> define a multivariate model</h3>
+<p><code>bf(mvbind(y1, y2) ~ x * z + (1|g))</code></p>
+</section>
+<section id="define-a-zero-inflated-model" class="level3" data-number="12.3.6">
+<h3 data-number="12.3.6" class="anchored" data-anchor-id="define-a-zero-inflated-model"><span class="header-section-number">12.3.6</span> define a zero-inflated model</h3>
+<p>also predicting the zero-inflation part <code>bf(y ~ x * z + (1+x|ID1|g), zi ~ x + (1|ID1|g))</code></p>
+</section>
+<section id="specify-a-predictor-as-monotonic" class="level3" data-number="12.3.7">
+<h3 data-number="12.3.7" class="anchored" data-anchor-id="specify-a-predictor-as-monotonic"><span class="header-section-number">12.3.7</span> specify a predictor as monotonic</h3>
+<p><code>bf(y ~ mo(x) + more_predictors)</code></p>
+</section>
+<section id="for-ordinal-models-only-specify-a-predictor-as-category-specific" class="level3" data-number="12.3.8">
+<h3 data-number="12.3.8" class="anchored" data-anchor-id="for-ordinal-models-only-specify-a-predictor-as-category-specific"><span class="header-section-number">12.3.8</span> for ordinal models only: specify a predictor as category specific</h3>
+<p><code>bf(y ~ cs(x) + more_predictors)</code> add a category specific group-level intercept <code>bf(y ~ cs(x) + (cs(1)|g))</code> specify parameter ‘disc’ <code>bf(y ~ person + item, disc ~ item)</code></p>
+</section>
+<section id="specify-different-predictors-for-different-mixture-components" class="level3" data-number="12.3.9">
+<h3 data-number="12.3.9" class="anchored" data-anchor-id="specify-different-predictors-for-different-mixture-components"><span class="header-section-number">12.3.9</span> specify different predictors for different mixture components</h3>
+<p><code>mix &lt;- mixture(gaussian, gaussian)</code> <code>bf(y ~ 1, mu1 ~ x, mu2 ~ z, family = mix)</code> fix both residual standard deviations to the same value <code>bf(y ~ x, sigma2 = "sigma1", family = mix)</code></p>
+</section>
+<section id="use-the-operator-to-specify-models" class="level3" data-number="12.3.10">
+<h3 data-number="12.3.10" class="anchored" data-anchor-id="use-the-operator-to-specify-models"><span class="header-section-number">12.3.10</span> use the ‘+’ operator to specify models</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(y <span class="sc">~</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nlf</span>(sigma <span class="sc">~</span> a <span class="sc">*</span> <span class="fu">exp</span>(b <span class="sc">*</span> x), a <span class="sc">~</span> x) <span class="sc">+</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lf</span>(b <span class="sc">~</span> z <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>g), <span class="at">dpar =</span> <span class="st">"sigma"</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gaussian</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="specify-a-multivariate-model-using-the-operator" class="level3" data-number="12.3.11">
+<h3 data-number="12.3.11" class="anchored" data-anchor-id="specify-a-multivariate-model-using-the-operator"><span class="header-section-number">12.3.11</span> specify a multivariate model using the ‘+’ operator</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(y1 <span class="sc">~</span> x <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>g)) <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gaussian</span>() <span class="sc">+</span> <span class="fu">cor_ar</span>(<span class="sc">~</span><span class="dv">1</span><span class="sc">|</span>g) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(y2 <span class="sc">~</span> z) <span class="sc">+</span> <span class="fu">poisson</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" class="level3" data-number="12.3.12">
+<h3 data-number="12.3.12" class="anchored" data-anchor-id="specify-correlated-residuals-of-a-gaussian-and-a-poisson-model"><span class="header-section-number">12.3.12</span> specify correlated residuals of a gaussian and a poisson model</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>form1 <span class="ot">&lt;-</span> <span class="fu">bf</span>(y1 <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>c<span class="sc">|</span>obs), <span class="at">sigma =</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">gaussian</span>()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>form2 <span class="ot">&lt;-</span> <span class="fu">bf</span>(y2 <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>c<span class="sc">|</span>obs)) <span class="sc">+</span> <span class="fu">poisson</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="model-missing-values-in-predictors" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="model-missing-values-in-predictors"><span class="header-section-number">12.4</span> model missing values in predictors</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(bmi <span class="sc">~</span> age <span class="sc">*</span> <span class="fu">mi</span>(chl)) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(chl <span class="sc">|</span> <span class="fu">mi</span>() <span class="sc">~</span> age) <span class="sc">+</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_rescor</span>(<span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="model-sigma-as-a-function-of-the-mean" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="model-sigma-as-a-function-of-the-mean"><span class="header-section-number">12.5</span> model sigma as a function of the mean</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bf</span>(y <span class="sc">~</span> eta, <span class="at">nl =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lf</span>(eta <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nlf</span>(sigma <span class="sc">~</span> tau <span class="sc">*</span> <span class="fu">sqrt</span>(eta)) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lf</span>(tau <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./11-appendix-brms.html" class="pagination-link" aria-label="Appendix 2: brms code">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./13-appendix-mcmc.html" class="pagination-link" aria-label="Appendix 4. MCMC">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

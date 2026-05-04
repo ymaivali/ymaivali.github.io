@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methodology - 7&nbsp; 5 Basic linear regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./08-glm.html" rel="next">
+<link href="./06-bayesian-inference.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Methodology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">2. Rational thinking under certainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#adding-predictors" id="toc-adding-predictors" class="nav-link active" data-scroll-target="#adding-predictors"><span class="header-section-number">7.1</span> Adding predictors</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Lets start by thinking once more about modeling a normally distributed continuous variable, y, with the normal model:</p>
+<p><span class="math display">\[ y \sim normal(\mu, \sigma)\]</span></p>
+<p>We will get the mean y (<span class="math inline">\(mean = \mu\)</span>) and data level sd (<span class="math inline">\(SD = \sigma\)</span>) from this model. But what if we want to model the mean y and/or the sd stratified according to different levels of another variable, x?</p>
+<p>Suppose that we have measured on each object of measurement its height and we also know its sex. We code the male sex with 0 and female sex with 1, so the sex is now technically a continuous variable, for modeling purposes. We want to model the mean height for sex = 0 and for sex = 1 subjects. The easiest way to do this would be to partition the data by sex and run 2 separate models. <span class="math display">\[h_{sex = 0} \sim normal(\mu, \sigma)\]</span></p>
+<p><span class="math display">\[h_{sex = 1} \sim normal(\mu, \sigma)\]</span> We will get separate estimates from separate models, which know nothing of each other, and from these, we can get effect sizes with full posteriors.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<hr>
+<p>This is wasteful, however, because we could use the information on females heights on males heights, and <em>vice versa</em>. The model, by which we do this, is called <em>linear regression</em>. We regress y on x. The regression model differs from the simple <span class="math inline">\(y \sim normal()\)</span> model in that as the simple model estimates the unconditional (a.k.a. marginal) probability of P(Y), the regression model estimates a conditional probability <span class="math inline">\(P(Y\vert x_i)\)</span>, where <span class="math inline">\(x_i\)</span> stands for some fixed value(s) of one or more predictor variables. We estimate the mean value of Y given pre-specified exact values of X.</p>
+<blockquote class="blockquote">
+<p>In principle, we should strive for big models that use all our data. However, for practical reasons, we can also divide the data and run separate models. Statistics is a practical thing. If a full model is too hard to specify, to understand, or to fit, use several smaller models instead!</p>
+</blockquote>
+<p>A regression model can be built in different ways. For instance, we could say to the model that (i) different levels of sex (the X-predictor) can be associated with different mean heights (the predicted variable), but the individual heights at both levels of sex must have identical sd-s; or (ii) that mean heights of both sexes must be identical, but individual heights may have different sd-s; or (iii) that both mean heghts and sd-s of indovodual heights are allowed to vary by sex. The most common model, by far, would be (i), so lets start from that one.</p>
+<ul>
+<li><p>What we model is the Y-variable (height).<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
+<li><p>What we model Y on is the X-variable (sex).<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p></li>
+<li><p>The Model consists of two parts, the deterministic part and the stochastic part: (i) the process model shows the precise deterministic relationship between a mean Y value and a precise X value (denoted <span class="math inline">\(x_i\)</span>); (ii) the likelihood shows how we model stochastically the variation in the Y-variable (but not in the X-variable). Linear models can only have a normal or a students t likelihood. Other likelihoods, like binomial, Poisson, lognormal, etc., are allowed in GLMs (Generalized Linear Models), of which more in later chapters.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p></li>
+</ul>
+<p>The linear process model for the mean (remember, we want the mean to vary, but the sd to stay put in different levels of x) is then <span class="math inline">\(\mu = \alpha + \beta x\)</span>, where <span class="math inline">\(\alpha\)</span> is the intercept and <span class="math inline">\(\beta\)</span> is the slope. This is nothing more complicated than linear equation, which allows to place a straight line through 2D Cartesian space. It binds the x-variable (sex) into <span class="math inline">\(\mu\)</span>, but in doing so, we have redefined the parameter <span class="math inline">\(\mu\)</span> through two new parameters: intercept (<span class="math inline">\(\alpha\)</span>) and slope (<span class="math inline">\(\beta\)</span>).<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> So, instead of <span class="math inline">\(\mu\)</span>, we will be fitting these two.</p>
+<p><span class="math display">\[y \sim normal(\mu, \sigma)\]</span></p>
+<p><span class="math display">\[\mu = \alpha + \beta x\]</span></p>
+<p>or, equivalently, <span class="math inline">\(y \sim normal(\alpha + \beta x, \sigma)\)</span>, or, equivalently <span class="math inline">\(y = \alpha + \beta x + normal(0, \sigma)\)</span>.</p>
+<p>We now need three priors, one each for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, and <span class="math inline">\(\sigma\)</span>.</p>
+<p><span class="math display">\[\alpha \sim normal(.,.)\]</span></p>
+<p><span class="math display">\[\beta \sim normal(.,.)\]</span></p>
+<p><span class="math display">\[\sigma \sim student_t(.,.,. )\]</span></p>
+<p>Next we do a simple simulation of two groups, each N = 100 and sd = 50, mu1 = 100 and mu2 = 110. The plotting of these data shows a moderate difference of the means, relative to sd.</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Two-goup simulated data.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We fit the model in brms:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>simple_lin_m0 <span class="ot">&lt;-</span> <span class="fu">brm</span>(y<span class="sc">~</span>x, <span class="at">data=</span>df1, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                     </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">file =</span> <span class="st">"models/simple_lin_m0.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Est.Error     Q2.5     Q97.5
+b_Intercept 89.84760  7.200801 75.47945 104.28763
+b_xB        33.00253 10.433655 11.96027  53.69062
+sigma       51.31485  3.772500 44.65745  59.51646</code></pre>
+</div>
+</div>
+<ul>
+<li><p>Intercept denotes <span class="math inline">\(\alpha\)</span>, which in our case is the mean for group 1 (where x = 0)</p></li>
+<li><p>xB denotes <span class="math inline">\(\beta\)</span>, which is the effect size, a.k.a. difference between means of group 1 and group 2.</p></li>
+</ul>
+<p>The mean of group 2 is then <span class="math inline">\(\alpha + \beta\)</span> and the <span class="math inline">\(\beta\)</span> coefficient is our estimate for the difference between the groups.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>A plot of our estimates for the mean of each groups (A and B), the effect size, and the individual-level variation.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>So far we used a categorical x-variable or predictor, sex, which we recoded as a continuos variable from which we have 2 values (0 and 1). We did this solely in the interest of the mathematics of line fitting. Thanks to this trick we could ask about the height of someone whose sex = 500. There is no problem getting an estimate the from the fitted model. All we have to do is to substitute the fitted values into intercept and slope coefficients. We will use the full posterior samples, so we do the calculation 4000 times (this is how many posterior samples we have) with slightly different estimates for intercept and slopes. As our Bayesian model considers all of these pairs plausible, our best option is to calcuate them all and plot the full posterior as an histogram. This posterior gives us the full information on uncertainty around the prediction.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>y_500 <span class="ot">&lt;-</span> post<span class="sc">$</span>b_Intercept <span class="sc">+</span> post<span class="sc">$</span>b_xB <span class="sc">*</span> <span class="dv">500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Posterior for an absurd prediction from linear model.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>So the posterior depicted in the histogram tells us that the predicted height for a subject, whose sex = 500, is about 200-fold larger than the height of males and females. This is fine matemathically, but in the world it makes no sense in more than one level.</p>
+<p>However, if our predictor really has more meaningful levels than 0 and 1, then this is exactly how we fit and interpret the linear regression. The meaning of Intercept and slope remains the same:</p>
+<ul>
+<li><p>The intercept is the estimated mean value (the expected value) of Y, if x = 0, or <span class="math inline">\(E(Y\vert X=0)\)</span>.</p></li>
+<li><p>The slope gives the change in the expected value of Y, if we increase the X value by one unit.</p></li>
+</ul>
+<p>As this is <em>linear</em> regression, it makes no difference, what the actual X value is, every one-unit change in X is accompanied with a slope-unit change in the predicted mean Y.</p>
+<hr>
+<p>Now we simulate a regression for 2 continuous vars (N = 100, mean = 0, sd = 1):</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Simulated variables to test linear regression for continuous predictor.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We run the model and plot out 50 random fits, using 50 random draws from the posterior.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>simple_lin_m1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(y<span class="sc">~</span>x, <span class="at">data =</span> xy_data,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                     </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">prior =</span> <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class=</span>b),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                     </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                     </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">file =</span> <span class="st">"models/simple_lin_m1.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>simple_lin_m1_post <span class="ot">&lt;-</span> <span class="fu">posterior_samples</span>(simple_lin_m1) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">50</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span><span class="cn">NULL</span>) <span class="sc">+</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span> simple_lin_m1_post<span class="sc">$</span>b_Intercept, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                  </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">slope =</span> simple_lin_m1_post<span class="sc">$</span>b_x), </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>              </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">size=</span><span class="fl">0.3</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>)<span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>The model is fitted with data. We see 50 random predictions of best fit based on 50 random draws from the posterior.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>All regression lines go through both mean(y) and mean(x) – both are 0 in our sim. The data range is about 3-4 units: see how the fit gradually becomes uncertain beyond that. Whether or not it makes sense to predict mean y values beyond the x data range is a scientific question – the relations in nature are rarely linear beyond a short range, if that. We are not doing linear regression because we think that the world is linear, we do it because it is convenient and the models are easy to interpret from coefficients alone. The surprising thing is, though, that it often works. This is the metaphysical mystery behind linear regression: it tends to work.</p>
+<section id="adding-predictors" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="adding-predictors"><span class="header-section-number">7.1</span> Adding predictors</h2>
+<p>We add additional predictors when we believe (i) that all predictors (<span class="math inline">\(x_1, ..., x_i\)</span>) influence the predicted variable (y), and (ii) that those influences are independent of each other. Independence leads to an additive process model.</p>
+<p><span class="math display">\[y \sim normal(\mu, \sigma)\]</span></p>
+<p><span class="math display">\[\mu = \alpha + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_i x_i\]</span> and priors for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, and <span class="math inline">\(\sigma\)</span>.</p>
+<p>What happens if we expand our regression model by including more predictors?</p>
+<p>Now the slope of <span class="math inline">\(x_1\)</span> tells us, how much mean y changes, if we change <span class="math inline">\(x_1\)</span> by 1 unit and <span class="math inline">\(x_2\)</span> by 0 units (keep <span class="math inline">\(x_2\)</span> constant). Equivalently the slope of <span class="math inline">\(x_2\)</span> tells us, how much mean y changes, if we change <span class="math inline">\(x_2\)</span> by 1 unit and keep <span class="math inline">\(x_1\)</span> constant.</p>
+<p>There is another way of interpreting multiple regression betas: <span class="math inline">\(\beta_1\)</span> tells us, what extra information on predicting the y value we get from <span class="math inline">\(x_1\)</span>, if we already know how <span class="math inline">\(x_2\)</span> influences y. And conversely, what extra value in predicting y do we get from <span class="math inline">\(x_2\)</span>, if we already know how <span class="math inline">\(x_1\)</span> influences y. For instance, we can predict someones height from the length of his right foot, but if we already know the prediction from the left foot, the right foot gives us (almost) nothing. And since including it in the model leaves very little covariation with height that is not also covariation of the left foot with height (and vice versa), then most of the predictive information that is included in the <span class="math inline">\(R^2\)</span>, is not included in the respective betas (which consequently have extremely wide CI-s). This is collinearity.</p>
+<p>some points:</p>
+<ul>
+<li><p>there is no reason to think that if we compare models <span class="math inline">\(\mu = \alpha + \beta x_1\)</span> and <span class="math inline">\(\mu = \alpha + \beta_1 x_1 + \beta_2 x_2\)</span>, then <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\beta_1\)</span> would be similar, or even have the same sign. The first is the total effect of <span class="math inline">\(x_1\)</span> on y, and the second is, in causal interpretation, the direct effect of <span class="math inline">\(x_1\)</span> on y.</p></li>
+<li><p>if you have several predictors in your regression, then for easier comparison of the betas, it makes sense to standardize them. Then the predictors that have betas farther from zero, have more effect on y.</p></li>
+<li><p>If you have only continuous predictors, use this <code>x_st = (x - mean(x))/sd(x)</code>. Then all your predictors have mean = 0 and sd = 1. Then the intercept is the value of y, when all predictors are at their mean values (which is always 0), and each slope gives the change in mean y, if the relevant predictor changes by one standard deviation, and all other predictors remain unchanged.</p></li>
+<li><p>If you have both continuous and binary predictors, then you will get approximate comparability of betas with the following transformation: <code>x_st2 = (x - mean(x))/(2*sd(x))</code>. Now the meaning of the slope changes - it is the change in mean y if x changes by 2 standard deviations (that is from the 2.5th quantile to the 97.5th quantile, which is a change that covers almost the range of x variation). As before, all other X-s are kept constant, and intercept is connected to mean values of all X-s.</p></li>
+<li><p>sometimes transforming a predictor helps to linearize the y vs x relationship.</p></li>
+</ul>
+<p>The thing with adding predictors to linear regression process model, is that the additive model structure specifies parallel slopes. To see, what this means, lets simulate some data. We have a categorical variable z with 2 levels, “A” and “B”, denoting experimental conditions A and B. We have a x-variable (akin to a time variable), which covers the range 0 to 2 with 50 equally spaced points. And we have a continuous measurement variable y, which in experiment “A” goes up as x increases, and in experiment B goes down with equal rate.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  z          x       y
+  &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1 A     0      -0.145 
+2 A     0.0408  0.159 
+3 A     0.0816  0.0636
+4 A     0.122   0.226 
+5 A     0.163  -0.113 
+6 A     0.204   0.130 </code></pre>
+</div>
+</div>
+<p>What happens if we model these data by regression equation <span class="math inline">\(y = \alpha + \beta_1 x + \beta_2 z\)</span>?</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>An additive model y = a + b1 * x + b2 * z, where z is a two-level categorical variable leads to fixed parallel slopes.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This model completely fails to capture the simulated data! The slopes of the A and B experiments are restricted to be parallel (fixed) by the additive model structure. The regression lines cross the <span class="math inline">\(mean(y \vert x=A)\)</span> and <span class="math inline">\(mean(y \vert x=B)\)</span> points, which in this simulation is the same value (1). This model fit loses in its predixtion the X-shaped data – the model thinks that A and B conditions lead to pretty much identical outcomes!</p>
+<p>We can save the day by introducing an interaction term, which is actually a multiplication term. Like this <span class="math inline">\(y = \alpha + \beta_1 x + \beta_2 z + \beta_3 x z\)</span>.</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>An interaction model y = a + b1 * x + b2 * z + b3 * x * z leads to free slopes.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Now the model fit perfectly recaptures the simulated data. Its general intercept = 0, its deflection for z=B is 2, its slope for x is 1, and its deflection for x=B is -2. So the fitted model is <span class="math inline">\(y= 0 + 1x + 2z - 2xz\)</span></p>
+<p>these are the fitted model coefficients.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(m_sim_interaction)[<span class="sc">-</span><span class="dv">6</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Estimate  Est.Error       Q2.5      Q97.5
+b_Intercept -0.0110400 0.07945562 -0.1682108  0.1379032
+b_x          0.9610941 0.06813031  0.8323058  1.0946147
+b_zB         2.0473411 0.11085603  1.8273933  2.2652138
+b_x:zB      -1.9991338 0.09518095 -2.1831346 -1.8108486
+sigma        0.2908296 0.02123843  0.2525395  0.3349225</code></pre>
+</div>
+</div>
+<p>What happens if z is a continuous variable? The interaction model still works and gives a separate x slope for every z value, and conversely, it gives a seprate z slope for each x value.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This means that the model expects that the relationship between x and y, e.g.&nbsp;how much a unit increase in x predicts the mean y value at this x value, to depend on the value of z. And vice versa, it symmetrically expects that the relationship between z and y, e.g.&nbsp;how much a unit increase in z predicts the mean y value at this z value, to depend on the value of x. The model neither knows nor cares, which variable, x or z, is of main interest to you, or which (if any) of them causally affects y. But it does know (assume) that the variablity of x is identical at all levels of z, and vice versa. Also, it provides no shrinkage.</p>
+<p>What happens, when we omit the additive part of the model like this: <span class="math inline">\(y= \alpha + \beta xz\)</span>?</p>
+<p>Now the fitted intercept is at the mean values of <span class="math inline">\(x \vert z=A\)</span> and <span class="math inline">\(x \vert z=B\)</span>, which in both cases is 1. The slopes are 0.2 and -0.3 for A and B, respectively.</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And an even simpler model <span class="math inline">\(y = \beta xz\)</span>, where intercept = 0. Here the slopes are 1 and 0.5, for A and B, respectively.</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>posterior_mu_model1 - posterior_mu_model2 gives the posterior for the effect size, i.e.&nbsp;by how much on average are males taller than females.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Also known as dependent variable, predicted variable.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Also known as independent variable, predictor.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>A linear model is also linear in the process model, defined as any equation that can be reformulated as an addition (for example, if X = 2 and Z = 3, then 2 x 3 = 6 can be reformulated as 2 + 2 + 2 = 6, so <span class="math inline">\(y = xz\)</span> would be a linear process model, as would be <span class="math inline">\(y = x + x^2 + x^3\)</span>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>It is also common to denote intercept as <span class="math inline">\(\beta_0\)</span> and slope as <span class="math inline">\(\beta_1\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>You can do this by simply adding the posterior samples of the two coefficients.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>It must be noted, though, that continuous interaction models require more data to accurately estimate the interaction term (the difference between slopes) than simple additive models.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./06-bayesian-inference.html" class="pagination-link" aria-label="4. The basics of Bayesian inference">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./08-glm.html" class="pagination-link" aria-label="6. Generalized linear models">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

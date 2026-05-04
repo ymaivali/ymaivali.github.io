@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methodology - 6&nbsp; 4. The basics of Bayesian inference</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-linear-regression.html" rel="next">
+<link href="./05-rational-uncertainty.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-bayesian-inference.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Methodology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">2. Rational thinking under certainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#fitting-the-binomial-data-model" id="toc-fitting-the-binomial-data-model" class="nav-link active" data-scroll-target="#fitting-the-binomial-data-model"><span class="header-section-number">6.1</span> 4.1. Fitting the Binomial data model</a></li>
+  <li><a href="#normal-data-model" id="toc-normal-data-model" class="nav-link" data-scroll-target="#normal-data-model"><span class="header-section-number">6.2</span> 4.2. Normal data model</a>
+  <ul class="collapse">
+  <li><a href="#prior-predictive-simulation" id="toc-prior-predictive-simulation" class="nav-link" data-scroll-target="#prior-predictive-simulation"><span class="header-section-number">6.2.1</span> prior predictive simulation</a></li>
+  <li><a href="#calculating-the-2d-posterior" id="toc-calculating-the-2d-posterior" class="nav-link" data-scroll-target="#calculating-the-2d-posterior"><span class="header-section-number">6.2.2</span> Calculating the 2D posterior</a></li>
+  <li><a href="#sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." id="toc-sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." class="nav-link" data-scroll-target="#sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma."><span class="header-section-number">6.2.3</span> Sampling from the posterior – 1D posteriors for mu and sigma.</a></li>
+  <li><a href="#summarising-the-posterior-95-hdi" id="toc-summarising-the-posterior-95-hdi" class="nav-link" data-scroll-target="#summarising-the-posterior-95-hdi"><span class="header-section-number">6.2.4</span> summarising the posterior (95% HDI)</a></li>
+  <li><a href="#triplot-for-mu" id="toc-triplot-for-mu" class="nav-link" data-scroll-target="#triplot-for-mu"><span class="header-section-number">6.2.5</span> Triplot for mu</a></li>
+  <li><a href="#some-things-to-notice" id="toc-some-things-to-notice" class="nav-link" data-scroll-target="#some-things-to-notice"><span class="header-section-number">6.2.6</span> Some things to notice</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In frequentist statistics the main workflow is something like this:</p>
+<ol type="1">
+<li><p>Decide on the stopping rules and statistical tests that will be used, write a pre-registered analysis protocol.</p></li>
+<li><p>Do a power analysis to determine optimal sample size N for finding significant effects</p></li>
+<li><p>Collect the sample of size N (no more, no less). There can be no peeking at data, unless pre-specified in step 1, until the full sample is collected. The sample needs to be analysed together. Ideally the experiment is randomized and blinded, so the researcher does not know, which is the experimental group and which is the control group.</p></li>
+<li><p>Run the pre-specified statistical test on pre-specified variables, which have been normalized and transformed according to the pre-specified protocol.</p></li>
+<li><p>Check the test assumptions (normality, linearity, constant variance, etc.) by running additional tests on your data and on the fitted model.</p></li>
+<li><p>If these assumptions are satisfied, interpret the p value as significant or not.</p></li>
+</ol>
+<p>In general, a frequentist analysis should be completely pre-registered to avoid multiple testing problems that arise largely (but not solely) because of dichotomizing continuous evidence by the statistical significance criterion.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This avoidance of “researcher degrees of freedom”, which can destroy the long-run quality control properties of frequentist tests, makes the analysis very rigid, and often equally frigid, or incapable of reacting to different-than-expected results. It is a serious mistake to suppose that frequentist requirements to statistical inference, which come from the need to fix the long-run frequency of type 1 errors, reflect how real scientists do real scientific inference.</p>
+<p>In Bayesian statistics we do not care about stopping rules and instead of a power analysis we might simulate realistic-looking data and try to analyse these, to see whether the models and algorithms to fit them work well enough for these kind of data. This will also double as a power analysis as one can find an optimal sample size that gives sensible estimates. Also, we do not pre-specify, which models we will use on our data, as we will build several bespoke models depending on the data that we eventually get, so we can compare the models and their fits, and try to learn from them as a group. Instead of formally checking model assumptions, we rather generate simulated data from the fitted models and compare with actual data, to see, which aspects of our data are well represented in the model structure, and which ones are not. This approach is a major benefit of the Bayesian approach. As a whole, Bayesian modeling is much more flexible, both in terms of model structures and in how we work with the models, in that it tries to mirror the scientific process, where we gradually learn from data, and from our mistakes, to build better experiments and better ways of analysing their results.</p>
+<p>A simplified Bayesian procedure:</p>
+<ol type="1">
+<li><p>model data as likelihood, by using an appropriate probability distribution that reflects the data generating mechanism.</p></li>
+<li><p>model additional information as prior, by using a probability distribution that best allows to describe your prior beliefs.</p></li>
+<li><p>use a Bayesian procedure to get a posterior. These days, instead of trying to calculate from the Bayes theorem directly, which can be overwhelming computationally, various MCMC approximations are used.</p></li>
+<li><p>compare the model fits, and the posteriors that we got from different models</p></li>
+<li><p>As needed, modify your models to achieve better fit and more realistic model-generated data. Then repeat the cycle, until you are satisfied.</p></li>
+<li><p>interpret the posteriors in scientific context, make counterfactual predictions from the fitted model.</p></li>
+</ol>
+<p>It should be noted that at the end of the day both Bayesian and frequentist statisticians want the same thing. They want to use the fits of statistical models in formulating scientific conclusions. The numerical outputs of statistical models themselves are not it. They have to be interpreted in non-mathematical and out-of-the-model contexts. However, by artifice and by tradition the two great traditions of statistics go about their business in quite different ways.</p>
+<p>In frequentist statistics it is usually the raw effect sizes and the p values that get interpreted. In Bayesian statistics, they are the shrunk effect sizes (we will learn soon, what this means) and the assorted credible intervals. In frequentist inference usually a single model is interpreted per effect, while in Bayesian inference often several models are interpreted together. In frequentist inference the statistically non-significant effects are often not interpreted at all (this is not what frequentist theory proposes, but rather an unfortunate historical accident), in Bayesian inference all effects are interpreted together (remember that the <em>law of total information</em> is a law of logic; you do not want to go around, breaking these!).</p>
+<section id="fitting-the-binomial-data-model" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="fitting-the-binomial-data-model"><span class="header-section-number">6.1</span> 4.1. Fitting the Binomial data model</h2>
+<p>Mortality of a disease is 50% and we have 3 patients. How many of them are likely to die? We have 2 pieces of data (mortality rate p = 0.5 and N = 3) and a 4-member sample space (0 dead, 1 dead, 2 dead, and 3 dead). We start by enumerating all logically possible scenarios (d - dead, a - alive)</p>
+<div class="line-block">d d d</div>
+<div class="line-block">d a d</div>
+<div class="line-block">d d a</div>
+<div class="line-block">a d a</div>
+<div class="line-block">a a d</div>
+<div class="line-block">a a a</div>
+<div class="line-block">a d d</div>
+<div class="line-block">d a a</div>
+<p>Kui P(dead) = 0.5, then by simple counting we get that:</p>
+<ul>
+<li><p>0 dead - 1,</p></li>
+<li><p>1 dead - 3,</p></li>
+<li><p>2 dead - 3,</p></li>
+<li><p>3 dead - 1</p></li>
+</ul>
+<p>Thus we have 1 + 3 + 3 + 1 = 8 possible futures that divide between the 4 hypotheses. This means that for each member of the parameter space we know the probability of its realization (P(1 death) = 3/8, etc.). It is this knowledge we now turn into a likelihood function.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameter space: all possible futures</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">3</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Likelihoods for each x value, </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or P(deaths I x)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(x, y))<span class="sc">+</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"hypothetical nr of deaths"</span>)<span class="sc">+</span> </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"plausibility"</span>)<span class="sc">+</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One death and two deaths are equilikely and one death is three times as likely as no deaths (or three deaths). Likelihood simply tells for each number of deaths, how likely is this outcome, given the mortality figure that we state.</p>
+<p>Now we demonstrate the same using the binomial distribution model. The only difference is that now we get on the y-axis normalized probabilities.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(x, <span class="dv">3</span>, <span class="fl">0.5</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"hypothetical nr of deaths"</span>)<span class="sc">+</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"probability"</span>)<span class="sc">+</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>How many dead when we have 9 patients and mortality rate is 67 percent?</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">9</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(x, <span class="dv">9</span>, <span class="fl">0.67</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"hypothetical nr of deaths"</span>)<span class="sc">+</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"probability"</span>)<span class="sc">+</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  ggthemes<span class="sc">::</span><span class="fu">theme_tufte</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Next we add to the likelihood a flat prior and use the Bayes theorem.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span> , <span class="at">to =</span> <span class="dv">9</span>) <span class="co">#parameter space: nr of deaths</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span> , <span class="dv">10</span>) <span class="co"># flat prior</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute likelihood at each value in grid</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(x, <span class="at">size =</span> <span class="dv">9</span>, <span class="at">prob =</span> <span class="fl">0.67</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute product of likelihood and prior</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>unstd.posterior <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize the posterior, so that it sums to 1</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> unstd.posterior <span class="sc">/</span> <span class="fu">sum</span>(unstd.posterior)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="cn">NULL</span>, <span class="fu">aes</span>(x, posterior)) <span class="sc">+</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"hypothetical nr of deaths"</span>) <span class="sc">+</span> </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"posterior probability"</span>)<span class="sc">+</span> </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now its time for a shift of perspective. We want to estimate the true mortality rate.</p>
+<ul>
+<li><p>data: 6 dead out of 9 patients.</p></li>
+<li><p>parameter to estimate: the mortality rate (p).</p></li>
+<li><p>sample space: real numbers between 0 and 1.</p></li>
+</ul>
+<p>We can still use binomial likelihood. dbinom() has 3 arguments, nr of events, nr of tries and probability of events. Again, we have two of them as data and one as the parameter whose value we want to estimate. We use the flat prior again. As there are Inf number of members in <span class="math inline">\(\Omega\)</span>, we cheat a little and calculate for the grid of 20 evenly spaced parameter values.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># grid: mortality at 20 evenly spaced probabilities from 0 to 1</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span> , <span class="at">to =</span> <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">20</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># prior</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span> , <span class="dv">20</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood at each value in grid</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">6</span>, <span class="at">size =</span> <span class="dv">9</span> , <span class="at">prob =</span> x)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior <span class="sc">/</span> <span class="fu">sum</span>(likelihood <span class="sc">*</span> prior)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span><span class="fu">rep</span>(<span class="at">x=</span>x, <span class="dv">2</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">y=</span> <span class="fu">c</span>(likelihood, posterior),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend=</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"likelihood"</span>, <span class="st">"posterior"</span>), <span class="at">each=</span><span class="dv">20</span>))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>a) <span class="sc">+</span> </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, y, <span class="at">color=</span>legend))<span class="sc">+</span> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  ggthemes<span class="sc">::</span><span class="fu">theme_tufte</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Our posterior sums to 1, but thanks to flat prior its shape is the same as the likelihood.</p>
+<p>Lets do this datapoint-by datapoint, so that n = 1.</p>
+<p>First datapoint is that the 1st patient died.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">1</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> x)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior <span class="sc">/</span> <span class="fu">sum</span>(likelihood <span class="sc">*</span> prior)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, posterior), <span class="at">color=</span> <span class="st">"blue"</span>)<span class="sc">+</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  ggthemes<span class="sc">::</span><span class="fu">theme_tufte</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/esimene-patsient-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Zero mortality is now logically impossible and 100 percent mortality is the hypothesis best supported by the data.</p>
+<p>Second datapoint is that the 2nd patient died. Our previous posterior is now the prior.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> posterior</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">1</span> , <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> x)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>posterior1 <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior <span class="sc">/</span> <span class="fu">sum</span>(likelihood <span class="sc">*</span> prior)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, prior))<span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, posterior1), <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  ggthemes<span class="sc">::</span><span class="fu">theme_tufte</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/teine-patsient-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The posterior is no longer a straight line. 100 percent mortality is still the most likely mortality estimate.</p>
+<p>Third datapoint is that the 3d patient survived.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> posterior1</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">0</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> x)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>posterior2 <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior <span class="sc">/</span> <span class="fu">sum</span>(likelihood <span class="sc">*</span> prior)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, prior))<span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, posterior2), <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  ggthemes<span class="sc">::</span><span class="fu">theme_tufte</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/kolmas-patsient-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now zero mortality and 100 percent mortality are both logically impossible. The most likely value for mortality is 2/3 or 75 percent.</p>
+</section>
+<section id="normal-data-model" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="normal-data-model"><span class="header-section-number">6.2</span> 4.2. Normal data model</h2>
+<p>Richard McElreath:</p>
+<blockquote class="blockquote">
+<p>There are an infinite number of possible Gaussian distributions. Some have small means. Others have large means. Some are wide, with a large <span class="math inline">\(\sigma\)</span>. Others are narrow. We want our Bayesian machine to consider every possible distribution, each defined by a combination of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, and rank them by posterior plausibility. Posterior plausibility provides a measure of the logical compatibility of each possible distribution with the data and model. … The parameters to be estimated are both <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, so we need a prior <span class="math inline">\(Pr(\mu , \sigma)\)</span>, the joint prior probability for all parameters. In most cases, priors are specified independently for each parameter, which amounts to assuming <span class="math inline">\(Pr(\mu, \sigma) = Pr(\mu) Pr(\sigma)\)</span>.</p>
+</blockquote>
+<p>How does one make a US president? Lets start by generating some heights of presidential candidates. We assume that human growth is a deterministic process that depends on a complex mix of many genetic and environmental factors. But we really do not understand this process well enough to directly use it to generate prospective heights of future presidents. We think that human height is approximately normally distributed (conditional on sex, age, etc.), so we could model presidential heights as a normal distribution where each possible height is given a probability of occurring. Now, we could generate new heights from this stochastic model proportionally to these probabilities. But before we do this, we have to fix the shape of the normal distribution so that we know the relevant probabilities. This can be done by fixing the values of two parameters of the normal distribution, <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>. Luckily we have data on the heights of the last 12 presidents:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>heights <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">value =</span> <span class="fu">c</span>(<span class="dv">183</span>, <span class="dv">192</span>, <span class="dv">182</span>, <span class="dv">183</span>, <span class="dv">177</span>, <span class="dv">185</span>, <span class="dv">188</span>, <span class="dv">188</span>, <span class="dv">182</span>, <span class="dv">185</span>, <span class="dv">188</span>, <span class="dv">182</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>As the parameter <span class="math inline">\(\mu\)</span> is identical to the expected value, i.e.&nbsp;the mean of the normal distribution and <span class="math inline">\(\sigma\)</span> to standard deviation (SD), we can simply calculate those and then use these numbers to generate new heights.</p>
+<p>Data mean is:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(Mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(heights<span class="sc">$</span>value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 184.5833</code></pre>
+</div>
+</div>
+<p>and SD is:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(SD <span class="ot">&lt;-</span> <span class="fu">sd</span>(heights<span class="sc">$</span>value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.964807</code></pre>
+</div>
+</div>
+<p>Predict 4000 new heights and calculate standard deviation:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">4000</span>, Mean, SD) <span class="sc">%&gt;%</span> <span class="fu">sd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.10711</code></pre>
+</div>
+</div>
+<p>This procedure is not ideal, though, as it does not take into account the fact that our estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, calculated from limited data, are not precisely true for the full population of US presidents, including the future ones. So on top of the randomness in predicting new presidents that comes from our imperfect knowledge of the mechanisms that generate human heights we must model the uncertainty that comes from imperfect data. How can we do this? When modelling this 2nd order epistemic uncertainty we will to end up not with point estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, but probability distributions for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> values. This way we are not predicting new heights from a single fixed normal distribution, but rather from many different distributions, where each is parametrized by a plausible combination of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> values (each of these combinations is supported by the data and by our prior knowledge of plausible presidential heights).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pres_m <span class="ot">&lt;-</span> <span class="fu">brm</span>(<span class="at">data =</span> heights, <span class="at">formula =</span> value<span class="sc">~</span><span class="dv">1</span>, <span class="at">file=</span><span class="st">"models/pres_m"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pres_posterior_sample <span class="ot">&lt;-</span> <span class="fu">posterior_samples</span>(pres_m)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">4000</span>, pres_posterior_sample<span class="sc">$</span>b_Intercept, pres_posterior_sample<span class="sc">$</span>sigma) <span class="sc">%&gt;%</span> <span class="fu">sd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.546833</code></pre>
+</div>
+</div>
+<p>Now the standard deviation of predicted presidents heights is slightly larger (by 0.44 cm), reflecting the extra uncertainty. Note that the model pools both kinds of uncertainties so that we cannot re-separate them in later analysis.</p>
+<p>Next we fit this model the old-fashioned way, using the Bayes theorem with grid approximation.</p>
+<p>Basic Bayesian inference goes like this:</p>
+<ol type="1">
+<li><p>What is the sample space of true mean heights? From -Inf to Inf. Silly, but convenient, if we want to use the normal data model (likelihood).</p></li>
+<li><p>How likely it is for each possible height to be the true average? The answer to this question is the likelihood, which depends on our sample data and on the model we choose to represent this data with. Here we model the likelihood as a normal distribution, whose mean equals the sample mean and whose standard devation equals the sample sd/sqrt(N), or SEM (standard error of the mean).</p></li>
+<li><p>Next step is quantifying prior beliefs, independent of sample data, about the mean height. Our prior for the mean is also normal distribution with <span class="math inline">\(\mu = 175.4\)</span> (the mean height of US males), sd = 3 (picked so, that a mean height of 181 cm for the presidents would still be fairly possible). And the prior for <span class="math inline">\(\sigma\)</span> is also normal with <span class="math inline">\(\mu = 5.2\)</span> (the SD for the heights of the general US male population) and sd=1 (so that true SD values between about 3 and 7 cm would be possible enough). This is a rather informative prior.</p></li>
+<li><p>Then we calculate the posterior.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
+</ol>
+<p><strong>Some preliminary points:</strong></p>
+<ul>
+<li><p>Likelihood models data as a probability distribution.</p></li>
+<li><p>Likelihood does not have to be normal.</p></li>
+<li><p>Prior is your belief about the parameter value, modeled as a probability distribution.</p></li>
+<li><p>Prior does not have to be normal.</p></li>
+<li><p>Likelihood and prior(s) do not have to be represented by the same distribution.</p></li>
+<li><p>Posterior is narrower than prior and likelihood. This reflects the combining of information in the likelihood and prior. Bayes theorem is provably the most efficient way of doing this.</p></li>
+</ul>
+<p>Now, lets go on. Next item in the menu is the grid method for posterior in 2D. Instead of multiplying likelihoods, we will add log-likelihoods (which is mathematically the same thing).</p>
+<p>The model is:</p>
+<p><span class="math display">\[height_i \sim normal(\mu, \sigma)\]</span></p>
+<p><span class="math display">\[\mu \sim normal(175.4, 5)\]</span></p>
+<p><span class="math display">\[\sigma \sim normal(5.2, 1)\]</span></p>
+<p>Where the 1. line is the likelihood, containing two parameters, and the next 2 lines are priors for each parameter.</p>
+<p>i is index for heights, which means that the model assumes that each individual height comes from the same normal distribution.</p>
+<section id="prior-predictive-simulation" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="prior-predictive-simulation"><span class="header-section-number">6.2.1</span> prior predictive simulation</h3>
+<p>Here we calculate the posterior solely on the prior. As we add no likelihood, the data has no influence on the posterior – only the prior does.</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mu_prior1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, <span class="fl">175.4</span>, <span class="dv">5</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mu_prior2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, <span class="dv">180</span>, <span class="dv">50</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>sigma_prior1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, <span class="fl">5.2</span>, <span class="dv">1</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>sigma_prior2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10000</span>, <span class="dv">0</span>, <span class="dv">100</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>y1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, mu_prior1, sigma_prior1)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, mu_prior2, sigma_prior2)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(<span class="at">x=</span>y1)) <span class="sc">+</span> </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()<span class="sc">+</span> </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x=</span>y2), <span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"mean presidents height"</span>)<span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>A prior predictive check.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We use two different prior combinations: one is informative (the black line in the figure) and another one is weakly informative (red), meaning that it carries no useful biological information, but nevertheless gives a lot more weight to postive values and values &lt; 4 meters (thats right - this prior assumes that 4-meter mean height is possible). Currently, weak priors are all the rage, because they make model fitting by MCMC methods easier, while requiring minimal scientific input. Lets hope that this situation is about to change in favour of strong scientifically informed priors!</p>
+</section>
+<section id="calculating-the-2d-posterior" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="calculating-the-2d-posterior"><span class="header-section-number">6.2.2</span> Calculating the 2D posterior</h3>
+<p>The posterior is a joint distribution over all parameters in the model. If we have 2 parameters, then we have a 2D posterior. If we have 200 parameters, then we have 200D posterior. We can always collapse the posterior to a desired 1D view for inspection (see below).</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># d_grid contains all possible combinations (10 000) of mu and sigma values. </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>d_grid <span class="ot">&lt;-</span> <span class="fu">crossing</span>(<span class="at">mu =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">180</span>, <span class="at">to =</span> <span class="dv">190</span>, <span class="at">length.out =</span> n),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#crossing() expands the table to cover all possible combinations.</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                  </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sigma =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">8</span>, <span class="at">length.out =</span> n))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#grid_function generates a density value from a normal function, </span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#whose x is a vector of presidents height and mu and sigma are plucked from d_grid.</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#sum() in the log-scale is prod() in the linear scale. In each row of d_grid </span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#we multiply likelihoods (actually, sum log-likelihoods) for each data point, using</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">#different combinations of mu and sigma to model the normal distribution.</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>grid_function <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma) {</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>(heights<span class="sc">$</span>value, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma, <span class="at">log =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">sum</span>()</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>d_grid <span class="ot">&lt;-</span> d_grid <span class="sc">%&gt;%</span> </span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_likelihood =</span> <span class="fu">map2_dbl</span>(mu, sigma, grid_function),</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co"># map2_dbl() takes each mu and sigma pair in d_grid (row-wise) and puts it into the grid_function</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>         <span class="at">prior_mu    =</span> <span class="fu">dnorm</span>(mu, <span class="at">mean =</span> <span class="fl">175.4</span>, <span class="at">sd  =</span> <span class="dv">5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co">#for each value of mu (one in each row) we calculate normal density from prior distr.</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">prior_sigma =</span> <span class="fu">dnorm</span>(sigma, <span class="at">mean =</span> <span class="fl">5.2</span>, <span class="at">sd =</span> <span class="dv">1</span>, <span class="at">log =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="co">#for each value of sigma we calculate normal density from prior distr. for sigma</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>         <span class="at">product =</span> log_likelihood <span class="sc">+</span> prior_mu <span class="sc">+</span> prior_sigma,</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="co">#sum() in the log-scale is product in the linear scale. </span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">probability =</span> <span class="fu">exp</span>(product <span class="sc">-</span> <span class="fu">max</span>(product)))</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="co">#product - max(product) mirrors into negative scale, which after exp() becomes probability scale.</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="co">#probability vector contains the posterior probabilities across mu and sigma. </span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>d_grid <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mu, <span class="at">y =</span> sigma, <span class="at">z =</span> probability)) <span class="sc">+</span> </span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>() <span class="sc">+</span> <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This 2D posterior is drawn as a 3D surface, where the third dimension is posterior probability. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> In the center of the contour is the peak of the posterior distribution. This is, by the way, a bivariate normal distribution.</p>
+</section>
+<section id="sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma."><span class="header-section-number">6.2.3</span> Sampling from the posterior – 1D posteriors for mu and sigma.</h3>
+<p>I am sampling randomly while weighting on probability, so that mu values with higher posterior probability are more likely to end up in the sample. From such random samples of mu and sigma (the posterior samples) we can plot the posteriors:</p>
+<div class="cell" data-fig.margin="true">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>d_grid_samples <span class="ot">&lt;-</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  d_grid <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="at">size =</span> <span class="fl">1e4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">weight =</span> probability)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>d_grid_samples <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(mu<span class="sc">:</span>sigma) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value)) <span class="sc">+</span> </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name, <span class="at">scales =</span> <span class="st">"free"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="summarising-the-posterior-95-hdi" class="level3" data-number="6.2.4">
+<h3 data-number="6.2.4" class="anchored" data-anchor-id="summarising-the-posterior-95-hdi"><span class="header-section-number">6.2.4</span> summarising the posterior (95% HDI)</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(d_grid_samples[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Estimate Est.Error      Q2.5      Q97.5
+mu    183.951485 1.3195671 181.31313 186.565657
+sigma   4.755323 0.7611191   3.40404   6.373737</code></pre>
+</div>
+</div>
+</section>
+<section id="triplot-for-mu" class="level3" data-number="6.2.5">
+<h3 data-number="6.2.5" class="anchored" data-anchor-id="triplot-for-mu"><span class="header-section-number">6.2.5</span> Triplot for mu</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>prior_mu <span class="ot">&lt;-</span>  <span class="fu">rnorm</span>(<span class="dv">10000</span>, <span class="at">mean =</span> <span class="fl">175.4</span>, <span class="at">sd  =</span> <span class="dv">5</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>lik_mu <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, <span class="at">mean=</span> <span class="fu">mean</span>(heights<span class="sc">$</span>value), </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">sd =</span> <span class="fu">sd</span>(heights<span class="sc">$</span>value)<span class="sc">/</span><span class="fu">sqrt</span>( <span class="fu">nrow</span>(heights) ) )</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>post_mu <span class="ot">&lt;-</span> d_grid_samples<span class="sc">$</span>mu</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(prior_mu)) <span class="sc">+</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(lik_mu), <span class="at">color=</span><span class="st">"firebrick"</span>) <span class="sc">+</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(post_mu), <span class="at">color=</span><span class="st">"navyblue"</span>) <span class="sc">+</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Mean presidents height"</span>)<span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"prior (black), likelihood(red), </span><span class="sc">\n</span><span class="st">and posterior (blue)"</span>)<span class="sc">+</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-bayesian-inference_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Even with only 11 datapoints the prior is so much wider than likelihood that it has minimal influence on the posterior.</p>
+</section>
+<section id="some-things-to-notice" class="level3" data-number="6.2.6">
+<h3 data-number="6.2.6" class="anchored" data-anchor-id="some-things-to-notice"><span class="header-section-number">6.2.6</span> Some things to notice</h3>
+<ol type="1">
+<li><p>As the priors are true probabilities that sum to one, and the likelihoods are not, we can run our models on either priors and data, or on priors alone, but never on data alone. Running a model on priors alone can be a good idea, if you want to know, how much your data influences the model fit. When you have little data and strong priors, this is the thing to do.</p></li>
+<li><p>Each fitted model with k parameters gives you a k-dimensional posterior (this is slightly more complicated with multi-level models), which we flatten into k side-by-side variables in the posterior samples table. This means that we have to treat each row of this table as a single unit, when we use them in further calculations. In each row there is one plausible combination of k parameter values – if you mix the values between rows, this might no longer hold.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p></li>
+<li><p>As we fitted the full model (both mean and sd), we can generate <em>in silico</em> data from it, using the full posterior samples, and compare these generated data with the actual data that was used to fit the model. By this we mean that all Bayesian models are <em>generative</em>. This comparison is called a <em>posterior predictive check</em> and it is a very convenient method to get a first impression on how well your mathematical model recaptures the physical data generating mechanism in the nature. PP check is a major advantage of Bayesian modeling, as the usual frequentist models that estimate the mean, do not estimate the sd. Such frequentist models are not generative.</p></li>
+<li><p>The more data you have, the narrower the likelihood; the more scientific information you put into the prior, the narrower the prior (usually, but not always). Whichever of the two is narrower, will influence the posterior more. The posterior will always be narrower than likelihood and prior. A lot of data swamps the prior, making it unimportant in respect of the posterior. Conversely, with a small sample the prior can have a major influence on the posterior.</p></li>
+<li><p>In Bayesian estimation, posterior is everything. It contains all of the information about the estimates that is contained in the fitted model. There is nothing in the model about the parameter values that is not covered in the posterior. Every fitted model gives you a posterior for every parameter in the model. This is it. All you have to do, is to study those posteriors, and to make calculations with them to get new estimates. For example, we will soon learn, how to get the estimate for a group mean by adding another group mean and the effect size. These calculations are done at the level of posterior samples, the idea being that you do not want to lose information about estimation uncertainty. Also, with many likelihoods you can calculate straight from the posterior either the mean aor the median (and often the mode), all with appropriate credible intervals. This is not something you can easily do in frequentist statistics.</p></li>
+</ol>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>While multiple testing, narrowly understood, is not a problem for the Bayesian, false alarms are. The currently favored Bayesian mitigation of false alarms is multilevel modeling.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This is Bayesian method in a nutshell: at each parameter value (x) we multiply the likelihood (y_lik) with the prior (y_pr), thus combining our prior knowledge with the data and the data model. Knowledge (prior and data) in – knowledge (posterior) out.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>geom_contour() visualizes 3D surfaces in 2D. To specify a valid surface, the data must contain x, y, and z coordinates, and each unique combination of x and y can appear once.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>With the normal likelihood it will actually hold, because the variation of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are independent of each other, but this is not so with most other likelihoods.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-rational-uncertainty.html" class="pagination-link" aria-label="3. Rational thinking under uncertainty.">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-linear-regression.html" class="pagination-link" aria-label="5 Basic linear regression">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
