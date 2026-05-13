@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methodology - 14&nbsp; Appendix 5. mgcv</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./15-appendix-git.html" rel="next">
+<link href="./13-appendix-mcmc.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./14-appendix-mgcv.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Methodology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#executive-summary-polynomials-splines-and-tensor-products" id="toc-executive-summary-polynomials-splines-and-tensor-products" class="nav-link active" data-scroll-target="#executive-summary-polynomials-splines-and-tensor-products"><span class="header-section-number">14.1</span> Executive summary: polynomials, splines, and tensor products</a></li>
+  <li><a href="#from-polynomials-to-splines-a-more-technical-exposition" id="toc-from-polynomials-to-splines-a-more-technical-exposition" class="nav-link" data-scroll-target="#from-polynomials-to-splines-a-more-technical-exposition"><span class="header-section-number">14.2</span> From polynomials to splines: a more technical exposition</a>
+  <ul class="collapse">
+  <li><a href="#thin-plate-splines-the-default-for-s-in-mgcv" id="toc-thin-plate-splines-the-default-for-s-in-mgcv" class="nav-link" data-scroll-target="#thin-plate-splines-the-default-for-s-in-mgcv"><span class="header-section-number">14.2.1</span> Thin plate splines: the default for <code>s()</code> in mgcv</a></li>
+  <li><a href="#tensor-product-smooths-a-different-construction" id="toc-tensor-product-smooths-a-different-construction" class="nav-link" data-scroll-target="#tensor-product-smooths-a-different-construction"><span class="header-section-number">14.2.2</span> Tensor product smooths: a different construction</a></li>
+  </ul></li>
+  <li><a href="#some-models-from-simplest-to-most-flexible" id="toc-some-models-from-simplest-to-most-flexible" class="nav-link" data-scroll-target="#some-models-from-simplest-to-most-flexible"><span class="header-section-number">14.3</span> Some models, from simplest to most flexible</a>
+  <ul class="collapse">
+  <li><a href="#bsfs-vs-bsre-and-how-both-differ-from-by" id="toc-bsfs-vs-bsre-and-how-both-differ-from-by" class="nav-link" data-scroll-target="#bsfs-vs-bsre-and-how-both-differ-from-by"><span class="header-section-number">14.3.1</span> <code>bs="fs"</code> vs <code>bs="re"</code> and how both differ from <code>by=</code></a></li>
+  <li><a href="#bsfs-factor-smooth-random-curves" id="toc-bsfs-factor-smooth-random-curves" class="nav-link" data-scroll-target="#bsfs-factor-smooth-random-curves"><span class="header-section-number">14.3.2</span> <code>bs="fs"</code> — factor-smooth (random <em>curves</em>)</a></li>
+  <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together"><span class="header-section-number">14.3.3</span> Putting it together</a></li>
+  </ul></li>
+  <li><a href="#cross-fitting-and-other-modern-stuff" id="toc-cross-fitting-and-other-modern-stuff" class="nav-link" data-scroll-target="#cross-fitting-and-other-modern-stuff"><span class="header-section-number">14.4</span> Cross fitting and other modern stuff</a>
+  <ul class="collapse">
+  <li><a href="#the-doubly-robust-idea-aipw" id="toc-the-doubly-robust-idea-aipw" class="nav-link" data-scroll-target="#the-doubly-robust-idea-aipw"><span class="header-section-number">14.4.1</span> The doubly robust idea: AIPW</a></li>
+  <li><a href="#cross-fitting" id="toc-cross-fitting" class="nav-link" data-scroll-target="#cross-fitting"><span class="header-section-number">14.4.2</span> Cross-fitting</a></li>
+  <li><a href="#tmle-versus-aipw" id="toc-tmle-versus-aipw" class="nav-link" data-scroll-target="#tmle-versus-aipw"><span class="header-section-number">14.4.3</span> TMLE versus AIPW</a></li>
+  <li><a href="#superlearner-the-ensemble-layer" id="toc-superlearner-the-ensemble-layer" class="nav-link" data-scroll-target="#superlearner-the-ensemble-layer"><span class="header-section-number">14.4.4</span> SuperLearner: the ensemble layer</a></li>
+  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">14.4.5</span> R packages</a></li>
+  </ul></li>
+  <li><a href="#recap-gam-model-structures-with-treatment-factors-and-smooths" id="toc-recap-gam-model-structures-with-treatment-factors-and-smooths" class="nav-link" data-scroll-target="#recap-gam-model-structures-with-treatment-factors-and-smooths"><span class="header-section-number">14.5</span> Recap: GAM model structures with treatment, factors, and smooths</a></li>
+  <li><a href="#a-practical-hierarchy-for-tte" id="toc-a-practical-hierarchy-for-tte" class="nav-link" data-scroll-target="#a-practical-hierarchy-for-tte"><span class="header-section-number">14.7</span> A practical hierarchy for TTE</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./14-appendix-mgcv.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<hr>
+<section id="executive-summary-polynomials-splines-and-tensor-products" class="level2 page-columns page-full" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="executive-summary-polynomials-splines-and-tensor-products"><span class="header-section-number">14.1</span> Executive summary: polynomials, splines, and tensor products</h2>
+<p>Real biomedical relationships are rarely straight lines. Risk often rises gently, then steeply; dose–response curves plateau; effects of age bend at midlife. To fit such patterns we need models that can <em>bend</em>, and the choice of how to let them bend is an important decision in model building.</p>
+<p><strong>Polynomials bend globally.</strong> Adding squared and cubed terms to a regression lets the fit curve, and for mild curvature this works. The catch is that every part of the curve depends on every data point: a cluster of observations at one end of the <em>x</em>-range can tip the fitted line at the other end. Higher-degree polynomials oscillate near the boundaries and extrapolate badly. They are a blunt instrument.</p>
+<p><strong>Splines bend locally.</strong> A spline is built from many small, overlapping pieces, each active only in a narrow region of <em>x</em>. Wiggle introduced by a cluster of points stays where it belongs. Splines fit complex shapes — thresholds, plateaus, U-shapes — without disturbing parts of the curve where the data are well-behaved. This is the workhorse of modern flexible regression.</p>
+<p><strong>Penalized splines</strong> — the kind mgcv fits – allow plenty of flexibility, then penalize wiggliness, and let the data decide how much curvature to keep. The smoothing parameter is selected automatically (REML or GCV). Practically, you stop asking “how many knots?” and start asking “how wiggly should this be?” — and the algorithm answers.</p>
+<p><strong>Reach for <code>s()</code> first.</strong> In mgcv, <code>s(x)</code> fits a penalized <em>thin plate spline</em> — a sensible default for one covariate, and the building block for most GAMs you will write. For a smooth surface in two covariates that share a scale (latitude and longitude, two anatomical coordinates), <code>s(x, z)</code> works directly.</p>
+<p><strong>Reach for <code>te()</code> or <code>ti()</code> when scales differ or interactions matter.</strong> When you want a smooth interaction between covariates measured in different units — age in years and dose in mg, for example — use a <em>tensor product</em> smooth, <code>te(x, z)</code>. It builds the surface from separate one-dimensional smooths in each direction, with a separate amount of smoothing for each, so rescaling one covariate does not distort the fit. Use <code>ti()</code> when you want to separate the interaction from the main effects, ANOVA-style: <code>s(x) + s(z) + ti(x, z)</code>.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>te() &amp; ti() give practically identical predictions with marginaleffects. However, the models are not exactly identical, differing in their penalty structure, not their basis.</p>
+<p>te(x, z) has one smooth term with two smoothing parameters (one per marginal direction) applied to the joint tensor product basis. Main-effect and interaction parts of the surface share those penalties. s(x) + s(z) + ti(x, z) has three smooth terms with their own smoothing parameters — so the main effect of x, the main effect of z, and the pure interaction surface are each shrunk independently.</p>
+<p>When signal is weak, the data are noisy, or one component is much smoother than the other, the s() + s() + ti() decomposition can shrink the interaction more aggressively and pull the predicted surface visibly toward additivity. That is a feature, not a bug. In addition, with ti(), you get a separate coefficient for the pure interaction, which is what you want if the question is “is there an interaction beyond the additive main effects?”. With te(), you cannot separate that question from “is there any joint effect at all?”</p>
+<p>For marginaleffects-driven plots, there is little reason to write the three-term form. Reach for s(x) + s(z) + ti(x, z) when you specifically want each piece to have its own penalty — for instance, when you suspect strong main effects but only mild interaction and want the model to lean that way.</p>
+</div></div><blockquote class="blockquote">
+<p>Start with <code>s()</code> per covariate. Add <code>te()</code> or <code>ti()</code> only when an interaction is biologically plausible and you have enough data to estimate it. Let the penalty handle wiggliness. Inspect each smooth visually before trusting it.</p>
+</blockquote>
+</section>
+<section id="from-polynomials-to-splines-a-more-technical-exposition" class="level2 page-columns page-full" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="from-polynomials-to-splines-a-more-technical-exposition"><span class="header-section-number">14.2</span> From polynomials to splines: a more technical exposition</h2>
+<p>A polynomial regression model is the simplest way to let the conditional mean of <em>y</em> bend with <em>x</em>:</p>
+<p><span class="math display">\[E(y \mid x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p\]</span></p>
+<p>This is a <em>basis expansion</em>: we write the unknown function <em>f</em>(<em>x</em>) as a sum of known building blocks — here, the powers 1, <em>x</em>, <em>x</em>². The model is linear in <strong>β</strong> even though it is nonlinear in <em>x</em>.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p><strong>“Linear in β”</strong> means that if we fix the data and view the fitted value as a function of the coefficients, doubling every β doubles every fitted value, and the contributions of β₀, β₁, β₂, … add up. Concretely, define new variables <em>z</em>₁ = <em>x</em>, <em>z</em>₂ = <em>x</em>², <em>z</em>₃ = <em>x</em>³, and so on. Then</p>
+<p><span class="math display">\[E(y \mid x) = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3 z_3 + \cdots\]</span></p>
+<p>is an ordinary multiple linear regression, with the <em>z</em>ⱼ playing the role of predictors. The relationship between <em>y</em> and the original <em>x</em> is curved — that’s the whole point — but the relationship between <em>y</em> and the constructed columns <em>z</em>ⱼ is a flat hyperplane.</p>
+<p>This is not a notational trick; it has three concrete consequences.</p>
+<p><strong>Estimation is a solved problem.</strong> Because the model is linear in β, the coefficients are obtained by ordinary least squares. The same is true for splines, which is why these methods are fast and stable on large datasets.</p>
+<p><strong>Inference carries over.</strong> Confidence intervals for nested models rely on linearity in the parameters, not linearity in the predictors. For polynomial and spline models, the toolkit of linear-model inference applies unchanged. (Penalization complicates this slightly — the penalty shrinks β toward zero, so frequentist standard errors get a Bayesian reinterpretation in mgcv — but the underlying machinery is still linear.)</p>
+</div></div><div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Into a linear model the <em>parameters</em> enter linearly; the predictors can be raw covariates, polynomial powers, log transformations, dummy variables, interaction terms, or spline basis functions. In truly nonlinear models, the parameters appear inside an exponential, a ratio, or a custom mechanistic equation.</p>
+</div>
+</div>
+<p>Polynomials have well-known weaknesses. They are <em>global</em>: every coefficient depends on every observation, so a few points at one end of the <em>x</em>-range can pull the fitted curve at the other end. High-degree polynomials oscillate badly between data points. Increasing the polynomial degree to capture local detail tends to make the global fit worse, not better. Splines fix this by replacing the global building blocks with <em>local</em> ones. A regression spline still has the form</p>
+<p><span class="math display">\[f(x) = \sum_{j=1}^{k} \beta_j \, b_j(x),\]</span></p>
+<p>but each <em>b</em>ⱼ(<em>x</em>) is a piecewise polynomial — typically cubic — that is non-zero only over a small range of <em>x</em>. The pieces are joined at locations called <em>knots</em> with continuity in the function and its first two derivatives, so the result is visually smooth. Because each basis function has local support, adding a knot in one region does not perturb the fit far away.</p>
+<p>A practical question becomes: how many knots, and where? The <em>penalized</em> spline approach sidesteps this by using more knots than strictly needed and adding a wiggliness penalty to the objective:</p>
+<p><span class="math display">\[\text{minimize} \quad \sum_{i=1}^{n}\bigl(y_i - f(x_i)\bigr)^2 \; + \; \lambda \int f''(x)^2 \, dx.\]</span></p>
+<p>The first term rewards fit; the second penalizes curvature. The smoothing parameter λ controls the trade-off and is chosen automatically — by REML or GCV — inside mgcv. Ordinary polynomial regression is then just the simplest, unpenalized, global case of this framework.</p>
+<section id="thin-plate-splines-the-default-for-s-in-mgcv" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="thin-plate-splines-the-default-for-s-in-mgcv"><span class="header-section-number">14.2.1</span> Thin plate splines: the default for <code>s()</code> in mgcv</h3>
+<p>When you write <code>s(x)</code> in mgcv, you get a <em>thin plate regression spline</em> by default. The thin plate spline (TPS) is the natural multivariate generalization of the cubic smoothing spline: among all smooth functions of <em>d</em> variables passing close to the data, it minimizes an integrated-squared-second-derivative penalty. In two dimensions the penalty is</p>
+<p><span class="math display">\[\iint \bigl( f_{xx}^2 + 2 f_{xy}^2 + f_{yy}^2 \bigr) \, dx \, dy,\]</span></p>
+<p>which is — literally — the bending energy of a thin metal plate forced through the data points. Hence the name.</p>
+<p>TPS does not require the analyst to choose knot locations; in its original form it places one basis function at every data point, with the smoothing penalty doing the regularization. Wood’s <em>thin plate regression spline</em> is a low-rank truncation that keeps the most informative basis functions and discards the rest, giving essentially the same statistical behaviour at a fraction of the cost. The TPS penalty is <em>isotropic</em>: it treats all input directions equivalently. For a single covariate this is harmless, but with several covariates passed into one smooth — <code>s(x, z)</code> — isotropy means the same notion of wiggliness is applied to both, which is sensible only when <em>x</em> and <em>z</em> are on comparable scales (latitude and longitude, say, but not age in years and dose in milligrams).</p>
+</section>
+<section id="tensor-product-smooths-a-different-construction" class="level3" data-number="14.2.2">
+<h3 data-number="14.2.2" class="anchored" data-anchor-id="tensor-product-smooths-a-different-construction"><span class="header-section-number">14.2.2</span> Tensor product smooths: a different construction</h3>
+<p>When covariates are on different scales or play qualitatively different roles, mgcv offers tensor product smooths via <code>te()</code> and <code>ti()</code>. These are built differently from TPS. The key point is the penalty: each marginal direction gets its own smoothing parameter and its own penalty, so smoothness in <em>x</em> is regulated independently of smoothness in <em>z</em>. The fit is therefore invariant to rescaling either covariate. <code>te(x, z)</code> builds the full smooth (interaction plus marginals); <code>ti(x, z)</code> strips out the marginal main effects, which is the right choice when you want an ANOVA-style decomposition <code>s(x) + s(z) + ti(x, z)</code>.</p>
+<p>A useful rule of thumb: use <code>s()</code> for one covariate, or for several covariates on the same scale; use <code>te()</code> or <code>ti()</code> for multidimensional smooths on different scales, and for testing interactions.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14-appendix-mgcv_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Figure 14.1. From global polynomials to local, penalised splines.</strong></p>
+<p><strong>(A)</strong> A polynomial basis of degree three over the interval [0, 1]: the constant, <em>x</em>, <em>x</em>², and <em>x</em>³. Each basis function is non-zero across the entire range of <em>x</em>, so the fitted coefficient on any one term influences the fitted curve everywhere. This is what is meant by a <em>global</em> basis. <strong>(B)</strong> A cubic B-spline basis on the same interval, defined by six interior knots evenly spaced across [0, 1]. Each basis function is a localized bump, non-zero only over a narrow neighbourhood of <em>x</em>. Changing the coefficient on one bump perturbs the fitted curve only in that neighbourhood; this is a <em>local</em> basis. <strong>(C)</strong> Three fits to the same simulated dataset (<em>n</em> = 120; true mean function <em>f</em>(<em>x</em>) = sin(2π<em>x</em>) + 0.5<em>x</em>; Gaussian noise, σ = 0.35). Grey points are the simulated observations. The dashed line is a degree-15 polynomial fitted by ordinary least squares; note the visible oscillation near <em>x</em> = 0 and <em>x</em> = 1 (this is boundary oscillation typical of high-degree polynomials). The dotted line is an unpenalised cubic regression spline with 20 basis functions, which tracks individual data points between knots. The solid red line is a penalised thin plate regression spline (<code>s(x, bs = "tp", k = 20)</code>) with the smoothing parameter λ chosen automatically by REML; it recovers the underlying smooth signal without chasing the noise. <strong>(D)</strong> The same thin plate spline as in panel C, but with λ fixed by hand at four contrasting values, from heavy penalisation (λ = 100) to almost none (λ = 10⁻⁵). With large λ the wiggliness penalty dominates and the fit collapses toward a straight line (over-smoothing); with small λ the penalty is negligible and the curve follows individual observations (under-smoothing). The dashed grey curve, identical across facets, is the REML-chosen fit from panel C and serves as a reference for the data-driven choice. Together, panels A–D show that splines extend polynomial regression by replacing global building blocks with local ones, and that the smoothing parameter — not the number of knots — is the practical dial controlling model complexity.</p>
+</section>
+</section>
+<section id="some-models-from-simplest-to-most-flexible" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="some-models-from-simplest-to-most-flexible"><span class="header-section-number">14.3</span> Some models, from simplest to most flexible</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>       age      bmi sex region tx           y
+1 35.78908 17.97258   M    R11  0 -3.52517418
+2 42.93230 23.60980   M     R3  0 -0.03266607
+3 56.38118 24.63321   M    R15  0  0.38972388
+4 78.84992 32.13709   M    R16  1  1.42510145
+5 31.51269 24.01306   M    R19  0 -1.55526304
+6 78.19211 32.79925   F     R4  1 -2.54858434</code></pre>
+</div>
+</div>
+<p>We start by simulating data. 5000 observations, continuous Y-variable, binary treatment variable tx, 2 continuous vars (bmi and age) with interaction, and 2 categorical confounders: region with 20 levels and sex with two levels. Sex modifies the effect of age.</p>
+<p>First model: <code>s(x)</code> fits a penalized smooth of one variable. The default basis is <code>bs="tp"</code> (thin-plate regression spline). One variable, one smoothing parameter (λ), one penalty on wiggliness.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age, <span class="at">by=</span>tx) <span class="sc">+</span> <span class="fu">s</span>(bmi, <span class="at">by=</span>tx), <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(m1, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14-appendix-mgcv_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You <em>can</em> write <code>s(age, bmi)</code> — but this is a <strong>2-D isotropic</strong> thin-plate smooth: it assumes age and BMI are measured on the <em>same scale</em> and uses a single λ for combined wiggliness in both directions. That’s almost never appropriate when the variables have different units. A change of 1 year and 1 kg/m² are treated as equivalent distances.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OK only if x1 and x2 are on the same scale (e.g., spatial coordinates lat/lon)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>m_iso <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age, bmi, <span class="at">by=</span>tx), <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(m_iso, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14-appendix-mgcv_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Better model: <code>te(x1, x2)</code> builds <strong>marginal smooths separately</strong> and combines them via a tensor product. Each margin gets <strong>its own smoothing parameter</strong>, so the fit is invariant to rescaling the inputs.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">te</span>(age, bmi, <span class="at">by=</span>tx), <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(m2, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14-appendix-mgcv_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>lets add categorical predictors</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m2<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> <span class="fu">te</span>(age, bmi, <span class="at">by=</span>tx) <span class="sc">+</span> tx <span class="sc">+</span> sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(m2<span class="fl">.1</span>, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><code>te(age, bmi)</code> here covers:</p>
+<ul>
+<li>the main effect of age,</li>
+<li>the main effect of bmi,</li>
+<li>and their interaction — all in a single term, with two λs (one per margin).</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can specify per-margin bases and basis sizes, e.g.&nbsp;<code>te(age, bmi, bs = c("cr","cr"), k = c(10, 10))</code>. Good catch — <code>bs = "cr"</code> slipped in there without explanation. Here’s what it does. <code>bs</code> (“basis”) tells <code>s()</code>, <code>te()</code>, or <code>ti()</code> <em>which kind</em> of spline basis to build the smooth from. mgcv offers many; the three you will meet first are: - <code>bs = "tp"</code> — <strong>thin plate regression spline.</strong> The default for <code>s()</code>. No knots to choose; mgcv picks an optimal low-rank basis from the data. - <code>bs = "cr"</code> — <strong>cubic regression spline.</strong> A classical penalised cubic spline with knots placed at quantiles of the covariate (or evenly, if you specify). Each basis function is a piecewise cubic, joined smoothly at the knots. - <code>bs = "re"</code> — <strong>random effect.</strong> Not a smoother in the usual sense; treats the levels of a factor as draws from a Normal distribution, exactly as in a mixed model. That is why <code>s(region, bs = "re")</code> appears in your <code>m2</code> call — it is a random intercept for region, not a smooth curve over region.</p>
+<p><code>te()</code> builds its joint basis as a tensor product of <em>marginal</em> one-dimensional bases — one per input. The <code>bs</code> argument inside <code>te()</code> lets you pick what those marginal bases are. <code>bs = c("cr", "cr")</code> says: <em>use a cubic regression spline for the age margin, and a cubic regression spline for the bmi margin</em>. There are two practical reasons to prefer <code>"cr"</code> over the default <code>"tp"</code> here: (i) it is much cheaper to compute. (ii) It fits the geometry of <code>te()</code> better. Tensor products already give each margin its own smoothing parameter, which is the whole point of using <code>te()</code> over <code>s()</code> for variables on different scales. The optimality argument behind thin plate splines is <em>isotropic</em> — it assumes a single common notion of wiggliness across all inputs — and that argument doesn’t apply once you have separated the margins. So you lose nothing conceptual by switching to <code>"cr"</code>, and you gain speed. <strong>What <code>k = c(10, 10)</code> does?</strong><code>k</code> is the basis dimension — the upper bound on how wiggly each margin is allowed to be before the penalty kicks in. <code>k = c(10, 10)</code> means up to 10 cubic-spline basis functions for age and 10 for bmi, giving the joint surface up to 10 × 10 = 100 coefficients before penalisation. The penalty then shrinks the <em>effective</em> dimension down to whatever the data support; you check whether <code>k</code> was set high enough using <code>gam.check()</code> or <code>k.check()</code>. <strong>In plain English</strong><code>te(age, bmi, bs = c("cr","cr"), k = c(10, 10))</code> says:</p>
+<blockquote class="blockquote">
+<p>Build a smooth surface of age and bmi by taking cubic regression splines in each direction (10 basis functions each), forming all 100 pairwise products, and letting REML pick a separate smoothing parameter for the age direction and the bmi direction.</p>
+</blockquote>
+<p>It is the same model class as <code>te(age, bmi)</code> — same function space, same interpretation — just with explicit, faster marginal bases.</p>
+</div>
+</div>
+<p>If you want main-effects-plus-interaction with separable terms (e.g., for testing interaction significance, or to keep the main-effect smooths interpretable in plots), use <code>ti()</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(bmi) <span class="sc">+</span> <span class="fu">ti</span>(age, bmi) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>              sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(m3, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This says: tx shifts the entire response surface up or down by a constant amount, the same shift at every age, every bmi, every region. The treatment effect is one number — the coefficient on tx — and it is the average treatment effect on the response scale (or log-scale if you used a log link). Use this when you have no reason to expect the treatment effect to vary with age or bmi, and you just want to adjust for those covariates.</p>
+<p>If you suspect the treatment effect depends on, say, age:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age, <span class="at">by =</span> tx) <span class="sc">+</span> <span class="fu">s</span>(bmi) <span class="sc">+</span> <span class="fu">ti</span>(age, bmi) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>             sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(m4, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>s(age, by = tx) fits a separate smooth of age for each level of tx. The by term does not include the main effect of tx, which is why you still write tx + in the parametric part. Without that, the two age curves would be forced to have the same average level — almost never what you want. The interpretation: the difference between the two age-curves at any given age is the treatment effect at that age. With marginaleffects you would extract this with comparisons() or avg_comparisons(variables = “tx”, by = “age”). A small but important technicality: when tx is a factor with two levels, by = tx fits one smooth per level, each with its own smoothing parameter. This is usually what you want. If you wanted the two curves to share a smoothing parameter (more shrinkage, less flexibility per group), you would instead make tx an ordered factor and use the same syntax — mgcv then fits a reference smooth plus a difference smooth.</p>
+<p>If treatment effect varies over the joint distribution of age and bmi — for example, treatment helps young, low-bmi patients more than older, high-bmi ones, in a way that does not factor cleanly into “depends on age” plus “depends on bmi”:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age, <span class="at">by =</span> tx) <span class="sc">+</span> <span class="fu">s</span>(bmi, <span class="at">by =</span> tx) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">ti</span>(age, bmi, <span class="at">by =</span> tx) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>             sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(m5, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Or, more compactly, replace the three by-smooths with a single tensor product:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m6 <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">te</span>(age, bmi, <span class="at">by =</span> tx) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>             sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(m6, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This fits a separate age × bmi surface for each treatment arm. Powerful, but expensive in degrees of freedom — you need a lot of data, especially in the smaller arm, before this is identifiable.</p>
+<p><strong>Option 4:</strong> tx as a stratification variable (separate fits) A conceptually different approach: fit two GAMs, one per arm, and compare predictions. This is exactly what option 3 does internally, but doing it explicitly forces you to confront the sample size in each arm and is sometimes clearer to report. In a target trial emulation context option 4 is essentially the g-computation style; option 1 is the outcome regression with treatment indicator style.</p>
+<p>A recommendation for your study For physiotherapy on work disability, I would suggest starting with option 1 to establish the average effect, then checking effect modification with a sequence of nested models:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m1a <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(bmi) <span class="sc">+</span> <span class="fu">ti</span>(age, bmi) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>              sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"ML"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>m2a <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age, <span class="at">by =</span> tx) <span class="sc">+</span> <span class="fu">s</span>(bmi) <span class="sc">+</span> <span class="fu">ti</span>(age, bmi) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"ML"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>m3a <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age, <span class="at">by =</span> tx) <span class="sc">+</span> <span class="fu">s</span>(bmi, <span class="at">by =</span> tx) <span class="sc">+</span> <span class="fu">ti</span>(age, bmi) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>              sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"ML"</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(m1a, m2a, m3a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Note the switch to method = “ML” — REML is for variance component estimation and is not strictly comparable across models with different fixed-effect structures. For final reporting, refit the chosen model with REML. A caveat I want to flag honestly: with claims data of any meaningful size, something will look like effect modification just from sampling variability across the basis dimension. <strong>Decide before fitting whether age/bmi effect modification is biologically plausible enough to spend the degrees of freedom on; if it isn’t, option 1 is the principled stopping point.</strong></p>
+<p><strong>What it looks like in marginaleffects</strong> Whatever you choose, the inferential workflow stays the same:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># average treatment effect (ATE) on the response scale</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">avg_comparisons</span>(m1a, <span class="at">variables =</span> <span class="st">"tx"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># treatment effect as a function of age</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_comparisons</span>(m1a, <span class="at">variables =</span> <span class="st">"tx"</span>, <span class="at">condition =</span> <span class="st">"age"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># treatment effect over the joint age × bmi surface (for option 3)</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_comparisons</span>(m1a, <span class="at">variables =</span> <span class="st">"tx"</span>, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="bsfs-vs-bsre-and-how-both-differ-from-by" class="level3" data-number="14.3.1">
+<h3 data-number="14.3.1" class="anchored" data-anchor-id="bsfs-vs-bsre-and-how-both-differ-from-by"><span class="header-section-number">14.3.1</span> <code>bs="fs"</code> vs <code>bs="re"</code> and how both differ from <code>by=</code></h3>
+<p>There are <em>three</em> ways to mix a factor into a smooth, and they make different statistical assumptions.</p>
+<ol type="1">
+<li><code>bs="re"</code> — parametric random effect</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept by region</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>mre1 <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(bmi) <span class="sc">+</span> sex <span class="sc">+</span> <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># random slope of age within region</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>mre2 <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> <span class="fu">s</span>(age) <span class="sc">+</span> <span class="fu">s</span>(bmi) <span class="sc">+</span> sex <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">s</span>(region, <span class="at">bs =</span> <span class="st">"re"</span>) <span class="sc">+</span> <span class="fu">s</span>(age, region, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><code>s(group, bs="re")</code> is exactly equivalent to a Gaussian random intercept: levels are i.i.d. draws from N(0, σ²), with σ² controlled by one smoothing parameter. <code>s(x, group, bs="re")</code> gives random slopes (still parametric — <em>linear</em> in x). <code>gam.vcomp(model)</code> gives variance components on a familiar scale.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>translation of the last model to brms</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>mgcv term</th>
+<th>Meaning</th>
+<th>brms equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>s(age)</code></td>
+<td>smooth of age</td>
+<td><code>s(age)</code></td>
+</tr>
+<tr class="even">
+<td><code>s(bmi)</code></td>
+<td>smooth of bmi</td>
+<td><code>s(bmi)</code></td>
+</tr>
+<tr class="odd">
+<td><code>sex</code></td>
+<td>parametric fixed effect</td>
+<td><code>sex</code></td>
+</tr>
+<tr class="even">
+<td><code>s(region, bs = "re")</code></td>
+<td>random intercept by region</td>
+<td><code>(1 \| region)</code></td>
+</tr>
+<tr class="odd">
+<td><code>s(age, region, bs = "re")</code></td>
+<td>random slope of age by region</td>
+<td><code>(0 + age \| region)</code> or <code>(age \| region)</code></td>
+</tr>
+</tbody>
+</table>
+<p>The first three lines are immediate. The last two need explanation.</p>
+<p>Why <code>s(..., bs = "re")</code> becomes <code>(... | region)</code></p>
+<p><code>bs = "re"</code> is mgcv’s way of <em>embedding</em> a random effect inside the GAM machinery. It treats the levels of the factor as draws from a Normal distribution with an estimated variance — exactly the lme4/brms random-effects formulation. So:</p>
+<ul>
+<li><code>s(region, bs = "re")</code> ↔︎ random intercept ↔︎ <code>(1 | region)</code></li>
+<li><code>s(age, region, bs = "re")</code> ↔︎ random slope of age over region ↔︎ <code>(0 + age | region)</code></li>
+</ul>
+<p>The choice between <code>(0 + age | region)</code> and <code>(age | region)</code> matters:</p>
+<ul>
+<li><strong><code>(0 + age | region)</code></strong> — random slope only, no random intercept inside this term. This is the literal translation of <code>s(age, region, bs = "re")</code> on its own.</li>
+<li><strong><code>(age | region)</code></strong> — random intercept <em>and</em> random slope, with a correlation parameter between them estimated by brms.</li>
+</ul>
+<p>Your mgcv model has <code>s(region, bs = "re")</code> <em>and</em> <code>s(age, region, bs = "re")</code> as two separate terms. The mgcv formulation is <em>uncorrelated by construction</em>: the random intercept variance and the random slope variance are estimated independently, with no correlation parameter between them. The faithful brms translation is therefore:</p>
+<p><code>y ~ s(age) + s(bmi) + sex + (1 | region) + (0 + age | region)</code> and equivalently <code>y ~ s(age) + s(bmi) + sex + (age || region)</code></p>
+<p>Two separate <code>(... | region)</code> terms is how lme4/brms syntax expresses <em>uncorrelated</em> random effects.</p>
+<p>If you wanted to <em>add</em> a correlation between the random intercept and random slope (something mgcv cannot easily express):</p>
+<p><code>y ~ s(age) + s(bmi) + sex + (1 + age | region)</code></p>
+<p>what changes once you cross from mgcv to brms:</p>
+<p><strong>Priors.</strong> brms puts default priors on everything. They are usually reasonable but not always — for the smoothing variances on <code>s(age)</code> and <code>s(bmi)</code>, and for the random-effect SDs, I would inspect them with <code>prior_summary(m_brms)</code> and consider weakly informative alternatives (<code>student_t(3, 0, 2.5)</code> is a common choice). <strong>Smoothing parameters become variances.</strong> mgcv’s λ is, mathematically, a ratio of variances. brms estimates those variances directly, with their own posterior distributions. You can extract the posterior of the smooth’s “wiggliness SD” from <code>summary(m_brms)</code> under <code>Smooth Terms</code>. Conceptually identical, parameterized differently. <strong>REML disappears.</strong> brms is fully Bayesian — there is no REML/ML choice. You sample the joint posterior over fixed effects, smooth coefficients, smoothing variances, and random-effect variances simultaneously. This is one reason brms is well-suited to GAMs with random effects: the partial-pooling logic is unified across all components. A caveat: random-slope models with a single covariate (<code>age</code> here) per group are sensitive to how <code>age</code> is centered and scaled. If <code>age</code> is on its raw scale (e.g., 18–80), the random-slope SD has a very different interpretation — and very different prior implications — than if <code>age</code> is centered or standardized. This matters more in brms than in mgcv, because <strong>brms’ default priors are scaled assuming reasonably standardized predictors.</strong> Centre <code>age</code> (subtract its mean, or subtract a reference value like 50) before fitting. The same goes for <code>bmi</code>.</p>
+</div>
+</div>
+</section>
+<section id="bsfs-factor-smooth-random-curves" class="level3" data-number="14.3.2">
+<h3 data-number="14.3.2" class="anchored" data-anchor-id="bsfs-factor-smooth-random-curves"><span class="header-section-number">14.3.2</span> <code>bs="fs"</code> — factor-smooth (random <em>curves</em>)</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A separate SMOOTH of age for each region, sharing one wiggliness penalty,</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with the curve intercepts shrunk toward zero (random-effect-like).</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>mfs <span class="ot">&lt;-</span> <span class="fu">gam</span>(y <span class="sc">~</span> <span class="fu">s</span>(age, region, <span class="at">bs =</span> <span class="st">"fs"</span>) <span class="sc">+</span> <span class="fu">s</span>(bmi) <span class="sc">+</span> sex,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_predictions</span>(mfs, <span class="at">condition =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"tx"</span>, <span class="st">"bmi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>To incorporate treatment tx (we do not want shrinkage in tx) two possibilities:</p>
+<ol type="1">
+<li>Interaction factor inside s(…, bs = “fs”)</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tx_region <span class="ot">&lt;-</span> <span class="fu">interaction</span>(dat<span class="sc">$</span>tx, dat<span class="sc">$</span>region, <span class="at">drop =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#drop = TRUE removes factor levels that have 0 observations in the data</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age, tx_region, <span class="at">bs =</span> <span class="st">"fs"</span>) <span class="sc">+</span> <span class="fu">s</span>(bmi) <span class="sc">+</span> sex,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>One smooth of age per (tx × region) cell, all cells sharing one smoothing parameter. The fixed tx term carries the average treatment effect; the factor-smooth carries cell-level age curves. Coarse-grained but parsimonious. With binary tx and many regions, you halve the per-cell n.</p>
+<ol start="2" type="1">
+<li>Decomposed structure</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gam</span>(y <span class="sc">~</span> tx <span class="sc">+</span> <span class="fu">s</span>(age, <span class="at">by =</span> tx) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(age, region, <span class="at">bs =</span> <span class="st">"fs"</span>) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">s</span>(bmi) <span class="sc">+</span> sex,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li><p>tx — fixed average treatment effect.</p></li>
+<li><p>s(age, by = tx) — fixed effect modification: the age curve for treated and untreated patients is allowed to differ in shape, with no shrinkage between arms.</p></li>
+<li><p>s(age, region, bs = “fs”) — random regional deviations from the population age curve, with shrinkage across regions.</p></li>
+<li><p>s(bmi) and sex — adjustment covariates.</p></li>
+</ul>
+<p>This separates “what we want to estimate” (treatment effect, possibly age-modified) from “what we want to control for” (regional grouping with partial pooling). Each gets the correct statistical treatment.</p>
+<p>Approach 1 forces the regional differences in the age curve to be separately estimated for each treatment arm, with the same smoothing parameter shared across the (now doubled) set of cells. That is wasteful: there is no reason to expect regional differences in how age affects work disability to themselves depend on whether the patient received physiotherapy. Approach 2 encodes the more plausible assumption — that regional variation is a single phenomenon, on top of which physiotherapy either does or doesn’t work — and uses the data more efficiently.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>While with s() bs=“fs” is the right choice, with te() it becomes bs=“re”. The marginal bases inside te() (or ti(), t2()) must be univariate smoother classes — typically “tp”, “cr”, “ps”, or “re”. The “fs” class is itself a two-dimensional factor-smooth construction (a smooth crossed with a factor), so it cannot serve as a one-dimensional margin in a tensor product.</p>
+</div>
+</div>
+</section>
+<section id="putting-it-together" class="level3" data-number="14.3.3">
+<h3 data-number="14.3.3" class="anchored" data-anchor-id="putting-it-together"><span class="header-section-number">14.3.3</span> Putting it together</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>m_full <span class="ot">&lt;-</span> <span class="fu">bam</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  y <span class="sc">~</span> tx                                              <span class="co"># exposure</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">+</span> sex                                             <span class="co"># parametric main effect</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">+</span> <span class="fu">te</span>(age, bmi, <span class="at">bs =</span> <span class="fu">c</span>(<span class="st">"cr"</span>,<span class="st">"cr"</span>), <span class="at">k =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">15</span>))  <span class="co"># smooth + interaction in confounders</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="sc">+</span> <span class="fu">s</span>(age, <span class="at">by =</span> sex)                                <span class="co"># sex-modified age curve</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">+</span> <span class="fu">s</span>(bmi, <span class="at">by =</span> sex)                                <span class="co"># sex-modified bmi curve</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="sc">+</span> <span class="fu">ti</span>(age, bmi, <span class="at">by =</span> sex)                          <span class="co"># sex-modified interaction (optional)</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="sc">+</span> <span class="fu">s</span>(age, region, <span class="at">bs =</span> <span class="st">"fs"</span>, <span class="at">k =</span> <span class="dv">8</span>)                <span class="co"># region-specific age curves (shrunk)</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="sc">+</span> <span class="fu">s</span>(bmi, region, <span class="at">bs =</span> <span class="st">"fs"</span>, <span class="at">k =</span> <span class="dv">8</span>),               <span class="co"># region-specific bmi curves (shrunk)</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">data    =</span> dat,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">method  =</span> <span class="st">"fREML"</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">discrete =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">nthreads =</span> <span class="dv">4</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li><code>te(age, bmi)</code> over <code>s(age, bmi)</code> because the units differ.</li>
+<li><code>by = sex</code> (not <code>bs="fs"</code>) because sex has 2 fixed levels we care about.</li>
+<li><code>bs="fs"</code> for <code>region</code> because levels are exchangeable and there are many.</li>
+<li><code>k</code> is a basis-size cap, not a forced edf — if <code>gam.check()</code> flags it, increase.</li>
+<li><code>tx</code> is a parametric coefficient. Its estimate is a <em>conditional</em> effect of treatment given the (flexibly modeled) confounder structure.</li>
+</ul>
+<ol type="1">
+<li><p><strong>The coefficient on <code>tx</code> is the conditional association, not necessarily the causal effect.</strong> If you want a marginal/population effect (ATE), use g-computation: predict counterfactual outcomes under <code>tx=1</code> and <code>tx=0</code> for everyone in the sample, then average and contrast. <code>marginaleffects::avg_comparisons()</code> plays nicely with <code>gam</code>/<code>bam</code>.</p></li>
+<li><p><strong>Flexibility ≠ confounding control.</strong> No amount of spline flexibility fixes a missing confounder, post-treatment adjustment, or collider stratification. Draw the DAG first; then decide what to model flexibly.</p></li>
+<li><p><strong>If <code>tx</code> has effect-modifiers among the confounders</strong>, you usually want it inside smooths too (e.g., <code>s(age, by=tx)</code>), then average appropriately. Otherwise the conditional <code>tx</code> coefficient assumes a constant treatment effect across age/bmi/region.</p></li>
+<li><p><strong>Cross-fitting / DR estimators</strong> (TMLE, AIPW) are the more defensible route when you want a flexible nuisance model <em>and</em> valid inference for an ATE. Use the GAM as a learner inside <code>tmle3</code>, <code>lmtp</code>, or <code>SuperLearner</code>. Don’t expect a single <code>bam()</code> summary table to be a causal answer.</p></li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Considering that tx has 2 levels, could te(age, region, tx, bs=c(“tp”, “re”, “re”)) in principle give non-zero shrinkage to tx slope?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A random effect on tx estimates two coefficients — α_treated and α_untreated — as draws from N(0, σ²_tx). With sum-to-zero or equivalent constraints, this is <strong>one effective parameter</strong>: the contrast between arms. The shrinkage factor on that contrast is approximately</p>
+<p><span class="math display">\[\text{shrinkage} \approx \frac{\sigma^2_{\text{within}} / n}{\sigma^2_{\text{within}} / n + \sigma^2_{\text{tx}}}\]</span></p>
+<p>where σ²_within is the residual variance and n the per-arm sample size. The behaviour at the extremes:</p>
+<ul>
+<li><strong>Large σ²_tx</strong> (true treatment effect is big relative to within-arm variability): shrinkage factor → 0. The random-effect estimate is essentially the fixed-effect estimate. No meaningful regularisation.</li>
+<li><strong>Small σ²_tx</strong> (true treatment effect is weak): shrinkage factor → 1. The estimate is pulled hard toward zero.</li>
+<li><strong>σ²_tx exactly at zero</strong>: complete shrinkage; the model drops the tx contribution entirely.</li>
+</ul>
+<p>So yes, between those extremes you get partial shrinkage. The problem is <em>how σ²_tx is estimated</em>.</p>
+<section id="why-this-is-unstable-with-2-levels" class="level3" data-number="14.3.4">
+<h3 data-number="14.3.4" class="anchored" data-anchor-id="why-this-is-unstable-with-2-levels"><span class="header-section-number">14.3.4</span> Why this is unstable with 2 levels</h3>
+<p>With <em>k</em> levels of a factor, the random-effect variance σ² is estimated from <em>k − 1</em> between-level differences. With <em>k = 2</em>, that’s <strong>one</strong> difference. REML’s estimator of σ²_tx is essentially built from a single number — the contrast α_treated − α_untreated — relative to within-arm noise.</p>
+<p>Two practical consequences follow:</p>
+<p><strong>Boundary hits are common.</strong> REML variance estimators are bounded below at zero, and when there is little signal — or when the treatment effect is genuinely small — the estimate sits on the boundary, giving σ̂²_tx = 0 and complete shrinkage to zero. This is not a rare pathology; it is the typical behaviour when treatment effects are modest and within-arm variance is large.</p>
+<p><strong>The estimator behaves discontinuously.</strong> Because there is 1 df driving everything, σ̂²_tx flips between near-zero and large estimates depending on small perturbations of the data. The “amount of shrinkage” is therefore highly variable across resamples — a property you can verify by bootstrapping the model. Inference based on the resulting standard errors does not have nominal coverage near the boundary.</p>
+<p>For nuisance grouping factors (regions, providers, hospitals), shrinking small estimated regional differences toward zero is a feature, because we usually have no scientific stake in any particular region’s deviation. With 50 regions, σ²_region is well-identified.</p>
+<p>For the treatment exposure, the treatment effect is the <strong>estimand of the study</strong>. A model that quietly sets it to zero whenever the within-arm variance dominates is not regularising — it is biasing your causal estimate in a direction determined by sample size. In a target trial emulation framework, where the whole design is constructed to estimate the marginal effect of physiotherapy on disability outcomes, treating tx as random is conceptually misaligned with the estimand.</p>
+<p>Random-effect treatment of factors is appropriate when (i) the levels can plausibly be regarded as exchangeable draws from some population and (ii) you have enough levels to identify the variance. Both fail for a 2-level treatment indicator.</p>
+<p>So yes, shrinkage on tx can in principle be non-zero, and is occasionally meaningful. But the conditions under which it is non-zero are fragile, the estimator is discontinuous, and the resulting bias goes the wrong direction for a causal estimand.</p>
+</section>
+</div>
+</div>
+</section>
+</section>
+<section id="cross-fitting-and-other-modern-stuff" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="cross-fitting-and-other-modern-stuff"><span class="header-section-number">14.4</span> Cross fitting and other modern stuff</h2>
+<p>The leap from “I have a flexible regression model” to “I have a valid causal estimate” is bigger than it looks. Suppose you want to estimate the average treatment effect (ATE) of physiotherapy on work disability outcomes. The classical workflow is:</p>
+<ol type="1">
+<li><p>Fit a regression of outcome on treatment, adjusted for confounders.</p></li>
+<li><p>Read off the coefficient on treatment, with its standard error and confidence interval.</p></li>
+</ol>
+<p>This works, more or less, when the regression is correctly specified — when the functional form of every confounder–outcome relationship is right. With a GAM you have done much better than a misspecified linear model, but you have introduced a new problem: <strong>you cannot trust the standard error on the treatment coefficient anymore</strong>.</p>
+<p>The technical reason: penalised splines are <em>biased</em> estimators of the conditional mean. The penalty trades bias for variance to fit better overall, but the bias does not vanish at root-n rates. When you plug a biased nuisance estimate into a downstream effect estimate, the bias contaminates your effect estimate too. Confidence intervals from <code>summary(gam_fit)</code> on the treatment term are therefore not what they claim to be.</p>
+<p>The same problem afflicts machine-learning regressions (random forests, gradient boosting, neural nets) used as nuisance models. The doubly robust / cross-fitting machinery was built specifically to recover valid inference in this setting.</p>
+<section id="the-doubly-robust-idea-aipw" class="level3" data-number="14.4.1">
+<h3 data-number="14.4.1" class="anchored" data-anchor-id="the-doubly-robust-idea-aipw"><span class="header-section-number">14.4.1</span> The doubly robust idea: AIPW</h3>
+<p>The augmented inverse probability weighted (AIPW) estimator combines two models:</p>
+<ul>
+<li>An <strong>outcome model</strong>: μ̂(x, a) = E[Y | X = x, A = a]. The fitted values predicting outcome from confounders and treatment.</li>
+<li>A <strong>treatment model</strong> (propensity score): π̂(x) = P(A = 1 | X = x). The probability of receiving treatment given confounders.</li>
+</ul>
+<p>The AIPW estimator of the ATE has the form</p>
+<p><span class="math display">\[\widehat{\text{ATE}} = \frac{1}{n} \sum_{i=1}^{n} \left[ \hat{\mu}(X_i, 1) - \hat{\mu}(X_i, 0) \right] + \text{IPW correction term}\]</span></p>
+<p>The correction term, intuitively, fixes the residual bias in μ̂ using information from π̂. The “doubly robust” name refers to a remarkable property: <strong>the estimator is consistent if either μ̂ or π̂ is consistent — you do not need both</strong>. This is reassuring because in real applied work neither model is exactly right, but at least one usually captures the bulk of the structure.</p>
+<p>That property alone is not enough for valid inference, however. To get confidence intervals that work, you also need a procedure that prevents the nuisance models from “seeing” the data they are evaluated on.</p>
+</section>
+<section id="cross-fitting" class="level3" data-number="14.4.2">
+<h3 data-number="14.4.2" class="anchored" data-anchor-id="cross-fitting"><span class="header-section-number">14.4.2</span> Cross-fitting</h3>
+<p>If you fit μ̂ and π̂ on the same data you use to compute the AIPW estimate, the fitted values are <em>over-fitted</em>, which biases the AIPW estimator and shrinks its standard errors. Standard regression has the same issue but at a manageable rate; flexible learners (splines included, ML methods more so) overfit at rates that break the inferential guarantees. <strong>Cross-fitting</strong> solves this by splitting the data into K folds (typically 5 or 10), and for each fold:</p>
+<ol type="1">
+<li><p>Fit μ̂ and π̂ on the <em>other</em> K−1 folds.</p></li>
+<li><p>Use those fitted models to predict on the held-out fold only.</p></li>
+<li><p>Compute the AIPW contributions on the held-out fold using those out-of-fold predictions.</p></li>
+</ol>
+<p>Average across folds, and the resulting estimator has root-n convergence and asymptotically normal sampling distribution under conditions that allow the nuisance models to converge at much slower rates (n^(1/4) suffices). This is the core insight of <em>double/debiased machine learning</em> (Chernozhukov et al., 2018) — the same machinery underlies TMLE.</p>
+</section>
+<section id="tmle-versus-aipw" class="level3" data-number="14.4.3">
+<h3 data-number="14.4.3" class="anchored" data-anchor-id="tmle-versus-aipw"><span class="header-section-number">14.4.3</span> TMLE versus AIPW</h3>
+<p>TMLE — targeted maximum likelihood estimation (van der Laan &amp; Rose) — is a refinement of the same idea. Where AIPW adds a correction term to the outcome-model average, TMLE <em>updates</em> the outcome model itself using information from the propensity score, and then takes the simple average from the updated model. The two estimators have the same asymptotic properties; TMLE often has slightly better finite-sample behaviour and respects bounds on the outcome (probabilities stay in [0,1] etc.). For most applied purposes the choice between them is taste.</p>
+</section>
+<section id="superlearner-the-ensemble-layer" class="level3" data-number="14.4.4">
+<h3 data-number="14.4.4" class="anchored" data-anchor-id="superlearner-the-ensemble-layer"><span class="header-section-number">14.4.4</span> SuperLearner: the ensemble layer</h3>
+<p>Both AIPW and TMLE need μ̂ and π̂ from somewhere. You could fit each with a single model — a GAM, say, or a random forest. <strong>SuperLearner</strong> is a separate idea: rather than commit to one learner, fit several candidate models (a GLM, a GAM, a random forest, a gradient-boosted tree) and let cross-validated stacking weight them into an ensemble. The ensemble is then plugged into AIPW/TMLE as the nuisance estimator. This is a hedge against learner misspecification and is the default workflow in the <code>tmle3</code> / <code>sl3</code> ecosystem.</p>
+<p>Your GAM lives inside this stack as one candidate among several. It is a good candidate — splines are excellent for moderately complex confounder–outcome relationships in epidemiology. But you no longer rely on it to be uniquely correct.</p>
+</section>
+<section id="r-packages" class="level3" data-number="14.4.5">
+<h3 data-number="14.4.5" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">14.4.5</span> R packages</h3>
+<p>Three modern packages in R, each with a slightly different focus:</p>
+<ul>
+<li><strong><code>tmle3</code> / <code>sl3</code></strong> (van der Laan group). Most general; supports AIPW, TMLE, longitudinal extensions. Steep learning curve.</li>
+<li><strong><code>lmtp</code></strong> (Williams, Díaz). Specialised for <em>longitudinal modified treatment policies</em> — closest to your TTE setting if you want to estimate effects of treatment strategies that depend on covariate history. Has built-in SuperLearner integration.</li>
+<li><strong><code>DoubleML</code></strong> (Bach et al.). Implements DML with cross-fitting; cleaner API for static settings; less focused on causal vocabulary, more on partial-effect estimation.</li>
+</ul>
+<p>A skeleton call in <code>lmtp</code> looks like this:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtp)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>learners <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"SL.mean"</span>, <span class="st">"SL.glm"</span>, <span class="st">"SL.gam"</span>, <span class="st">"SL.ranger"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>ate <span class="ot">&lt;-</span> <span class="fu">lmtp_tmle</span>(</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data       =</span> dat,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">trt        =</span> <span class="st">"tx"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome    =</span> <span class="st">"y"</span>,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">baseline   =</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"bmi"</span>, <span class="st">"sex"</span>, <span class="st">"region"</span>),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome_type =</span> <span class="st">"continuous"</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">learners_outcome =</span> learners,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">learners_trt     =</span> learners,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">folds =</span> <span class="dv">10</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>ate    <span class="co"># ATE estimate, SE, CI from cross-fitted influence function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Under the hood: 10-fold cross-fitting; each fold’s μ̂ and π̂ built from a SuperLearner ensemble; TMLE update; influence-function-based standard error. The <code>summary</code> method on the result gives a properly calibrated 95% CI for the ATE — the kind of summary that <code>gam.check()</code> cannot.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Computational cost is high.</strong> With 10 folds and a SuperLearner library of 4–5 learners, expect runtimes of minutes to hours on claims-data-sized problems. Plan accordingly.</p>
+<p><strong>These methods do not magic away unmeasured confounding.</strong> They give you valid inference <em>under your causal assumptions</em> (exchangeability, positivity, consistency). They do not check those assumptions for you. The DAG work you have already done is exactly as load-bearing as it was for IPW; this is just better machinery downstream.</p>
+<p><strong>The TTE design layer comes first.</strong> For your physiotherapy study, the immortal-time handling, grace periods, and target-trial protocol determine the <em>estimand</em>. AIPW/TMLE is a way to estimate that estimand more efficiently and with better-calibrated inference; it is not a substitute for the design itself. <code>lmtp</code> is built with sequential treatment in mind and is probably the natural home for your analysis once the TTE specification is finalised.</p>
+<p><strong>Do not expect a single number to be the answer.</strong> The whole point is that valid causal estimation requires layered choices — design, identification, nuisance estimation, inference — and cross-fitted DR estimators cleanly separate those layers. A <code>bam()</code> summary table conflates them, which is why I would not present its treatment p-value as a causal answer to a referee.</p>
+</div>
+</div>
+<p>For an entry point into the literature: <em>Causal Inference: What If</em> (Hernán &amp; Robins, free online) for the identification side; the TMLE book (van der Laan &amp; Rose, <em>Targeted Learning</em>) for the estimation side; and the original double-ML paper (Chernozhukov et al., 2018, Econometrics Journal) for the cross-fitting argument.</p>
+</section>
+</section>
+<section id="recap-gam-model-structures-with-treatment-factors-and-smooths" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="recap-gam-model-structures-with-treatment-factors-and-smooths"><span class="header-section-number">14.5</span> Recap: GAM model structures with treatment, factors, and smooths</h2>
+<p>Two principles to anchor everything:</p>
+<p><strong>Principle 1.</strong> <code>tx</code> is the estimand of interest. It should not enter the model in any way that <em>shrinks the treatment-effect contrast itself</em>: not as <code>bs = "re"</code>, not as an <code>"re"</code> margin in a tensor product. Including <code>tx</code> as a level-defining factor in <code>bs = "fs"</code> is acceptable — it pools the <em>roughness</em> of the two age curves, not the contrast between them — but be aware that with only two levels you are using a tool designed for many.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>bs = "fs"</code> is a different beast from <code>bs = "re"</code>. <code>s(age, tx, bs = "fs")</code> does not shrink the treatment effect itself. It does shrink the <em>difference between the two age-curves</em> — which is a different quantity, and one you may or may not want to shrink.</p>
+<p><code>s(age, tx, bs = "fs")</code> produces one smooth of age per level of tx — two curves, sharing a single smoothing parameter. The shrinkage that this term applies operates on the <strong>wiggliness</strong> of those two curves and on their <em>level-shifts from a common centre</em>. It does not pool the two curves’ contrasts toward zero in a way that biases the estimated treatment effect at any given age. If the treated and untreated arms have genuinely different age curves, <code>bs = "fs"</code> will recover that difference — the smoothing parameter regulates how rough each curve is allowed to be, not how far apart the two arms can sit. The treatment effect at age = <em>a</em>, defined as the difference between the two curves at that point, is estimated as flexibly as the data allow. This is the crucial contrast with <code>bs = "re"</code> on tx, which estimates a variance σ²_tx and shrinks the <em>contrast</em> α_treated − α_untreated proportionally. <code>bs = "fs"</code> has no such variance on the contrast — what it has is a single smoothing parameter on curve roughness, applied identically to both arms.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The “fs” smooth is <strong>not centred</strong> (no sum-to-zero constraint), which means it carries its own intercepts for each level of tx. Mathematically this looks fine. Practically, it raises two issues:</p>
+<p><strong>Issue 1: identifiability with only two levels.</strong> The “fs” construction was designed for many factor levels — patients in a longitudinal study, hospitals in a multicentre trial — where partial pooling across levels is the point. With two levels (treated, untreated), there is no other level to pool toward; the “fs” structure technically still applies, but you are using a tool built for <em>k</em> large to handle <em>k = 2</em>. mgcv will fit it. The result is usually similar to <code>s(age, by = tx)</code> with a shared smoothing parameter across the two arms, which is sometimes desirable and sometimes not.</p>
+<p><strong>Issue 2: the constraint structure interacts oddly with the parametric tx term.</strong> Because <code>bs = "fs"</code> carries its own per-level intercepts, you do <strong>not</strong> need (and should not include) <code>tx +</code> as a parametric main effect alongside it — that would be redundant and could create collinearity warnings. This breaks Principle 2 from the recap. So the typical call is just <code>s(age, tx, bs = "fs") + s(bmi) + sex</code>, with no separate <code>tx</code> term.</p>
+</div>
+</div>
+<section id="where-this-differs-from-sage-by-tx" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="where-this-differs-from-sage-by-tx"><span class="header-section-number">14.6</span> Where this differs from <code>s(age, by = tx)</code></h2>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><code>s(age, by = tx)</code> + <code>tx</code></th>
+<th><code>s(age, tx, bs = "fs")</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Per-arm age curves</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Smoothing parameter</td>
+<td>One per arm</td>
+<td>One shared across arms</td>
+</tr>
+<tr class="odd">
+<td>Centring</td>
+<td>Each smooth centred (sum-to-zero)</td>
+<td>Not centred</td>
+</tr>
+<tr class="even">
+<td>Need <code>tx +</code> main effect?</td>
+<td>Yes (carries the level shifts)</td>
+<td>No (smooths carry their own)</td>
+</tr>
+<tr class="odd">
+<td>Treatment-effect contrast shrunk?</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Wiggliness pooled across arms?</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>The practical difference: <code>bs = "fs"</code> forces the two age curves to have the <em>same degree of smoothness</em>. <code>by = tx</code> lets one arm’s curve be much wigglier than the other if the data demand it. For a physiotherapy intervention where you might expect both arms to follow age in qualitatively similar ways (most of the curve shape is determined by underlying age-related disability risk, with a treatment offset on top), the shared smoothing parameter is a plausible regularisation. For situations where the treated arm might respond very differently with age, <code>by = tx</code> is more flexible.</p>
+<p>In your TTE setting, I would still default to <code>tx + s(age, by = tx)</code> because the fixed <code>by</code> form is the simplest, most transparent encoding of “two age curves, freely estimated.” <code>bs = "fs"</code> becomes attractive when you have many treatment-defining factor levels (multiple physiotherapy intensities, say, or treatment timing categories) where pooling roughness across levels is genuinely informative. With binary tx, both work; <code>by = tx</code> is the more standard choice and produces a cleaner summary table.</p>
+</section>
+</div>
+</div>
+<p><strong>Principle 2.</strong> When a factor is <em>crossed</em> with a smooth via <code>by =</code>, the smooth is centred (sum-to-zero), so the level-specific intercept must come from a parametric main effect. Always include the factor as a main effect alongside <code>s(x, by = factor)</code>. This rule does <strong>not</strong> apply to <code>bs = "fs"</code> factor-smooth interactions or to <code>bs = "re"</code> random-effect margins, which are not centred — those terms carry their own intercepts.</p>
+<p>It depends on where you want shrinjage, wether to add main effects with bs=“re”: Additive main effects are not redundant with te(…, bs=“re”), because te() (unlike ti()) already contains its marginal main effects. That is why mgcv adds identifiability constraints when you write s(x) + s(y) + te(x, y). So whether main effects appear additively isn’t about whether they’re “in” the model — they always are. The question is where the penalty sits.</p>
+<p>Without + sex + age_group, in the model te(year, bmi, sex, age_group, bs=c(“tp”, “tp”, “re”, “re”)) the marginal effect of sex/age_group lives entirely inside te() and is subject to the bs = “re” random-effect penalty — i.e., shrunk toward zero with the same variance component as the interaction deviations. With + sex + age_group, the additive term carries the unpenalised fixed-effect main effect; the te() carries the shrunk interaction deviations only. This is the standard te = main + ti decomposition. So the 2nd structure is closer to what you want: don’t shrink the main effect of sex toward zero just because you also want shrunk interactions.</p>
+<hr>
+<p><strong>1. <code>tx + s(age, by = tx)</code></strong></p>
+<p>Two independent age curves, one per treatment arm, each with its own smoothing parameter. The fixed <code>tx</code> term provides the level-specific intercepts that the centred <code>by =</code> smooths cannot. This is the workhorse for “does the treatment effect depend on age?”. Marginaleffects extracts the answer cleanly with <code>comparisons(model, variables = "tx", by = "age")</code>.</p>
+<p><strong>2. <code>s(age, region, bs = "fs", xt = "cr")</code></strong></p>
+<p>A per-region age curve, with cubic regression splines as the per-level basis (the <code>xt = "cr"</code> argument controls the marginal basis; the default is <code>"tp"</code>). All region-curves share <strong>one</strong> smoothing parameter, which is what gives this term its random-effect character: regions with little data are pooled toward a common shape. Note: <code>bs = c("cr", "fs")</code> is not valid <code>s()</code> syntax — <code>bs</code> in <code>s()</code> is one string, and the marginal basis for an <code>"fs"</code> smoother is set via <code>xt</code>, not via a vector to <code>bs</code>.</p>
+<p><strong>3. <code>te(age, bmi, region, bs = c("tp", "tp", "re"))</code></strong></p>
+<p>Treats <code>region</code> as a random effect and shrinks the treatment contrast toward zero.</p>
+<p><strong>4. <code>te(age, bmi) + sex + s(region, bs = "re")</code></strong></p>
+<p>Clean baseline structure with no treatment. A joint smooth surface of age × bmi (main effects and interaction baked in, with a separate smoothing parameter per margin so rescaling either covariate is harmless), <code>sex</code> as parametric, <code>region</code> as a random intercept. Good starting point for an exploratory adjusted model. To add treatment, prefix with <code>tx +</code> and consider whether <code>s(age, by = tx)</code> or other modifiers are warranted.</p>
+<p><strong>5. <code>s(age) + s(bmi) + ti(age, bmi) + sex + s(region, bs = "re")</code></strong></p>
+<p>The ANOVA-style decomposition of <code>te(age, bmi)</code>. Main effects of age and bmi enter as separate smooths; the <em>pure</em> interaction enters through <code>ti()</code>, which strips the marginal main effects out. The advantage over <code>te(age, bmi)</code>: you can read off whether the interaction matters from the <code>summary()</code> table — its EDF, p-value, and contribution are isolated from the main effects. The fitted prediction surface is essentially the same as <code>te()</code>, so for marginaleffects-only workflows the two are interchangeable; for inferential reporting on the interaction, prefer this form.</p>
+<p><strong>6. <code>s(age, region, bs = "fs") + s(bmi) + sex</code></strong></p>
+<p>Per-region age curves with shared smoothing parameter, plus main effects of bmi and sex. No global age curve, so each regional curve is a stand-alone fit; if you want regional curves to be <em>deviations from a common shape</em>, write <code>s(age) + s(age, region, bs = "fs")</code> instead. To add treatment under principle 2 (treatment as fixed), the natural extension is <code>tx + s(age, by = tx) + s(age, region, bs = "fs") + s(bmi) + sex</code>.</p>
+<p><strong>7. <code>te(age, bmi, region, bs = c("tp", "tp", "re")) +  sex</code></strong></p>
+<p>3-way smooths require dense data in every (age, bmi, region) neighbourhood you want to interpret.</p>
+<hr>
+</section>
+<section id="a-practical-hierarchy-for-tte" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="a-practical-hierarchy-for-tte"><span class="header-section-number">14.7</span> A practical hierarchy for TTE</h2>
+<p>If you are choosing among these for the physiotherapy study, the progression I would suggest is:</p>
+<p><code>tx + s(age) + s(bmi) + sex + s(region, bs = "re")</code> — establish the average treatment effect with a sensible adjusted baseline.</p>
+<p><code>tx + s(age, by = tx) + s(bmi) + sex + s(region, bs = "re")</code> — allow the treatment effect to vary smoothly with age, the most plausible single source of effect modification.</p>
+<p><code>tx + s(age, by = tx) + s(bmi, by = tx) + ti(age, bmi) + sex + s(region, bs = "re")</code> — allow effect modification by both age and bmi independently, while keeping the age × bmi interaction common across arms.</p>
+<p><code>tx + s(age, by = tx) + s(age, region, bs = "fs") + s(bmi) + sex</code> — fixed treatment effect with smooth age modification, plus partially-pooled regional deviations in the age curve.</p>
+<p>Compare with <code>AIC()</code> on models fitted with <code>method = "ML"</code>; refit the chosen one with <code>method = "REML"</code> for final reporting; and pass it to <code>marginaleffects</code> for the actual treatment-effect quantities. And if the inference on the treatment effect itself needs to be defensible to a sceptical reviewer, that is when AIPW/TMLE with the GAM as a SuperLearner candidate enters the picture.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./13-appendix-mcmc.html" class="pagination-link" aria-label="Appendix 4. MCMC">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./15-appendix-git.html" class="pagination-link" aria-label="Appendix 6 Git">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

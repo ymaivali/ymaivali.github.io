@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology - 4&nbsp; Rational thinking under certainty.</title>
+<title>Methodology - 15&nbsp; Appendix 6 Git</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./05-rational-uncertainty.html" rel="next">
-<link href="./03-irrational-thinking.html" rel="prev">
+<link href="./14-appendix-mgcv.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-rational-certainty.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./15-appendix-git.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -129,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link active">
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
   </div>
 </li>
@@ -204,7 +203,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
   </div>
 </li>
@@ -220,16 +219,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#an-historical-aside-tri-valued-logic" id="toc-an-historical-aside-tri-valued-logic" class="nav-link active" data-scroll-target="#an-historical-aside-tri-valued-logic"><span class="header-section-number">4.0.1</span> An historical aside: tri-valued logic</a></li>
+  <li><a href="#if-you-work-alone-push-directly-to-main" id="toc-if-you-work-alone-push-directly-to-main" class="nav-link active" data-scroll-target="#if-you-work-alone-push-directly-to-main"><span class="header-section-number">15.1</span> If you Work alone push directly to main</a></li>
+  <li><a href="#team-work-with-ai" id="toc-team-work-with-ai" class="nav-link" data-scroll-target="#team-work-with-ai"><span class="header-section-number">15.2</span> Team work (with AI)</a></li>
+  <li><a href="#working-in-terminal" id="toc-working-in-terminal" class="nav-link" data-scroll-target="#working-in-terminal"><span class="header-section-number">15.3</span> working in Terminal</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./15-appendix-git.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></h1>
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></h1>
 </div>
 
 
@@ -246,78 +247,113 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>If you have all the relevant data, without measurement error, bias, or anything else that might make it unreliable, then rational thinking is more or less the same thing as logical thinking. More precisely, propositional logic can be viewed a model of rational argument. Schematically, logical thinking looks like this:</p>
-<p>True premises -&gt; the algorithms of logic -&gt; true conclusions.</p>
-<p>The algorithms are used to convert premises into conclusions. If this is done correctly, then the truth of the conclusions is guaranteed as a logical necessity.</p>
-<p>For example:</p>
-<hr>
-<ul>
-<li><p>Premiss1: All men are mortal</p></li>
-<li><p>Premiss2: Socrates is a man</p></li>
-<li><p>Conclusion: Socrates is mortal</p></li>
-</ul>
-<hr>
-<p>The algorithm is given by the truth table, and the logical rule is called the conditional, a.k.a. the implication:</p>
-<ul>
-<li></li>
-</ul>
-<p>If A then B (a.k.a. A -&gt; B)</p>
-<ul>
-<li></li>
-</ul>
-<p>The truth table is:</p>
-<ul>
-<li></li>
-</ul>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">A</th>
-<th style="text-align: left;">B</th>
-<th style="text-align: left;">if A then B</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">T</td>
-<td style="text-align: left;">T</td>
-<td style="text-align: left;">T</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">T</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: left;">F</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">F</td>
-<td style="text-align: left;">T</td>
-<td style="text-align: left;">T</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">F</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: left;">T</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>The conditional is FALSE if and only if A is TRUE and B is FALSE. In all other cases the conclusion is TRUE. A -&gt; B does not mean that B is logically deducible from A. So, in any everyday meaning of the word, A does not imply B. All A -&gt; B means is that A and B have the same truth value. In formal logic every true statement implies every other true statement.</p>
-<p>Logical implication is a convenience rule rather than a fundamental rule of logic. The whole of propositional logic can be deduced from any of several sets of simpler rules, including {conjunction and negation}, {NAND – not(A and B)}, {NOR – not(A or B)}. This is why you can build computers that have a single type of logic gate. For example, a NAND gate’s output is up when at least one of the inputs is down, and down if both inputs are up. By combining NAND gates one can create any logic function.</p>
-<p>Three things to remember:</p>
+<p>Git is a software on your computer which tracks changes to your code files and saves snapshots of your project whenever you ask it to. It’s free, open source, and runs entirely on your machine. GitHub is a Microsoft cloud service that stores your Git repositories. It allows you to share them, access them remotely and back up lost files on your hard drive. For work with sensitive data a good alternative to Github is Codeberg (https://codeberg.org), which is run by a German nonprofit. They do not sell your data and do not train AI on your code.</p>
 <ol type="1">
-<li><p>The concept of causality is not encoded in logic. Logic is about co-occurrence of A and B; it cannot even express the thought that A might be a cause of B. Mathematical description of causal relations is its own thing, independent of classical logic and probability theory and statistical inference. We will come to it later.</p></li>
-<li><p>Propositional logic is monotonic, meaning that once a conclusion is achieved, then it cannot in principle be changed. Getting new data after forming one’s conclusions makes no difference – once you have a conclusion, this conclusion stands forever.</p></li>
-<li><p>Logic is deductive, like mathematics – it essentially provides risk-free arguments with the downside being that technically no new information can be bought into being via logical argument. Logic is an axiomatic system, like geometry. From axioms one can deduce theorems, a.k.a. rules for doing stuff, but these rules are already embedded in the axioms.</p></li>
+<li><p>Create an account on github.com</p></li>
+<li><p>Create a new repository on Github: New repository → name it → Create. Copy the URL it gives you.</p></li>
 </ol>
-<p>The previous points show that while the rules of logic can be important for the general structure of scientific argument (the most basic of them being that a thing cannot be TRUE and FALSE at the same time), they are clearly not sufficient for explaining, or modelling, or prescribing the scientific argument. This does not mean that a scientific argument is extra-logical or illogical, it merely means that we need an expanded non-monotonic logic that can deal with uncertainty.</p>
-<p>We need an expanded of logic that allows to make risky conclusions under uncertain information. This expanded logic must reduce into classical logic, when uncertainty is reduced to certainty. The “risky” part means that the expanded logic must be inductive – it must be able to generalize from particular data (countable instances of something happening) to general conclusions. Obviously, these general conclusions cannot be certain (uncertainty can never beget certainty), which leads us to the next requirement: the new logic must be able to quantify uncertainty – to give it numerical values.</p>
-<p>This expanded logic is called probability theory, and it quantifies uncertainty as probabilities. Probabilities are real numbers between 0 and 1 that conform to certain mathematical rules, which we describe later in chapter …</p>
-<section id="an-historical-aside-tri-valued-logic" class="level3" data-number="4.0.1">
-<h3 data-number="4.0.1" class="anchored" data-anchor-id="an-historical-aside-tri-valued-logic"><span class="header-section-number">4.0.1</span> An historical aside: tri-valued logic</h3>
-<p>In 1465 Peter de Rivo of the University of Louvain was asked by a student a thorny question: after Christ had told to St Peter “Thou will deny me thrice”, could St Peter, in principle, not denied Christ? If the answer had been “No”, then the de Rivo would have committed the heresy of determinism (without free will there is little point in christian doctrine of salvation). On the other hand, had the answer been “Yes”, that would have made Christ a liar, at least potentially so. In the event, the professors answer was “yes, St Peter had the power to not deny Christ, but this would not have made Christ a liar because his utterance to St Peter was neither true nor false, but has neutral truth value. And the contradictory truth value for a neutral statement is itself neutral. Accordingly, if you claimed that St Peter did not deny Christ, then your claim would be heretical only if it is false (in the sense that St Peter actually denied Christ as predicted). Thus, for a prediction about tomorrow to be true today, it must be unpreventably so.”Either there is no present and actual truth in the articles of faith about the future, or what they say is something that even a divine power cannot prevent.” This trivalent logic was condemned by the Pope in 1474, not to reemerge until the 20th century. The proof that we can build a self-contained probabilitistic logic where between True and False lie the infinite set of real numbers between 0 and 1, so that this logic is fully compatible with the traditional bivalent logic, had to wait until the middle of 20th century.</p>
+<p>3.Set up git on your machine in terminal: <code>git --version</code> checks if git is already installed. Instructions: https://git-scm.com/install/</p>
+<ol start="4" type="1">
+<li>configure your name and email (you do it only once) in terminal:</li>
+</ol>
+<p><code>git config --global user.name "Your Name"</code></p>
+<p><code>git config --global user.email "your@email.com"</code></p>
+<ol start="5" type="1">
+<li><p>initiate a repository (repo) by navigating in the terminal to your project folder and run:<code>git init</code> Git creates a hidden folder .git inside your project. That folder is the history of your project. Your project is now being tracked.</p></li>
+<li><p>commit your changes. Two lines:</p></li>
+</ol>
+<p><code>git add .</code></p>
+<p><code>git commit -m "Initial setup"</code></p>
+<p><code>git add .</code> includes all your files in the next snapshot (hence the dot). You can also add specific files with <code>git add filename</code> if you only want to commit some changes.</p>
+<p><code>git commit -m "message"</code> saves the snapshot with your commit message.</p>
+<p><code>git log</code> prints your commit with a timestamp.</p>
+<ol start="7" type="1">
+<li>Push to cloud service (like Github)</li>
+</ol>
+<p>To back it up to GitHub (or wherever), you need to create an empty repository there first, then connect your local one to it.</p>
+<p>On GitHub: click the “+” icon at the top right, choose “New repository,” give it a name, and make sure you do NOT check “Add a README” (you want the empty repository). Copy the URL it gives you.</p>
+<p>Then run these:</p>
+<p><code>git remote add origin https://github.com/yourusername/your-repo.git</code></p>
+<p><code>git push -u origin main</code></p>
+<p>The first line tells local Git where remote copy is. git push -u origin main uploads your commits. -u sets this as the default remote for, so after the first push you just run git push.</p>
+<p>The idea is to Repeat add → commit → push whenever you finish a task.</p>
+<p>Create a file called .gitignore in your project root. This file tells Git which files and folders not to follow. Passwords, API keys, large files, etc. Everything committed and pushed to a remote is there forever!</p>
+<p>RStudio has a built-in Git panel — you don’t have to use the terminal at all. see https://happygitwithr.com/rstudio-git-github</p>
+<ul>
+<li><p>File → New Project → Version Control → Git — paste your GitHub repository URL</p></li>
+<li><p>The Git tab appears in the top-right panel</p></li>
+<li><p>Check boxes next to changed files (= git add)</p></li>
+<li><p>Click Commit, write a message, click Commit again (= git commit)</p></li>
+<li><p>Click Push (= git push)</p></li>
+<li><p>Commit before you do anything important. If what you do fails, you can undo with one command: <code>git reset --hard HEAD</code>.</p></li>
+<li><p>Commit after successful changes to code. Each commit is a checkpoint you can return to.</p></li>
+</ul>
+<p>Every commit message is documentation. Months later, whether it’s human or an AI agent, commit messages make the history useful.</p>
+<p>to read your commit history is as important as knowing how to write it. These are the commands I use most:</p>
+<p><code>git log</code> Prints all commits, newest first</p>
+<p><code>git log --oneline</code> shows a compact view</p>
+<p><code>git show HEAD</code> what changed in the last commit?</p>
+<p><code>git diff abc1234 def5678</code> what changed between these commits?</p>
+<p><code>git show --stat abc1234</code> which files changed in a commit?</p>
+<p>When Claude Code starts a debug session it reads back through the recent commits. Here commit messages pay off.</p>
+<p>Commit history is also on GitHub’s web interface for pushed code. In your repo click “N commits” at the top of the file list.</p>
+<section id="if-you-work-alone-push-directly-to-main" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="if-you-work-alone-push-directly-to-main"><span class="header-section-number">15.1</span> If you Work alone push directly to main</h2>
+<p>Commit often, push regularly.</p>
+<p>A branch is a separate line of development that doesn’t affect main until you merge it back. To create one:</p>
+<p><code>git checkout -b experiment</code> makes a new branch called experiment and switches to it</p>
+<p><code>git add .</code></p>
+<p><code>git commit -m "try new xxx approach"</code></p>
+<p><code>git checkout main</code></p>
+<p><code>git merge experiment</code> merge the branch back to main</p>
+<p><code>git branch -D experiment</code> alternatively, just delete the branch, it dissapears.</p>
+<p>Branching is especially useful when you’re tasking AI. You give the agent a branch to work on, let it build and commit freely, then review before merging.</p>
+</section>
+<section id="team-work-with-ai" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="team-work-with-ai"><span class="header-section-number">15.2</span> Team work (with AI)</h2>
+<ol type="1">
+<li><p>Create a branch for your part of work</p></li>
+<li><p>Commit to that branch</p></li>
+<li><p>Push the branch to GitHub: <code>git push origin branch-name</code></p></li>
+<li><p>Open a Pull Request (PR) on GitHub to merge your branch into main</p></li>
+<li><p>Someone else reviews it and approves</p></li>
+<li><p>Merge to main</p></li>
+</ol>
+<p>The PR review protects main from broken code. The other pair of eyes might catch a bug, suggest a better approach, or ask a clarifying question. For PR you need to fill in the description field, which in turn becomes documentation: why this approach, what I considered and rejected. That context is useful later to understand what was done and why. When AI reads your repo, a PR description gives it context the commit message doesn’t.</p>
+<p>When Claude Code starts a session, one of its first actions is reading repository context: the file structure, the current state, and often the recent commits. Reading recent commits helps it understand how you name things, how you structure files, what you’ve already tried. Good history accelerates the agent’s work. Messy history slows it down. Think about commit message as a note to someone who has no other context.</p>
+<p>A merge conflict happens when there are two different versions of the same file and Git does not know which change to keep. Git marks the conflicting lines in the file, you open it, decide which version is correct, delete the conflict markers, and commit.</p>
+<p>Some commands</p>
+<p><code>git init</code> # Start tracking a folder <code>git status</code> # See what changed since last commit <code>git add .</code> # Stage all changes <code>git add filename.py</code> # Stage one specific file <code>git commit -m "message"</code> # Save a snapshot <code>git push</code> # Upload to remote <code>git pull</code> # Download from remote <code>git log</code> # See commit history <code>git log --oneline</code> # Compact history view <code>git diff</code> # See exactly what changed (unstaged) <code>git diff --staged</code> # See what’s staged for next commit <code>git show HEAD</code> # See the most recent commit in detail <code>git checkout -b branch-name</code> # Create and switch to new branch <code>git checkout main</code> # Switch back to main <code>git merge branch-name</code> # Merge branch into current branch <code>git branch -D branch-name</code> # Delete a branch <code>git reset --hard HEAD</code> # Undo all uncommitted changes (careful) <code>git reset --hard HEAD~1</code> # Undo last commit AND its changes (careful) <code>git revert HEAD</code> # Undo last commit but keep the history</p>
+</section>
+<section id="working-in-terminal" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="working-in-terminal"><span class="header-section-number">15.3</span> working in Terminal</h2>
+<p>In R <code>getwd()</code> gives you “/home/yourname/Documents/R/my_project”. Paste this path to Terminal cd path.</p>
+<p>Opening the Terminal in Windows: Search for PowerShell in the Start menu. In mac: Cmd + Space → type “Terminal”</p>
+<p>commands</p>
+<p>pwd — Where am I? <code>pwd</code> /home/yourname/Documents/R/my_project</p>
+<p>ls — What’s in here? <code>ls</code> data/ analysis.R README.md</p>
+<p>cd — Move somewhere <code>cd /home/yourname/Documents/R/my_project</code></p>
+<p>To go up one level: <code>cd ..</code></p>
+<p>AI tools need API keys. You pass them as environment variables.</p>
+<p>When you launch your terminal, you will see a prompt that often looks a little like this:</p>
+<p><code>Mac:~$</code> This is the main interface to the shell which tells you that you are on the machine called Mac and that your current working directory is ~ (a.k.a. “home”). The $ says that you are not the root user. At this prompt you can type a command. The most basic command is to execute a program (with arguments):</p>
+<p><code>Mac:~$ echo hello</code> hello</p>
+<p>Shell executed the program echo with the argument hello. The echo simply prints out its arguments. The shell parses the command by splitting it by whitespace, and then runs the program indicated by the first word, supplying each subsequent word as an argument to that the program. If you want to provide an argument that contains spaces or other special characters, quote the argument with ’ or “.</p>
+<p>An important command is <code>man</code> (manual), which looks up more information about any command. You can also usually get a short version of the help by passing –help as an argument to most commands.</p>
+<p>cd, or “change directory”: You pass it a path, and that path becomes your current working directory. You’ll also see the working directory reflected in the shell prompt:</p>
+<p><code>missing:~$ cd /bin</code> <code>missing:/bin$ cd /</code> <code>missing:/$ cd ~</code> <code>missing:~$</code></p>
+<p>If you don’t know where you are, pwd gives the current working directory. The current working directory allows to use relative paths. Absolute paths start with / and gives the full set of directories from the root of the file system (/). Relative paths are relative to the current working directory. In a relative path (not starting with /), the first path component is looked up in the current working directory, and subsequent components traverse as usual. For example:</p>
+<p><code>Mac:~$ cd /</code> <code>Mac:/$ cd bin</code> <code>Mac:/bin$</code></p>
+<p>Special components: . is “this directory”, and .. is “the parent directory”, so</p>
+<p><code>Mac:~$ cd /</code> <code>Mac:/$ cd bin/../bin/../bin/././../bin/..</code> <code>Mac:/$</code> You can usually use absolute and relative paths interchangeably for any command argument, just keep in mind what your current working directory is when using a relative one!</p>
+<p>If the shell is asked to execute a command, it consults an environment variable called $PATH that lists which directories the shell should search for programs when it is given a command:</p>
+<p><code>Mac:~$ echo $PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</code></p>
+<p><code>Mac:~$ which echo /bin/echo</code> <code>Mac:~$ /bin/echo $PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</code></p>
+<p>When we run the echo command, the shell sees that it should execute the program echo, and then searches through the :-separated list of directories in $PATH for a file by that name. We can find out which file is executed for a given program name using the which program. We can also bypass $PATH entirely by giving the path to the file we want to execute.</p>
+<p>we can determine all the programs we can execute by listing the contents of all the directories on $PATH. We can do this by passing a given directory path to the ls program, which lists files:</p>
+<p><code>Mac:~$ ls /bin</code></p>
+<p><code>cat file</code> prints the contents of file. <code>sort file</code> prints out the lines of file in sorted order. <code>uniq file</code> eliminates consecutive duplicate lines from file. <code>head file</code> and <code>tail file</code> print the first and last few lines.</p>
+<p><code>grep pattern file</code> finds lines matching pattern in file. Pattern is a regular expression. You can also specify a directory instead of a file (or leave it off for .) and pass -r to recursively search all the files in a directory.</p>
 
 
 </section>
@@ -734,14 +770,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./03-irrational-thinking.html" class="pagination-link" aria-label="1. Irrational thinking">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span>
+      <a href="./14-appendix-mgcv.html" class="pagination-link" aria-label="Appendix 5. mgcv">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05-rational-uncertainty.html" class="pagination-link" aria-label="3. Rational thinking under uncertainty.">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
