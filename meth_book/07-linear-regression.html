@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology - 7&nbsp; 5 Basic linear regression</title>
+<title>The Bayesian Way to Causal Epidemiology - 21&nbsp; Linear regression, causally</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./08-glm.html" rel="next">
-<link href="./06-bayesian-inference.html" rel="prev">
+<link href="./ch21-multiple-regression.html" rel="next">
+<link href="./ch19-sensitivity-analysis.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -102,6 +102,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -144,7 +146,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html">Part V. Bayesian regression: models to counterfactual predictions</a></li><li class="breadcrumb-item"><a href="./07-linear-regression.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -159,7 +161,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Methodology</a> 
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -175,61 +177,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Part I. How to think</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -237,38 +191,273 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,16 +472,34 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#adding-predictors" id="toc-adding-predictors" class="nav-link active" data-scroll-target="#adding-predictors"><span class="header-section-number">7.1</span> Adding predictors</a></li>
+  <li><a href="#from-one-distribution-to-a-conditional-one" id="toc-from-one-distribution-to-a-conditional-one" class="nav-link active" data-scroll-target="#from-one-distribution-to-a-conditional-one"><span class="header-section-number">21.1</span> From one distribution to a conditional one</a></li>
+  <li><a href="#the-two-line-model" id="toc-the-two-line-model" class="nav-link" data-scroll-target="#the-two-line-model"><span class="header-section-number">21.2</span> The two-line model</a></li>
+  <li><a href="#what-the-model-is-doing" id="toc-what-the-model-is-doing" class="nav-link" data-scroll-target="#what-the-model-is-doing"><span class="header-section-number">21.3</span> What the model is doing</a></li>
+  <li><a href="#priors-and-what-they-do-to-the-line" id="toc-priors-and-what-they-do-to-the-line" class="nav-link" data-scroll-target="#priors-and-what-they-do-to-the-line"><span class="header-section-number">21.4</span> Priors, and what they do to the line</a></li>
+  <li><a href="#a-predictor-with-no-values-other-than-0-and-1" id="toc-a-predictor-with-no-values-other-than-0-and-1" class="nav-link" data-scroll-target="#a-predictor-with-no-values-other-than-0-and-1"><span class="header-section-number">21.5</span> A predictor with no values other than 0 and 1</a></li>
+  <li><a href="#the-model-as-a-counterfactual-prediction-machine" id="toc-the-model-as-a-counterfactual-prediction-machine" class="nav-link" data-scroll-target="#the-model-as-a-counterfactual-prediction-machine"><span class="header-section-number">21.6</span> The model as a counterfactual prediction machine</a>
+  <ul class="collapse">
+  <li><a href="#a-continuous-outcome-in-the-master-cohort" id="toc-a-continuous-outcome-in-the-master-cohort" class="nav-link" data-scroll-target="#a-continuous-outcome-in-the-master-cohort"><span class="header-section-number">21.6.1</span> A continuous outcome in the master cohort</a></li>
+  </ul></li>
+  <li><a href="#reading-a-coefficient-through-a-dag" id="toc-reading-a-coefficient-through-a-dag" class="nav-link" data-scroll-target="#reading-a-coefficient-through-a-dag"><span class="header-section-number">21.7</span> Reading a coefficient through a DAG</a>
+  <ul class="collapse">
+  <li><a href="#what-the-cohorts-crude-slope-contains" id="toc-what-the-cohorts-crude-slope-contains" class="nav-link" data-scroll-target="#what-the-cohorts-crude-slope-contains"><span class="header-section-number">21.7.1</span> What the cohort’s crude slope contains</a></li>
+  </ul></li>
+  <li><a href="#what-randomisation-buys" id="toc-what-randomisation-buys" class="nav-link" data-scroll-target="#what-randomisation-buys"><span class="header-section-number">21.8</span> What randomisation buys</a>
+  <ul class="collapse">
+  <li><a href="#randomisation-precision-and-the-shape-of-the-graph" id="toc-randomisation-precision-and-the-shape-of-the-graph" class="nav-link" data-scroll-target="#randomisation-precision-and-the-shape-of-the-graph"><span class="header-section-number">21.8.1</span> Randomisation, precision, and the shape of the graph</a></li>
+  </ul></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">21.9</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">21.10</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html">Part V. Bayesian regression: models to counterfactual predictions</a></li><li class="breadcrumb-item"><a href="./07-linear-regression.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></h1>
+<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></h1>
 </div>
 
 
@@ -309,248 +516,927 @@ window.Quarto = {
 </header>
 
 
-<p>Lets start by thinking once more about modeling a normally distributed continuous variable, y, with the normal model:</p>
-<p><span class="math display">\[ y \sim normal(\mu, \sigma)\]</span></p>
-<p>We will get the mean y (<span class="math inline">\(mean = \mu\)</span>) and data level sd (<span class="math inline">\(SD = \sigma\)</span>) from this model. But what if we want to model the mean y and/or the sd stratified according to different levels of another variable, x?</p>
-<p>Suppose that we have measured on each object of measurement its height and we also know its sex. We code the male sex with 0 and female sex with 1, so the sex is now technically a continuous variable, for modeling purposes. We want to model the mean height for sex = 0 and for sex = 1 subjects. The easiest way to do this would be to partition the data by sex and run 2 separate models. <span class="math display">\[h_{sex = 0} \sim normal(\mu, \sigma)\]</span></p>
-<p><span class="math display">\[h_{sex = 1} \sim normal(\mu, \sigma)\]</span> We will get separate estimates from separate models, which know nothing of each other, and from these, we can get effect sizes with full posteriors.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<hr>
-<p>This is wasteful, however, because we could use the information on females heights on males heights, and <em>vice versa</em>. The model, by which we do this, is called <em>linear regression</em>. We regress y on x. The regression model differs from the simple <span class="math inline">\(y \sim normal()\)</span> model in that as the simple model estimates the unconditional (a.k.a. marginal) probability of P(Y), the regression model estimates a conditional probability <span class="math inline">\(P(Y\vert x_i)\)</span>, where <span class="math inline">\(x_i\)</span> stands for some fixed value(s) of one or more predictor variables. We estimate the mean value of Y given pre-specified exact values of X.</p>
+<p>This chapter does two things. The first is to build the simplest regression model – one outcome, one predictor – and to say what each of its parts estimates. The second is to ask what has to be true of the world before the fitted slope answers a causal question.</p>
+<p>The two are worth keeping apart. The model estimates a conditional mean whether or not a causal claim is in view, and the arithmetic is the same either way; what the resulting number <em>means</em> is settled outside the fit, by the design that produced the data and by the graph that describes it. The first part of the chapter is therefore about the machinery, and the second returns to the book’s master cohort to ask which of its questions this machinery can answer. Models with more than one predictor – adjustment, interaction, curved terms – are the subject of Chapter 21.</p>
+<section id="from-one-distribution-to-a-conditional-one" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="from-one-distribution-to-a-conditional-one"><span class="header-section-number">21.1</span> From one distribution to a conditional one</h2>
+<p>Let’s start by thinking once more about modelling a normally distributed continuous variable with the normal model. Writing <span class="math inline">\(y_i\)</span> for the value measured on subject <span class="math inline">\(i\)</span>, where <span class="math inline">\(i = 1, \dots, n\)</span> runs over all the subjects in the data:</p>
+<p><span class="math display">\[ y_i \sim normal(\mu, \sigma)\]</span></p>
+<p>This model has two parameters. From it we get the mean of y (<span class="math inline">\(mean = \mu\)</span>) and the data-level sd (<span class="math inline">\(SD = \sigma\)</span>). Note what the subscripts do and do not say: <span class="math inline">\(y_i\)</span> carries an <span class="math inline">\(i\)</span> because every subject has their own measured value, while <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> do not, because the model gives every subject the <em>same</em> mean and the same sd. This convention – a subscript marks what is allowed to differ between observations – is worth getting used to now, because the multilevel models of Chapter 27 are built by adding subscripts to parameters that do not have them here.</p>
+<p>But what if we want the mean of y, or the sd, to differ according to the level of some other variable, x?</p>
+<p>Suppose we have measured each subject’s height and we also know their sex. We code male as 0 and female as 1. This 0/1 variable is not continuous, but it is <em>numeric</em>, and that is all the arithmetic of line-fitting requires. We want the mean height for the sex = 0 subjects and for the sex = 1 subjects.</p>
+<p>The easiest way to do this would be to split the data by sex and run two separate models:</p>
+<p><span class="math display">\[h_i \sim normal(\mu_0, \sigma_0) \quad \text{for the subjects with } sex_i = 0\]</span></p>
+<p><span class="math display">\[h_i \sim normal(\mu_1, \sigma_1) \quad \text{for the subjects with } sex_i = 1\]</span></p>
+<p>We get separate estimates from separate models, which know nothing of each other, and from these we can get an effect size with a full posterior.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>This is wasteful, however, because the female heights carry information about the male heights, and <em>vice versa</em> – at the very least, both groups inform the same <span class="math inline">\(\sigma\)</span>, so pooling them estimates it from twice as much data. The model that does this is called <em>linear regression</em>. We regress y on x.</p>
+<p>The regression model differs from the simple <span class="math inline">\(y_i \sim normal()\)</span> model in what it estimates. The simple model estimates the unconditional (a.k.a. marginal) distribution <span class="math inline">\(P(Y)\)</span>; the regression model estimates a conditional distribution <span class="math inline">\(P(Y \vert X = x)\)</span>, the distribution of Y among subjects who share a given value <span class="math inline">\(x\)</span> of the predictor. We estimate the mean value of Y at pre-specified values of X.</p>
 <blockquote class="blockquote">
 <p>In principle, we should strive for big models that use all our data. However, for practical reasons, we can also divide the data and run separate models. Statistics is a practical thing. If a full model is too hard to specify, to understand, or to fit, use several smaller models instead!</p>
 </blockquote>
-<p>A regression model can be built in different ways. For instance, we could say to the model that (i) different levels of sex (the X-predictor) can be associated with different mean heights (the predicted variable), but the individual heights at both levels of sex must have identical sd-s; or (ii) that mean heights of both sexes must be identical, but individual heights may have different sd-s; or (iii) that both mean heghts and sd-s of indovodual heights are allowed to vary by sex. The most common model, by far, would be (i), so lets start from that one.</p>
+<p>A regression model can be built in different ways. We could tell the model that (i) different levels of sex (the predictor) can be associated with different mean heights (the predicted variable), but the individual heights at both levels of sex must have identical sd-s; or (ii) that mean heights of both sexes must be identical, but individual heights may have different sd-s; or (iii) that both the mean heights and the sd-s of individual heights are allowed to vary by sex. Model (i) is the usual choice, so let’s start from that one.</p>
 <ul>
 <li><p>What we model is the Y-variable (height).<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
 <li><p>What we model Y on is the X-variable (sex).<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p></li>
-<li><p>The Model consists of two parts, the deterministic part and the stochastic part: (i) the process model shows the precise deterministic relationship between a mean Y value and a precise X value (denoted <span class="math inline">\(x_i\)</span>); (ii) the likelihood shows how we model stochastically the variation in the Y-variable (but not in the X-variable). Linear models can only have a normal or a students t likelihood. Other likelihoods, like binomial, Poisson, lognormal, etc., are allowed in GLMs (Generalized Linear Models), of which more in later chapters.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p></li>
+<li><p>The model consists of two parts, the deterministic part and the stochastic part: (i) the process model gives the deterministic relationship between the mean of Y and the value of X; (ii) the likelihood says how we model the variation in the Y-variable stochastically (there is no model for variation in the X-variable – X is conditioned on, taken as given). In this book, linear models use a normal or a Student-t likelihood with an identity link. Other likelihoods – binomial, Poisson, lognormal – come with a non-identity link and belong to the GLMs (Generalised Linear Models) of the next chapter.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p></li>
 </ul>
-<p>The linear process model for the mean (remember, we want the mean to vary, but the sd to stay put in different levels of x) is then <span class="math inline">\(\mu = \alpha + \beta x\)</span>, where <span class="math inline">\(\alpha\)</span> is the intercept and <span class="math inline">\(\beta\)</span> is the slope. This is nothing more complicated than linear equation, which allows to place a straight line through 2D Cartesian space. It binds the x-variable (sex) into <span class="math inline">\(\mu\)</span>, but in doing so, we have redefined the parameter <span class="math inline">\(\mu\)</span> through two new parameters: intercept (<span class="math inline">\(\alpha\)</span>) and slope (<span class="math inline">\(\beta\)</span>).<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> So, instead of <span class="math inline">\(\mu\)</span>, we will be fitting these two.</p>
-<p><span class="math display">\[y \sim normal(\mu, \sigma)\]</span></p>
-<p><span class="math display">\[\mu = \alpha + \beta x\]</span></p>
-<p>or, equivalently, <span class="math inline">\(y \sim normal(\alpha + \beta x, \sigma)\)</span>, or, equivalently <span class="math inline">\(y = \alpha + \beta x + normal(0, \sigma)\)</span>.</p>
-<p>We now need three priors, one each for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, and <span class="math inline">\(\sigma\)</span>.</p>
-<p><span class="math display">\[\alpha \sim normal(.,.)\]</span></p>
-<p><span class="math display">\[\beta \sim normal(.,.)\]</span></p>
-<p><span class="math display">\[\sigma \sim student_t(.,.,. )\]</span></p>
-<p>Next we do a simple simulation of two groups, each N = 100 and sd = 50, mu1 = 100 and mu2 = 110. The plotting of these data shows a moderate difference of the means, relative to sd.</p>
-<div class="cell" data-fig.margin="true">
+</section>
+<section id="the-two-line-model" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="the-two-line-model"><span class="header-section-number">21.2</span> The two-line model</h2>
+<p>The linear process model for the mean (remember: we want the mean to vary with x, but the sd to stay put) is</p>
+<p><span class="math display">\[\mu_i = \alpha + \beta x_i\]</span></p>
+<p>where <span class="math inline">\(\alpha\)</span> is the intercept and <span class="math inline">\(\beta\)</span> is the slope. This is nothing more complicated than the equation of a straight line in 2D Cartesian space. It binds the x-variable (sex) into <span class="math inline">\(\mu_i\)</span>, and in doing so redefines the single parameter <span class="math inline">\(\mu\)</span> through two new parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> So instead of <span class="math inline">\(\mu\)</span>, we will be fitting these two.</p>
+<p>The subscripts now do some work. <span class="math inline">\(\mu_i\)</span> carries an <span class="math inline">\(i\)</span> because the model predicts a different mean for each subject – different, that is, whenever their <span class="math inline">\(x_i\)</span> differs. <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> carry no subscript, because there is one line for everybody, and <span class="math inline">\(\sigma\)</span> carries no subscript, because there is one residual sd for everybody. Chapter 27 will be about relaxing precisely those three restrictions.</p>
+<p><span class="math display">\[y_i \sim normal(\mu_i, \sigma)\]</span></p>
+<p><span class="math display">\[\mu_i = \alpha + \beta x_i\]</span></p>
+<p>or, equivalently, <span class="math inline">\(y_i \sim normal(\alpha + \beta x_i, \sigma)\)</span>, or, equivalently again,</p>
+<p><span class="math display">\[y_i = \alpha + \beta x_i + \varepsilon_i, \qquad \varepsilon_i \sim normal(0, \sigma)\]</span></p>
+<p>where <span class="math inline">\(\varepsilon_i\)</span> is subject <span class="math inline">\(i\)</span>’s <em>residual</em>, the vertical distance from the fitted line to the observed point. The three forms say the same thing; the third one is the one to keep in mind when we ask, below, what the model is actually doing.</p>
+<p>We now need three priors, one each for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, and <span class="math inline">\(\sigma\)</span>. For height in centimetres, and with sex coded 0/1, we can reason about each of them:</p>
+<p><span class="math display">\[\alpha \sim normal(170, 20)\]</span></p>
+<p><span class="math display">\[\beta \sim normal(0, 20)\]</span></p>
+<p><span class="math display">\[\sigma \sim normal^{+}(7.5, 2)\]</span></p>
+<p>The prior on <span class="math inline">\(\alpha\)</span> says that mean male height is in the region of 170 cm, give or take a few tens of centimetres.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> The prior on <span class="math inline">\(\beta\)</span> is centred on zero – we do not build the direction of the sex difference into the model – and its sd of 20 cm allows any difference the data could plausibly show.</p>
+<p>The prior on <span class="math inline">\(\sigma\)</span> deserves as much thought as the other two, and it is worth resisting the habit of treating it as a nuisance parameter to be covered by some conventional wide default. <span class="math inline">\(\sigma\)</span> is the within-sex spread of adult height, and that is a biological quantity about which we know a great deal. National anthropometric surveys publish the full percentile distribution of adult height separately by sex, and those distributions imply a within-sex sd in the region of 7 cm; mean height varies considerably between populations and across birth cohorts, but the within-sex spread is much more stable.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> A study reporting a within-sex sd of 2 cm, or of 25 cm, would be reporting a measurement failure rather than a discovery. Note the asymmetry this creates between the parameters: we are less certain about <span class="math inline">\(\alpha\)</span> – which population is this, and from which birth cohort? – than about <span class="math inline">\(\sigma\)</span>, which is the reverse of the way the two are conventionally treated. The notation <span class="math inline">\(normal^{+}\)</span> denotes a normal distribution truncated at zero (<code>brms</code> does this automatically for parameters that must be positive, so <code>prior(normal(7.5, 2), class = "sigma")</code> is what you write), which respects the constraint that an sd cannot be negative.</p>
+<p>There is a real choice to be made here, and it is not between “informative” and “uninformative” priors. It is between a <strong>weakly informative</strong> prior, appropriate when we expect the data to dominate, and a <strong>strongly informative</strong> one, appropriate when we hold prior information comparable to or better than what the data carry. Once the model is fitted, the callout at the end of this section works the comparison through on these data.</p>
+<p>Now we simulate the data the story describes: 100 men and 100 women, with mean heights of 176 and 164 cm and an sd of 7 cm in both groups.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3231</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n_per_group <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>height <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">female =</span> <span class="fu">rep</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, <span class="at">each =</span> n_per_group),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">h      =</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(n_per_group, <span class="at">mean =</span> <span class="dv">176</span>, <span class="at">sd =</span> <span class="dv">7</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">rnorm</span>(n_per_group, <span class="at">mean =</span> <span class="dv">164</span>, <span class="at">sd =</span> <span class="dv">7</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Two-goup simulated data.</figcaption>
+<div id="fig-height-raw" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-height-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-linear-regression_files/figure-html/fig-height-raw-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-height-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.1: Simulated heights of 100 men (sex = 0) and 100 women (sex = 1), jittered horizontally so the individual points are visible. Blue points mark the two group means. The groups differ in mean by about one and a half within-group sd-s, which still leaves them overlapping substantially.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>We fit the model in brms:</p>
+<p>The realised group means are 176.2 cm and 165.5 cm, a difference of about 10.7 cm, which is roughly 1.5 within-group sd-s. <a href="#fig-height-raw" class="quarto-xref">Figure&nbsp;<span>21.1</span></a> shows what a difference of that size looks like: the means are clearly apart, but the distributions overlap heavily, and a randomly chosen woman is taller than a randomly chosen man about 14% of the time. Keep this picture in mind – “the sexes differ in mean height by 11 cm” and “you can tell someone’s sex from their height” are very different claims, and only the first is what the model estimates.</p>
+<p>We fit the model in <code>brms</code>:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>simple_lin_m0 <span class="ot">&lt;-</span> <span class="fu">brm</span>(y<span class="sc">~</span>x, <span class="at">data=</span>df1, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                     </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">file =</span> <span class="st">"models/simple_lin_m0.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m_height <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  h <span class="sc">~</span> female,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data   =</span> height,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior  =</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">170</span>, <span class="dv">20</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">20</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">7.5</span>, <span class="dv">2</span>),  <span class="at">class =</span> <span class="st">"sigma"</span>)),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/m_height"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>            Estimate Est.Error     Q2.5     Q97.5
-b_Intercept 89.84760  7.200801 75.47945 104.28763
-b_xB        33.00253 10.433655 11.96027  53.69062
-sigma       51.31485  3.772500 44.65745  59.51646</code></pre>
+<pre><code>              Estimate Est.Error       Q2.5      Q97.5
+b_Intercept 176.196097 0.6978166 174.865974 177.586755
+b_female    -10.619829 0.9818738 -12.570950  -8.652620
+sigma         7.017995 0.3619221   6.335516   7.774166</code></pre>
 </div>
 </div>
 <ul>
-<li><p>Intercept denotes <span class="math inline">\(\alpha\)</span>, which in our case is the mean for group 1 (where x = 0)</p></li>
-<li><p>xB denotes <span class="math inline">\(\beta\)</span>, which is the effect size, a.k.a. difference between means of group 1 and group 2.</p></li>
+<li><p><code>Intercept</code> is <span class="math inline">\(\alpha\)</span>: the estimated mean height in the group coded 0, i.e.&nbsp;the men.</p></li>
+<li><p><code>female</code> is <span class="math inline">\(\beta\)</span>: the estimated difference in mean height between the group coded 1 and the group coded 0, i.e.&nbsp;the effect size.</p></li>
+<li><p><code>sigma</code> is <span class="math inline">\(\sigma\)</span>: the sd of individual heights <em>within</em> a sex. Compare it with the sd we simulated, 7 cm.</p></li>
 </ul>
-<p>The mean of group 2 is then <span class="math inline">\(\alpha + \beta\)</span> and the <span class="math inline">\(\beta\)</span> coefficient is our estimate for the difference between the groups.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>A plot of our estimates for the mean of each groups (A and B), the effect size, and the individual-level variation.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>So far we used a categorical x-variable or predictor, sex, which we recoded as a continuos variable from which we have 2 values (0 and 1). We did this solely in the interest of the mathematics of line fitting. Thanks to this trick we could ask about the height of someone whose sex = 500. There is no problem getting an estimate the from the fitted model. All we have to do is to substitute the fitted values into intercept and slope coefficients. We will use the full posterior samples, so we do the calculation 4000 times (this is how many posterior samples we have) with slightly different estimates for intercept and slopes. As our Bayesian model considers all of these pairs plausible, our best option is to calcuate them all and plot the full posterior as an histogram. This posterior gives us the full information on uncertainty around the prediction.</p>
+<p>The mean of the second group is then <span class="math inline">\(\alpha + \beta\)</span>, and the <span class="math inline">\(\beta\)</span> coefficient is our estimate of the difference between the groups.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Here <span class="math inline">\(\beta\)</span> is negative, because we coded women as 1 and they are shorter. Note that the fitted <span class="math inline">\(\beta\)</span>, -10.62 cm, is not the value we simulated (-12 cm): the model estimates the difference in <em>this sample</em>, and the sample was drawn with error. The posterior sd of 0.98 cm is the model’s own account of how far off it might be.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>y_500 <span class="ot">&lt;-</span> post<span class="sc">$</span>b_Intercept <span class="sc">+</span> post<span class="sc">$</span>b_xB <span class="sc">*</span> <span class="dv">500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell" data-fig.margin="true">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Posterior for an absurd prediction from linear model.</figcaption>
+<div id="fig-height-est" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-height-est-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-linear-regression_files/figure-html/fig-height-est-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-height-est-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.2: Posterior means and 95% credible intervals for four quantities derived from the same fit. Left panel: the mean height of each group, on the height scale. Right panel: the effect size (the difference between the two means) and the within-group sd of individual heights, which are differences and spreads rather than heights and so need their own scale. Note that the interval for the effect size is wider than either group mean’s interval – a difference is estimated less precisely than the two quantities it is a difference of.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>So the posterior depicted in the histogram tells us that the predicted height for a subject, whose sex = 500, is about 200-fold larger than the height of males and females. This is fine matemathically, but in the world it makes no sense in more than one level.</p>
-<p>However, if our predictor really has more meaningful levels than 0 and 1, then this is exactly how we fit and interpret the linear regression. The meaning of Intercept and slope remains the same:</p>
+<p>The interpretation of the two coefficients does not depend on the predictor being a 0/1 dummy. In general:</p>
 <ul>
-<li><p>The intercept is the estimated mean value (the expected value) of Y, if x = 0, or <span class="math inline">\(E(Y\vert X=0)\)</span>.</p></li>
-<li><p>The slope gives the change in the expected value of Y, if we increase the X value by one unit.</p></li>
+<li><p>The intercept is the expected value of Y when x = 0, or <span class="math inline">\(E(Y \vert X = 0)\)</span>.</p></li>
+<li><p>The slope is the change in the expected value of Y when we increase X by one unit.</p></li>
 </ul>
-<p>As this is <em>linear</em> regression, it makes no difference, what the actual X value is, every one-unit change in X is accompanied with a slope-unit change in the predicted mean Y.</p>
-<hr>
-<p>Now we simulate a regression for 2 continuous vars (N = 100, mean = 0, sd = 1):</p>
-<div class="cell" data-fig.margin="true">
+<p>Because this is <em>linear</em> regression, it makes no difference <em>where</em> on the x-axis that one-unit change happens: every one-unit increase in X buys the same <span class="math inline">\(\beta\)</span>-sized change in the predicted mean Y.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Uninformative, weakly informative, strongly informative: a comparison on σ">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Uninformative, weakly informative, strongly informative: a comparison on σ
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Three candidate priors for the within-sex sd of height, and what each one claims before seeing data:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>prior</th>
+<th>claim about <span class="math inline">\(\sigma\)</span></th>
+<th>P(<span class="math inline">\(\sigma &lt;\)</span> 1 cm)</th>
+<th>P(<span class="math inline">\(\sigma &gt;\)</span> 20 cm)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(1/\sigma\)</span> (Jeffreys)<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></td>
+<td>improper; scale-invariant, no claim</td>
+<td>undefined</td>
+<td>undefined</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(exponential(0.1)\)</span></td>
+<td>mean 10 cm, median 6.9 cm</td>
+<td>0.095</td>
+<td>0.135</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(normal^{+}(7.5, 10)\)</span></td>
+<td>around 7.5 cm, very loosely</td>
+<td>0.040</td>
+<td>0.137</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(normal^{+}(7.5, 2)\)</span></td>
+<td>around 7.5 cm, within a few cm</td>
+<td>0.0005</td>
+<td><span class="math inline">\(2 \times 10^{-10}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The two proper “let the data speak” choices assign something like a one-in-twenty to one-in-ten chance to a population in which adult heights within a sex vary by less than a centimetre, and about a one-in-seven chance to one in which they vary by more than 20 cm. Neither is a biological possibility. This is what treating <span class="math inline">\(\sigma\)</span> as a nuisance costs: not bias, usually, but a declared state of ignorance we do not actually hold. Note also that widening a <span class="math inline">\(normal^{+}\)</span> prior does not only add mass at the top – 23% of the untruncated <span class="math inline">\(normal(7.5, 10)\)</span> lies below zero, and truncation redistributes that mass over the positive line, so a “vague” prior on a positive parameter concentrates more probability near zero than one might intend.</p>
+<p><a href="#fig-sigma-priors" class="quarto-xref">Figure&nbsp;<span>21.3</span></a> fits the height model under three of these priors, at the full n = 200 and at a subsample of n = 10.</p>
+<div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Simulated variables to test linear regression for continuous predictor.</figcaption>
+<div id="fig-sigma-priors" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sigma-priors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-linear-regression_files/figure-html/fig-sigma-priors-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sigma-priors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.3: Prior (dashed grey) and posterior (solid) for sigma under three priors, at two sample sizes. The vertical line is the sd the data were simulated with, 7 cm. At n = 200 the three posteriors are indistinguishable – the likelihood has overwhelmed all three priors, and the choice does not matter. At n = 10 it does: the strongly informative prior keeps the posterior near 7 cm, while under the two weak priors the posterior mean drifts upward and the upper credible limit reaches beyond 14 cm.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>We run the model and plot out 50 random fits, using 50 random draws from the posterior.</p>
+<p>Posterior mean for <span class="math inline">\(\sigma\)</span>, with 95% credible interval:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>prior</th>
+<th>n = 200</th>
+<th>n = 10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(normal^{+}(7.5, 2)\)</span></td>
+<td>7.02 (6.37, 7.74)</td>
+<td>7.83 (5.45, 10.76)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(normal^{+}(7.5, 10)\)</span></td>
+<td>7.00 (6.35, 7.74)</td>
+<td>8.81 (5.31, 15.01)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(exponential(0.1)\)</span></td>
+<td>6.99 (6.34, 7.72)</td>
+<td>8.38 (5.15, 14.18)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(1/\sigma\)</span> (Jeffreys)</td>
+<td>6.98 (6.33, 7.72)</td>
+<td>8.34 (5.08, 14.42)</td>
+</tr>
+</tbody>
+</table>
+<p>Two conclusions, and they pull in different directions.</p>
+<p>At n = 200 the choice is irrelevant: the four posterior means span 0.03 cm and the interval limits agree to within 0.04 cm. Whoever is estimating <span class="math inline">\(\sigma\)</span> from 200 observations may use whatever prior they like – the likelihood has overwhelmed all four.</p>
+<p>At n = 10 the choice moves the answer. The strongly informative prior returns 7.8 cm with an upper limit of 10.8; the weak priors return 8.3 to 8.8 cm with upper limits from 14.2 to 15.0. Note which direction the weak priors err in: the subsample happens to have a residual sd of 7.5 cm, and the weak priors push the estimate <em>up</em> from there, because with 8 residual degrees of freedom the likelihood for <span class="math inline">\(\sigma\)</span> is right-skewed and a diffuse prior does nothing to restrain the upper tail. Which answer is <em>better</em> depends on a question the arithmetic cannot settle: is 7.5 <span class="math inline">\(\pm\)</span> 2 cm a fair summary of what we knew beforehand? For within-sex adult height it is, comfortably, and then the informative prior is not a thumb on the scale but the correct use of available information – it is the weak prior that misrepresents our state of knowledge. For a quantity we genuinely know little about, the same prior would be an unjustified constraint. The judgement is substantive and belongs in the methods section, not in a default.</p>
+<p><strong>A caution about improper priors.</strong> The Jeffreys prior <span class="math inline">\(p(\sigma) \propto
+1/\sigma\)</span> is <em>improper</em>: its integral over <span class="math inline">\((0,\infty)\)</span> diverges, so it is not a probability distribution and cannot be drawn from. Posterior estimation may still work – multiply an improper prior by a likelihood and the product is often a perfectly good normalisable posterior, which is why improper priors survive in Bayesian practice. But a <strong>prior predictive check</strong> requires drawing parameters from the prior and simulating data, and there is nothing to draw from. This is a practical reason to prefer proper priors quite apart from the philosophical ones: the prior predictive check is the main tool for noticing that a prior implies absurdities, and an improper prior makes that check unavailable. Chapter 9 returns to prior predictive simulation.</p>
+</div>
+</div>
+</section>
+<section id="what-the-model-is-doing" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="what-the-model-is-doing"><span class="header-section-number">21.3</span> What the model is doing</h2>
+<p>It is worth being explicit about what the fitting procedure is looking for, because <span class="math inline">\(\sigma\)</span> is a parameter of the model and not a summary statistic computed afterwards.</p>
+<p>The process model <span class="math inline">\(\mu_i = \alpha + \beta x_i\)</span> assigns each subject a predicted mean. The residual is what is left over,</p>
+<p><span class="math display">\[\varepsilon_i = y_i - \mu_i = y_i - (\alpha + \beta x_i)\]</span></p>
+<p>and the likelihood <span class="math inline">\(\varepsilon_i \sim normal(0, \sigma)\)</span> says that these leftovers are normally distributed around zero with sd <span class="math inline">\(\sigma\)</span>. Since the normal density falls off with the square of the distance from its mean, the log-likelihood of the data contains the term <span class="math inline">\(-\sum_i \varepsilon_i^2 / 2\sigma^2\)</span>: a line is more probable, given the data, when the sum of its squared residuals is smaller. This is where “least squares” comes from – in this particular model, the line that maximises the normal likelihood is also the line that minimises the sum of squared residuals. It is a consequence of choosing a normal likelihood, not a separate principle, and it stops being true as soon as the likelihood changes (which is why a Student-t likelihood is more tolerant of outliers: its tails are heavier, so a distant point is not penalised by the full square of its distance).</p>
+<p><a href="#fig-residuals" class="quarto-xref">Figure&nbsp;<span>21.4</span></a> draws the residuals for a continuous predictor.</p>
+<p>To draw them we need a continuous predictor, so we simulate one: <code>x</code> is 100 draws from <span class="math inline">\(normal(0,1)\)</span>, and <code>y</code> is <code>x</code> plus <span class="math inline">\(normal(0,1)\)</span> noise, so the true intercept is 0, the true slope is 1, and the true <span class="math inline">\(\sigma\)</span> is 1. (Only <code>x</code> has an sd of 1; <code>y</code>, being a sum of two such variables, has an sd of about 1.4.)</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>simple_lin_m1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(y<span class="sc">~</span>x, <span class="at">data =</span> xy_data,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                     </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">prior =</span> <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class=</span>b),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                     </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                     </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">file =</span> <span class="st">"models/simple_lin_m1.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>xy_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>xy_data<span class="sc">$</span>y <span class="ot">&lt;-</span> xy_data<span class="sc">$</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell" data-fig.margin="true">
+<div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>simple_lin_m1_post <span class="ot">&lt;-</span> <span class="fu">posterior_samples</span>(simple_lin_m1) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">50</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span><span class="cn">NULL</span>) <span class="sc">+</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">intercept=</span> simple_lin_m1_post<span class="sc">$</span>b_Intercept, </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                  </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">slope =</span> simple_lin_m1_post<span class="sc">$</span>b_x), </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>              </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">size=</span><span class="fl">0.3</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>)<span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m_xy <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  y <span class="sc">~</span> x,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data  =</span> xy_data,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">1</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"sigma"</span>)),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/m_xy"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
+<div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>The model is fitted with data. We see 50 random predictions of best fit based on 50 random draws from the posterior.</figcaption>
+<div id="fig-residuals" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-residuals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-linear-regression_files/figure-html/fig-residuals-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-residuals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.4: Residuals. The blue line is the fitted process model, drawn at the posterior mean of the intercept and slope; each red segment is one residual, the vertical distance from a subject’s observed y to the mean the model predicts for that subject’s x. The model estimates sigma as the sd of these leftovers.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>All regression lines go through both mean(y) and mean(x) – both are 0 in our sim. The data range is about 3-4 units: see how the fit gradually becomes uncertain beyond that. Whether or not it makes sense to predict mean y values beyond the x data range is a scientific question – the relations in nature are rarely linear beyond a short range, if that. We are not doing linear regression because we think that the world is linear, we do it because it is convenient and the models are easy to interpret from coefficients alone. The surprising thing is, though, that it often works. This is the metaphysical mystery behind linear regression: it tends to work.</p>
-<section id="adding-predictors" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="adding-predictors"><span class="header-section-number">7.1</span> Adding predictors</h2>
-<p>We add additional predictors when we believe (i) that all predictors (<span class="math inline">\(x_1, ..., x_i\)</span>) influence the predicted variable (y), and (ii) that those influences are independent of each other. Independence leads to an additive process model.</p>
-<p><span class="math display">\[y \sim normal(\mu, \sigma)\]</span></p>
-<p><span class="math display">\[\mu = \alpha + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_i x_i\]</span> and priors for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, and <span class="math inline">\(\sigma\)</span>.</p>
-<p>What happens if we expand our regression model by including more predictors?</p>
-<p>Now the slope of <span class="math inline">\(x_1\)</span> tells us, how much mean y changes, if we change <span class="math inline">\(x_1\)</span> by 1 unit and <span class="math inline">\(x_2\)</span> by 0 units (keep <span class="math inline">\(x_2\)</span> constant). Equivalently the slope of <span class="math inline">\(x_2\)</span> tells us, how much mean y changes, if we change <span class="math inline">\(x_2\)</span> by 1 unit and keep <span class="math inline">\(x_1\)</span> constant.</p>
-<p>There is another way of interpreting multiple regression betas: <span class="math inline">\(\beta_1\)</span> tells us, what extra information on predicting the y value we get from <span class="math inline">\(x_1\)</span>, if we already know how <span class="math inline">\(x_2\)</span> influences y. And conversely, what extra value in predicting y do we get from <span class="math inline">\(x_2\)</span>, if we already know how <span class="math inline">\(x_1\)</span> influences y. For instance, we can predict someones height from the length of his right foot, but if we already know the prediction from the left foot, the right foot gives us (almost) nothing. And since including it in the model leaves very little covariation with height that is not also covariation of the left foot with height (and vice versa), then most of the predictive information that is included in the <span class="math inline">\(R^2\)</span>, is not included in the respective betas (which consequently have extremely wide CI-s). This is collinearity.</p>
-<p>some points:</p>
-<ul>
-<li><p>there is no reason to think that if we compare models <span class="math inline">\(\mu = \alpha + \beta x_1\)</span> and <span class="math inline">\(\mu = \alpha + \beta_1 x_1 + \beta_2 x_2\)</span>, then <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\beta_1\)</span> would be similar, or even have the same sign. The first is the total effect of <span class="math inline">\(x_1\)</span> on y, and the second is, in causal interpretation, the direct effect of <span class="math inline">\(x_1\)</span> on y.</p></li>
-<li><p>if you have several predictors in your regression, then for easier comparison of the betas, it makes sense to standardize them. Then the predictors that have betas farther from zero, have more effect on y.</p></li>
-<li><p>If you have only continuous predictors, use this <code>x_st = (x - mean(x))/sd(x)</code>. Then all your predictors have mean = 0 and sd = 1. Then the intercept is the value of y, when all predictors are at their mean values (which is always 0), and each slope gives the change in mean y, if the relevant predictor changes by one standard deviation, and all other predictors remain unchanged.</p></li>
-<li><p>If you have both continuous and binary predictors, then you will get approximate comparability of betas with the following transformation: <code>x_st2 = (x - mean(x))/(2*sd(x))</code>. Now the meaning of the slope changes - it is the change in mean y if x changes by 2 standard deviations (that is from the 2.5th quantile to the 97.5th quantile, which is a change that covers almost the range of x variation). As before, all other X-s are kept constant, and intercept is connected to mean values of all X-s.</p></li>
-<li><p>sometimes transforming a predictor helps to linearize the y vs x relationship.</p></li>
-</ul>
-<p>The thing with adding predictors to linear regression process model, is that the additive model structure specifies parallel slopes. To see, what this means, lets simulate some data. We have a categorical variable z with 2 levels, “A” and “B”, denoting experimental conditions A and B. We have a x-variable (akin to a time variable), which covers the range 0 to 2 with 50 equally spaced points. And we have a continuous measurement variable y, which in experiment “A” goes up as x increases, and in experiment B goes down with equal rate.</p>
+<p>Two things follow from the picture, and both are worth naming because they are used later in the book.</p>
+<p><span class="math inline">\(\sigma\)</span> <strong>is the spread of y conditional on x, not the marginal spread of y.</strong> In the height model, sd(height) over all 200 subjects is 8.8 cm, while the fitted <span class="math inline">\(\sigma\)</span> is 7 cm. Both numbers are spreads of individual heights; what differs is what is held fixed. Taken one sex at a time the heights have sd-s of 7.3 and 6.6 cm, and the fitted <span class="math inline">\(\sigma\)</span> is the pooled version of those two, because model (i) constrains them to be equal. The marginal sd is the larger number because it also contains the 10.7 cm gap between the group means: with two equally sized groups differing in mean by <span class="math inline">\(\Delta\)</span>, <span class="math inline">\(\mathrm{var}(y) \approx \sigma^2 + (\Delta/2)^2\)</span>, which here gives 8.8 cm. So <span class="math inline">\(\sigma\)</span> has not stopped being variation in height. It is the variation in height that remains among people of the same sex – the same quantity the prior on <span class="math inline">\(\sigma\)</span> was reasoning about earlier in this chapter, where published percentile distributions gave a within-sex sd in the region of 7 cm.</p>
+<p>What is model-relative about <span class="math inline">\(\sigma\)</span> is the conditioning set, not the fact that it describes y. Add a predictor that carries information about height and <span class="math inline">\(\sigma\)</span> falls; add one that carries none and it does not. Two models of the same outcome therefore report <span class="math inline">\(\sigma\)</span>-s that are spreads of <em>different</em> conditional distributions, so a smaller <span class="math inline">\(\sigma\)</span> in one model is not the same quantity measured better – it is a different quantity. The descent also has a floor, set by measurement error and by whatever person-to-person variation no available predictor addresses. Within a correctly specified model <span class="math inline">\(\sigma\)</span> estimates that residual variation and is a substantive quantity, of the kind a prior can be elicited for; in a misspecified model it also absorbs the structure the process model has got wrong, and then it is not interpretable as anything in particular.</p>
+<p><span class="math inline">\(R^2\)</span> <strong>is that comparison expressed as a proportion.</strong> It is the share of the variance in y that the fitted values reproduce,</p>
+<p><span class="math display">\[R^2 = \frac{\mathrm{var}(\mu_i)}{\mathrm{var}(y_i)} = 1 - \frac{\mathrm{var}(\varepsilon_i)}{\mathrm{var}(y_i)}\]</span></p>
+<p>so <span class="math inline">\(R^2 = 0\)</span> means the predictors tell us nothing beyond the grand mean, and <span class="math inline">\(R^2 = 1\)</span> means the residuals have vanished. For the height model <span class="math inline">\(R^2\)</span> is about 0.37: knowing someone’s sex removes roughly that share of the variance in height, and the rest – most of it – is individual variation the model cannot address. <span class="math inline">\(R^2\)</span> answers a <em>predictive</em> question and it is not a measure of how good a causal model is; a correctly specified causal model can have a small <span class="math inline">\(R^2\)</span>, and a model full of colliders and mediators can have a large one. Chapter 26 takes up prediction as a goal in its own right.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Where the word 'regression' comes from, and the placebo effect">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Where the word ‘regression’ comes from, and the placebo effect
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Galton’s law of regression.</strong> The method is named after a causal claim about heredity that turned out to be a statistical artifact of imperfect correlation. Francis Galton worked on sweet peas, reporting to the Royal Institution in 1877 that large seeds gave smaller offspring and small seeds larger ones, and then on people. Offering prizes for family records, he then obtained the heights of 930 adult children and of their 205 parentages, rescaled the female heights to male equivalents, and compared each child with the <em>mid-parent</em>, the average of the two parents. The child’s deviation from the population mean was on average about two-thirds of the mid-parent’s. Galton called this regression towards mediocrity, and he took it to be a fact of inheritance: his stated object was to establish “a simple and far-reaching law that governs the hereditary transmission” of ordinary traits.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<p>The evidence against that causal reading is in Galton’s own paper. Reading his table down the columns instead of across the rows, he found that the most probable mid-parentage of a man of a given height deviates only about one-third as much from the mean as the man himself does. Regression runs backwards in time as well as forwards. No causal process can pull children towards mediocrity and simultaneously pull their parents towards it, so what produces the pattern is not a physical process at all. Stigler’s history follows both the discovery and the persistent misreadings that followed it.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p><strong>What regression to the mean is.</strong> For any two variables standardised to mean 0 and sd 1 with correlation <span class="math inline">\(r\)</span>, the conditional mean is <span class="math inline">\(E[Y \mid X = x] = rx\)</span>. Whenever <span class="math inline">\(|r| &lt; 1\)</span>, units selected because their <span class="math inline">\(x\)</span> is extreme have an expected <span class="math inline">\(y\)</span> closer to the mean, and the shrinkage is larger the weaker the correlation. It requires only conditioning on an extreme value of a variable that is measured with error, or that predicts the second measurement imperfectly. Nothing has to happen to the units in between. Chapter 2 lists it among the misreadings of randomness for this reason: the pattern invites a causal explanation and does not need one.</p>
+<p><strong>The regression fallacy.</strong> Horace Secrist spent a decade documenting that the most profitable firms in an industry became less exceptional over the following years, and that the least profitable became less exceptional too, and published the result in 1933 as <em>The Triumph of Mediocrity in Business</em>: a law by which competition erodes excellence. Harold Hotelling’s review showed that the finding was a consequence of grouping firms by their initial rank, present in any data with imperfect year-to-year correlation, and evidence of no economic tendency whatever.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
+<p><strong>Placebo-controlled experiments.</strong> The clinical version of Secrist’s error has a name – the placebo effect. Trials recruit on an extreme value: blood pressure above a threshold, a pain score above a cut-off, an abnormal laboratory result. That is selection on the baseline measurement of the outcome, so the follow-up measurement regresses towards the mean in every arm, treated and untreated alike, regardless of any treatment. The <em>within-arm</em> change from baseline in the placebo group is therefore a sum of regression to the mean, natural history, measurement error and any genuine psychological response, and the treatment-placebo comparison cannot separate them. McDonald and colleagues argued that most of the improvement attributed to placebo is statistical regression: across a series of trials, whose design protected against regression to the mean, the median placebo-arm change was 0.3%, while for 15 biochemical tests selecting patients three sd above the mean produced improvements from regression to the mean alone of between 2.5% (serum sodium) and 26% (lactate dehydrogenase).<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<p>The large placebo effect entered the literature from Beecher’s 1955 paper, which reported that about 35% of 1082 patients in 15 trials were satisfactorily relieved by placebo.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> Kienle and Kiene reanalysed the same 15 trials and found no evidence of a placebo effect in any of them; the reported improvements were accounted for by spontaneous improvement, fluctuation of symptoms, regression to the mean, additional treatment, scaling bias and a list of similar artefacts.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p>
+<p><strong>The design point.</strong> A placebo arm identifies the treatment effect, not the placebo effect. Both arms are recruited on the same extreme baseline and both regress by the same amount, so the randomised between-arm contrast is unaffected – this is part of what randomisation buys, and it is why the placebo control is a good design even though the quantity people read off the placebo arm is not the one they think. Identifying a placebo effect requires a third arm that receives no treatment at all. Hróbjartsson and Gøtzsche assembled the trials that have one: in the current version of that review, 202 trials across 60 clinical conditions, placebo versus no treatment gave a pooled relative risk of 0.93 (95% CI 0.88 to 0.99) for binary outcomes and a standardised mean difference of -0.23 (-0.28 to -0.17) for continuous ones, with the effect concentrated in patient-reported outcomes, principally pain and nausea, and larger in small trials.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> Something is there, but it is far smaller than the Beecher tradition claimed, and it is not what a placebo arm on its own measures. (The device itself is older than modern clinical trials: blind assessment and placebo controls were in use well before the twentieth-century trial.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a>)</p>
+<p>The placebo effect as usually reported is thus a pseudo-causal reading of regression to the mean – a change with no intervention behind it, given the name of an intervention, and then attributed to a mechanism (expectation, the healing power of the physician) that the design cannot identify.</p>
+<p><strong>What to do about it.</strong> The problem is created at the design stage and is best solved there. Do not select subjects on the same measurement that supplies the baseline; use an independent screening measurement, or average several. Where selection on baseline is unavoidable, analyse the follow-up value with baseline as a covariate rather than analysing change scores within the selected group, and keep a randomised control arm so that the regression is common to both. Barnett and colleagues set out the design and analysis options.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="The same three facts in information terms">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The same three facts in information terms
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This section has now stated three things that look separate. <span class="math inline">\(\sigma\)</span> is the spread of y once x is known. <span class="math inline">\(R^2\)</span> is the share of the variance in y that is explained by x. Regression to the mean shrinks a selected (individual) deviation by a factor. These are really a single statement, and the shortest way to see that is to count information.</p>
+<p><strong>The identities.</strong> Take a jointly normal pair <span class="math inline">\((X, Y)\)</span> with correlation <span class="math inline">\(r\)</span>, and standardise both to mean 0 and sd 1. Three quantities follow from the joint distribution alone:</p>
+<p><span class="math display">\[E[Y \mid X = x] = r\,x, \qquad
+  \sigma_{Y \mid X} = \sigma_Y \sqrt{1 - r^2}, \qquad
+  I(X;Y) = -\tfrac{1}{2}\ln(1 - r^2)\]</span></p>
+<p>The third is the <strong>mutual information</strong> between X and Y, the average amount by which knowing one reduces uncertainty about the other; in nats if the logarithm is natural, in bits if it is base 2.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> Combining the second and third gives the compact form:</p>
+<p><span class="math display">\[\frac{\sigma_{Y \mid X}}{\sigma_Y} = e^{-I(X;Y)},
+  \qquad r = \sqrt{1 - e^{-2I(X;Y)}}, \qquad R^2 = 1 - e^{-2I(X;Y)}\]</span></p>
+<p>The conditional spread shrinks by <span class="math inline">\(e^{-I}\)</span> and the conditional mean retains the fraction <span class="math inline">\(r\)</span> of the deviation. Both are functions of the same single number: how much the predictor tells you about the outcome. When it tells you nothing, <span class="math inline">\(I = 0\)</span>, <span class="math inline">\(\sigma_{Y\mid X} = \sigma_Y\)</span> and the best prediction for anybody is the grand mean – regression to the mean is total. When it tells you everything, <span class="math inline">\(I \to \infty\)</span>, <span class="math inline">\(r \to 1\)</span>, and there is none.</p>
+<p><strong>On the two models in this chapter.</strong> For the height model, <span class="math inline">\(\sigma\)</span> is 7 cm against an sd of 8.8 cm, a ratio of 0.8, so <span class="math inline">\(I = -\ln(0.8)\)</span> = 0.22 nats, or 0.32 bits: knowing a person’s sex is worth about a third of a bit about their height, and a third of a bit is what takes the sd from 8.8 to 7 cm. The simulated data of <a href="#fig-residuals" class="quarto-xref">Figure&nbsp;<span>21.4</span></a> were built with a true slope of 1 and equal signal and noise variances, so there <span class="math inline">\(r = 1/\sqrt{2}\)</span> and <span class="math inline">\(I\)</span> is exactly half a bit. Select the subjects at <span class="math inline">\(x = +2\)</span>, two sd above the mean of x, and the y they are expected to have is <span class="math inline">\(2/\sqrt{2} = 1.41\)</span> sd above the mean of y. The deviation has been multiplied by <span class="math inline">\(r\)</span>, and the half-bit is why.</p>
+<p><strong>Why “information” and not “entropy”.</strong> Conditioning does not increase anything. <span class="math inline">\(H(Y \mid X) \le H(Y)\)</span>, and the deficit is precisely <span class="math inline">\(I(X;Y)\)</span>, so the operation removes uncertainty rather than generating it. Mutual information is also symmetric, <span class="math inline">\(I(X;Y) = I(Y;X)\)</span>, which is the formal statement of what Galton found when he read his table by columns instead of rows. Reading regression to the mean as an entropy-like tendency of things to drift towards the middle would put back the directional, process language the previous callout removed, and it would put it back under a name that sounds like physics.</p>
+<p>The symmetry also explains why Galton’s two coefficients are not reciprocals. With independent parents of equal variance a mid-parent average has half the variance of an individual, so the forward slope <span class="math inline">\(r\,\sigma_{\text{child}}/\sigma_{\text{mid}}\)</span> is twice the backward slope <span class="math inline">\(r\,\sigma_{\text{mid}}/\sigma_{\text{child}}\)</span> – which is what <span class="math inline">\(\tfrac{2}{3}\)</span> and <span class="math inline">\(\tfrac{1}{3}\)</span> are. Their geometric mean, <span class="math inline">\(\sqrt{2/3 \times 1/3} \approx 0.47\)</span>, is the correlation itself, since the product of the two slopes is <span class="math inline">\(r^2\)</span>. The asymmetry is a fact about variances, not about heredity.</p>
+<p><strong>What maximum entropy does explain.</strong> Not the shrinkage, but its linear form. Given only a mean and a variance, the maximum-entropy joint distribution is the normal one (Chapter 7), and its conditional expectation is a straight line with slope <span class="math inline">\(r\)</span>. The line of this chapter is therefore the least-committal model of a conditional mean available to someone who claims to know second moments and nothing else. Shrinkage towards the mean would still occur under other joint distributions; a constant shrinkage factor would not.</p>
+<p><strong>Limits of the clean statement.</strong> Outside the normal and the other elliptical families the tidy version fails. Schmittlein showed that for commonly used probability mixture models conditional expectations regress not to the mean but to some other value, and that the usual corollary – units starting at the mean are expected to stay there – is false in general.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> Samuels proposed the weaker <em>reversion</em> toward the mean, a shift in the conditional expectation of the upper or lower portion of a distribution, as the property that does hold widely.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a> Two further restrictions are worth stating. The inequality <span class="math inline">\(H(Y \mid X) \le H(Y)\)</span> holds on average over x; for a particular value of x the conditional entropy can exceed the marginal one. And the whole account is about <em>standardised</em> deviations: where the variance grows over time, a raw deviation can widen while the standardised one shrinks.</p>
+</div>
+</div>
+</section>
+<section id="priors-and-what-they-do-to-the-line" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="priors-and-what-they-do-to-the-line"><span class="header-section-number">21.4</span> Priors, and what they do to the line</h2>
+<p>The chapter has declared three priors and then fitted the model without showing what the priors <em>are</em>. The clearest way to see a prior on a regression is to draw the lines it believes in, before any data are seen.</p>
+<p>The model of <a href="#fig-residuals" class="quarto-xref">Figure&nbsp;<span>21.4</span></a> was fitted with <span class="math inline">\(\alpha \sim normal(0,1)\)</span>, <span class="math inline">\(\beta \sim normal(0,1)\)</span>, and <span class="math inline">\(\sigma \sim normal^{+}(1, 1)\)</span>. All three are deliberately weak here, which is the appropriate choice for a change of reason rather than of habit: these are abstract simulated variables with no units and no literature behind them, so unlike the height example there is no external knowledge to encode. Drawing 50 <span class="math inline">\((\alpha, \beta)\)</span> pairs from those priors and plotting the corresponding lines gives the left panel of <a href="#fig-prior-post" class="quarto-xref">Figure&nbsp;<span>21.5</span></a>; the right panel does the same with 50 draws from the posterior after fitting.</p>
 <div class="cell">
+<div class="cell-output-display">
+<div id="fig-prior-post" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-prior-post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-linear-regression_files/figure-html/fig-prior-post-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-prior-post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.5: What the data do to the priors. Left: 50 lines drawn from the priors alpha ~ normal(0,1), beta ~ normal(0,1) – the model starts out willing to believe any slope between about -2 and 2, in either direction. Right: 50 lines drawn from the posterior of the same model after seeing the 100 data points. The lines are now bunched around a slope of about 1, and they fan out with distance from the mean of x, because that is where the data constrain them least.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Three things to read off the right-hand panel.</p>
+<p>First, the posterior is not a line but a cloud of lines. Every draw is a different <span class="math inline">\((\alpha, \beta)\)</span> pair that the data leave plausible, and any quantity we compute from the model should be computed from all of them, not from the posterior mean alone.</p>
+<p>Second, the fan is narrowest near the mean of x and widens away from it. This is not an accident of the drawing. The posterior sd of the fitted mean at a predictor value <span class="math inline">\(x\)</span> is proportional to</p>
+<p><span class="math display">\[\sqrt{\frac{1}{n} + \frac{(x - \bar{x})^2}{\sum_i (x_i - \bar{x})^2}}\]</span></p>
+<p>which is minimised at <span class="math inline">\(x = \bar{x}\)</span> and grows with the distance from it. Uncertainty about the slope has to pivot the line about somewhere, and it pivots about the centre of the data. (For a single least-squares fit the statement is stronger: the one OLS line passes through the centroid <span class="math inline">\((\bar{x}, \bar{y})\)</span>. For a posterior cloud of lines there is no such common point – only a narrow waist near <span class="math inline">\(\bar{x}\)</span>.) In this sample <span class="math inline">\(\bar{x}\)</span> is -0.03 and <span class="math inline">\(\bar{y}\)</span> is 0; both are near, but not equal to, the zero we simulated from.</p>
+<p>Third, x runs from about -2.5 to 2.1, and outside that span the fan keeps widening with nothing to check it. Whether it makes sense to predict mean y beyond the range of the x data is a scientific question, not a statistical one – relations in nature are rarely linear beyond a short range, if that. We do not use linear regression because we think the world is linear; we use it because it is convenient and its coefficients are easy to interpret. It often works anyway, which is the interesting part.</p>
+</section>
+<section id="a-predictor-with-no-values-other-than-0-and-1" class="level2" data-number="21.5">
+<h2 data-number="21.5" class="anchored" data-anchor-id="a-predictor-with-no-values-other-than-0-and-1"><span class="header-section-number">21.5</span> A predictor with no values other than 0 and 1</h2>
+<p>The height model’s predictor is a dummy: it takes the values 0 and 1 and nothing else. The fitting machinery does not know that. It will happily extrapolate the line, so we can ask it for the expected height of someone whose <code>female</code> = 500. There is no technical obstacle: we substitute 500 for <span class="math inline">\(x_i\)</span> in <span class="math inline">\(\mu_i = \alpha + \beta x_i\)</span>, once for each posterior draw, and get a full posterior for the prediction.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pred_500 <span class="ot">&lt;-</span> post_h<span class="sc">$</span>b_Intercept <span class="sc">+</span> post_h<span class="sc">$</span>b_female <span class="sc">*</span> <span class="dv">500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-absurd" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-absurd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-linear-regression_files/figure-html/fig-absurd-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-absurd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.6: Posterior for the predicted height of a subject with female = 500. The prediction is a negative height of several thousand centimetres, and its credible interval is roughly two thousand centimetres wide. Both the location and the width are meaningless, because the predictor has no value 500.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The posterior in <a href="#fig-absurd" class="quarto-xref">Figure&nbsp;<span>21.6</span></a> is centred on about -5 130 cm – a negative height, some 30-fold the size of a real one – with a posterior sd of about 490 cm. The extrapolation is nonsense, but note <em>why</em>. It is not that linear extrapolation is always nonsense, and it is not that the arithmetic failed. It is that <code>female</code> = 500 does not name anything. A dummy variable has two values, and the model’s slope is not a rate of change along a scale but the gap between two groups. Asking for the fitted value at 500 is asking a question in units the variable does not have.</p>
+<p>When the predictor is genuinely continuous, the same extrapolation is a real scientific claim rather than a category error – and then the constraint is the one from the previous section: the model has no information beyond the range of the data, says so through a widening interval, and cannot tell you whether linearity survives out there.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Dummy variables: reference levels, more than two categories, and what a prior on them means">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dummy variables: reference levels, more than two categories, and what a prior on them means
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>The reference level.</strong> A 0/1 predictor standing for a category is a <strong>dummy</strong>, or indicator, variable. The level coded 0 is its <strong>reference level</strong>: <span class="math inline">\(\alpha\)</span> is the mean of that level, and <span class="math inline">\(\beta\)</span> is the difference from it. Nothing in the data decides which level plays that part. In the height model <code>female</code> = 0 makes the men the reference; coding <code>male</code> <span class="math inline">\(= 1 -\)</span> <code>female</code> instead would make the women the reference.</p>
+<p><strong>Swapping the reference re-parameterises the model without changing it.</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>height_swap <span class="ot">&lt;-</span> <span class="fu">mutate</span>(height, <span class="at">male =</span> <span class="dv">1</span> <span class="sc">-</span> female)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>m_height_male <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  h <span class="sc">~</span> male,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data   =</span> height_swap,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior  =</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">170</span>, <span class="dv">20</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">20</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">7.5</span>, <span class="dv">2</span>),  <span class="at">class =</span> <span class="st">"sigma"</span>)),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/m_height_male"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The same 200 heights under two codings of the same predictor, and the first fit's posterior transformed arithmetically into the second's.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">parameterisation</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">intercept (cm)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">slope (cm)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">sigma (cm)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">R-squared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">men as reference (female = 1)</td>
+<td style="text-align: left;">176.20</td>
+<td style="text-align: left;">-10.62</td>
+<td style="text-align: left;">7.02</td>
+<td style="text-align: left;">0.37</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">women as reference (male = 1)</td>
+<td style="text-align: left;">165.57</td>
+<td style="text-align: left;">10.61</td>
+<td style="text-align: left;">7.01</td>
+<td style="text-align: left;">0.37</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">first fit, transformed draw by draw</td>
+<td style="text-align: left;">165.58</td>
+<td style="text-align: left;">10.62</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The intercept moves from the male mean to the female mean and the slope changes sign; <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(R^2\)</span> and every fitted value are unchanged, because the two models describe the same two group means. Note the third row: the second fit was not needed. The swapped parameterisation is a linear function of the posterior already in hand – <span class="math inline">\(\alpha' = \alpha + \beta\)</span> and <span class="math inline">\(\beta' = -\beta\)</span>, applied draw by draw – and it reproduces the refit to within Monte Carlo error. What a coding choice changes is which contrasts appear as parameters, not what the model says.</p>
+<p><strong>More than two categories.</strong> A categorical predictor with <span class="math inline">\(k\)</span> levels enters as <span class="math inline">\(k - 1\)</span> dummies alongside the intercept. R constructs them from a <code>factor</code> automatically; <code>model.matrix()</code> shows what was built.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g_demo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">g =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span>)))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span> g, <span class="at">data =</span> g_demo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 3
-  z          x       y
-  &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-1 A     0      -0.145 
-2 A     0.0408  0.159 
-3 A     0.0816  0.0636
-4 A     0.122   0.226 
-5 A     0.163  -0.113 
-6 A     0.204   0.130 </code></pre>
+<pre><code>  (Intercept) gB gC
+1           1  0  0
+2           1  1  0
+3           1  0  1
+4           1  0  0
+attr(,"assign")
+[1] 0 1 1
+attr(,"contrasts")
+attr(,"contrasts")$g
+[1] "contr.treatment"</code></pre>
 </div>
 </div>
-<p>What happens if we model these data by regression equation <span class="math inline">\(y = \alpha + \beta_1 x + \beta_2 z\)</span>?</p>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>An additive model y = a + b1 * x + b2 * z, where z is a two-level categorical variable leads to fixed parallel slopes.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>This model completely fails to capture the simulated data! The slopes of the A and B experiments are restricted to be parallel (fixed) by the additive model structure. The regression lines cross the <span class="math inline">\(mean(y \vert x=A)\)</span> and <span class="math inline">\(mean(y \vert x=B)\)</span> points, which in this simulation is the same value (1). This model fit loses in its predixtion the X-shaped data – the model thinks that A and B conditions lead to pretty much identical outcomes!</p>
-<p>We can save the day by introducing an interaction term, which is actually a multiplication term. Like this <span class="math inline">\(y = \alpha + \beta_1 x + \beta_2 z + \beta_3 x z\)</span>.</p>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>An interaction model y = a + b1 * x + b2 * z + b3 * x * z leads to free slopes.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Now the model fit perfectly recaptures the simulated data. Its general intercept = 0, its deflection for z=B is 2, its slope for x is 1, and its deflection for x=B is -2. So the fitted model is <span class="math inline">\(y= 0 + 1x + 2z - 2xz\)</span></p>
-<p>these are the fitted model coefficients.</p>
+<p>Level A has become the reference – alphabetically first, unless the factor’s levels were ordered otherwise – and the two columns <code>gB</code> and <code>gC</code> are the differences from it. The intercept is A’s mean; B’s mean is <span class="math inline">\(\alpha + \beta_{gB}\)</span>, and B and C differ by <span class="math inline">\(\beta_{gC} - \beta_{gB}\)</span>.</p>
+<p><strong>Why <span class="math inline">\(k - 1\)</span> and not <span class="math inline">\(k\)</span>.</strong> Indicators for all <span class="math inline">\(k\)</span> levels sum to 1 in every row, which is the intercept column, so the design matrix is collinear and the parameters are not identified: infinitely many <span class="math inline">\((\alpha, \beta_1, \dots,
+\beta_k)\)</span> give the same <span class="math inline">\(\mu_i\)</span>. Dropping the intercept instead resolves this the other way and gives the <strong>cell-means</strong> parameterisation, one coefficient per level, each of which is that level’s mean rather than a difference:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(m_sim_interaction)[<span class="sc">-</span><span class="dv">6</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> g, <span class="at">data =</span> g_demo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  gA gB gC
+1  1  0  0
+2  0  1  0
+3  0  0  1
+4  1  0  0
+attr(,"assign")
+[1] 1 1 1
+attr(,"contrasts")
+attr(,"contrasts")$g
+[1] "contr.treatment"</code></pre>
+</div>
+</div>
+<p>This is a genuinely different way to write the same model, and it is sometimes the more convenient one – the interaction models of Chapter 21 use the distinction.</p>
+<p><strong>The coding is not innocuous once there are priors.</strong> In a frequentist fit the parameterisation is bookkeeping. In a Bayesian fit the priors are placed on the parameters, so what a prior asserts depends on which contrasts the parameters are. Under R’s default treatment contrasts, a single <code>prior(normal(0, s), class = "b")</code> is a statement about how far each level is from the <em>reference</em> level; the implied prior on the difference between two non-reference levels is then <span class="math inline">\(normal(0, s\sqrt{2})\)</span>, so the reference level is treated asymmetrically for no substantive reason. Sum-to-zero contrasts (<code>contr.sum</code>) make the coefficients deviations from the mean of the level means, and the same shared prior is then symmetric across levels – but the intercept now means something else, which the prior on it has to match (see the note on <code>brms</code>’s internal centring earlier in this chapter). With more than a handful of levels, neither fixed-dummy scheme is really what one wants: the natural move is a hierarchical prior whose scale is estimated from the levels themselves, which is Chapter 27.</p>
+<p><strong>Two things not to do.</strong> An <em>ordered</em> category coded 1, 2, 3 and entered as a continuous predictor asserts that the steps between adjacent categories are equal and additive, which is rarely intended; <code>brms</code> provides <code>mo()</code> for monotonic effects that keep the ordering without fixing the spacing.<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a> And do not cut a continuous variable into categories in order to avoid assuming a shape: that discards information and leaves the within-category variation unadjusted, which is the argument of Chapter 21 against categorising age.</p>
+<p><strong>At the reporting stage none of this matters.</strong> Because the book’s convention is to report effects as contrasts of model predictions, <code>avg_comparisons(m_height, variables = "female")</code> returns the same difference in mean height whichever coding produced the fit. The coding question belongs to model specification and prior setting, not to the answer.</p>
+</div>
+</div>
+</section>
+<section id="the-model-as-a-counterfactual-prediction-machine" class="level2" data-number="21.6">
+<h2 data-number="21.6" class="anchored" data-anchor-id="the-model-as-a-counterfactual-prediction-machine"><span class="header-section-number">21.6</span> The model as a counterfactual prediction machine</h2>
+<p>Everything so far has been about a conditional distribution. The fitted model describes <span class="math inline">\(P(Y \vert X = x)\)</span>, the distribution of the outcome among the subjects who <em>have</em> the value <span class="math inline">\(x\)</span>. A causal question asks about something else: the distribution of the outcome that would be observed if <span class="math inline">\(x\)</span> were <em>set</em> for everybody, written <span class="math inline">\(P(Y(x))\)</span> in the potential-outcome notation of Chapter 10. The first is a statement about a subgroup of the population as it is. The second is a statement about a population that has been intervened on.</p>
+<p>A fitted regression can be made to answer the second kind of question, by being used in a particular way. Take the fitted model, overwrite every subject’s predictor with the value <span class="math inline">\(x\)</span>, predict each subject’s mean, and average those predictions. Repeat at a second value <span class="math inline">\(x'\)</span>, and take the difference of the two averages. Substitute, predict, average, contrast: that operation is <strong>standardisation</strong>, or g-computation, the same procedure carried out by hand over strata in Chapter 12, and it is what converts a model of <span class="math inline">\(E[Y \vert X]\)</span> into an estimate of <span class="math inline">\(E[Y(x)] - E[Y(x')]\)</span>. Chapter 28 carries it out with a full posterior. It is the reason a regression is worth fitting in a causal analysis at all.</p>
+<p>In the one-predictor model of this chapter the operation is arithmetically trivial. With <span class="math inline">\(\mu_i = \alpha + \beta x_i\)</span>, the average prediction when everyone is assigned <span class="math inline">\(x = 1\)</span> is <span class="math inline">\(\alpha + \beta\)</span>; the average prediction when everyone is assigned <span class="math inline">\(x = 0\)</span> is <span class="math inline">\(\alpha\)</span>; the contrast is <span class="math inline">\(\beta\)</span>, whatever the subjects were actually like. The slope <em>is</em> the model’s counterfactual contrast.</p>
+<p>That is a special case and not a general fact. It holds because the process model is linear and has no other predictors, and it fails as soon as either condition goes – Chapter 21 for further predictors, Chapter 24 for a non-identity link. The book’s convention is to obtain effects as contrasts of model predictions rather than by reading coefficients, and the tool for it is the <code>marginaleffects</code> package. Here the two coincide, which makes this a good place to see them coincide before relying on the machinery elsewhere.</p>
+<p>Whether the contrast is the <em>causal</em> contrast is a separate question, and the model has no view on it. The rest of the chapter is about that question.</p>
+<section id="a-continuous-outcome-in-the-master-cohort" class="level3" data-number="21.6.1">
+<h3 data-number="21.6.1" class="anchored" data-anchor-id="a-continuous-outcome-in-the-master-cohort"><span class="header-section-number">21.6.1</span> A continuous outcome in the master cohort</h3>
+<p>The book’s master cohort (Chapter 10) asks whether a blood-pressure-lowering drug prevents stroke. Stroke is binary and belongs to Chapter 24, but the cohort contains a continuous outcome on the way there: post-baseline systolic blood pressure, <code>sbp</code>. The drug lowers it, and in the simulation it lowers it by the same amount in every patient, so the answer key for this chapter is a single number.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>age_c <span class="ot">&lt;-</span> (df<span class="sc">$</span>age <span class="sc">-</span> <span class="dv">62</span>) <span class="sc">/</span> <span class="dv">10</span>            <span class="co"># age in decades, centred at 62</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>oracle  <span class="ot">&lt;-</span> <span class="fu">attr</span>(df, <span class="st">"oracle"</span>)             <span class="co"># the answer key</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>p_true  <span class="ot">&lt;-</span> <span class="fu">attr</span>(df, <span class="st">"params"</span>)             <span class="co"># the DGP's own coefficients</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># every patient's blood pressure under treatment and under no treatment</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>ate_sbp <span class="ot">&lt;-</span> <span class="fu">mean</span>(oracle<span class="sc">$</span>sbp1 <span class="sc">-</span> oracle<span class="sc">$</span>sbp0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The true average causal effect of the drug on systolic pressure is -12 mmHg. Now the regression, with priors reasoned about as before: the cohort is defined by hypertension, so mean pressure is in the region of 140 mmHg and individual pressures are spread over a band of a few tens of mmHg; a blood-pressure drug that moved pressure by more than about 40 mmHg would be a different kind of intervention.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m_sbp_crude <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  sbp <span class="sc">~</span> drug,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data   =</span> df,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior  =</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">140</span>, <span class="dv">15</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">20</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">15</span>, <span class="dv">7</span>),   <span class="at">class =</span> <span class="st">"sigma"</span>)),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/m_sbp_crude"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>              Estimate  Est.Error       Q2.5      Q97.5
-b_Intercept -0.0110400 0.07945562 -0.1682108  0.1379032
-b_x          0.9610941 0.06813031  0.8323058  1.0946147
-b_zB         2.0473411 0.11085603  1.8273933  2.2652138
-b_x:zB      -1.9991338 0.09518095 -2.1831346 -1.8108486
-sigma        0.2908296 0.02123843  0.2525395  0.3349225</code></pre>
+b_Intercept 140.953893 0.07455789 140.811485 141.104515
+b_drug       -2.889758 0.09975002  -3.086738  -2.692659
+sigma        10.877693 0.03387319  10.812475  10.945241</code></pre>
 </div>
 </div>
-<p>What happens if z is a continuous variable? The interaction model still works and gives a separate x slope for every z value, and conversely, it gives a seprate z slope for each x value.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This means that the model expects that the relationship between x and y, e.g.&nbsp;how much a unit increase in x predicts the mean y value at this x value, to depend on the value of z. And vice versa, it symmetrically expects that the relationship between z and y, e.g.&nbsp;how much a unit increase in z predicts the mean y value at this z value, to depend on the value of x. The model neither knows nor cares, which variable, x or z, is of main interest to you, or which (if any) of them causally affects y. But it does know (assume) that the variablity of x is identical at all levels of z, and vice versa. Also, it provides no shrinkage.</p>
-<p>What happens, when we omit the additive part of the model like this: <span class="math inline">\(y= \alpha + \beta xz\)</span>?</p>
-<p>Now the fitted intercept is at the mean values of <span class="math inline">\(x \vert z=A\)</span> and <span class="math inline">\(x \vert z=B\)</span>, which in both cases is 1. The slopes are 0.2 and -0.3 for A and B, respectively.</p>
-<div class="cell" data-fig.margin="true">
+<p>The fitted slope is -2.89 mmHg, with a posterior sd of 0.100. The substitute-predict-average operation returns the same number, as it must in this model:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">avg_comparisons</span>(m_sbp_crude, <span class="at">variables =</span> <span class="st">"drug"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Estimate 2.5 % 97.5 %
+    -2.89 -3.09  -2.69
+
+Term: drug
+Type: response
+Comparison: 1 - 0</code></pre>
+</div>
+</div>
+<p>So the model has answered its own question accurately. Among the treated, mean systolic pressure is about 2.9 mmHg lower than among the untreated, and with 50 000 patients that contrast is pinned down to a tenth of a mmHg. It is also wrong about the drug by a factor of 4.2. The arithmetic is not at fault; the question is.</p>
+</section>
+</section>
+<section id="reading-a-coefficient-through-a-dag" class="level2" data-number="21.7">
+<h2 data-number="21.7" class="anchored" data-anchor-id="reading-a-coefficient-through-a-dag"><span class="header-section-number">21.7</span> Reading a coefficient through a DAG</h2>
+<p><a href="#fig-four-graphs" class="quarto-xref">Figure&nbsp;<span>21.7</span></a> shows four causal structures. In every one of them, a regression of Y on X returns a non-zero slope, and in every one of them the slope means something different.</p>
+<div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-four-graphs" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-graphs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-linear-regression_files/figure-html/fig-four-graphs-1.png" class="img-fluid figure-img" width="458">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-graphs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.7: Four structures behind the same regression output. In (a) the slope estimates the effect of X on Y. In (b) there is no effect at all: X and Y are associated because U causes both. In (c) the arrow runs the other way, and the slope is a rescaled version of the effect of Y on X. In (d) both an effect and a common cause are present, and the slope is their sum. Nothing in the fitted regression distinguishes the four.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>And an even simpler model <span class="math inline">\(y = \beta xz\)</span>, where intercept = 0. Here the slopes are 1 and 0.5, for A and B, respectively.</p>
-<div class="cell" data-fig.margin="true">
+<p>The fit cannot distinguish them because the arithmetic it performs is symmetric in X and Y. Regressing y on x in the simulated data of <a href="#fig-residuals" class="quarto-xref">Figure&nbsp;<span>21.4</span></a> gives one slope; regressing x on y gives another; both are perfectly good fits of a conditional mean.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m_yx <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">~</span> y,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data  =</span> xy_data,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">1</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"sigma"</span>)),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/m_yx"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The forward slope is 0.943 and the reverse slope is 0.582; their product, 0.549, is close to the squared correlation, 0.558. (With flat priors the two would be equal; the small gap is the shrinkage the <span class="math inline">\(normal(0,1)\)</span> priors apply to both slopes.) This is the same fact the earlier callouts recorded twice: Galton found regression towards the mean whether he read his table across the rows or down the columns, and mutual information is symmetric, <span class="math inline">\(I(X;Y) = I(Y;X)\)</span>. Association has no direction. The direction comes from the graph, and the graph comes from substantive knowledge about how the data were generated – which variable was set first, which could not possibly have caused which.</p>
+<p>So the sequence is: state the estimand, draw the graph, check whether the graph identifies the estimand from the available variables, and only then fit. The regression supplies a number for a quantity chosen beforehand. It does not choose the quantity.</p>
+<section id="what-the-cohorts-crude-slope-contains" class="level3" data-number="21.7.1">
+<h3 data-number="21.7.1" class="anchored" data-anchor-id="what-the-cohorts-crude-slope-contains"><span class="header-section-number">21.7.1</span> What the cohort’s crude slope contains</h3>
+<p><a href="#fig-sbp-dag" class="quarto-xref">Figure&nbsp;<span>21.8</span></a> is the part of the cohort’s graph that matters for this question. The drug lowers blood pressure, which is structure (a). But treatment was not assigned at random: sicker patients were more likely to be treated, and severity also raises blood pressure directly, which adds structure (d). Age contributes in the same way at one remove – it raises severity, and it raises blood pressure directly – and so does diabetes, which raises severity and raises the chance of treatment. The crude slope is therefore the sum of an effect and a set of back-door contributions.</p>
+<div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="07-linear-regression_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-sbp-dag" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sbp-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-linear-regression_files/figure-html/fig-sbp-dag-1.png" class="img-fluid figure-img" width="566">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sbp-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.8: The confounding structure between the drug and blood pressure in the master cohort, as the simulation builds it. The direct arrow carries the drug’s effect, which is -12 mmHg for everybody. The path drug &lt;- severity -&gt; sbp is a back-door path: it is open, it carries association, and it is not an effect. Age and diabetes feed that path. The instrument pref, which affects treatment only, is omitted: it is not on any back-door path and so cannot contribute confounding.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
+<p>For a linear structural equation the contribution of each back-door variable can be written down. If the truth is <span class="math inline">\(E[Y \vert A, L_1, \dots, L_K] = \gamma_0 + \tau A + \sum_k \gamma_k L_k\)</span> and we regress Y on A alone, the slope we get is</p>
+<p><span class="math display">\[\beta_{\text{crude}} = \tau + \sum_{k=1}^{K} \gamma_k \, \delta_k,
+  \qquad \delta_k = E[L_k \vert A = 1] - E[L_k \vert A = 0]\]</span></p>
+<p>that is, the effect plus one term per back-door variable, each term being how much that variable moves the outcome multiplied by how unbalanced it is between the treatment groups. Both factors are needed: a strong cause of the outcome that happens to be balanced contributes nothing, and a badly unbalanced variable that does not affect the outcome contributes nothing either. The simulation supplies the <span class="math inline">\(\gamma_k\)</span> and the cohort supplies the <span class="math inline">\(\delta_k\)</span>, so the decomposition can be checked.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The crude slope decomposed. Diabetes raises blood pressure only through severity, so its own coefficient in the sbp equation is zero and its imbalance contributes nothing once severity is counted.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">effect on sbp (gamma_k)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">imbalance (delta_k)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">contribution (mmHg)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">drug (the effect itself)</td>
+<td style="text-align: left;">-12.000</td>
+<td style="text-align: left;">1.000</td>
+<td style="text-align: left;">-12.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">severity</td>
+<td style="text-align: left;">7.000</td>
+<td style="text-align: left;">1.196</td>
+<td style="text-align: left;">8.369</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age (per decade)</td>
+<td style="text-align: left;">1.500</td>
+<td style="text-align: left;">0.490</td>
+<td style="text-align: left;">0.735</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">diabetes</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">0.156</td>
+<td style="text-align: left;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sum of all terms</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">-2.896</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The sum is -2.90 mmHg against a fitted crude slope of -2.89. The 9.10 mmHg of back-door contribution is what stands between the regression output and the answer. It is positive while the effect is negative, so it does not merely add noise – it hides most of a real and clinically substantial effect.</p>
+<p>Two things follow. Reading the crude slope as an effect requires believing that the sum of back-door terms is zero. And the terms are properties of the data-generating process, not of the sample: they do not shrink as <span class="math inline">\(n\)</span> grows, which is why the posterior sd of 0.100 mmHg is no comfort at all. Confidence and correctness are different quantities, and a large study buys only the first.</p>
+<p>There are two ways to make the back-door terms vanish. One is to measure the back-door variables and put them in the model, which is adjustment, and needs more than one predictor – Chapter 21. The other is to arrange the study so that the <span class="math inline">\(\delta_k\)</span> are zero by design.</p>
+</section>
+</section>
+<section id="what-randomisation-buys" class="level2" data-number="21.8">
+<h2 data-number="21.8" class="anchored" data-anchor-id="what-randomisation-buys"><span class="header-section-number">21.8</span> What randomisation buys</h2>
+<p>The cohort’s treatment assignment is driven by severity, diabetes and physician preference. Setting those coefficients to zero in the simulation leaves everything else intact – the same patients, the same ages, the same severities, the same effect of the drug – and assigns treatment by a coin flip instead.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>params_rct <span class="ot">&lt;-</span> <span class="fu">modifyList</span>(<span class="fu">default_params</span>(),</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">list</span>(<span class="at">d0 =</span> <span class="dv">0</span>, <span class="at">d_sev =</span> <span class="dv">0</span>, <span class="at">d_dm =</span> <span class="dv">0</span>, <span class="at">d_pref =</span> <span class="dv">0</span>))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>df_rct <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>, <span class="at">params =</span> params_rct)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>df_rct<span class="sc">$</span>age_c <span class="ot">&lt;-</span> (df_rct<span class="sc">$</span>age <span class="sc">-</span> <span class="dv">62</span>) <span class="sc">/</span> <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Treated minus untreated difference in three baseline variables, in the observational cohort and in the randomised variant of the same simulation.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">baseline variable</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">as observed</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">randomised</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">age (years)</td>
+<td style="text-align: right;">4.900</td>
+<td style="text-align: right;">-0.064</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">severity</td>
+<td style="text-align: right;">1.196</td>
+<td style="text-align: right;">-0.004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">diabetes (prevalence)</td>
+<td style="text-align: right;">0.156</td>
+<td style="text-align: right;">0.005</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>m_sbp_rct <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  sbp <span class="sc">~</span> drug,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data   =</span> df_rct,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior  =</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">140</span>, <span class="dv">15</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">20</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">15</span>, <span class="dv">7</span>),   <span class="at">class =</span> <span class="st">"sigma"</span>)),</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"models/m_sbp_rct"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The same crude regression now returns -11.99 mmHg, with a 95% credible interval from -12.2 to -11.78, against a truth of -12. Nothing about the model changed. The formula is the same, the priors are the same, the estimator is the same, and the outcome equation in the simulation was not touched. What changed is that the <span class="math inline">\(\delta_k\)</span> are now near zero, so the back-door terms have nothing to multiply.</p>
+<p>That is what randomisation buys, stated precisely:</p>
+<ul>
+<li><p><strong>It sets the imbalances to zero in expectation, for every baseline variable at once</strong> – including the ones nobody measured or thought of. The balance table can only display the measured ones; the guarantee extends to the rest because it comes from the assignment mechanism rather than from the data. This is the one thing no amount of adjustment can replicate, and it is why <code>severity</code>, which the cohort deliberately hides from the analyst in later chapters, stops mattering here.</p></li>
+<li><p><strong>It makes the crude contrast the estimand.</strong> With no open back-door path there is nothing to adjust for, so the simplest possible analysis is also the identified one, and no covariate needs to be selected. This matters more than it may appear: choosing an adjustment set requires a graph, and a graph is a set of substantive assumptions that can be wrong.</p></li>
+<li><p><strong>It makes regression towards the mean common to the arms.</strong> Trials recruit on an extreme baseline value, so the follow-up measurement moves towards the mean in every arm. Because both arms are recruited the same way and regress by the same amount, the between-arm contrast is unaffected. The callout earlier in this chapter is about what happens when that contrast is not used.</p></li>
+</ul>
+<p>And what it does not buy:</p>
+<ul>
+<li><p><strong>Balance in the sample at hand.</strong> The guarantee is in expectation. The randomised cohort still shows a treated-minus-untreated age difference of -0.064 years and a severity difference of -0.0039. The posterior interval accounts for this kind of departure; it is part of the sampling variability the interval describes, not an additional bias on top of it.</p></li>
+<li><p><strong>Precision.</strong> Randomisation does nothing to <span class="math inline">\(\sigma\)</span>, which is 11.8 mmHg here – the spread of individual pressures around the arm mean, most of which is explained by severity and age. The posterior sd of the slope is roughly <span class="math inline">\(\sigma / (\mathrm{sd}(x)\sqrt{n})\)</span>, so anything that lowers <span class="math inline">\(\sigma\)</span> sharpens the estimate. Adjusting for prognostic baseline covariates lowers it, which is why analyses of randomised trials adjust even though they do not need to. The subsection below works this out in sample-size terms.</p></li>
+<li><p><strong>A correct model.</strong> Randomisation makes the crude contrast identified; it does not make the process model right or the likelihood appropriate. A randomised experiment analysed with a straight line where the response is curved, or with a normal likelihood where the outcome is bounded, will misreport, and the design offers no protection.</p></li>
+<li><p><strong>Anything that happens after assignment.</strong> Non-adherence, loss to follow-up and competing events all reintroduce the problem the design removed, and handling them is the business of Chapters 13 and 14. Conditioning on a post-treatment variable – restricting the analysis to patients who were hospitalised, adjusting for the mediator – can create bias in a randomised trial as easily as in a cohort (Chapters 11 and 15).</p></li>
+<li><p><strong>The effect on any other scale, or in any other population.</strong> With a non-identity link the adjusted and marginal contrasts differ even under randomisation, because the model is not collapsible (Chapter 24). And the estimate belongs to the population that was randomised, treated with the version of the intervention that was delivered.</p></li>
+</ul>
+<section id="randomisation-precision-and-the-shape-of-the-graph" class="level3" data-number="21.8.1">
+<h3 data-number="21.8.1" class="anchored" data-anchor-id="randomisation-precision-and-the-shape-of-the-graph"><span class="header-section-number">21.8.1</span> Randomisation, precision, and the shape of the graph</h3>
+<p>The precision bullet can be made quantitative, and doing so shows which parts of the causal graph govern how many subjects a study needs. For a binary treatment <span class="math inline">\(A\)</span>, an adjustment set <span class="math inline">\(L\)</span> and <span class="math inline">\(n\)</span> subjects, the posterior sd of the treatment effect is approximately</p>
+<p><span class="math display">\[\mathrm{sd}(\hat{\beta}_A) \;\approx\;
+  \frac{\sigma_{Y \vert A, L}}{\sqrt{n \operatorname{Var}(A \vert L)}},
+  \qquad
+  \operatorname{Var}(A \vert L) = p(1-p)\left\{1 - R^2_{A \vert L}\right\}\]</span></p>
+<p>where <span class="math inline">\(p\)</span> is the treated proportion and <span class="math inline">\(R^2_{A \vert L}\)</span> is the share of the variation in treatment that the covariates account for. Since the sample size needed for a target precision goes as the square of the sd,</p>
+<p><span class="math display">\[n \;\propto\; \frac{\sigma^2_{Y \vert A, L}}{\operatorname{Var}(A \vert L)}\]</span></p>
+<p>There are two factors, and the graph settles each of them separately.</p>
+<p><strong>The numerator is governed by the arrows into Y.</strong> Any cause of the outcome the model does not account for remains in <span class="math inline">\(\sigma\)</span>, whether or not it has anything to do with treatment. A graph with many strong causes of Y therefore implies a large <span class="math inline">\(\sigma_{Y \vert A}\)</span> and a large required <span class="math inline">\(n\)</span> for an unadjusted analysis. Randomisation does not touch this factor: how treatment was allocated says nothing about what else causes the outcome. Adjusting for the baseline causes does touch it, which is the whole of the gain.</p>
+<p><strong>The denominator is governed by the arrows into A.</strong> Every cause of treatment that has to be conditioned on removes part of the variation in treatment out of which the estimate is built. The more completely the covariates predict who was treated, the larger <span class="math inline">\(R^2_{A \vert L}\)</span>, the smaller <span class="math inline">\(\operatorname{Var}(A \vert L)\)</span>, and the more subjects are needed. Randomisation deletes every arrow into A at once, so <span class="math inline">\(R^2_{A \vert L} = 0\)</span> and <span class="math inline">\(\operatorname{Var}(A \vert L)\)</span> reaches its largest possible value <span class="math inline">\(p(1-p)\)</span>; allocating 1:1 makes that value reach <em>its</em> maximum of <span class="math inline">\(1/4\)</span>.</p>
+<p>Randomisation, then, is a device that maximises the denominator and leaves the numerator alone. That is the precise content of “it does nothing for precision”: it does nothing about the factor in which most of the variation is.</p>
+<p>Both factors can be read off the cohort. The numerator for an adjusted analysis is the simulation’s own residual sd of blood pressure, 8 mmHg, and for a crude analysis it is the fitted <span class="math inline">\(\sigma\)</span> of the crude model. The denominator needs only a regression of <em>treatment</em> on the covariates – no outcome model, and so no adjustment, is involved in getting it.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The two variance factors for four ways of studying the same drug, the posterior sd each implies, and the sample size each would need to match the most precise of them. The fitted column is filled in where this chapter has the fit; Chapter 21 fits the two adjusted models and its posterior sds agree with the predictions here to within a few per cent.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">design</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">sigma</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Var(A | L)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">predicted sd</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">fitted sd</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">n needed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">observational, crude</td>
+<td style="text-align: left;">10.88</td>
+<td style="text-align: left;">0.248</td>
+<td style="text-align: left;">0.098</td>
+<td style="text-align: left;">0.100</td>
+<td style="text-align: left;">1.86</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">observational, adjusted</td>
+<td style="text-align: left;">8.00</td>
+<td style="text-align: left;">0.178</td>
+<td style="text-align: left;">0.085</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1.40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">randomised, crude</td>
+<td style="text-align: left;">11.79</td>
+<td style="text-align: left;">0.250</td>
+<td style="text-align: left;">0.105</td>
+<td style="text-align: left;">0.108</td>
+<td style="text-align: left;">2.17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">randomised, adjusted</td>
+<td style="text-align: left;">8.00</td>
+<td style="text-align: left;">0.250</td>
+<td style="text-align: left;">0.072</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1.00</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Three things to read off the table.</p>
+<p>The <strong>randomised trial analysed crudely needs the most subjects of the four</strong> – about 2.2 times as many as the same trial analysed with its baseline covariates. Randomisation bought identification, not efficiency, and a sample-size calculation that ignores the covariates over-recruits by a factor of roughly <span class="math inline">\(1/(1 - R^2)\)</span>.</p>
+<p>The <strong>observational study analysed crudely is more precise than the randomised one</strong>, 0.098 against 0.105 mmHg. It is also the estimate this chapter has just shown to be wrong by 9.1 mmHg. Required sample size is a statement about the width of an interval and carries no information about where the interval is centred – the same point the back-door decomposition made when the posterior sd of 0.100 mmHg turned out to be no comfort.</p>
+<p>The <strong>price of observing rather than randomising</strong> is the denominator, and here it is a factor of 1.40: the observational study needs that many times the subjects of a trial to estimate the same effect with the same precision, purely because adjusting for severity, age and diabetes consumes 28% of the variation in who was treated. Nothing is wrong with the analysis. The information was never there.</p>
+<p><strong>Where this ends.</strong> The denominator can be driven to zero. Strengthening <code>severity -&gt; drug</code> in the simulation leaves the outcome equation untouched, so <span class="math inline">\(\sigma_{Y \vert A, L}\)</span> stays at 8 mmHg, and every consequence appears in <span class="math inline">\(\operatorname{Var}(A \vert L)\)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Strengthening the confounder's effect on treatment. The first row is the cohort as the book uses it. The required sample size relative to a randomised trial is exactly 0.25 / Var(A | L), and it grows without limit as the treated and untreated stop overlapping.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">severity to drug coefficient</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">R-squared (A | L)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Var(A | L)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">n needed vs a 1:1 trial</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">% with propensity outside 0.05-0.95</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1.4</td>
+<td style="text-align: left;">0.28</td>
+<td style="text-align: left;">0.178</td>
+<td style="text-align: left;">1.40</td>
+<td style="text-align: left;">9.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2.0</td>
+<td style="text-align: left;">0.39</td>
+<td style="text-align: left;">0.152</td>
+<td style="text-align: left;">1.64</td>
+<td style="text-align: left;">22.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3.0</td>
+<td style="text-align: left;">0.49</td>
+<td style="text-align: left;">0.127</td>
+<td style="text-align: left;">1.97</td>
+<td style="text-align: left;">39.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4.0</td>
+<td style="text-align: left;">0.54</td>
+<td style="text-align: left;">0.115</td>
+<td style="text-align: left;">2.18</td>
+<td style="text-align: left;">52.2</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>As the confounder comes to determine treatment, the share of patients whose probability of treatment is near 0 or 1 rises from 10% to 52%, and the sample size needed grows past 2.2 times the trial’s. Extrapolate and the arithmetic diverges, but something substantive fails first: with a propensity of 0 or 1 there are no comparable untreated patients at that covariate value at all, and the effect is not identified there for any sample size. That is <strong>positivity</strong>, one of the three identification assumptions of Chapter 10, and strong confounding threatens it directly. Chapter 19 is about the analysis when it does not hold.</p>
+<p><strong>The design consequence.</strong> Two studies of the same drug with the same <span class="math inline">\(n\)</span> do not carry the same information, and the graph says how much they differ. Arrows into the outcome tell you what you can recover by adjusting; arrows into the treatment tell you what randomisation is worth beyond removing bias. A trial’s sample-size calculation should use the residual sd expected <em>after</em> adjustment, and an observational study of the same question should expect to need more subjects than the trial it is emulating, by a factor of <span class="math inline">\(1/(1 - R^2_{A \vert L})\)</span>.</p>
+<p>The general point is that the design determines which contrast is interpretable and the model determines how well that contrast is estimated. Neither substitutes for the other. The remaining chapters of this part are mostly about what to do when the design is not available.</p>
+</section>
+</section>
+<section id="key-points" class="level2" data-number="21.9">
+<h2 data-number="21.9" class="anchored" data-anchor-id="key-points"><span class="header-section-number">21.9</span> Key points</h2>
+<ul>
+<li>A regression model estimates a conditional mean, <span class="math inline">\(E[Y \vert X = x]\)</span>. A causal question is about <span class="math inline">\(E[Y(x)]\)</span>, the mean under an intervention. The model is turned into an answer to the second question by <strong>substitute-predict-average-contrast</strong>, which is standardisation.</li>
+<li>In a linear model with one predictor and nothing else, that contrast is the slope <span class="math inline">\(\beta\)</span>. This is a special case; with further predictors or a non-identity link the coefficient and the marginal contrast come apart, which is why the book reports effects as model predictions throughout.</li>
+<li><span class="math inline">\(\sigma\)</span> is the spread of the outcome <em>conditional</em> on the predictors, <span class="math inline">\(R^2\)</span> the share of outcome variance the fitted means reproduce, and regression towards the mean the shrinkage of a selected deviation. All three are functions of one quantity, the information the predictor carries about the outcome.</li>
+<li><strong>Association has no direction.</strong> The regression of y on x and the regression of x on y are equally valid fits whose slopes multiply to <span class="math inline">\(r^2\)</span>. Direction is supplied by the graph, not by the data.</li>
+<li>A crude slope equals the effect plus one back-door term per confounder, each term being the confounder’s effect on the outcome times its imbalance across treatment groups. These terms do not shrink with sample size, so a narrow credible interval around a confounded estimate is a precise answer to the wrong question.</li>
+<li><strong>Randomisation zeroes the imbalances in expectation, for measured and unmeasured variables alike.</strong> It does not deliver balance in any particular sample, does not improve precision, does not repair a wrong process model, and does not protect against anything that happens after assignment.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="21.10">
+<h2 data-number="21.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">21.10</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>The prior that would have mattered.</strong> Refit the height model on the n = 10 subsample used in the <span class="math inline">\(\sigma\)</span> callout, under <span class="math inline">\(\sigma \sim normal^{+}(7.5, 2)\)</span> and under <span class="math inline">\(\sigma \sim exponential(0.1)\)</span>, and compare the posterior for the <em>effect size</em> <span class="math inline">\(\beta\)</span> rather than for <span class="math inline">\(\sigma\)</span>. Does the choice of prior on <span class="math inline">\(\sigma\)</span> move the estimate of the difference in mean height, its interval, or both?</p></li>
+<li><p><strong>Rebuild the decomposition.</strong> In the observational cohort, compute the crude slope of <code>sbp ~ drug</code> by hand from the decomposition formula, using the simulation’s own coefficients and the observed imbalances. Then set <code>sbp_sev = 0</code> in the parameters, so that severity still drives treatment but no longer affects blood pressure, regenerate the cohort and refit. The bias should collapse to about 0.7 mmHg. Show that what remains is the age term of the decomposition, and say which of the two factors in <span class="math inline">\(\gamma_k \delta_k\)</span> you removed. What does the result imply about which unbalanced variables are worth measuring?</p></li>
+<li><p><strong>How much randomisation is enough.</strong> Draw randomised cohorts of n = 100, 500, 2 000 and 50 000 and record, for each, the treated-minus- untreated difference in <code>severity</code> and the crude slope. Plot both against</p>
+<ol start="14" type="a">
+<li>Does the credible interval cover the truth at every n? Is the residual imbalance in a single small trial a bias or a variance?</li>
+</ol></li>
+<li><p><strong>A defensible extrapolation.</strong> The chapter argues that asking for the fitted height at <code>female = 500</code> is a category error, while extrapolating a genuinely continuous predictor is a scientific claim. Take the <code>xy_data</code> model and predict the mean y at x = 5, well outside the observed range. Report the interval. Now state the substantive assumption that would have to hold for that interval to mean anything, and describe an observation that would refute it.</p></li>
+<li><p><strong>Where a coefficient would still mislead under randomisation.</strong> In the randomised cohort, fit <code>sbp ~ drug</code> restricted to patients with <code>hospitalised == 1</code>, and compare the slope with the truth. Randomisation was intact and the analysis is the simple one the design licenses. Draw the graph that explains the result, and say at which point in the sequence “estimand, graph, identification, fit” the analysis went wrong.</p></li>
+</ol>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>posterior_mu_model1 - posterior_mu_model2 gives the posterior for the effect size, i.e.&nbsp;by how much on average are males taller than females.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Also known as dependent variable, predicted variable.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Also known as independent variable, predictor.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>A linear model is also linear in the process model, defined as any equation that can be reformulated as an addition (for example, if X = 2 and Z = 3, then 2 x 3 = 6 can be reformulated as 2 + 2 + 2 = 6, so <span class="math inline">\(y = xz\)</span> would be a linear process model, as would be <span class="math inline">\(y = x + x^2 + x^3\)</span>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>It is also common to denote intercept as <span class="math inline">\(\beta_0\)</span> and slope as <span class="math inline">\(\beta_1\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>You can do this by simply adding the posterior samples of the two coefficients.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>It must be noted, though, that continuous interaction models require more data to accurately estimate the interaction term (the difference between slopes) than simple additive models.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>The difference of the two posteriors, <span class="math inline">\(\mu_0^{(s)} - \mu_1^{(s)}\)</span> taken draw by draw over the posterior samples <span class="math inline">\(s\)</span>, is the posterior for the effect size: by how much taller on average the males are. Note that this requires the two posteriors to be independent, which they are here, because they come from models fitted to disjoint subsets of the data.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Also known as dependent variable, predicted variable, response.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Also known as independent variable, predictor, covariate.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The “linear” in linear model refers to linearity <strong>in the parameters</strong>, not in the predictors: <span class="math inline">\(\mu\)</span> must be a weighted sum of terms in which each coefficient appears to the first power and no coefficient is multiplied by another coefficient. This is a wider class than it sounds. <span class="math inline">\(\mu_i = \beta x_i z_i\)</span> is a linear model (there is one coefficient, and <span class="math inline">\(x_i z_i\)</span> is just a computed predictor), and so is <span class="math inline">\(\mu_i = \beta_1 x_i + \beta_2 x_i^2 + \beta_3 x_i^3\)</span>, which draws a curve. What is <em>not</em> linear is a model in which the coefficients enter non-additively: <span class="math inline">\(\mu_i = \alpha e^{\beta x_i}\)</span>, <span class="math inline">\(\mu_i = \alpha + \beta_1 x_i^{\beta_2}\)</span>, and <span class="math inline">\(\mu_i = \alpha / (1 + \beta x_i)\)</span> are all nonlinear models. The practical consequence is that the interaction term of Chapter 21, although it multiplies two <em>predictors</em>, keeps us inside the linear model.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>It is also common to denote the intercept as <span class="math inline">\(\beta_0\)</span> and the slope as <span class="math inline">\(\beta_1\)</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>One <code>brms</code> detail worth knowing before you set an intercept prior: <code>brms</code> internally centres the predictors, so a prior of <code>class = "Intercept"</code> applies to the intercept of the <em>mean-centred</em> model, i.e.&nbsp;to the expected y at the mean of x, not at x = 0. With a 0/1 predictor and equal group sizes, that is mean height over both sexes rather than mean male height. The distinction matters when the prior is tight or x is far from zero; see <code>11-appendix-brms.qmd</code>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Fryar CD, Carroll MD, Gu Q, Afful J, Ogden CL, “Anthropometric Reference Data for Children and Adults: United States, 2015-2018,” <em>Vital Health Stat 3</em> 2021;36:1-44 (<a href="https://pubmed.ncbi.nlm.nih.gov/33541517/">PMID 33541517</a>) reports sex-specific height percentiles for US adults; NCD Risk Factor Collaboration, “A century of trends in adult human height,” <em>Elife</em> 2016;5:e13410 (<a href="https://doi.org/10.7554/eLife.13410">DOI</a>) documents how much mean adult height has shifted across a century of birth cohorts in 200 countries.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>In practice you take the posterior draws of the two coefficients and add them draw by draw, which propagates the uncertainty in both (and their posterior correlation) into the result. This is what <a href="#fig-height-est" class="quarto-xref">Figure&nbsp;<span>21.2</span></a> does.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p><strong>Jeffreys’ rule</strong>, and why a scale parameter gets <span class="math inline">\(1/\sigma\)</span>. The rule sets the prior for a parameter <span class="math inline">\(\theta\)</span> proportional to the square root of the Fisher information, <span class="math inline">\(p(\theta) \propto \sqrt{I(\theta)}\)</span>, where <span class="math inline">\(I(\theta) = -E\!\left[\partial^2 \log p(y \vert \theta) / \partial \theta^2\right]\)</span> measures how sharply the likelihood responds to a change in <span class="math inline">\(\theta\)</span>. Its point is <strong>invariance under reparameterisation</strong>: apply the rule to <span class="math inline">\(\theta\)</span> and then transform to <span class="math inline">\(\phi = g(\theta)\)</span>, and you get the same prior as applying the rule to <span class="math inline">\(\phi\)</span> from the start. A flat prior has no such property. Flat on <span class="math inline">\(\sigma\)</span> is not flat on <span class="math inline">\(\log \sigma\)</span> or on <span class="math inline">\(\sigma^2\)</span>, because changing variables multiplies the density by a Jacobian, so “uninformative” is not something a density can be on its own – only something it can be <em>in a stated parameterisation</em>, and a prior that declares ignorance about <span class="math inline">\(\sigma\)</span> is thereby making a definite claim about <span class="math inline">\(\sigma^2\)</span>. The other rows of the table are ordinary proper densities that make no claim to invariance; the interest of Jeffreys’ rule is that it is a construction that does. For the sd of a normal the Fisher information is <span class="math inline">\(2n/\sigma^2\)</span>, whose square root is proportional to <span class="math inline">\(1/\sigma\)</span> – equivalently, <span class="math inline">\(1/\sigma\)</span> is the density that is flat on <span class="math inline">\(\log \sigma\)</span>. That is the natural symmetry for a positive quantity carrying units: it gives equal weight to each factor of two rather than to each centimetre, which is what “we do not know the order of magnitude” ought to mean. It is also why the prior is improper. <span class="math inline">\(\int_0^{\infty} \sigma^{-1} d\sigma\)</span> diverges at both ends, so no normalising constant exists and the two right-hand columns of the table are undefined rather than merely small. Two qualifications. Applied jointly to <span class="math inline">\((\mu, \sigma)\)</span> the rule gives <span class="math inline">\(1/\sigma^2\)</span>; the <span class="math inline">\(1/\sigma\)</span> used here is the conventional <em>independence-Jeffreys</em> prior for a normal linear model, obtained by applying the rule to the scale parameter on its own, and it is the version the closed-form marginal posterior in <a href="#fig-sigma-priors" class="quarto-xref">Figure&nbsp;<span>21.3</span></a> assumes. And invariance is a property of the construction, not a warrant for the result: in many models the rule returns priors nobody would defend on substantive grounds, which is the problem the later literature on reference priors addresses. Jeffreys H, “An invariant form for the prior probability in estimation problems,” <em>Proc R Soc Lond A Math Phys Sci</em> 1946;186:453-461 (<a href="https://doi.org/10.1098/rspa.1946.0056">DOI</a>) is the original rule; the normal-model priors and the <span class="math inline">\(1/\sigma\)</span> versus <span class="math inline">\(1/\sigma^2\)</span> distinction are set out in Gelman A, Carlin JB, Stern HS, Dunson DB, Vehtari A, Rubin DB, <em>Bayesian Data Analysis</em>, 3rd edn, Boca Raton FL: CRC Press, 2013.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>In a Bayesian fit <span class="math inline">\(R^2\)</span> is itself a posterior quantity, one value per draw, because <span class="math inline">\(\mu_i\)</span> depends on the parameters. <code>bayes_R2()</code> returns it with an interval. This is the Gelman et al. definition, which uses the predicted variance rather than the least-squares decomposition, so it cannot exceed 1 as some naive Bayesian versions can.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Galton F, “Regression towards Mediocrity in Hereditary Stature,” <em>J Anthropol Inst G B Irel</em> 1886;15:246-263 (<a href="https://www.jstor.org/stable/2841583">JSTOR</a>). The sweet-pea experiments are the Royal Institution lecture of 9 February 1877, summarised in Appendix I of the same memoir.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Stigler SM, “Regression towards the mean, historically considered,” <em>Stat Methods Med Res</em> 1997;6:103-114 (<a href="https://doi.org/10.1177/096228029700600202">DOI</a>).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Secrist H, <em>The Triumph of Mediocrity in Business</em>, Chicago: Bureau of Business Research, Northwestern University, 1933; Hotelling H, review of Secrist, <em>J Am Stat Assoc</em> 1933;28:463-465 (<a href="https://www.jstor.org/stable/2278144">JSTOR</a>). Secrist’s reply and Hotelling’s rejoinder are in the Open Letters of <em>J Am Stat Assoc</em> 1934;29:196-205.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>McDonald CJ, Mazzuca SA, McCabe GP, “How much of the placebo ‘effect’ is really statistical regression?” <em>Stat Med</em> 1983;2:417-427 (<a href="https://doi.org/10.1002/sim.4780020401">DOI</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Beecher HK, “The powerful placebo,” <em>J Am Med Assoc</em> 1955;159:1602-1606 (<a href="https://doi.org/10.1001/jama.1955.02960340022006">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Kienle GS, Kiene H, “The powerful placebo effect: fact or fiction?” <em>J Clin Epidemiol</em> 1997;50:1311-1318 (<a href="https://doi.org/10.1016/s0895-4356(97)00203-5">DOI</a>).<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Hróbjartsson A, Gøtzsche PC, “Is the placebo powerless? An analysis of clinical trials comparing placebo with no treatment,” <em>N Engl J Med</em> 2001;344:1594-1602 (<a href="https://doi.org/10.1056/NEJM200105243442106">DOI</a>); updated as Hróbjartsson A, Gøtzsche PC, “Placebo interventions for all clinical conditions,” <em>Cochrane Database Syst Rev</em> 2010;2010:CD003974 (<a href="https://doi.org/10.1002/14651858.CD003974.pub3">DOI</a>), which is the source of the figures quoted here.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>Kaptchuk TJ, “Intentional ignorance: a history of blind assessment and placebo controls in medicine,” <em>Bull Hist Med</em> 1998;72:389-433 (<a href="https://doi.org/10.1353/bhm.1998.0159">DOI</a>).<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Barnett AG, van der Pols JC, Dobson AJ, “Regression to the mean: what it is and how to deal with it,” <em>Int J Epidemiol</em> 2005;34:215-220 (<a href="https://doi.org/10.1093/ije/dyh299">DOI</a>).<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>Cover TM, Thomas JA, <em>Elements of Information Theory</em>, 2nd edn, Hoboken NJ: Wiley-Interscience, 2006, for differential entropy, mutual information, and the Gaussian case.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>Schmittlein DC, “Surprising Inferences from Unsurprising Observations: Do Conditional Expectations Really Regress to the Mean?” <em>Am Stat</em> 1989;43:176-183 (<a href="https://doi.org/10.1080/00031305.1989.10475651">DOI</a>).<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>Samuels ML, “Statistical Reversion Toward the Mean: More Universal Than Regression Toward the Mean,” <em>Am Stat</em> 1991;45:344-346 (<a href="https://doi.org/10.1080/00031305.1991.10475833">DOI</a>).<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>Bürkner PC, Charpentier E, “Modelling monotonic effects of ordinal predictors in Bayesian regression models,” <em>Br J Math Stat Psychol</em> 2020;73:420-451 (<a href="https://doi.org/10.1111/bmsp.12195">DOI</a>).<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -966,13 +1852,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./06-bayesian-inference.html" class="pagination-link" aria-label="4. The basics of Bayesian inference">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span>
+      <a href="./ch19-sensitivity-analysis.html" class="pagination-link" aria-label="Sensitivity analysis and unmeasured confounding">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./08-glm.html" class="pagination-link" aria-label="6. Generalized linear models">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./ch21-multiple-regression.html" class="pagination-link" aria-label="Multiple regression: adjustment">
+        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

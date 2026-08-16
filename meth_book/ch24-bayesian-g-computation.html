@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 29&nbsp; Bayesian g-computation and standardisation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch25-missing-data.html" rel="next">
+<link href="./09-multilevel.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html">Part V. Bayesian regression: models to counterfactual predictions</a></li><li class="breadcrumb-item"><a href="./ch24-bayesian-g-computation.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-procedure" id="toc-the-procedure" class="nav-link active" data-scroll-target="#the-procedure"><span class="header-section-number">29.1</span> The procedure</a></li>
+  <li><a href="#the-outcome-model-and-the-posterior-of-two-worlds" id="toc-the-outcome-model-and-the-posterior-of-two-worlds" class="nav-link" data-scroll-target="#the-outcome-model-and-the-posterior-of-two-worlds"><span class="header-section-number">29.2</span> The outcome model and the posterior of two worlds</a></li>
+  <li><a href="#against-the-earlier-chapters" id="toc-against-the-earlier-chapters" class="nav-link" data-scroll-target="#against-the-earlier-chapters"><span class="header-section-number">29.3</span> Against the earlier chapters</a></li>
+  <li><a href="#how-much-structure-to-impose" id="toc-how-much-structure-to-impose" class="nav-link" data-scroll-target="#how-much-structure-to-impose"><span class="header-section-number">29.4</span> How much structure to impose</a></li>
+  <li><a href="#which-population" id="toc-which-population" class="nav-link" data-scroll-target="#which-population"><span class="header-section-number">29.5</span> Which population?</a>
+  <ul class="collapse">
+  <li><a href="#the-covariate-distribution-is-also-estimated" id="toc-the-covariate-distribution-is-also-estimated" class="nav-link" data-scroll-target="#the-covariate-distribution-is-also-estimated"><span class="header-section-number">29.5.1</span> The covariate distribution is also estimated</a></li>
+  </ul></li>
+  <li><a href="#over-time-the-g-formula-for-a-sustained-strategy" id="toc-over-time-the-g-formula-for-a-sustained-strategy" class="nav-link" data-scroll-target="#over-time-the-g-formula-for-a-sustained-strategy"><span class="header-section-number">29.6</span> Over time: the g-formula for a sustained strategy</a></li>
+  <li><a href="#what-g-computation-does-not-fix" id="toc-what-g-computation-does-not-fix" class="nav-link" data-scroll-target="#what-g-computation-does-not-fix"><span class="header-section-number">29.7</span> What g-computation does not fix</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">29.8</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">29.9</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html">Part V. Bayesian regression: models to counterfactual predictions</a></li><li class="breadcrumb-item"><a href="./ch24-bayesian-g-computation.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The two threads of this book meet here. From Part II: a fitted model is not a set of point values but a posterior distribution over parameters, and every quantity derived from it inherits that distribution. From Part III: a causal effect is a contrast of potential outcomes, <span class="math inline">\(E[Y(1)] - E[Y(0)]\)</span>, recovered from data by standardising an outcome model over a covariate distribution. Putting the two together gives what this chapter is about: a <strong>posterior distribution over a causal contrast</strong>.</p>
+<p>Nothing in the causal logic is new. Chapter 12 computed <span class="math inline">\(E[Y(a)]\)</span> by hand, as a weighted average of within-stratum risks; Chapter 14 ran the same computation forward over visits; Chapter 15 ran it across four counterfactual worlds to split an effect into direct and indirect parts. What changes here is that the within-cell risks come from a Bayesian model, and the whole substitute-predict-average-contrast operation is carried out separately inside each posterior draw. The output is not an estimate with an interval attached to it afterwards. It is a distribution, and questions about the effect — is it protective, is it larger than some threshold, how many patients must be treated to prevent one stroke — are answered by counting draws.</p>
+<p>This is the capstone chapter, so it also collects the three questions that a g-computation forces an analyst to answer and that earlier chapters deferred: <strong>which population</strong> the effect is standardised to, <strong>how much structure</strong> the outcome model imposes across treatment arms, and what happens when the treatment is a <strong>strategy sustained over time</strong> rather than a single decision. The chapter closes with what the method does not do, which is everything to do with whether the adjustment set was right in the first place.</p>
+<section id="the-procedure" class="level2" data-number="29.1">
+<h2 data-number="29.1" class="anchored" data-anchor-id="the-procedure"><span class="header-section-number">29.1</span> The procedure</h2>
+<p>The identification result of Chapters 10 and 12 is the g-formula. If treatment <span class="math inline">\(A\)</span> is conditionally exchangeable given covariates <span class="math inline">\(C\)</span>, if positivity holds, and if the treatment is well defined, then</p>
+<p><span class="math display">\[
+E[Y(a)] \;=\; \sum_{c} \underbrace{E[Y \mid A = a,\, C = c]}_{\text{a model can supply this}}
+\; \underbrace{P(C = c)}_{\text{the target population}} ,
+\]</span></p>
+<p>with an integral in place of the sum for continuous covariates. Chapter 12 estimated the first factor by a cell mean and the second by a cell count. A regression estimates the first factor by a fitted model, which is what allows continuous confounders to be used as the continuous variables they are. A Bayesian regression estimates it by a <em>posterior distribution over</em> fitted models, and that is the only change here.</p>
+<p>The estimator is an algorithm rather than a formula. For one posterior draw <span class="math inline">\(\theta^{(s)}\)</span>:</p>
+<ol type="1">
+<li><strong>Substitute.</strong> Take the observed data set and overwrite every patient’s treatment with <span class="math inline">\(a = 1\)</span>. Do not touch anything else. Repeat with <span class="math inline">\(a = 0\)</span>.</li>
+<li><strong>Predict.</strong> Using the coefficients of draw <span class="math inline">\(s\)</span>, predict every patient’s outcome risk under each of the two data sets. Confounders keep their observed values, so each patient is compared with themself.</li>
+<li><strong>Average.</strong> Average the predicted risks over the target population, giving <span class="math inline">\(\widehat{E}[Y(1)]^{(s)}\)</span> and <span class="math inline">\(\widehat{E}[Y(0)]^{(s)}\)</span>.</li>
+<li><strong>Contrast.</strong> Take the difference, the ratio, or any other function of the two.</li>
+</ol>
+<p>Repeating over all draws yields a sample from the posterior of the contrast.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-gcomp-loop" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gcomp-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch24-bayesian-g-computation_files/figure-html/fig-gcomp-loop-1.png" class="img-fluid figure-img" width="274">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gcomp-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.1: Bayesian g-computation. The four steps of standardisation — substitute the treatment, predict every patient, average over the target population, contrast the two averages — are carried out inside a single posterior draw, and the loop over draws turns the estimate into a posterior distribution. Only the treatment column is overwritten; the confounders keep their observed values, so each patient is compared with themself. The target population enters at the averaging step, and changing it changes the estimand without refitting the model.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Two features of the ordering matter, and both are places where a plausible-looking shortcut gives the wrong quantity.</p>
+<p><strong>Average over patients before contrasting.</strong> The estimand named in Chapter 10 is a contrast of two population averages, <span class="math inline">\(E[Y(1)] / E[Y(0)]\)</span>, not the average of individual contrasts <span class="math inline">\(E[Y(1)/Y(0)]\)</span>. On a ratio scale these differ whenever the effect varies across patients, and the difference is not small in this cohort; the numbers are given below, where the oracle can supply both. The ratio of averages is what a population-level decision needs, and it is what step 3 followed by step 4 computes.</p>
+<p><strong>Summarise the draws last.</strong> Steps 1 to 4 are performed within a draw. Substituting the posterior <em>mean</em> coefficients into the g-formula and running the steps once produces a single number with no distribution, and for a non-linear link that number is not the posterior mean of the contrast either. The loop is what carries the parameter uncertainty through to the causal quantity.</p>
+<p><code>marginaleffects</code> performs the whole loop on a <code>brms</code> fit: <code>avg_predictions()</code> for the two counterfactual risks, <code>avg_comparisons()</code> for their contrast, <code>get_draws()</code> to recover the underlying posterior sample.</p>
+</section>
+<section id="the-outcome-model-and-the-posterior-of-two-worlds" class="level2" data-number="29.2">
+<h2 data-number="29.2" class="anchored" data-anchor-id="the-outcome-model-and-the-posterior-of-two-worlds"><span class="header-section-number">29.2</span> The outcome model and the posterior of two worlds</h2>
+<p>We return to the cross-sectional master cohort — 50 000 hypertensive patients, the question of whether Drug A prevents stroke, and the confounding by indication that made the crude comparison reverse the sign of the effect in Chapter 12.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df      <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>age_c <span class="ot">&lt;-</span> (df<span class="sc">$</span>age <span class="sc">-</span> <span class="dv">62</span>) <span class="sc">/</span> <span class="dv">10</span>          <span class="co"># base assignment keeps the oracle attribute</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>o       <span class="ot">&lt;-</span> <span class="fu">attr</span>(df, <span class="st">"oracle"</span>)           <span class="co"># the answer key</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>truth_x <span class="ot">&lt;-</span> <span class="fu">cohort_truth</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The adjustment set comes from the DAG of Chapter 11 and not from the data: <code>severity</code>, <code>age</code> and <code>diabetes</code> are the common causes of treatment and stroke. Blood pressure is a mediator and stays out (Chapter 15). The outcome is fitted with a log link — a Poisson working model, the Bayesian counterpart of modified-Poisson regression<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> — so that the drug enters as a multiplicative factor on risk and the model’s parameters are log risk ratios (Chapter 24). Priors are weakly informative on that scale: an intercept centred on a baseline five-year stroke risk of about 5%, and coefficients that put most of their mass on risk ratios between about 0.4 and 2.5.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pri <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">1</span>),   <span class="at">class =</span> <span class="st">"Intercept"</span>),   <span class="co"># log baseline risk</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.5</span>),  <span class="at">class =</span> <span class="st">"b"</span>))           <span class="co"># log risk ratios</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>m_add <span class="ot">&lt;-</span> <span class="fu">brm</span>(stroke <span class="sc">~</span> drug <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> pri,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">1000</span>, <span class="at">warmup =</span> <span class="dv">500</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">file =</span> <span class="st">"models/ch28g_main"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">max_rhat  =</span> <span class="fu">max</span>(brms<span class="sc">::</span><span class="fu">rhat</span>(m_add), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">divergent =</span> <span class="fu">sum</span>(<span class="fu">subset</span>(brms<span class="sc">::</span><span class="fu">nuts_params</span>(m_add), Parameter <span class="sc">==</span> <span class="st">"divergent__"</span>)<span class="sc">$</span>Value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> max_rhat divergent 
+ 1.004636  0.000000 </code></pre>
+</div>
+</div>
+<p>The sampler has converged and produced no divergent transitions, so the draws can be treated as a sample from the posterior. That is the whole of the fitting stage; the diagnostic workflow that surrounds it — prior predictive checks, posterior predictive checks, <code>loo</code> comparisons of functional form within a fixed adjustment set — is the subject of Chapter 22 and is not repeated here.</p>
+<p>Now the g-computation. Each of the two counterfactual worlds is a posterior distribution in its own right, and it is worth looking at them before their contrast.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> <span class="fu">get_draws</span>(<span class="fu">avg_predictions</span>(m_add, <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">drug =</span> <span class="dv">1</span>)))   <span class="co"># everyone treated</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>w0 <span class="ot">&lt;-</span> <span class="fu">get_draws</span>(<span class="fu">avg_predictions</span>(m_add, <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">drug =</span> <span class="dv">0</span>)))   <span class="co"># no one treated</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(w1<span class="sc">$</span>drawid, w0<span class="sc">$</span>drawid))          <span class="co"># the two worlds share their draws</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>EY1 <span class="ot">&lt;-</span> w1<span class="sc">$</span>draw; EY0 <span class="ot">&lt;-</span> w0<span class="sc">$</span>draw</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>rd  <span class="ot">&lt;-</span> EY1 <span class="sc">-</span> EY0                                    <span class="co"># risk difference, per draw</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>rr  <span class="ot">&lt;-</span> EY1 <span class="sc">/</span> EY0                                    <span class="co"># risk ratio, per draw</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The two worlds are computed from the same draws, so they are paired: within draw <span class="math inline">\(s\)</span> the only difference between <code>EY1[s]</code> and <code>EY0[s]</code> is the treatment that was substituted. That pairing is what makes their difference a posterior draw of the causal effect rather than a difference of two independent estimates.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-two-worlds" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-worlds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch24-bayesian-g-computation_files/figure-html/fig-two-worlds-1.png" class="img-fluid figure-img" width="816">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-worlds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.2: The posterior of the two counterfactual worlds (left) and of their difference (right). Left: the five-year stroke risk if every patient in the cohort were treated, and if none were; each is a posterior distribution, not a point. Right: the posterior of the risk difference, formed draw by draw from the paired worlds, with the 95% credible interval marked by dotted lines. Dashed red lines mark the oracle truth, available because the cohort was simulated.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Bayesian g-computation on the master cohort, against the oracle.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">quantity</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">posterior mean (95% CrI)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">truth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">E[Y(0)]: risk if none treated</td>
+<td style="text-align: left;">0.0674 (0.0622, 0.0727)</td>
+<td style="text-align: left;">0.0681</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">E[Y(1)]: risk if all treated</td>
+<td style="text-align: left;">0.0416 (0.0394, 0.0438)</td>
+<td style="text-align: left;">0.0409</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">risk difference</td>
+<td style="text-align: left;">-0.0259 (-0.0317, -0.0201)</td>
+<td style="text-align: left;">-0.0272</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">risk ratio</td>
+<td style="text-align: left;">0.618 (0.561, 0.680)</td>
+<td style="text-align: left;">0.600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">number needed to treat</td>
+<td style="text-align: left;">39.2 (31.6, 49.9)</td>
+<td style="text-align: left;">36.7</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Treating the whole cohort would lower five-year stroke risk from 0.067 to 0.042, a risk difference of -0.0259 with a 95% credible interval from -0.0317 to -0.0201. The oracle’s value, -0.0272, is inside that interval. On the ratio scale the drug multiplies risk by 0.618 against a true 0.600.</p>
+<p>This is the point at which the ordering rule stated earlier can be checked against the answer key. The estimand is the ratio of the two average risks, and the oracle puts it at 0.600. Averaging each patient’s <em>own</em> risk ratio instead gives 0.646 — a different quantity, larger here because the patients with the smallest ratios are the ones carrying the most risk, and an unweighted average over people does not know that. Both are computable; only the first answers the question of what treating this population would do.</p>
+<p>Because the answer is a distribution, decision-relevant questions are answered by counting draws, with no hypothesis test involved:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">`</span><span class="at">P(drug is protective)</span><span class="st">`</span>      <span class="ot">=</span> <span class="fu">mean</span>(rd <span class="sc">&lt;</span> <span class="dv">0</span>),</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">P(RD better than -0.02)</span><span class="st">`</span>    <span class="ot">=</span> <span class="fu">mean</span>(rd <span class="sc">&lt;</span> <span class="sc">-</span><span class="fl">0.02</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">P(RD better than -0.03)</span><span class="st">`</span>    <span class="ot">=</span> <span class="fu">mean</span>(rd <span class="sc">&lt;</span> <span class="sc">-</span><span class="fl">0.03</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">P(NNT below 40)</span><span class="st">`</span>            <span class="ot">=</span> <span class="fu">mean</span>(<span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> rd <span class="sc">&lt;</span> <span class="dv">40</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  P(drug is protective) P(RD better than -0.02) P(RD better than -0.03) 
+                 1.0000                  0.9755                  0.0835 
+        P(NNT below 40) 
+                 0.6105 </code></pre>
+</div>
+</div>
+<p>Every draw is negative, so on this model and this adjustment set the drug is protective with probability indistinguishable from one. A reduction of at least two percentage points is well supported; three points is not. The number needed to treat has posterior mean 39.2 with an interval running from 31.6 to 49.9, and that interval — not the point — is what a cost-effectiveness calculation should carry forward.</p>
+</section>
+<section id="against-the-earlier-chapters" class="level2" data-number="29.3">
+<h2 data-number="29.3" class="anchored" data-anchor-id="against-the-earlier-chapters"><span class="header-section-number">29.3</span> Against the earlier chapters</h2>
+<p>Chapter 12 estimated the same quantity on the same cohort, first by binning the confounders and averaging cell risks, then by inverse-probability weighting. Both are recomputed here so the comparison is on identical data.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>The Chapter 12 comparators, recomputed on this cohort</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>crude <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">group_by</span>(drug) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">r =</span> <span class="fu">mean</span>(stroke), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>crude_rd <span class="ot">&lt;-</span> crude<span class="sc">$</span>r[<span class="dv">2</span>] <span class="sc">-</span> crude<span class="sc">$</span>r[<span class="dv">1</span>]; crude_rr <span class="ot">&lt;-</span> crude<span class="sc">$</span>r[<span class="dv">2</span>] <span class="sc">/</span> crude<span class="sc">$</span>r[<span class="dv">1</span>]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>bins <span class="ot">&lt;-</span> <span class="cf">function</span>(x, k) <span class="fu">cut</span>(x, <span class="fu">quantile</span>(x, <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length =</span> k <span class="sc">+</span> <span class="dv">1</span>)), <span class="at">include.lowest =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>strata_df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stratum =</span> <span class="fu">interaction</span>(<span class="fu">bins</span>(severity, <span class="dv">20</span>), <span class="fu">bins</span>(age, <span class="dv">4</span>), diabetes, <span class="at">drop =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>std <span class="ot">&lt;-</span> strata_df <span class="sc">|&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(stratum) <span class="sc">|&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">w =</span> <span class="fu">n</span>(), <span class="at">r1 =</span> <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">1</span>]), <span class="at">r0 =</span> <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">0</span>]),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">w =</span> w <span class="sc">/</span> <span class="fu">sum</span>(w)) <span class="sc">|&gt;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">EY1 =</span> <span class="fu">sum</span>(w <span class="sc">*</span> r1, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">EY0 =</span> <span class="fu">sum</span>(w <span class="sc">*</span> r0, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>std_rd <span class="ot">&lt;-</span> std<span class="sc">$</span>EY1 <span class="sc">-</span> std<span class="sc">$</span>EY0; std_rr <span class="ot">&lt;-</span> std<span class="sc">$</span>EY1 <span class="sc">/</span> std<span class="sc">$</span>EY0</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>ipw <span class="ot">&lt;-</span> strata_df <span class="sc">|&gt;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(stratum) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">e =</span> <span class="fu">mean</span>(drug)) <span class="sc">|&gt;</span> <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">w =</span> <span class="fu">if_else</span>(drug <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span> <span class="sc">/</span> e, <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e))) <span class="sc">|&gt;</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(drug) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">EY =</span> <span class="fu">weighted.mean</span>(stroke, w), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>ipw_rd <span class="ot">&lt;-</span> ipw<span class="sc">$</span>EY[<span class="dv">2</span>] <span class="sc">-</span> ipw<span class="sc">$</span>EY[<span class="dv">1</span>]; ipw_rr <span class="ot">&lt;-</span> ipw<span class="sc">$</span>EY[<span class="dv">2</span>] <span class="sc">/</span> ipw<span class="sc">$</span>EY[<span class="dv">1</span>]</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>m_gl <span class="ot">&lt;-</span> <span class="fu">glm</span>(stroke <span class="sc">~</span> drug <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">family =</span> poisson, <span class="at">data =</span> df)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>gl_r <span class="ot">&lt;-</span> \(a) <span class="fu">mean</span>(<span class="fu">predict</span>(m_gl, <span class="fu">transform</span>(df, <span class="at">drug =</span> a), <span class="at">type =</span> <span class="st">"response"</span>))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>gl_rd <span class="ot">&lt;-</span> <span class="fu">gl_r</span>(<span class="dv">1</span>) <span class="sc">-</span> <span class="fu">gl_r</span>(<span class="dv">0</span>); gl_rr <span class="ot">&lt;-</span> <span class="fu">gl_r</span>(<span class="dv">1</span>) <span class="sc">/</span> <span class="fu">gl_r</span>(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Six analyses of one causal question, all on the same 50 000 patients.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">analysis</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">risk difference</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">risk ratio</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">interval, and how it would be obtained</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">crude comparison</td>
+<td style="text-align: left;">0.0234</td>
+<td style="text-align: left;">1.672</td>
+<td style="text-align: left;">not reported; closed form</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">standardisation, 20 severity bins (ch. 12)</td>
+<td style="text-align: left;">-0.0244</td>
+<td style="text-align: left;">0.631</td>
+<td style="text-align: left;">not reported; bootstrap over the binning and the cell means</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">inverse-probability weighting (ch. 12)</td>
+<td style="text-align: left;">-0.0245</td>
+<td style="text-align: left;">0.630</td>
+<td style="text-align: left;">not reported; bootstrap that refits the propensity model</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">regression standardisation, glm (ch. 12)</td>
+<td style="text-align: left;">-0.0262</td>
+<td style="text-align: left;">0.613</td>
+<td style="text-align: left;">not reported; delta method</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bayesian g-computation</td>
+<td style="text-align: left;">-0.0259 (-0.0317, -0.0201)</td>
+<td style="text-align: left;">0.618 (0.561, 0.680)</td>
+<td style="text-align: left;">full posterior, from the same loop</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">truth (oracle)</td>
+<td style="text-align: left;">-0.0272</td>
+<td style="text-align: left;">0.600</td>
+<td style="text-align: left;">-</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The crude comparison has the wrong sign. Coarse standardisation corrects the sign but plateaus short of the truth, because a strong continuous confounder cut into bins leaves a residue of confounding inside each bin — the finding of Chapter 12. Replacing cell means with a model that uses severity as the continuous variable it is closes most of the remaining gap, and the frequentist and Bayesian versions of that model agree on the point estimate to within rounding, as they should: they are the same standardisation applied to almost the same fit.</p>
+<p>What the Bayesian version adds is not accuracy but the interval, and the interval comes from a posterior distribution over the causal contrast, from which probability statements follow directly. It also propagates uncertainty through non-linear transformations without further work: the number needed to treat above is the reciprocal of a posterior, so its interval is the reciprocal of the risk-difference interval.</p>
+<p>The last column of the table deserves a comment, because the four frequentist rows do not all face the same difficulty. Standardising a fitted <code>glm</code> produces a quantity that is a smooth function of the estimated coefficients, so the delta method applies directly, and it is what <code>marginaleffects</code> uses by default for any model it supports. Weighting is different. The weights are not known constants; they are predictions from a propensity model fitted to the same data, and an interval that conditions on them as though they were fixed answers the wrong question. The direction of the error depends on the estimand and the model. For the average treatment effect in the standard case, ignoring the estimation of the propensity score is <em>conservative</em>, because using the estimated score in place of the true one lowers the asymptotic variance.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> In other settings it is not conservative at all: in simulations of inverse-probability-weighted survival models, both the naive and the robust sandwich variance estimators produced biased standard errors and intervals with incorrect coverage, and only a bootstrap that refitted the propensity model within each resample achieved close to nominal coverage.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The rule of thumb is that any uncertainty statement about a weighted estimate must be generated by a procedure that regenerates the weights.</p>
+<p>The outcome-modelling route used throughout this chapter avoids the problem rather than solving it, since it never estimates a weight. That is a reason to prefer it in a Bayesian workflow, not a reason to think the difficulty has been disposed of: the corresponding question for weighted estimators — whether and how the uncertainty in estimated weights belongs in a Bayesian posterior — is a genuinely unsettled one, and is taken up at the end of the chapter.</p>
+</section>
+<section id="how-much-structure-to-impose" class="level2" data-number="29.4">
+<h2 data-number="29.4" class="anchored" data-anchor-id="how-much-structure-to-impose"><span class="header-section-number">29.4</span> How much structure to impose</h2>
+<p>The model fitted above is additive in the treatment: <code>drug</code> enters with one coefficient, so the model asserts that the drug multiplies risk by the same factor in every patient. That is an assumption about effect homogeneity on the log scale, and it is not implied by the causal question. The alternative is to let the treatment interact with every covariate.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m_sat <span class="ot">&lt;-</span> <span class="fu">brm</span>(stroke <span class="sc">~</span> drug <span class="sc">*</span> (severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> pri,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">1000</span>, <span class="at">warmup =</span> <span class="dv">500</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">file =</span> <span class="st">"models/ch28g_sat"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This model is saturated in the exposure: it has as many free parameters as fitting the outcome separately in the treated and the untreated. Standardising it to the whole cohort is therefore the same operation as fitting two arm-specific models and standardising both to the same population, which is how Chapter 23 described a fully interacted specification.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>The two-arm equivalent, fitted separately and standardised to the same cohort</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m_arm1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(stroke <span class="sc">~</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">family =</span> <span class="fu">poisson</span>(),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> <span class="fu">subset</span>(df, drug <span class="sc">==</span> <span class="dv">1</span>), <span class="at">prior =</span> pri,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">1000</span>, <span class="at">warmup =</span> <span class="dv">500</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">file =</span> <span class="st">"models/ch28g_arm1"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>m_arm0 <span class="ot">&lt;-</span> <span class="fu">brm</span>(stroke <span class="sc">~</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">family =</span> <span class="fu">poisson</span>(),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> <span class="fu">subset</span>(df, drug <span class="sc">==</span> <span class="dv">0</span>), <span class="at">prior =</span> pri,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">1000</span>, <span class="at">warmup =</span> <span class="dv">500</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">file =</span> <span class="st">"models/ch28g_arm0"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>arm_rd <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">rowMeans</span>(<span class="fu">posterior_epred</span>(m_arm1, <span class="at">newdata =</span> df, <span class="at">ndraws =</span> <span class="dv">200</span>))) <span class="sc">-</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mean</span>(<span class="fu">rowMeans</span>(<span class="fu">posterior_epred</span>(m_arm0, <span class="at">newdata =</span> df, <span class="at">ndraws =</span> <span class="dv">200</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Additive and saturated outcome models, standardised to the same cohort.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">risk difference</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">95% CrI</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">interval width</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">additive: drug + confounders</td>
+<td style="text-align: left;">-0.0259</td>
+<td style="text-align: left;">[-0.0317, -0.0201]</td>
+<td style="text-align: left;">0.0116</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">saturated: drug x confounders</td>
+<td style="text-align: left;">-0.0268</td>
+<td style="text-align: left;">[-0.0346, -0.0198]</td>
+<td style="text-align: left;">0.0148</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">two arm-specific models, standardised</td>
+<td style="text-align: left;">-0.0274</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">truth (oracle)</td>
+<td style="text-align: left;">-0.0272</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The saturated model lands closer to the truth and carries a wider interval — about 27% wider here. That is the trade in both directions. The additive model borrows the covariate structure of one arm to describe the other, which uses the data more efficiently; the price is a homogeneity assumption that, when wrong, biases the standardised contrast. The saturated model assumes nothing across arms and pays in precision. The two arm-specific fits give -0.0274, close to the saturated model as expected, since the two specifications span the same set of fitted risks. They are not identical because the interacted parametrisation places its prior on the <em>difference</em> between arms rather than on each arm separately, so the two are shrunk differently.</p>
+<p>The saturated model is also the one that can be asked about effect modification, since the additive model has assumed the answer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rd_dm <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(m_sat, <span class="at">variables =</span> <span class="st">"drug"</span>, <span class="at">by =</span> <span class="st">"diabetes"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>rr_dm <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(m_sat, <span class="at">variables =</span> <span class="st">"drug"</span>, <span class="at">by =</span> <span class="st">"diabetes"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">comparison =</span> <span class="st">"ratioavg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Standardised effect within levels of diabetes, from the saturated model.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">subgroup</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">risk difference</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">true RD</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">risk ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">no diabetes</td>
+<td style="text-align: left;">-0.0188 [-0.0238, -0.0137]</td>
+<td style="text-align: left;">-0.0177</td>
+<td style="text-align: left;">0.600 [0.529, 0.679]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">diabetes</td>
+<td style="text-align: left;">-0.0520 [-0.0753, -0.0324]</td>
+<td style="text-align: left;">-0.0572</td>
+<td style="text-align: left;">0.620 [0.525, 0.727]</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The drug prevents roughly 2.8 times as many strokes per treated patient among diabetics as among non-diabetics, while the risk ratio is close to constant across the two groups. This is the scale-dependence of Chapter 16, recovered from the fitted model: the same effect shows strong modification on the additive scale and almost none on the multiplicative scale, because diabetes shifts baseline risk and the drug acts multiplicatively. Which scale to report is decided by the decision at hand — additive for how many events a treatment programme would avert, multiplicative for whether the effect is likely to carry to a population with a different baseline risk.</p>
+</section>
+<section id="which-population" class="level2" data-number="29.5">
+<h2 data-number="29.5" class="anchored" data-anchor-id="which-population"><span class="header-section-number">29.5</span> Which population?</h2>
+<p>The g-formula has two factors, and only the first is a model of the data. The second, <span class="math inline">\(P(C = c)\)</span>, is a choice. Nothing about the fitted model tells us which population to average over, and the answer changes the estimand — as soon as the effect varies across patients, “the effect of the drug” is not a single number.</p>
+<p>Averaging over the whole cohort gives the <strong>average treatment effect</strong> (ATE). Averaging over the covariates of the treated only gives the <strong>effect of treatment on the treated</strong> (ATT), the quantity relevant to withdrawing a drug from those currently receiving it. Averaging over the untreated gives the effect of extending treatment to those not now getting it. Averaging over an external population’s covariate distribution <strong>transports</strong> the effect to that population.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>The last of these needs a target. We construct one by resampling the cohort towards an older, far more diabetic population, and — because the oracle columns travel with the rows — we can read off the true effect in that target as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>wt  <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fl">0.6</span> <span class="sc">*</span> df<span class="sc">$</span>age_c <span class="sc">+</span> <span class="fl">0.8</span> <span class="sc">*</span> df<span class="sc">$</span>diabetes)          <span class="co"># a stated target profile</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>tid <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(df), <span class="fu">nrow</span>(df), <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> wt)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>tgt <span class="ot">&lt;-</span> df[tid, ]                                        <span class="co"># the external target population</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>targets <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">whole cohort (ATE)</span><span class="st">`</span>  <span class="ot">=</span> <span class="fu">list</span>(<span class="at">nd =</span> df,                     <span class="at">idx =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(df))),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">the treated (ATT)</span><span class="st">`</span>   <span class="ot">=</span> <span class="fu">list</span>(<span class="at">nd =</span> <span class="fu">subset</span>(df, drug <span class="sc">==</span> <span class="dv">1</span>),  <span class="at">idx =</span> <span class="fu">which</span>(df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">1</span>)),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">the untreated</span><span class="st">`</span>       <span class="ot">=</span> <span class="fu">list</span>(<span class="at">nd =</span> <span class="fu">subset</span>(df, drug <span class="sc">==</span> <span class="dv">0</span>),  <span class="at">idx =</span> <span class="fu">which</span>(df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">0</span>)),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">external target</span><span class="st">`</span>     <span class="ot">=</span> <span class="fu">list</span>(<span class="at">nd =</span> tgt,                    <span class="at">idx =</span> tid)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>target_res <span class="ot">&lt;-</span> <span class="fu">imap</span>(targets, \(t, nm) {</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(m_sat, <span class="at">variables =</span> <span class="st">"drug"</span>, <span class="at">newdata =</span> t<span class="sc">$</span>nd)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">target =</span> nm, <span class="at">estimate =</span> a<span class="sc">$</span>estimate, <span class="at">lo =</span> a<span class="sc">$</span>conf.low, <span class="at">hi =</span> a<span class="sc">$</span>conf.high,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">truth =</span> <span class="fu">mean</span>(o<span class="sc">$</span>risk1[t<span class="sc">$</span>idx] <span class="sc">-</span> o<span class="sc">$</span>risk0[t<span class="sc">$</span>idx]),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">age =</span> <span class="fu">mean</span>(df<span class="sc">$</span>age[t<span class="sc">$</span>idx]), <span class="at">dm =</span> <span class="fu">mean</span>(df<span class="sc">$</span>diabetes[t<span class="sc">$</span>idx]))</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span> <span class="fu">list_rbind</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-targets" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-targets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch24-bayesian-g-computation_files/figure-html/fig-targets-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-targets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.3: One fitted model, four estimands. The standardised risk difference depends on the covariate distribution it is averaged over: the treated are sicker than the cohort as a whole and stand to gain more in absolute terms, and an older, more diabetic target population more still. Points with bars are posterior means and 95% credible intervals; red crosses are the oracle truth in each population. The model was fitted once; only the population entering the averaging step changed.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The same fitted model standardised to four different populations.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">target</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mean age</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% diabetic</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">estimate [95% CrI]</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">truth in that population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">whole cohort (ATE)</td>
+<td style="text-align: right;">62.1</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">-0.0268 [-0.0346, -0.0198]</td>
+<td style="text-align: left;">-0.0272</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">the treated (ATT)</td>
+<td style="text-align: right;">64.3</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">-0.0383 [-0.0513, -0.0271]</td>
+<td style="text-align: left;">-0.0397</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">the untreated</td>
+<td style="text-align: right;">59.4</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: left;">-0.0130 [-0.0161, -0.0099]</td>
+<td style="text-align: left;">-0.0123</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">external target</td>
+<td style="text-align: right;">69.9</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">-0.0548 [-0.0744, -0.0383]</td>
+<td style="text-align: left;">-0.0500</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The effect in the external target, -0.0548, is about 2 times as large as the effect in the study cohort, and the oracle confirms that this is a real feature of the population rather than an artefact of the estimator. The drug has not become more effective; the target population has a higher baseline risk, and a nearly constant risk ratio applied to a higher baseline gives a larger absolute benefit. The ordering of the four rows follows the same logic: the treated are the sicker patients, so the effect among them exceeds the cohort average, and the effect among the untreated falls below it.</p>
+<p>Three conditions have to hold for such a transported estimate to mean anything, and they are stronger than the conditions for the ATE.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Every covariate that modifies the effect must be measured and included in the outcome model, since the model is what carries the effect from one covariate distribution to the other. The target’s covariate values must be represented in the study data — a positivity condition on the target rather than on treatment — or the model is extrapolating rather than standardising. And the conditional outcome model must be valid in the target, which is a substantive claim about whether the two populations differ in ways the covariates capture. The further the target is pushed from the study population, the more of the answer is supplied by the model’s functional form rather than by data, and the point estimate drifts even while the credible interval stays wide enough to cover the truth. Exercise 3 makes that drift visible.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<section id="the-covariate-distribution-is-also-estimated" class="level3" data-number="29.5.1">
+<h3 data-number="29.5.1" class="anchored" data-anchor-id="the-covariate-distribution-is-also-estimated"><span class="header-section-number">29.5.1</span> The covariate distribution is also estimated</h3>
+<p>A subtlety hides in the averaging step. The standardised contrast above is an average over the covariates <em>of this sample</em>, so the interval describes the effect in a population with precisely this covariate mix. If the interest is instead in the population the sample was drawn from, the covariate distribution itself carries sampling uncertainty, which the standard calculation does not include. A Bayesian bootstrap makes it explicit: instead of weighting every patient equally in step 3, draw the weights from a Dirichlet distribution.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>sub <span class="ot">&lt;-</span> df[<span class="fu">sample</span>(<span class="fu">nrow</span>(df), <span class="dv">8000</span>), ]                       <span class="co"># a subsample keeps this cheap</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>E1  <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(m_sat, <span class="at">newdata =</span> <span class="fu">transform</span>(sub, <span class="at">drug =</span> <span class="dv">1</span>), <span class="at">ndraws =</span> <span class="dv">500</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>E0  <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(m_sat, <span class="at">newdata =</span> <span class="fu">transform</span>(sub, <span class="at">drug =</span> <span class="dv">0</span>), <span class="at">ndraws =</span> <span class="dv">500</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>rd_fixed <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(E1) <span class="sc">-</span> <span class="fu">rowMeans</span>(E0)                   <span class="co"># equal weights: this sample</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>W        <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rexp</span>(<span class="fu">length</span>(E1)), <span class="fu">nrow</span>(E1))            <span class="co"># Dirichlet weights, one row per draw</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>W        <span class="ot">&lt;-</span> W <span class="sc">/</span> <span class="fu">rowSums</span>(W)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>rd_bb    <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(W <span class="sc">*</span> E1) <span class="sc">-</span> <span class="fu">rowSums</span>(W <span class="sc">*</span> E0)             <span class="co"># covariate mix resampled too</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Two ways of treating the covariate distribution in the averaging step.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">covariate distribution</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">risk difference</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">interval width</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">held at the sample (standard)</td>
+<td style="text-align: left;">-0.0280 (-0.0369, -0.0204)</td>
+<td style="text-align: left;">0.0165</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dirichlet-reweighted</td>
+<td style="text-align: left;">-0.0280 (-0.0372, -0.0201)</td>
+<td style="text-align: left;">0.0171</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The interval widens by only about 4%, because 8 000 patients pin down a three-variable covariate distribution well. The point is not the size of the correction but what the standard interval means: it is conditional on the covariate distribution used in the averaging step. In small samples, or when standardising to a target described by few observations, the difference is material.</p>
+</section>
+</section>
+<section id="over-time-the-g-formula-for-a-sustained-strategy" class="level2" data-number="29.6">
+<h2 data-number="29.6" class="anchored" data-anchor-id="over-time-the-g-formula-for-a-sustained-strategy"><span class="header-section-number">29.6</span> Over time: the g-formula for a sustained strategy</h2>
+<p>Everything so far treats the drug as a single decision. Chapter 14 showed why that is not enough when treatment is repeated and the variables driving it are themselves changed by it: blood pressure at a visit confounds that visit’s treatment decision and mediates the previous one, so no single outcome regression can be right. The parametric g-formula resolved it by modelling how blood pressure evolves and simulating the cohort forward under each strategy. Chapter 14 did that with <code>lm</code> and <code>glm</code> fits, and obtained point estimates. Here the same simulation runs once per posterior draw.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>obs <span class="ot">&lt;-</span> <span class="fu">simulate_cohort_longitudinal</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>truth_l <span class="ot">&lt;-</span> <span class="fu">attr</span>(obs, <span class="st">"truth"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>K       <span class="ot">&lt;-</span> <span class="fu">max</span>(obs<span class="sc">$</span>k)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>obs<span class="sc">$</span>sbp_c     <span class="ot">&lt;-</span> (obs<span class="sc">$</span>sbp     <span class="sc">-</span> <span class="dv">140</span>) <span class="sc">/</span> <span class="dv">10</span>      <span class="co"># current blood pressure, per 10 mmHg</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>obs<span class="sc">$</span>sbp_lag_c <span class="ot">&lt;-</span> (obs<span class="sc">$</span>sbp_lag <span class="sc">-</span> <span class="dv">140</span>) <span class="sc">/</span> <span class="dv">10</span>      <span class="co"># what the clinician saw when deciding</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Two models are needed: a law of motion for the time-varying confounder, and a hazard model for the outcome. Both are fitted on the person-period data, on the observed treatment.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pri_sbp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>),    <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">2</span>),    <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">1</span>),  <span class="at">class =</span> <span class="st">"sigma"</span>))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>pri_haz <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="fl">1.5</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>),    <span class="at">class =</span> <span class="st">"b"</span>))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>m_sbp <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp_c <span class="sc">~</span> sbp_lag_c <span class="sc">+</span> A <span class="sc">+</span> severity <span class="sc">+</span> age_c,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">data =</span> obs, <span class="at">prior =</span> pri_sbp,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">600</span>, <span class="at">warmup =</span> <span class="dv">300</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">file =</span> <span class="st">"models/ch28g_sbp"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>m_haz <span class="ot">&lt;-</span> <span class="fu">brm</span>(Y <span class="sc">~</span> sbp_c <span class="sc">+</span> A <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="at">data =</span> obs, <span class="at">prior =</span> pri_haz,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">600</span>, <span class="at">warmup =</span> <span class="dv">300</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">file =</span> <span class="st">"models/ch28g_haz"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The forward simulation is the loop of Chapter 14 with one change: it is executed inside a posterior draw, using that draw’s coefficients throughout. Because both models are linear in their parameters, the whole loop can be run for all draws at once as matrix arithmetic — each row of the matrices below is one posterior draw, each column one patient.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Bs <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(m_sbp); Bh <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(m_haz)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>S  <span class="ot">&lt;-</span> <span class="dv">400</span>                                            <span class="co"># posterior draws carried forward</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>M  <span class="ot">&lt;-</span> <span class="dv">5000</span>                                           <span class="co"># Monte Carlo sample of baselines</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span> <span class="fu">filter</span>(k <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> M)   <span class="co"># everyone starts at a real baseline</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>dr <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="fu">nrow</span>(Bs), S))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## the parts of each linear predictor that never change during the follow-up</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>fix_s <span class="ot">&lt;-</span> Bs[dr, <span class="fu">c</span>(<span class="st">"b_Intercept"</span>, <span class="st">"b_severity"</span>, <span class="st">"b_age_c"</span>)] <span class="sc">%*%</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>           <span class="fu">t</span>(<span class="fu">cbind</span>(<span class="dv">1</span>, b0<span class="sc">$</span>severity, b0<span class="sc">$</span>age_c))</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>fix_h <span class="ot">&lt;-</span> Bh[dr, <span class="fu">c</span>(<span class="st">"b_Intercept"</span>, <span class="st">"b_severity"</span>, <span class="st">"b_age_c"</span>, <span class="st">"b_diabetes"</span>)] <span class="sc">%*%</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>           <span class="fu">t</span>(<span class="fu">cbind</span>(<span class="dv">1</span>, b0<span class="sc">$</span>severity, b0<span class="sc">$</span>age_c, b0<span class="sc">$</span>diabetes))</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>b_lag <span class="ot">&lt;-</span> Bs[dr, <span class="st">"b_sbp_lag_c"</span>]; b_A_s <span class="ot">&lt;-</span> Bs[dr, <span class="st">"b_A"</span>]; sg <span class="ot">&lt;-</span> Bs[dr, <span class="st">"sigma"</span>]</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>c_sbp <span class="ot">&lt;-</span> Bh[dr, <span class="st">"b_sbp_c"</span>];     c_A   <span class="ot">&lt;-</span> Bh[dr, <span class="st">"b_A"</span>]</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>E <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">rnorm</span>(S <span class="sc">*</span> M <span class="sc">*</span> K), <span class="fu">c</span>(S, M, K))             <span class="co"># shocks shared across strategies</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>gformula <span class="ot">&lt;-</span> <span class="cf">function</span>(rule) {                         <span class="co"># rule(sbp_prev, A_prev) -&gt; 0/1</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  sbp_prev <span class="ot">&lt;-</span> <span class="fu">matrix</span>(b0<span class="sc">$</span>sbp_lag_c, S, M, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  A_prev   <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, S, M)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  surv     <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>, S, M)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    A    <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">*</span> <span class="fu">rule</span>(sbp_prev, A_prev)               <span class="co"># the strategy sets treatment</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    sbp  <span class="ot">&lt;-</span> fix_s <span class="sc">+</span> b_lag <span class="sc">*</span> sbp_prev <span class="sc">+</span> b_A_s <span class="sc">*</span> A <span class="sc">+</span> sg <span class="sc">*</span> E[, , k]   <span class="co"># re-simulate, do not fix</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    haz  <span class="ot">&lt;-</span> <span class="fu">plogis</span>(fix_h <span class="sc">+</span> c_sbp <span class="sc">*</span> sbp <span class="sc">+</span> c_A <span class="sc">*</span> A)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    surv <span class="ot">&lt;-</span> surv <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> haz)</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    sbp_prev <span class="ot">&lt;-</span> sbp; A_prev <span class="ot">&lt;-</span> A</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowMeans</span>(<span class="dv">1</span> <span class="sc">-</span> surv)                                 <span class="co"># one five-year risk per draw</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>r_always <span class="ot">&lt;-</span> <span class="fu">gformula</span>(\(s, a) <span class="dv">1</span>)</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>r_never  <span class="ot">&lt;-</span> <span class="fu">gformula</span>(\(s, a) <span class="dv">0</span>)</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>r_dyn    <span class="ot">&lt;-</span> <span class="fu">gformula</span>(\(s, a) (s <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|</span> (a <span class="sc">==</span> <span class="dv">1</span>))     <span class="co"># treat if SBP above 140, then stay on</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Three details carry the causal logic, and each mirrors a step of Chapter 14. Treatment is <em>set</em> by the strategy rather than taken from the data, which is the intervention. Blood pressure is <em>re-simulated</em> from a model containing <code>A</code> rather than held at its observed value, which is what keeps the mediated path from treatment through blood pressure to stroke alive; holding it fixed would sever that path, the same failure as conditioning on it in a regression. And the simulated blood pressure is carried forward into the next visit, which is what lets the effect compound across visits.</p>
+<p>Two details are specific to the Bayesian version. The draws are paired across strategies: row <span class="math inline">\(s\)</span> of the always-treat matrix and row <span class="math inline">\(s\)</span> of the never-treat matrix use the same coefficients, so their difference is a posterior draw of the strategy contrast. And the random shocks <code>E</code> are generated once and reused by every strategy, so the Monte Carlo noise of the simulation cancels in the contrast instead of adding to it — the same device the cohort generator uses to define its own counterfactuals.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-strategy" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-strategy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch24-bayesian-g-computation_files/figure-html/fig-strategy-1.png" class="img-fluid figure-img" width="816">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-strategy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29.4: Posterior five-year stroke risk under three sustained treatment strategies (left) and the posterior of the always-versus-never risk difference (right), from the Bayesian g-formula. Dashed red lines are the oracle truth for each quantity; in the left panel the lines for always-treat and treat-if-indicated nearly coincide. Treating only when blood pressure exceeds 140 mmHg achieves nearly the benefit of treating everyone at every visit, at a fraction of the treatment.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Bayesian g-formula for sustained strategies, against the oracle.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">quantity</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">posterior mean (95% CrI)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">truth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">risk under always treat</td>
+<td style="text-align: left;">0.0547 (0.0523, 0.0569)</td>
+<td style="text-align: left;">0.0556</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">risk under never treat</td>
+<td style="text-align: left;">0.1029 (0.0963, 0.1092)</td>
+<td style="text-align: left;">0.1018</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">risk under treat-if-SBP-high</td>
+<td style="text-align: left;">0.0563 (0.0540, 0.0584)</td>
+<td style="text-align: left;">0.0571</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">risk difference, always vs never</td>
+<td style="text-align: left;">-0.0482 (-0.0556, -0.0404)</td>
+<td style="text-align: left;">-0.0463</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">risk ratio, always vs never</td>
+<td style="text-align: left;">0.532 (0.488, 0.581)</td>
+<td style="text-align: left;">0.546</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Sustained treatment lowers five-year stroke risk by -0.0482 (95% credible interval -0.0556 to -0.0404) against the true -0.0463. The three estimators of Chapter 14 are recomputed below on the same cohort, so the comparison is on identical data.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>The Chapter 14 estimators, recomputed on this cohort</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>lo     <span class="ot">&lt;-</span> obs</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>lo<span class="sc">$</span>kf  <span class="ot">&lt;-</span> <span class="fu">factor</span>(lo<span class="sc">$</span>k)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>b_l    <span class="ot">&lt;-</span> lo <span class="sc">|&gt;</span> <span class="fu">filter</span>(k <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(age_c, diabetes, severity)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>sbp_b1 <span class="ot">&lt;-</span> (lo <span class="sc">|&gt;</span> <span class="fu">filter</span>(k <span class="sc">==</span> <span class="dv">1</span>))<span class="sc">$</span>sbp_lag</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>strategy_risk <span class="ot">&lt;-</span> <span class="cf">function</span>(model, cum_at) {        <span class="co"># cum_at(k): treated count under the strategy</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  surv <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(b_l))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    nd   <span class="ot">&lt;-</span> b_l <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">cum_A =</span> <span class="fu">cum_at</span>(k), <span class="at">kf =</span> <span class="fu">factor</span>(k, <span class="at">levels =</span> <span class="fu">levels</span>(lo<span class="sc">$</span>kf)))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    surv <span class="ot">&lt;-</span> surv <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">predict</span>(model, nd, <span class="at">type =</span> <span class="st">"response"</span>))</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="dv">1</span> <span class="sc">-</span> surv)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>rd_av_nv <span class="ot">&lt;-</span> <span class="cf">function</span>(model) <span class="fu">strategy_risk</span>(model, \(k) k) <span class="sc">-</span> <span class="fu">strategy_risk</span>(model, \(k) <span class="dv">0</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="do">## (i) adjust for baseline only: confounded by the time-varying blood pressure</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>naive_rd <span class="ot">&lt;-</span> <span class="fu">rd_av_nv</span>(<span class="fu">glm</span>(Y <span class="sc">~</span> cum_A <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> severity <span class="sc">+</span> kf,</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                         <span class="at">family =</span> binomial, <span class="at">data =</span> lo))</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="do">## (ii) stabilised IP weights, then a marginal structural model</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>den <span class="ot">&lt;-</span> <span class="fu">glm</span>(A <span class="sc">~</span> A_lag <span class="sc">+</span> sbp_lag_c <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> kf, binomial, lo)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>num <span class="ot">&lt;-</span> <span class="fu">glm</span>(A <span class="sc">~</span> A_lag <span class="sc">+</span>             severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> kf, binomial, lo)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>lo  <span class="ot">&lt;-</span> lo <span class="sc">|&gt;</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_den   =</span> <span class="fu">predict</span>(den, <span class="at">type =</span> <span class="st">"response"</span>),</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">p_num   =</span> <span class="fu">predict</span>(num, <span class="at">type =</span> <span class="st">"response"</span>),</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">contrib =</span> <span class="fu">if_else</span>(A <span class="sc">==</span> <span class="dv">1</span>, p_num <span class="sc">/</span> p_den, (<span class="dv">1</span> <span class="sc">-</span> p_num) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> p_den))) <span class="sc">|&gt;</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">sw =</span> <span class="fu">cumprod</span>(contrib)) <span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>tr <span class="ot">&lt;-</span> <span class="fu">quantile</span>(lo<span class="sc">$</span>sw, <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>))</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>lo <span class="ot">&lt;-</span> lo <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">sw =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(sw, tr[<span class="dv">1</span>]), tr[<span class="dv">2</span>]))</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>ipw_rd_l <span class="ot">&lt;-</span> <span class="fu">rd_av_nv</span>(<span class="fu">glm</span>(Y <span class="sc">~</span> cum_A <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> severity <span class="sc">+</span> kf,</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>                         <span class="at">family =</span> quasibinomial, <span class="at">weights =</span> sw, <span class="at">data =</span> lo))</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="do">## (iii) the same forward simulation, from lm / glm point estimates</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>sbp_f <span class="ot">&lt;-</span> <span class="fu">lm</span>(sbp <span class="sc">~</span> sbp_lag <span class="sc">+</span> A <span class="sc">+</span> severity <span class="sc">+</span> age_c, <span class="at">data =</span> lo)</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>haz_f <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y <span class="sc">~</span> sbp <span class="sc">+</span> A <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">family =</span> binomial, <span class="at">data =</span> lo)</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>gform_freq <span class="ot">&lt;-</span> <span class="cf">function</span>(set_drug) {</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>  sbp_prev <span class="ot">&lt;-</span> sbp_b1; surv <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(b_l))</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    mu   <span class="ot">&lt;-</span> <span class="fu">predict</span>(sbp_f, <span class="fu">mutate</span>(b_l, <span class="at">sbp_lag =</span> sbp_prev, <span class="at">A =</span> set_drug))</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    sbp  <span class="ot">&lt;-</span> mu <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(mu), <span class="dv">0</span>, <span class="fu">sigma</span>(sbp_f))</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>    haz  <span class="ot">&lt;-</span> <span class="fu">predict</span>(haz_f, <span class="fu">mutate</span>(b_l, <span class="at">sbp =</span> sbp, <span class="at">A =</span> set_drug), <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>    surv <span class="ot">&lt;-</span> surv <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> haz); sbp_prev <span class="ot">&lt;-</span> sbp</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="dv">1</span> <span class="sc">-</span> surv)</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>gfreq_rd <span class="ot">&lt;-</span> <span class="fu">gform_freq</span>(<span class="dv">1</span>) <span class="sc">-</span> <span class="fu">gform_freq</span>(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Four estimators of one sustained-strategy contrast, on the same cohort.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">method</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">risk difference, always vs never</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">uncertainty</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">naive: adjust for baseline only (ch. 14)</td>
+<td style="text-align: left;">-0.0293</td>
+<td style="text-align: left;">none reported</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IP-weighted marginal structural model (ch. 14)</td>
+<td style="text-align: left;">-0.0351</td>
+<td style="text-align: left;">none reported</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">parametric g-formula, lm / glm (ch. 14)</td>
+<td style="text-align: left;">-0.0485</td>
+<td style="text-align: left;">none reported</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bayesian g-formula</td>
+<td style="text-align: left;">-0.0482 (-0.0556, -0.0404)</td>
+<td style="text-align: left;">full posterior</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">truth (oracle)</td>
+<td style="text-align: left;">-0.0463</td>
+<td style="text-align: left;">-</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Adjusting for baseline covariates alone leaves the time-varying confounding in place and recovers only about 63% of the true effect. Weighting recovers most of the rest, and the two g-formulas — the <code>lm</code>/<code>glm</code> version of Chapter 14 and the Bayesian version here — agree to 0.0003 on the risk-difference scale, as they should: they are the same forward simulation, run from point estimates in one case and from posterior draws in the other. What the Bayesian version adds is the interval, and the interval covers the truth. Note that it also lies slightly beyond it: both g-formulas overshoot the true -0.0463 a little, because the fitted hazard and blood-pressure models are close to, but not identical with, the equations that generated the data. The dynamic strategy — treat when blood pressure exceeds 140 mmHg and continue thereafter — reaches a risk of 0.0563 against 0.0547 for treating everyone at every visit, so most of the available benefit is obtained by treating when indicated. That comparison is the reason to want strategy contrasts at all, and standard regression cannot produce it, because a dynamic strategy is defined through the very variable the regression would have to condition on.</p>
+<p>Two sources of variation are now mixed in the output. Posterior uncertainty comes from not knowing the true coefficients; <strong>Monte Carlo error</strong> comes from simulating a finite number of patients (<code>M</code>) with a finite number of draws (<code>S</code>). Only the first is a statement about the world. Monte Carlo error is reduced by raising <code>M</code> and <code>S</code> until the answer stops moving, which is a computational check rather than an inferential one.</p>
+</section>
+<section id="what-g-computation-does-not-fix" class="level2" data-number="29.7">
+<h2 data-number="29.7" class="anchored" data-anchor-id="what-g-computation-does-not-fix"><span class="header-section-number">29.7</span> What g-computation does not fix</h2>
+<p>The chapter has produced narrow intervals around quantities that match a known truth, and that is a feature of a simulation in which the adjustment set is known and the models are nearly correct. None of the machinery supplies either of those things.</p>
+<p><strong>Identification comes first, and no fit can audit it.</strong> The estimate is a causal effect only if the covariates in the model block every back-door path (Chapter 11). If a confounder is missing, the g-computation delivers a precise posterior centred on the wrong number, and the posterior gives no hint of the problem — it describes uncertainty about parameters <em>given the model</em>, and a missing confounder is not a parameter. This is the error that destroyed the mediation estimate of Chapter 15 when severity was hidden. The tool for it is a sensitivity analysis that asks how strong an unmeasured confounder would have to be to overturn the conclusion (Chapter 19), and priors are not a substitute: widening a prior on a coefficient that is in the model says nothing about a variable that is not.</p>
+<p><strong>Positivity is doing work that is easy to miss.</strong> The g-formula predicts every patient under both treatments, including patients whose observed treatment was nearly certain. In those regions the prediction is extrapolation from the model’s functional form rather than a comparison supported by data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ps <span class="ot">&lt;-</span> <span class="fu">glm</span>(drug <span class="sc">~</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">family =</span> binomial, <span class="at">data =</span> df)<span class="sc">$</span>fitted.values</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">`</span><span class="at">treated: 1st percentile of P(drug)</span><span class="st">`</span>   <span class="ot">=</span> <span class="fu">unname</span>(<span class="fu">quantile</span>(ps[df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">1</span>], <span class="fl">0.01</span>)),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">untreated: 99th percentile of P(drug)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">unname</span>(<span class="fu">quantile</span>(ps[df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">0</span>], <span class="fl">0.99</span>)),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">treated above any untreated</span><span class="st">`</span>           <span class="ot">=</span> <span class="fu">mean</span>(ps[df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">&gt;</span> <span class="fu">max</span>(ps[df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">0</span>])))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   treated: 1st percentile of P(drug) untreated: 99th percentile of P(drug) 
+                          0.128125702                           0.914212164 
+          treated above any untreated 
+                          0.007105446 </code></pre>
+</div>
+</div>
+<p>Overlap is good here by construction, and only 0.7% of treated patients lie beyond the range of treatment probabilities seen among the untreated. Where overlap fails, standardisation does not report a difficulty — it extrapolates without saying so, which is the respect in which a model is more dangerous than the empty cells of Chapter 12, since an empty cell at least announces itself. The diagnostic is separate from the estimate and belongs in the report.</p>
+<p><strong>Consistency, and the definition of the strategy.</strong> The contrast estimates the effect of an intervention that must be describable: a dose, a schedule, a rule for starting and stopping. The longitudinal section made this concrete by naming three strategies; the number attached to “the effect of the drug” depends on which one is meant (Chapter 13).</p>
+<p><strong>Modelling assumptions remain modelling assumptions.</strong> The outcome model’s functional form propagates into the estimate, and the standardisation cannot repair it. The comparison between the additive and the saturated fits above is one probe of this; a flexible functional form for the confounders (Chapter 23) is another. There is also a tension specific to Bayesian causal inference worth naming: a fully Bayesian analysis conditions on the observed data and so, in principle, ignores the treatment-assignment mechanism once the outcome model is specified, whereas weighting methods use that mechanism directly. The two views can be reconciled, but the reconciliation is technical and remains debated.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> For a book at this level the practical guidance is the one this chapter has followed: model the outcome, standardise it, and report the assumptions rather than relying on the estimator to be robust to their failure. Doubly robust estimators, which combine an outcome model with a treatment model so that either one may be wrong, are the standard next step.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Reviewing a g-computation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Estimand.</strong> Which contrast (difference, ratio), on which scale, in which population? “The effect of the drug” is not an estimand until the target population is named, and the ATE, the ATT and a transported effect are different numbers whenever the effect varies across patients.</li>
+<li><strong>Adjustment set, from the graph.</strong> Confirm that the covariates in the outcome model are the ones the DAG identifies, that no mediator or collider is among them, and that the set was fixed before the model was fitted rather than chosen by fit statistics.</li>
+<li><strong>Substitution, not selection.</strong> Confirm the counterfactual predictions were made by overwriting the treatment for <em>every</em> patient, not by predicting the treated and untreated subgroups separately and comparing them. The second is the crude comparison in a new costume.</li>
+<li><strong>Order of operations.</strong> Averaging over patients happens before the contrast, and the posterior is summarised last. A contrast computed from posterior-mean coefficients is not the posterior mean of the contrast under a non-linear link, and it carries no interval.</li>
+<li><strong>Positivity.</strong> Ask for the overlap diagnostic — the distribution of the estimated treatment probability in each arm — and for what fraction of the sample the prediction under the counterfactual treatment is extrapolation.</li>
+<li><strong>Model structure.</strong> Was the treatment allowed to interact with the covariates, and does the conclusion change when it is? An additive specification asserts effect homogeneity on the link scale.</li>
+<li><strong>Uncertainty.</strong> The interval should come from the same loop that produced the estimate, and for a time-varying analysis it should propagate uncertainty from the confounder model as well as the outcome model. Confirm convergence diagnostics, and confirm that the Monte Carlo sample in a forward simulation is large enough that the answer is stable. If the estimator uses <strong>estimated weights</strong>, the interval must come from a procedure that re-estimates them — a delta-method or sandwich interval computed with the weights held fixed does not have the stated coverage.</li>
+<li><strong>Fragility.</strong> Because exchangeability is untestable, a g-computation should be reported alongside a sensitivity analysis (Chapter 19). A conclusion that an unmeasured confounder of moderate strength would overturn is a fragile conclusion, whatever the width of the credible interval.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="key-points" class="level2" data-number="29.8">
+<h2 data-number="29.8" class="anchored" data-anchor-id="key-points"><span class="header-section-number">29.8</span> Key points</h2>
+<ul>
+<li><strong>Bayesian g-computation is the standardisation of Chapter 12 with a posterior in the middle.</strong> Substitute the treatment, predict every patient, average over a target population, contrast — carried out inside each posterior draw, so the result is a posterior distribution over the causal contrast rather than a point estimate with an interval bolted on.</li>
+<li>The <strong>ordering matters</strong>: average over patients before contrasting, and summarise the draws last. A contrast built from posterior-mean coefficients is a different quantity and has no distribution.</li>
+<li>Because the answer is a distribution, <strong>decision-relevant probabilities follow by counting draws</strong>, and non-linear derived quantities such as the number needed to treat inherit their intervals without a delta-method approximation.</li>
+<li>The <strong>target population is part of the estimand.</strong> The same fitted model standardised to the whole cohort, to the treated, or to an external population gives different effects whenever the effect varies across patients. Transporting an effect additionally requires that every effect modifier is modelled and that the target’s covariate values are represented in the study data.</li>
+<li>An <strong>additive</strong> outcome model asserts effect homogeneity on the link scale and buys precision with that assumption; a model <strong>saturated in the exposure</strong> is equivalent to fitting the two arms separately and standardising both to one population, and pays for its freedom in width.</li>
+<li>The <strong>g-formula over time</strong> runs the same logic forward across visits, re-simulating the time-varying confounder from a model that contains treatment so the mediated path survives. Running the loop once per posterior draw, with shocks shared across strategies, gives a posterior for the contrast between sustained strategies — including dynamic strategies that standard regression cannot evaluate.</li>
+<li><strong>None of this addresses identification.</strong> Exchangeability, positivity and consistency are assumptions the data cannot check; a missing confounder produces a narrow posterior centred on the wrong number, and the remedy is sensitivity analysis, not a wider prior.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="29.9">
+<h2 data-number="29.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">29.9</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Break the adjustment set.</strong> Refit <code>m_add</code> with <code>severity</code> omitted and repeat the g-computation. Report the posterior mean, the credible interval, and <span class="math inline">\(P(\text{RD} &lt; 0)\)</span>. Does anything in the posterior, the convergence diagnostics, or a posterior predictive check reveal that the estimate is wrong? Relate your answer to the division of labour between the DAG and the fitted model in Chapter 11.</p></li>
+<li><p><strong>Over-adjust.</strong> Add <code>sbp</code> to the outcome model and standardise again. Compare with the result of Chapter 15 and explain, in terms of the paths in the DAG, which quantity the new number estimates and why it is not the total effect.</p></li>
+<li><p><strong>Push the target until it breaks.</strong> Repeat the transport calculation with the resampling weights <code>exp(a * age_c + d * diabetes)</code> for <span class="math inline">\((a, d) = (0.6, 0.8)\)</span>, <span class="math inline">\((0.8, 1.2)\)</span> and <span class="math inline">\((1.2, 2.0)\)</span>, each time comparing the estimate with the oracle truth in that target. Report the mean age and diabetes prevalence of each target alongside the ratio of estimate to truth. At what point does the estimate stop tracking the truth, and what does the credible interval do as that happens? Then repeat the whole exercise with the additive model <code>m_add</code> and say which specification transports better and why.</p></li>
+<li><p><strong>Monte Carlo versus posterior uncertainty.</strong> In the longitudinal g-formula, rerun <code>gformula()</code> with <code>M = 500</code> and again with <code>M = 20000</code>, holding <code>S</code> fixed. How does the width of the credible interval for the risk difference change, and what does that tell you about how much of it was Monte Carlo error? Then rerun with independent shocks for the two strategies (generate <code>E</code> separately inside each call) and explain the change.</p></li>
+<li><p><strong>A dynamic strategy with a delay.</strong> Modify the treatment rule so that treatment starts only after blood pressure has exceeded 140 mmHg at two consecutive visits. Estimate the five-year risk under this strategy and compare with the immediate-start rule. Which assumption of Chapter 13 does the two-visit rule make more demanding?</p></li>
+<li><p><strong>Conceptual.</strong> A colleague reports a g-computed risk difference with a 95% credible interval that excludes zero and concludes that the drug works. List three distinct ways in which that conclusion could be wrong even though the computation is correct, and name the diagnostic or analysis that addresses each.</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Zou G, “A modified Poisson regression approach to prospective studies with binary data,” <em>Am J Epidemiol</em> 2004;159:702-706 (<a href="https://doi.org/10.1093/aje/kwh090">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Lunceford JK, Davidian M, “Stratification and weighting via the propensity score in estimation of causal treatment effects: a comparative study,” <em>Stat Med</em> 2004;23:2937-2960 (<a href="https://doi.org/10.1002/sim.1903">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Austin PC, “Variance estimation when using inverse probability of treatment weighting (IPTW) with survival analysis,” <em>Stat Med</em> 2016;35:5642-5655 (<a href="https://doi.org/10.1002/sim.7084">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Westreich D, Edwards JK, Lesko CR, Stuart E, Cole SR, “Transportability of Trial Results Using Inverse Odds of Sampling Weights,” <em>Am J Epidemiol</em> 2017;186:1010-1014 (<a href="https://doi.org/10.1093/aje/kwx164">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Dahabreh IJ, Robertson SE, Steingrimsson JA, Stuart EA, Hernán MA, “Extending inferences from a randomized trial to a new target population,” <em>Stat Med</em> 2020;39:1999-2014 (<a href="https://doi.org/10.1002/sim.8426">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Petersen ML, Porter KE, Gruber S, Wang Y, van der Laan MJ, “Diagnosing and responding to violations in the positivity assumption,” <em>Stat Methods Med Res</em> 2012;21:31-54 (<a href="https://doi.org/10.1177/0962280210386207">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Rubin DB, “The Bayesian Bootstrap,” <em>Ann Statist</em> 1981;9:130-134 (<a href="https://doi.org/10.1214/aos/1176345338">DOI</a>). The device is applied to causal estimands in Oganisian A, Roy JA, “A practical introduction to Bayesian estimation of causal effects: Parametric and nonparametric approaches,” <em>Stat Med</em> 2021;40:518-551 (<a href="https://doi.org/10.1002/sim.8761">DOI</a>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Saarela O, Stephens DA, Moodie EE, Klein MB, “On Bayesian estimation of marginal structural models,” <em>Biometrics</em> 2015;71:279-288 (<a href="https://doi.org/10.1111/biom.12269">DOI</a>).<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Robins JM, Hernán MA, Wasserman L, “Discussion of ‘On Bayesian estimation of marginal structural models’,” <em>Biometrics</em> 2015;71:296-299 (<a href="https://doi.org/10.1111/biom.12273">DOI</a>).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Vansteelandt S, Keiding N, “Invited commentary: G-computation–lost in translation?,” <em>Am J Epidemiol</em> 2011;173:739-742 (<a href="https://doi.org/10.1093/aje/kwq474">DOI</a>); Snowden JM, Rose S, Mortimer KM, “Implementation of G-computation on a simulated data set: demonstration of a causal inference technique,” <em>Am J Epidemiol</em> 2011;173:731-738 (<a href="https://doi.org/10.1093/aje/kwq472">DOI</a>).<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./09-multilevel.html" class="pagination-link" aria-label="Multilevel models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch25-missing-data.html" class="pagination-link" aria-label="DAG-guided missing data and imputation">
+        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

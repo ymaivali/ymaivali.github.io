@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ülo Maiväli">
-<meta name="dcterms.date" content="2026-05-13">
+<meta name="dcterms.date" content="2026-08-16">
 
-<title>Methodology</title>
+<title>The Bayesian Way to Causal Epidemiology</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,7 +32,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./02-causal-inference.html" rel="next">
+<link href="./ch02-thinking-under-uncertainty.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -111,7 +111,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -126,7 +126,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Methodology</a> 
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -142,61 +142,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Part I. How to think</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -204,38 +156,273 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -250,16 +437,16 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
+  <li><a href="#a-statement-of-purpose" id="toc-a-statement-of-purpose" class="nav-link active" data-scroll-target="#a-statement-of-purpose"><span class="header-section-number">1</span> A statement of purpose</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">2</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#scientific-method-the-short-version" id="toc-scientific-method-the-short-version" class="nav-link" data-scroll-target="#scientific-method-the-short-version"><span class="header-section-number">1.1</span> Scientific method: the short version</a></li>
-  <li><a href="#rationality-the-short-version" id="toc-rationality-the-short-version" class="nav-link" data-scroll-target="#rationality-the-short-version"><span class="header-section-number">1.2</span> Rationality: the short version</a>
-  <ul class="collapse">
-  <li><a href="#this-is-how-it-works" id="toc-this-is-how-it-works" class="nav-link" data-scroll-target="#this-is-how-it-works"><span class="header-section-number">1.2.1</span> This is how it works</a></li>
-  </ul></li>
-  <li><a href="#decision-theroy-the-short-version" id="toc-decision-theroy-the-short-version" class="nav-link" data-scroll-target="#decision-theroy-the-short-version"><span class="header-section-number">1.3</span> Decision theroy: the short version</a></li>
-  <li><a href="#causality-the-short-version" id="toc-causality-the-short-version" class="nav-link" data-scroll-target="#causality-the-short-version"><span class="header-section-number">1.4</span> Causality: the short version</a></li>
-  <li><a href="#modeling-the-short-version" id="toc-modeling-the-short-version" class="nav-link" data-scroll-target="#modeling-the-short-version"><span class="header-section-number">1.5</span> Modeling: the short version</a></li>
+  <li><a href="#scientific-method-the-short-version" id="toc-scientific-method-the-short-version" class="nav-link" data-scroll-target="#scientific-method-the-short-version"><span class="header-section-number">2.1</span> Scientific method: the short version</a></li>
+  <li><a href="#rationality-the-short-version" id="toc-rationality-the-short-version" class="nav-link" data-scroll-target="#rationality-the-short-version"><span class="header-section-number">2.2</span> Rationality: the short version</a></li>
+  <li><a href="#bayesian-inference-the-short-version" id="toc-bayesian-inference-the-short-version" class="nav-link" data-scroll-target="#bayesian-inference-the-short-version"><span class="header-section-number">2.3</span> Bayesian inference: the short version</a></li>
+  <li><a href="#decision-theory-the-short-version" id="toc-decision-theory-the-short-version" class="nav-link" data-scroll-target="#decision-theory-the-short-version"><span class="header-section-number">2.4</span> Decision theory: the short version</a></li>
+  <li><a href="#causality-the-short-version" id="toc-causality-the-short-version" class="nav-link" data-scroll-target="#causality-the-short-version"><span class="header-section-number">2.5</span> Causality: the short version</a></li>
+  <li><a href="#modeling-the-short-version" id="toc-modeling-the-short-version" class="nav-link" data-scroll-target="#modeling-the-short-version"><span class="header-section-number">2.6</span> Modeling: the short version</a></li>
+  <li><a href="#a-philosophical-aside-knowledge-and-belief" id="toc-a-philosophical-aside-knowledge-and-belief" class="nav-link" data-scroll-target="#a-philosophical-aside-knowledge-and-belief"><span class="header-section-number">2.7</span> A philosophical aside: knowledge and belief</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -269,7 +456,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Methodology</h1>
+<h1 class="title">The Bayesian Way to Causal Epidemiology</h1>
 </div>
 
 
@@ -286,7 +473,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 13, 2026</p>
+      <p class="date">August 16, 2026</p>
     </div>
   </div>
   
@@ -298,20 +485,31 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<section id="scientific-method-the-short-version" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="scientific-method-the-short-version"><span class="header-section-number">1.1</span> Scientific method: the short version</h2>
-<p>Science has a single goal: to produce useful knowledge. “Useful” does not necessarily mean “monetized”, as there is more to human experience than business. It means any kind of knowledge that is interesting for any reason. Scientific product is used in technology, in medicine, in business, in mass murder, in politics, in music, and, frankly, in all human affairs. Without science everything would be different.</p>
-<p>Scientists build and test theories on data. This means that science is a belief system, where existing beliefs are continually updated on new evidence. So science is evidence-based, but its more than that. It’s like a spider’s web that is continuously re-spun in response to a changing environment. Every piece of new data causes ripples across this world wide web of beliefs, and thus the web is never static, never finished. The main goal of methodology, the science of method, is to ensure optimal updating of beliefs.</p>
+<section id="a-statement-of-purpose" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> A statement of purpose</h1>
+<p>This book is focused on causal modelling in epidemiology, via the Bayesian route. Throughout, I try to show connections between scientific, statistical and causal thinking, which are bound together by probability theory, interpreted as logic.</p>
+<p>The general idea behind this lengthy exposition is to demolish walls between scientific thinking, statistical thinking and rational thinking in the real world. However, rationality is here taken in a narrow, technical sense, where we can norm it and check its correctness by mathematical methods. Normatively rational thinking operates in the mental space where assertions have truth value – i.e.&nbsp;the statement (proposition) you made can be either true or false, and nothing in between. Here we have the use of a mathematical framework that tells how to use the evidence to update your beliefs about the world, be it the real world, or the rather more abstract scientific world. As we will see, the truth value requirement requirement can be tricky even in the highly technical domain of counterfactual causal modelling, let alone in everyday decisions on where to go for vacation of whether to eat this piece of chocolate cake. It turns out that we will aquire a fancy toolbox for making data-driven inferences about practically everything, from said cake to medical treatments, while in most practical cases the tools work only so-so, because how we talk about the world cannot be precisely encoded into mathematically tractable language. In the end, we have to be content with doing the best job we can, using tools that are extremely well understood and work optimally under ideal conditions, while conceding that in actual scientific work, or in real life, this might not be good enough in any given use case.</p>
+<p>The moral of this is twofold. Firstly, whatever we do in terms of fancy statistics and modelling, we should always try to understand, why we do it the way we do it. Any math that comes up in our work is in the service of some non-mathematical scientific argument, and if we cannot understand this relationship, then the math is spurious and should be considered a window-dressing to our limitations as scientists and human beings. The second moral is simple: show humility! After perusing this book, you should take it for granted that mathematical precision in epidemiological work is illusory (not only the point estimates, but our estimates about the uncertainty of these, are inherently uncertain) and no numerical probability value can carry over straight to our scientific arguments. This is why epidemiological papers have sections “Limitations of the Study” – to show the discrepancy between assumptions behind their calculations and what they actually suspect to be the case.</p>
+<p>To make it short: (i) we do things for a reason and (ii) we are humble about it.</p>
+<p>The book covers both experimental (randomized) strudies and observational (epidemiological) studies and focuses on practical workflows rather than theoretical exposition. It experimental itself, as it’s written largely by AI (mostly Opus 4.7-5 models in Claude Code and Claude Science harnesses) and the AI-generated text is only lightly edited for readability, not that much for style. The references were checked by AI either from pubmed or from the web directly. The reader should note that the facts were generally not checked by human for accuracy. You are reading a book that is, in a sense, still in search of its author. I do hope that it will be read it with the help of AI, including for fact checking, as model progression will make it easier to identify errors of previous models. I will not include solutions to excercises, in the hope that for it will be pedagogically advantageous to elicit these with the help of AI.</p>
+<p>The reader is encouraged to report errors and offer suggestions directly to me at ymaivali@gmail.com</p>
+<p>Ülo Maiväli</p>
+<p>August, 2026</p>
 </section>
-<section id="rationality-the-short-version" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="rationality-the-short-version"><span class="header-section-number">1.2</span> Rationality: the short version</h2>
+<section id="introduction" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Introduction</h1>
+<section id="scientific-method-the-short-version" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="scientific-method-the-short-version"><span class="header-section-number">2.1</span> Scientific method: the short version</h2>
+<p>Science has a single goal: to produce useful knowledge. “Useful” does not necessarily mean “monetized”, as there is more to human experience than business. It means any kind of knowledge that is interesting for any reason. Scientific product is used in technology, in medicine, in business, in mass murder, in politics, in music, and, frankly, in all human affairs. Without science everything would be different.</p>
+<p>Scientists build and test theories on data. This means that science is a belief system, where existing beliefs are continually updated on new evidence. Science is evidence-based, but its more than that. It’s like a spider’s web that is continuously re-spun. Every piece of new data causes ripples across this world wide web of beliefs, and thus the web is never static, never finished. The main goal of methodology, the science of method, is to ensure optimal updating of beliefs.</p>
+</section>
+<section id="rationality-the-short-version" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="rationality-the-short-version"><span class="header-section-number">2.2</span> Rationality: the short version</h2>
 <p>We live in an uncertain world. While the world itself may or may not behave with true randomness, our attempts to collect data on it are hampered by measuring noise, random variation, and bias. Thus any attempt on making sense of the world must come to grips with these sources of uncertainty.</p>
-<p>What makes a rational entity? Perhaps it is its goal of making the most of limited, noisy and biased information to formulate degrees of belief; and as a step further, to convert these beliefs into optimal decisions. We can make sense of the concept of rational beliefs by thinking of a spectrum of uncertainties, beginning with radical uncertainty, where we have no relevant information to limit the possibilities and on the other end of the continuum, completely understood uncertainty exemplified by games of chance. If we think of uncertainty in terms of the risk of something happening, then we immediately get that the radical uncertainty side of the continuum is deeply unpleasant, because the risks it describes are essentially unknowable – they can be very large, very small, or anything in between. In contrast, the games of chance are much more satisfying, as they are perfectly understood in the sense that we can from simple models calculate the exact long-run relative frequencies of any conceivable outcome (and these frequencies can be very close to truth in a real casino).</p>
-<p>Somewhere inside of this continuum lies every scientific question that we might want to answer on empirical data. What scientists often do is to try to identify interesting questions that are as far away as possible from the radical uncertainty side of things, and then to apply simple stochastic models that are close to those employed for the games of chance, and hope that the modeling is somehow relevant in the real world. Every statistical model that uses binomial distribution to predict binary outcomes (dead/alive, etc.) is an example of this approach to rationality.</p>
-<p>Example 1: Covid-19 in the spring of 2020. The first epidemiological models of spread of COVID-19 in Europe (and in Estonia) used imperfect and scanty data and assumed that the Chinese containment measures would be replicated in Europe; and the models themselves were created on flu epidemics. These models failed on two levels: (i) their predictions were wrong, and (ii) their uncertainty intervals were too narrow, disregarding actual uncertainty. Most models do not “know” anything about the inherent uncertainty present in their own structures – they have no self-awareness.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Thus models inappropriate for the radical uncertainty side of the spectrum were (mis)used on a problem that was rather close to radical uncertainty.</p>
-<p>Example 2: Covid-19 in the spring of 2021. With a years worth of good European data and appropriately tweaked model structures, everything works much better. Now the problem is quite far from radical uncertainty and modeling has become very useful indeed.</p>
+<p>What makes a rational entity? Perhaps its goal is making the most of limited, noisy and biased information to formulate degrees of belief; and as a step further, to convert these beliefs into optimal decisions. We can make sense of rational beliefs by thinking of a spectrum of uncertainties, beginning with radical uncertainty, where we have no relevant information to limit the possibilities and, on the other end of the continuum, completely understood uncertainty exemplified by games of chance. If we think of uncertainty in terms of the risk of something bad happening, then we immediately see the deep unpleasantness of the radical uncertainty side of the continuum, as the risks are essentially unknowable – they can be very large, very small, or anything in between. In contrast, the games of chance are much more satisfying, as their rules are perfectly understood and we can from simple models to calculate the exact long-run relative frequencies of any conceivable outcome.</p>
+<p>Somewhere on this continuum lies every scientific question that we might want to get an answer on empirical data. What scientists often do is to try to identify interesting questions that are as far away as possible from the radical uncertainty side of things, and then apply simple stochastic models that are close to those employed for the games of chance; all in the hope that the modeling is somehow relevant to the real world. Every statistical model that uses binomial distribution to predict binary outcomes (dead/alive, etc.) is an example of this approach to rationality.</p>
+<p>Example: <strong>Covid-19 in the spring of 2020</strong>. The first epidemiological models of spread of COVID-19 in Europe (and in Estonia) used imperfect and scanty data and assumed that the Chinese containment measures would be replicated in Europe; and the models themselves were created on flu epidemics. These models failed on two levels: (i) their predictions were wrong, and (ii) their uncertainty intervals were too narrow, disregarding actual uncertainty. Models appropriate for the known uncertainty side of the spectrum were (mis)used on a problem that was rather close to radical uncertainty.</p>
+<p><strong>Covid-19 in the spring of 2021</strong>. With a years worth of good data and appropriately tweaked model structures, everything works much better. Now the problem is quite far from radical uncertainty and modeling has become very useful indeed.</p>
 <hr>
 <p>What are the assumptions behind rational thought?</p>
 <p>Very general assumptions:</p>
@@ -326,26 +524,32 @@ window.Quarto = {
 <ol type="1">
 <li><p>Stationarity: the data generating process that is being modeled does not change during data collection.</p></li>
 <li><p>Exchangeability - the order on which the data was collected has no influence on the results.</p></li>
-<li><p>The theories and models that we use come close enough to reality to matter.</p></li>
+<li><p>Our models are relevant to processes that generated the data used to fit these models. Only then can the fitted model be used to meaningfully study the natural processes that actually interest us.</p></li>
 </ol>
-<section id="this-is-how-it-works" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="this-is-how-it-works"><span class="header-section-number">1.2.1</span> This is how it works</h3>
-<p>Lets say that we want to find out, whether Madame Marie has extra-sensory perception (ESP). We present her with playing cards and let her guess, what is on each card. The data is in the form of a list of TRUE-FALSE and so on. Now we compare our data with simulated datasets that assume no ESP and see that our data are significantly different from the simulated data. Lets say that only 1 in 10 000 simulated datsets gives a fraction of TRUE guesses that is equal or greater than Madame Marie’s (<span class="math inline">\(p=10^{-4}\)</span>). We can interpret this result as showing that the data are pretty inconsistent with the hypothesis that Marie picks cards completely randomly. But can we interpret this as weighty evidence for ESP? And, if so, does this mean that we should now put a lot of confidence on this hypothesis? The answer is “it depends” on both counts. It depends on:</p>
+</section>
+<section id="bayesian-inference-the-short-version" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="bayesian-inference-the-short-version"><span class="header-section-number">2.3</span> Bayesian inference: the short version</h2>
+<p>We want to find out, whether Madame Marie has extra-sensory perception (ESP). We present her with playing cards and let her guess, what is on each card. We compare her data with simulated datasets that assume no ESP and see that our data are significantly different from the simulated data. Lets say that only 1 in 10 000 simulated datsets gives a fraction of TRUE guesses that is equal or greater than Madame Marie’s (<span class="math inline">\(p=10^{-4}\)</span>). We can interpret this result as showing that the data are inconsistent with the hypothesis that Marie picks cards completely randomly. But can we interpret this as weighty evidence for ESP? And, if so, does this mean that we should now put high confidence on this hypothesis? The answer is “it depends”. It depends on:</p>
 <ol type="1">
-<li><p>Our prior beliefs on whether Marie is clairvoyant. If we think this very unlikely (our prior probability is a lot less than <span class="math inline">\(10^{-4}\)</span>), then the evidence obtained is not enough to change our minds. To arrive at a prior probability, we should ask both about how likely is ESP as a general physical/biological mechanism (is it excluded from our current scientific worldview the way as a <em>perpetum mobile</em> is?), and then, whether we know something about the individual that would make her more or less likely than average to have such abilities. If we decide to treat ESP analogously with a perpetum mobile, then we need to put a probability on how likely it is that our current scientific wordlview is completely wrong and, specifically, wrong in a way that would allow for the existence of ESP. This is obviously complicated, and there is no guarantee that two reasonable people would arrive at the same prior probabilities. This does not mean that we could ignore our prior beliefs, because we find it hard to precisely quantify them. It does mean that we introduce a new source of uncertainty, which means that in practical analysis we might want to try out a range of priors to see how robust our inference is to the choice of prior.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
-<li><p>the inference from data also depends on how we choose to divide the <em>hypothesis space</em> into testable hypotheses. The hypothesis space (also known as the <em>sample space</em>) is defined as the set of all mutually exclusive and exhaustive hypotheses, exactly one of which must be true. So if we define our hypothesis space as consisting of 2 hypotheses, on of which (H1) is that “Marie has ESP”, then the other one (H2) must be that “Marie has no ESP”. If we start by giving H1 the prior probability of 1/100 000 then that means that the H2 must have a prior probability of 1 - 1/100 000. The probabilities always sum to unity accross the hypothesis space. This means that if after taking account of the data the P(H1) is determined as 1/10, or 0.1, then the P(H2) must be 9/10the or 0.9. But what happens when we decide to slice the cake differenty, into 3 hypotheses: H1 (ESP), H2 (no ESP) and H3 (bias), the last one encompassing all mechanisms that would shift the results away from completely random card picking. Some of these will be conscious (fraud) and some unconcious (some cards might have distinctive marks on their backs, or the experimenter might give involuntary signals to Marie), so the H3 is itself a hodgepodge of very different hypotheses.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The the priors would change: P(H1) = 1/100 000, P(H3) = 1/10, say, and P(H2) = 1 - 0.1 - 1/100 000. Now it becoes crucial how well data corresponds to not only H2 (very poorly), but also to H3 (quite well). And is data is equally compatible with H1 and H3, and the prior probability of H3, P(H3) &gt;&gt; P(H1), then the same data turn out quite useless in promoting H1 for us. And again, the posterior probabilities will sum to unity accross the 3 hypotheses.</p></li>
+<li><p>Our prior beliefs on whether Marie is clairvoyant. If we think this very unlikely (our prior probability is a lot less than <span class="math inline">\(10^{-4}\)</span>), then the evidence obtained is clearly not enough to change our minds. To arrive at a prior probability, we should ask both about how likely is ESP as a general mechanism, and then, whether we know something about the individual that would make her more or less likely than average to have such abilities. This is complicated, and there is no guarantee that two reasonable people would arrive at the same prior probabilities. This does not mean that we should ignore our prior beliefs because we find it hard to precisely quantify them. It does mean that we introduce a new source of uncertainty, which means that in practical analysis we might want to try out a range of priors to see how robust our inference is to the choice of prior. For any uncertainty in our data, models and priors, we must strive to carry it forward all the way into our conclusions, rather than to pretend that it does not exist.</p></li>
+<li><p>the inference from data also depends on how we choose to divide the <em>hypothesis space</em> into testable hypotheses. The hypothesis space is the set of all mutually exclusive and exhaustive hypotheses, exactly one of which must be true. So if we define our hypothesis space as consisting of two hypotheses, one of which (H1) is that “Marie has ESP”, then the other one (H2) must be that “Marie has no ESP”. If we start by giving H1 the prior probability of 1/100 000 then that means that the H2 must have a prior probability of 1 - 1/100 000. The probabilities always sum to unity across the hypothesis space. This means that if, after taking account of the data, the posterior probability of H1 is determined as 1/10, then the P(H2) must be 9/10.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> But what happens when we slice the cake differenty, into three hypotheses: H1 (ESP), H2 (no ESP) and H3 (bias), the last one encompassing all mechanisms that would shift the results away from completely random card picking?<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Some of these will be conscious (fraud) and some unconcious (the experimenter might give involuntary signals to Marie), so the H3 is itself a hodgepodge of very different hypotheses.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The the priors would change: P(H1) = 1/100 000, P(H3) = 1/10, say, and P(H2) = 1 - 0.1 - 1/100 000. Now it becoes crucial how well data corresponds to not only H2 (very poorly), but also to H3 (quite well). And if data is equally compatible with H1 and H3, and the prior probability of H3, P(H3) &gt;&gt; P(H1), then the same data turn out quite useless in promoting H1 for us. And again, the posterior probabilities will sum to unity across the 3 hypotheses.</p></li>
 </ol>
 <blockquote class="blockquote">
 <p>For the philosophically minded, re-slicing the hypothesis space would be akin to a Kuhnian paradigm shift where it becomes possible, and indeed necessary, to re-evaluate what the data says.</p>
 </blockquote>
-<ol start="3" type="1">
-<li>From the previous point we can surmise that the inference also depends on how good was Marie in guessing cards? Was she only a little bit better than chance, or maybe near-perfect? If the data are too good to be true, then they are less likely to support the hypothesis of ESP over that of bias. So not only the incomatibility of data with the null hypothesis of no effect, but also with other relevant hypotheses counts, and there sure can be too good data that reduces the weight of evidence of data in relation to our favorite hypthesis.</li>
+<p>These points are logical necessities, which have the following consequences:</p>
+<ol type="1">
+<li><p>Evidence is always relative - it is a quantitative measure of how much more data supports one hypothesis over another hypothesis.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> There is no sense in collecting data, if you only have a single hypothesis to check it against.</p></li>
+<li><p>The weight of evidence depends on the data and the data alone contributes to evidence, but to form rational beliefs on the truth of hypotheses you also need quantified prior beliefs, which are independent of data in hand.</p></li>
+<li><p>How you divide the hypotheses space can make a big difference, and if a relevant hypothesis is excluded from consideration, that could easily invalidate your conclusions. Sadly, in science we can never be sure that we have even an inkling of what the true hypothesis looks like. The rational thought is not a truth machine – it only shows how to optimally combine information that you have. Thus, if given poor-quality data, models or hypotheses, it in no way guarantees a march towards truth.</p></li>
 </ol>
-<p>The previous 3 points are meant to be logical necessities, which have the following consequences: (1) Evidence is always relative - it is a quantitative measure of how much more data supports one hypothesis over another hypothesis.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> There is no sense in collecting data if you only have a single defined hypothesis to check it against (then you end up with a p value, which is by itself inferentially useless). (2) the weight of evidence depends on data and data contributes to evidence alone, but to form rational beliefs on the truth of hypotheses you also need prior beliefs, which are independent of data in hand. (3) How you divide the hypotheses space makes a big difference, and if a relevant hypothesis is excluded from consideration, that could easily invalidate your inferences. Sadly, in science we can never be sure that we have even an inkling of what the single true hypothesis looks like. The logic of rational thought is not a truth machine – it only shows how to optimally combine information that you have. Thus, given poor-quality input in terms of data, models and/or hypotheses, it can in no way guarantee a march towards truth for science.</p>
+<blockquote class="blockquote">
+<p>Here’s the general workflow of updating ones beliefs, presented as a recipe for a witches brew. <strong>The ingredients</strong>: one hypothesis space, appropriately granulated prior knowledge, a smattering of data, an assortment of statistical models. <strong>The recipe</strong>: start by chopping the hypothesis space into at least two hypotheses, then pin prior probabilities to each of your hypotheses (these sum to one), throw in the data, and let the whole thing simmer in the the model, until the mcmc chains run out of steam. Now, take a sip of the updated posterior probabilities. If you did not like the taste, simply add more data or improve the model and do another round. Repeat, until satisfied.</p>
+</blockquote>
+<p>Imagine the priors as made of sticky stuff, holding back the amount of change in the probability from prior to posterior effected by data. This is needed, so that each piece of favorable new evidence would not lead to extreme fluctuations in your belief system. Importantly, the stickiness depends on the numerical value of the prior. Thus, the exact same evidence can have a dramatically smaller effect on the posterior, when the prior probability of your hypothesis is very large (close to one) or very small (close to zero). Remember the saying: extraordinary claims require extraordinary evidence – this is it! The prior probability of 1/2 has the least stickiness in terms of holding back how much the data changes the probability of the hypothesis in question. This means that to effect a prior-to-posterior change of a percentage point, you need to collect dramatically more evidence if your prior is far from 1/2. It also means that if you want your data to have the same effect on all the hypotheses in your hypothesis space, then you should use numerically identical priors for all the hypotheses. For instance, if you partitioned your hypothesis space into 5 hypotheses, then for each of them the prior probability will have to be 1/5. Such priors we call “non-informative” or “flat”.</p>
 </section>
-</section>
-<section id="decision-theroy-the-short-version" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="decision-theroy-the-short-version"><span class="header-section-number">1.3</span> Decision theroy: the short version</h2>
+<section id="decision-theory-the-short-version" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="decision-theory-the-short-version"><span class="header-section-number">2.4</span> Decision theory: the short version</h2>
 <p>Narrow rationality can be separated into two interlocking parts:</p>
 <ol type="1">
 <li><p>epistemic rationality maps our beliefs to reality.</p></li>
@@ -354,19 +558,25 @@ window.Quarto = {
 <p>Maximizing expected utility entails: (1) mapping of all possible actions that are under considerations; (2) evaluation of the consequences of each possible action in each possible state of the world.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p>Obviously, some people are more rational than others. Psychologists believe that a rationally thinking person is characterized by a specific type of thinking: he collects information before making up his mind, he seeks various points of view, he thinks extensively about a problem, he calibrates the degree of strength of his opinion to the degree of evidence available, he thinks about future consequences before taking action, he explicitly weighs pluses and minuses of situations before making a decision, and he seeks nuance and avoids absolutism.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 </section>
-<section id="causality-the-short-version" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="causality-the-short-version"><span class="header-section-number">1.4</span> Causality: the short version</h2>
+<section id="causality-the-short-version" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="causality-the-short-version"><span class="header-section-number">2.5</span> Causality: the short version</h2>
 <p>Causal hypothesis means that we believe that some specified cause produces or helps to produce some effects. Causal effects may be produced by the cause either always (think of colliding billiard balls), or with some probability/frequency (think of smoking causing cancer). Also, causes can be direct or indirect and a given effect may have several causes, which must either operate all together or in some combination to produce this effect. So it is often not a trivial task to squeeze the world into a causal mold.</p>
-<p>Causal thinking seems to be how our brains impose order onto universe. At the very least, it is a major tool of scientists and conspiracy theorists. However, the concept of causality is essentially metaphysical: we cannot be sure whether or not it corresponds to anything real in nature (if you are in doubt about this, ask a quantum physicist). Nevertheless, by mutual consent, we do have an operational view of causation. This view is not meant to solve the metaphysical conundrums of causality, but merely to provide an agreed convenience definition, which allows to incorporate causal thinking into scientific inference in a more-or-less formal way. This is the counterfactual principle, according to which removing a cause should also remove (or at least modify) the effect(s). So, if we modify a hypothetical cause by experimental tratment and nothing changes in the purpoted effect, then we can (perhaps) say, that we have falsified a causal hypothesis.</p>
+<p>Causal thinking seems to be how our brains impose order onto universe. At the very least, it is a major tool of scientists and conspiracy theorists. However, the concept of causality is metaphysical: we cannot be sure whether or not it corresponds to anything real in nature (if you are in doubt about this, ask a quantum physicist). Nevertheless, by mutual consent, we do have an operational view of causation. This view is not meant to solve the metaphysical conundrums of causality, but merely to provide an agreed convenience definition, which allows to incorporate causal thinking into epidemiological thinking in a more-or-less formal way. This is the counterfactual principle, according to which removing a cause should also remove (or at least modify) the effect. So, if we modify a hypothetical cause by experimental treatment and nothing changes in the purported effect, then we can (perhaps) say, that we have falsified a causal hypothesis.</p>
 <p>“Counterfactual” means that a cause cannot be present and absent at the same time, unless we live in a multiverse. Thus, to test a causal hypothesis, we must employ a model wherein we can generate <em>in silico</em> both states of the world, and by comparing the predicted value of the “effect” at different values of the “cause” we can modify our beliefs on the hypothesis.</p>
-<p>Example 1: By doing a randomized placebo-controlled drug study and employing a simple model <em>outcome = intercept + slope x drug=1/0 + error model</em> we can compare the modeled outcome for each group and if the drug causally influences the outcome, these model predictions will be substantially different.</p>
-<p>Example 2: Was the extreme storm that we experienced caused by global warming? We build a complicated model and run it many times under a global warming scenario, and in an alternative form that lacks global warming. If the global warming scenario produces storms like ours with twice the frequency of the sans warming scenario, then we can conclude that the particular storm was caused by global warming with the probability of 2/3.</p>
+<p>Example 1: By doing a randomized placebo-controlled drug study and employing a simple model <em>outcome = intercept + slope x drug=1/0 + error</em> we can compare the modeled outcome for each group and if the drug causally influences it, these model predictions will be substantially different.</p>
+<p>Example 2: Was an extreme storm caused by global warming? We build a complicated model and run it many times under a global warming scenario, and in an alternative model specification that lacks global warming. If the global warming scenario produces storms like this with twice the frequency of the sans warming scenario, then we can conclude that the particular storm was caused by global warming with the probability of 2/3.</p>
 </section>
-<section id="modeling-the-short-version" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="modeling-the-short-version"><span class="header-section-number">1.5</span> Modeling: the short version</h2>
-<p>Methodology does not deal directly with genesis of theories, which is art more than it is science. This means that a methodologist does not try to build a full-fledged robot scientist. Rather he tries to build a simple robot that thinks simple thoughts very quickly, doing all this to help the researcher with crunching data. Naturally, our robots do not really “think” in any meaningful sense, but it behooves us to pretend that they do, so we can more intuitively use the output of their “thought processes”. This simple-minded but quick robot we call the regression model and our major concern with it is that we must learn to see the world through its severely limited perspective, in order to be able to properly use its insights in the context of our scientific inference. So we must learn to think like an utterly alien idiot-savant, and somehow to enjoy this! For example, the class of models most often used to crunch simple treatment-vs-control experiments sees the world as consisting of normally distributed variables that have linear dependencies on perfectly randomized experimental treatments, where no sample is small enough not to perfectly reflect the population from which it was collected, and no logically possible experimental effect or data variation is too big or too small for comfort, so the robot will believe them all with equanimity. The scientist, of course, should know better and this should be reflected in how she uses the model and its predictions. This implies that all the modeling in the world cannot convert science into an objective endeavor.</p>
-<p>Behind every model is our understanding of the <strong>data generating process</strong>, which is the collection of causal elementary mechanisms that generated the data, which goes into the model. The data generating process comprises the laws of nature, the experimental design (controls and such), the actual data collection (whether it is collected in a single centre or not, etc.), and every other conceivable mechanism that can affect how the data come out. The major assumption of modeling is that our system is <strong>stationary</strong>, meaning that the data generating mechanism does not change during the collection of data. This does not mean that the data itself cannot systematically change over time or between study centers, only that the underlying mechanisms do not change. For example, if we want to model the prize of gas, the model loses stationarity as soon as a new mechanism that affects this prize emerges (electric cars, bioethanol). That would require building of new models that take this new mechanism into account.</p>
-<p>Our models should strive to reflect some aspect(s) of the data generating mechanism, and by building several of them and comparing the results, there is a chance that we will learn something useful about the whole complex mechanism, and by implication the world it represents. But what the models should not strive for, is to be “true” in the sense that they would precisely describe and/or predict the workings of the world. To understand why this is so, think of a map versus the landscape. Any map that is “true” in this sense would be as big and as complex as the landscape it depicts, which means that basically it would have to be identical to it. For obvious reasons, this kind of map, or model, would be both impractical and impossible to produce.</p>
+<section id="modeling-the-short-version" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="modeling-the-short-version"><span class="header-section-number">2.6</span> Modeling: the short version</h2>
+<p>Methodology does not deal directly with genesis of theories, which is an art more than it is science. This means that a methodologist does not try to build a full-fledged robot scientist. Rather he tries to build a simple robot that thinks simple thoughts. Naturally, our robots do not really “think” in any meaningful sense, but it behooves us to pretend that they do, so that we can more intuitively use their output. Our simple-minded but quick robot we call the regression model and our major concern with it is that we must learn to see the world through its severely limited perspective, in order to be able to properly use its insights in the context of our scientific inference. So we must learn to think like an utterly alien idiot-savant, and somehow learn to to enjoy this! For example, the class of models most often used to crunch simple treatment-vs-control experiments sees the world as consisting of normally distributed variables that have linear dependencies on perfectly randomized experimental treatments, where no sample is small enough not to reflect the population from which it was collected, and no logically possible experimental effect or data variation is too big or too small, so the robot will believe in them all with equanimity. The scientist, of course, should know better and this should be reflected in how she uses the model and its predictions. This implies that all the modeling in the world cannot convert science into an objective endeavor.</p>
+<p>Behind every model is our understanding of the <strong>data generating process</strong>, which is the collection of causal elementary mechanisms that generated the data, which goes into fitting the model. The data generating process comprises the laws of nature, the experimental design (controls and such), the data collection (whether it is collected in multiple centres, etc.), and every other mechanism that can affect how the data come out. A major assumption of modeling is that our system is <strong>stationary</strong>, meaning that the data generating mechanism does not change during the collection of data. This does not mean that the accumulating data cannot systematically change over time or between study centers, only that the underlying mechanisms do not change. For example, if we want to model the prize of gas, the model loses stationarity as soon as a new factor affecting the prize emerges (electric cars).</p>
+<p>Our models should strive to reflect some relevant aspect(s) of the data generating mechanism, and by building several of them and comparing the results, there is a chance that we will learn something useful about the whole complex mechanism that is nature. What the models should not strive for, is to be “true” in the sense that they would precisely describe and/or predict the workings of the world. To understand why, think of a map versus the landscape. Any map that is “true” would be as big and as complex as the landscape it depicts, which means that basically it would have to be identical to it. Of course, this kind of map, or model, would be equally impractical and impossible to produce.</p>
+</section>
+<section id="a-philosophical-aside-knowledge-and-belief" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="a-philosophical-aside-knowledge-and-belief"><span class="header-section-number">2.7</span> A philosophical aside: knowledge and belief</h2>
+<p>Suppose we know that a coin is fair (P(heads) = 0.5) and that it will be tossed N = 10 times. Then we fully understand the experiment, and its results, albeit probabilistic, are also fully predictable: the probability of any number of heads can be calculated before a single toss (Chapter 5 does the calculation). This is the deductive use of probability theory that, while making the implications of the coin tossing game explicit, generates no new knowledge, which is not already present in the rules of the game. The general properties of the data that might happen are already implicitly present in those rules. We cannot say exactly, which data we will see, but we know exactly the probability of getting a head, from which we deduced the probability of getting k heads (or “k or more heads”, etc.) out of N tosses.</p>
+<p>In classical philosophy there are two ways of understanding the world. One is knowledge (<em>episteme</em>), which is by definition true. Another is belief (<em>doxa</em>), which comes to us in degrees. Knowledge is the domain of mathematicians and philosophers, while belief is what everybody else has to survive on. Knowledge we can get deductively from axioms and beliefs we get inductively from the physical world. In the coin tossing experiment, where we knew the data generating system, we calculated the probability distribution to get knowledge. But in the real world we never get to have knowledge in this sense, which means that we need to use probabilities differently.</p>
+<p>This fundamentally different belief-generating usage of probability theory uses the results of N experiments (data) to guess the rules of the game. In particular, we would like to estimate the probability of getting heads.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> This means creating new knowledge which is not implicit in data. As we cannot create knowledge in this way, we have to make do with creating new beliefs. These new beliefs still come in the form of a probability distribution. To make this inductive leap we must go from the probability <span class="math inline">\(P(data \vert rules)\)</span> to <span class="math inline">\(P(rules \vert data)\)</span>, for which we use the Bayes theorem (Chapter 8). Interestingly, from the data alone, it is clearly not possible to reach the correct rules, because our data are always consistent with a great many rule sets (if not to say, infinitely many). Here we are reduced to compare different hypotheses (hypothetical rule sets) with the data and trying to find which ones are the more consistent with data. This means that we must already have the correct answer in mind, before we see the data. Sa we will see later, it also means that we must be able to put numerical probabilities on different hypotheses, so that we would not overestimate the data-driven posterior probability of a unlikely hypothesis that happens to be a little closer to the data than a much more likely hypothesis. And, of course, should our hypothesis set lack the correct hypothesis, then it makes absolutely no difference how carefully we weigh on the data the hypotheses we did put into it – the data cannot help us, lest we guess the truth in advance!</p>
 
 
 </section>
@@ -374,12 +584,13 @@ window.Quarto = {
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>the models had no notion that covid-19 is not flu, because the modelers did not know how to tell this to their models.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>For any uncertainty in our data, models and priors, we must strive to carry it forward all the way into our conclusions, rather than to pretend that it does not exist.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Into how many slices to divide the hypothesis space depends on both the scientific importance of each hypothesis and on how well you can determine the probability of data under that hypothesis. So its a compromise between your scientific needs and technical ability.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Posterior probability of H1 is usually notated as P(H1|data), but it is actually P(H1|data, prior) and the prior is omitted purely as a convenience, as it is present in every meaningful probability we use in Bayesian inference.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>For the three hypotheses to be mutually exclusive, the correct specification would be H1: ESP, no bias; H2: no ESP, no bias; H3: agnostic towards ESP, bias. In here no bias actually means that the effect of bias &lt; true effect of ESP – we don’t have to press bias into exactly zero.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Into how many slices to divide the hypothesis space depends on both the scientific importance of each hypothesis and on how well you can determine the probability of data under that hypothesis. Its a compromise between scientific needs and technical ability.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Technically, evidence is the likelihood ratio <span class="math inline">\(LR = \frac {P(data \vert H1)}{P(data \vert H2)}\)</span>, which can take values from 0 to infinity. LR=1 means that data is equally likely if H1 is true and if H2 is true and therefore has no evidentiary weight on H1 vis-a-vis H2. LR&lt;1 means that evidence supports H2 over H1 and LR&gt;1 means that evidence supports H1 over H2. Of course, it is always possible that there exists H3, which is much more supported by data than H1 and H2.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>To calculate expected utility we take the product of the utility of each outcome with the probability of that outcome occurring, and then sum those products.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>see Stanovich, K. E., West, R. F., and Toplak, M. E. (2016). The Rationality Quotient: Toward a Test of Rational Thinking (pp. 1–479). The MIT Press.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Of course, we could ask for the probability that the coin is fair, but we already know this probability to be zero, as no coin is completely fair.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -797,8 +1008,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./02-causal-inference.html" class="pagination-link" aria-label="Causal inference and Experiment">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./ch02-thinking-under-uncertainty.html" class="pagination-link" aria-label="How to think under uncertainty">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

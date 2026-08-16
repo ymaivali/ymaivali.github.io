@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 30&nbsp; DAG-guided missing data and imputation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10-appendix-best-practices.html" rel="next">
+<link href="./ch24-bayesian-g-computation.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html">Part V. Bayesian regression: models to counterfactual predictions</a></li><li class="breadcrumb-item"><a href="./ch25-missing-data.html"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#missingness-as-a-node-on-the-graph" id="toc-missingness-as-a-node-on-the-graph" class="nav-link active" data-scroll-target="#missingness-as-a-node-on-the-graph"><span class="header-section-number">30.1</span> Missingness as a node on the graph</a></li>
+  <li><a href="#the-cohort-with-holes-in-it" id="toc-the-cohort-with-holes-in-it" class="nav-link" data-scroll-target="#the-cohort-with-holes-in-it"><span class="header-section-number">30.2</span> The cohort with holes in it</a></li>
+  <li><a href="#the-reference-what-the-complete-data-would-have-given" id="toc-the-reference-what-the-complete-data-would-have-given" class="nav-link" data-scroll-target="#the-reference-what-the-complete-data-would-have-given"><span class="header-section-number">30.3</span> The reference: what the complete data would have given</a></li>
+  <li><a href="#deleting-rows-and-filling-in-a-mean" id="toc-deleting-rows-and-filling-in-a-mean" class="nav-link" data-scroll-target="#deleting-rows-and-filling-in-a-mean"><span class="header-section-number">30.4</span> Deleting rows, and filling in a mean</a></li>
+  <li><a href="#multiple-imputation" id="toc-multiple-imputation" class="nav-link" data-scroll-target="#multiple-imputation"><span class="header-section-number">30.5</span> Multiple imputation</a></li>
+  <li><a href="#separating-bias-from-sampling-noise" id="toc-separating-bias-from-sampling-noise" class="nav-link" data-scroll-target="#separating-bias-from-sampling-noise"><span class="header-section-number">30.6</span> Separating bias from sampling noise</a></li>
+  <li><a href="#imputation-as-bayesian-inference" id="toc-imputation-as-bayesian-inference" class="nav-link" data-scroll-target="#imputation-as-bayesian-inference"><span class="header-section-number">30.7</span> Imputation as Bayesian inference</a></li>
+  <li><a href="#weighting-rather-than-filling-in" id="toc-weighting-rather-than-filling-in" class="nav-link" data-scroll-target="#weighting-rather-than-filling-in"><span class="header-section-number">30.8</span> Weighting rather than filling in</a>
+  <ul class="collapse">
+  <li><a href="#two-weights-for-two-missing-data-problems" id="toc-two-weights-for-two-missing-data-problems" class="nav-link" data-scroll-target="#two-weights-for-two-missing-data-problems"><span class="header-section-number">30.8.1</span> Two weights for two missing-data problems</a></li>
+  <li><a href="#why-the-efficiency-comparison-does-not-carry-over" id="toc-why-the-efficiency-comparison-does-not-carry-over" class="nav-link" data-scroll-target="#why-the-efficiency-comparison-does-not-carry-over"><span class="header-section-number">30.8.2</span> Why the efficiency comparison does not carry over</a></li>
+  <li><a href="#the-bayesian-version" id="toc-the-bayesian-version" class="nav-link" data-scroll-target="#the-bayesian-version"><span class="header-section-number">30.8.3</span> The Bayesian version</a></li>
+  <li><a href="#where-the-two-families-meet" id="toc-where-the-two-families-meet" class="nav-link" data-scroll-target="#where-the-two-families-meet"><span class="header-section-number">30.8.4</span> Where the two families meet</a></li>
+  </ul></li>
+  <li><a href="#when-the-mechanism-is-not-ignorable" id="toc-when-the-mechanism-is-not-ignorable" class="nav-link" data-scroll-target="#when-the-mechanism-is-not-ignorable"><span class="header-section-number">30.9</span> When the mechanism is not ignorable</a></li>
+  <li><a href="#what-imputation-does-not-fix" id="toc-what-imputation-does-not-fix" class="nav-link" data-scroll-target="#what-imputation-does-not-fix"><span class="header-section-number">30.10</span> What imputation does not fix</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">30.11</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">30.12</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html">Part V. Bayesian regression: models to counterfactual predictions</a></li><li class="breadcrumb-item"><a href="./ch25-missing-data.html"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Every method in this book so far has been applied to a complete data set. Real cohorts are not complete: a laboratory value was never ordered, a questionnaire item was skipped, a patient left the register before the follow-up visit. The usual response is to describe missing data as a nuisance to be repaired, and to choose the technique to do so by reputation — complete-case analysis is crude, multiple imputation is respectable.</p>
+<p>That ordering is wrong often enough. Whether an analysis of incomplete data recovers the quantity it is aiming at depends on <em>why</em> the values are missing, and the reason is a causal claim about a variable: the indicator of whether each value was recorded. Once that indicator is placed on the DAG, the question of which method works becomes the same d-separation exercise as Chapter 11. The answer it gives is not the expected one. In the master cohort there is a mechanism — the one the textbook classification treats as the worst option — under which complete-case analysis is unbiased and multiple imputation is badly biased. There is a second under which complete-case analysis returns the correct risk ratio alongside a baseline risk less than half the truth. Which method to use is decided by which of these situations the study is in, and that is a question about the causal structure of the missingness.</p>
+<p>This chapter places missingness on the graph, derives what each method estimates, checks the derivations against the master cohort’s answer key, and ends with the case that no method resolves, where the only available response is a sensitivity analysis.</p>
+<section id="missingness-as-a-node-on-the-graph" class="level2" data-number="30.1">
+<h2 data-number="30.1" class="anchored" data-anchor-id="missingness-as-a-node-on-the-graph"><span class="header-section-number">30.1</span> Missingness as a node on the graph</h2>
+<p>Write <span class="math inline">\(L\)</span> for a variable that is sometimes unrecorded — here <code>severity</code>, the confounder that drove the sign reversal of Chapter 12. Define an indicator</p>
+<p><span class="math display">\[
+R \;=\; \begin{cases} 1 &amp; \text{if } L \text{ is recorded for this patient,}\\
+0 &amp; \text{if it is not.}\end{cases}
+\]</span></p>
+<p><span class="math inline">\(R\)</span> is observed for everyone. What the analyst has is not <span class="math inline">\(L\)</span> but the pair <span class="math inline">\((R, L^{*})\)</span>, where <span class="math inline">\(L^{*}\)</span> equals <span class="math inline">\(L\)</span> when <span class="math inline">\(R = 1\)</span> and is undefined otherwise. <span class="math inline">\(R\)</span> is a variable like any other: it has causes, and those causes can be drawn.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Doing so converts Rubin’s three-way classification<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> into three statements about arrows into <span class="math inline">\(R\)</span>:<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<ul>
+<li><strong>MCAR</strong> (missing completely at random): <span class="math inline">\(R\)</span> has no causes among the study variables. Nothing points into <span class="math inline">\(R\)</span>.</li>
+<li><strong>MAR</strong> (missing at random): <span class="math inline">\(R\)</span> is caused only by variables that are fully observed. Arrows into <span class="math inline">\(R\)</span> come from recorded variables.</li>
+<li><strong>MNAR</strong> (missing not at random): <span class="math inline">\(R\)</span> is caused by a variable that is itself incompletely recorded — in the leading case, by <span class="math inline">\(L\)</span>.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-mgraph" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mgraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch25-missing-data_files/figure-html/fig-mgraph-1.png" class="img-fluid figure-img" width="787">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mgraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;30.1: The analysis DAG of Chapter 11 with the missingness indicator added. Solid arrows are the causal structure of the cohort: severity confounds the drug–stroke relation, and age and diabetes cause severity. The dashed arrows are the candidate causes of R, the indicator that severity was recorded, and each corresponds to one of the mechanisms studied in this chapter. Which of them is present decides what a complete-case analysis and an imputation estimate, because the analyst always works in the subgroup R = 1.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The analyst who deletes incomplete rows is <em>conditioning on <span class="math inline">\(R = 1\)</span></em>, and conditioning on a variable has consequences that Chapter 11 already established. Complete-case analysis is therefore the same selection problem as the collider bias of Chapter 11 and the hospitalisation example of Chapter 18: whether it distorts an association depends on where the selection node is attached.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> This yields a rule that can be read off the graph.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What complete-case analysis estimates
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A regression of <span class="math inline">\(Y\)</span> on <span class="math inline">\((A, C)\)</span> fitted to complete cases estimates <span class="math inline">\(P(Y \mid A, C, R = 1)\)</span>. That equals the target <span class="math inline">\(P(Y \mid A, C)\)</span> whenever</p>
+<p><span class="math display">\[
+R \;\perp\!\!\!\perp\; Y \;\mid\; A,\, C ,
+\]</span></p>
+<p>that is, whenever <span class="math inline">\(R\)</span> is d-separated from the outcome given the exposure and the covariates already in the model.</p>
+<p>Two consequences follow, and both contradict the usual ordering of methods:</p>
+<ol type="1">
+<li>An arrow <span class="math inline">\(L \to R\)</span> is permitted. <span class="math inline">\(L\)</span> is in the adjustment set, so conditioning on it blocks that path. <strong>Complete-case analysis can be unbiased under MNAR.</strong></li>
+<li>An arrow <span class="math inline">\(Y \to R\)</span> is not permitted, whatever the mechanism is called. Missingness caused by the outcome leaves the complete-case analysis without a guarantee, even though it is, in Rubin’s sense, missing at random. (Whether the damage is visible depends on the effect measure; the cohort below is a case where a rare outcome hides it on the ratio scale and not on the absolute scale.)</li>
+</ol>
+</div>
+</div>
+<p>The condition is about the <em>conditional</em> model. A standardised quantity — a marginal risk, a risk difference, anything that averages predictions over a population — has a second requirement, because the population being averaged over is now the complete cases rather than the cohort. Chapter 28 made the point that the target population is part of the estimand; deleting rows changes it silently. The two requirements come apart in the results below, and it is worth separating them in advance: the first governs whether the coefficients are right, the second whether the standardisation is.</p>
+<p>Multiple imputation exchanges these assumptions for a different set. It does not condition on <span class="math inline">\(R = 1\)</span>; it draws the missing values from a model for <span class="math inline">\(L\)</span> given everything else, and so requires that model to be correct for the rows where <span class="math inline">\(L\)</span> is missing — rows in which, by construction, <span class="math inline">\(L\)</span> was never seen. That is a strong assumption, and it is the assumption that fails when <span class="math inline">\(L \to R\)</span>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> The two methods therefore rest on different conditions, neither of which implies the other, which is why the choice between them has to be made from the graph rather than from a ranking.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+</section>
+<section id="the-cohort-with-holes-in-it" class="level2" data-number="30.2">
+<h2 data-number="30.2" class="anchored" data-anchor-id="the-cohort-with-holes-in-it"><span class="header-section-number">30.2</span> The cohort with holes in it</h2>
+<p>The master cohort of Chapters 12 and 28: 50 000 hypertensive patients, the question of whether Drug A prevents stroke, and confounding by indication strong enough to reverse the crude association. <code>severity</code> is the confounder that has to be adjusted for, and it is the variable we now remove.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df       <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>age_c <span class="ot">&lt;-</span> (df<span class="sc">$</span>age <span class="sc">-</span> <span class="dv">62</span>) <span class="sc">/</span> <span class="dv">10</span>          <span class="co"># base assignment keeps the oracle attribute</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>truth_x  <span class="ot">&lt;-</span> <span class="fu">cohort_truth</span>(df)            <span class="co"># the answer key</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Four mechanisms are applied to the same cohort, each deleting about a quarter of the <code>severity</code> values, and each differing only in what determines <em>which</em> quarter. The MAR variant is the <code>severity_mar</code> column that <code>simulate_cohort()</code> already supplies, in which the probability of a missing value rises with age; the other three are constructed here on the same pattern.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sev_mcar <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.25</span>) <span class="sc">==</span> <span class="dv">1</span>, <span class="cn">NA</span>, df<span class="sc">$</span>severity)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sev_mar  <span class="ot">&lt;-</span> df<span class="sc">$</span>severity_mar                                    <span class="co"># R &lt;- age</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sev_out  <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">plogis</span>(<span class="sc">-</span><span class="fl">1.29</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> df<span class="sc">$</span>age_c <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                                            <span class="fl">2.0</span> <span class="sc">*</span> df<span class="sc">$</span>stroke)) <span class="sc">==</span> <span class="dv">1</span>, <span class="cn">NA</span>, df<span class="sc">$</span>severity)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sev_mnar <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">plogis</span>(<span class="sc">-</span><span class="fl">2.54</span> <span class="sc">+</span> <span class="fl">2.5</span> <span class="sc">*</span> df<span class="sc">$</span>severity)) <span class="sc">==</span> <span class="dv">1</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                      <span class="cn">NA</span>, df<span class="sc">$</span>severity)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>MECH <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">MCAR =</span> <span class="st">"sev_mcar"</span>, <span class="at">MAR =</span> <span class="st">"sev_mar"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>          <span class="st">`</span><span class="at">outcome-dependent</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"sev_out"</span>, <span class="at">MNAR =</span> <span class="st">"sev_mnar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The four have nearly identical missingness rates, so nothing in a completeness summary separates them. What separates them is <em>which</em> patients are missing, and only part of that is legible in recorded variables.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The four missingness mechanisms. Each entry is the value among patients whose severity is missing, followed by the value among those whose severity is recorded. The severity column is computable here only because the cohort is simulated; in a real study it is the one comparison that cannot be made.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">mechanism</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">% missing</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mean age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mean severity</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">% stroke</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MCAR</td>
+<td style="text-align: left;">25.0</td>
+<td style="text-align: left;">62.1 / 62.1</td>
+<td style="text-align: left;">0.14 / 0.12</td>
+<td style="text-align: left;">4.8 / 4.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MAR</td>
+<td style="text-align: left;">25.4</td>
+<td style="text-align: left;">67.0 / 60.4</td>
+<td style="text-align: left;">0.34 / 0.05</td>
+<td style="text-align: left;">6.1 / 4.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">outcome-dependent</td>
+<td style="text-align: left;">25.1</td>
+<td style="text-align: left;">66.4 / 60.7</td>
+<td style="text-align: left;">0.36 / 0.04</td>
+<td style="text-align: left;">13.5 / 1.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MNAR</td>
+<td style="text-align: left;">25.2</td>
+<td style="text-align: left;">67.1 / 60.4</td>
+<td style="text-align: left;">1.34 / -0.28</td>
+<td style="text-align: left;">9.1 / 3.3</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The MCAR column shows no separation at all. The MAR column separates on age, which is recorded, so the imbalance is visible and correctable. The outcome-dependent column separates on stroke — also recorded, so this too is MAR in Rubin’s sense, and the naming is the first sign that the classification is not tracking what matters. The MNAR column separates on <code>severity</code> itself, and that is the row of the table a real analyst never sees: the mean severity among patients with missing severity is not an observable quantity. Every claim about MNAR is a claim about an unobservable, which is why this chapter ends in a sensitivity analysis rather than an estimate.</p>
+</section>
+<section id="the-reference-what-the-complete-data-would-have-given" class="level2" data-number="30.3">
+<h2 data-number="30.3" class="anchored" data-anchor-id="the-reference-what-the-complete-data-would-have-given"><span class="header-section-number">30.3</span> The reference: what the complete data would have given</h2>
+<p>The adjustment set comes from the DAG and not from the data: <code>severity</code>, <code>age</code> and <code>diabetes</code> are the common causes of treatment and stroke, and <code>sbp</code> is a mediator that stays out (Chapter 15). The outcome model is the Poisson working model with a log link used throughout Part V — the Bayesian counterpart of modified-Poisson regression — so that the drug enters as a multiplicative factor on risk.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> Effects are obtained as standardised predictions from the fitted model rather than read off as coefficients, in line with the convention of Chapter 28.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>FML <span class="ot">&lt;-</span> stroke <span class="sc">~</span> drug <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># g-computation on a fitted model: predict the cohort under drug = 0 and drug = 1,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># average, contrast. `newdata` names the population the estimate is standardised to.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="cf">function</span>(fit, <span class="at">newdata =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">avg_predictions</span>(fit, <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">drug =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>), <span class="at">newdata =</span> newdata)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">EY0 =</span> p<span class="sc">$</span>estimate[<span class="dv">1</span>], <span class="at">EY1 =</span> p<span class="sc">$</span>estimate[<span class="dv">2</span>],</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">RD =</span> p<span class="sc">$</span>estimate[<span class="dv">2</span>] <span class="sc">-</span> p<span class="sc">$</span>estimate[<span class="dv">1</span>], <span class="at">RR =</span> p<span class="sc">$</span>estimate[<span class="dv">2</span>] <span class="sc">/</span> p<span class="sc">$</span>estimate[<span class="dv">1</span>])</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ref <span class="ot">&lt;-</span> <span class="fu">eff</span>(<span class="fu">glm</span>(FML, <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> df))     <span class="co"># severity fully observed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The target. The left column is what the analysis returns when severity is fully recorded; the right column is the cohort's known truth.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">quantity</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">complete data</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">oracle truth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">E[Y(0)]</td>
+<td style="text-align: left;">0.0677</td>
+<td style="text-align: left;">0.0681</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">E[Y(1)]</td>
+<td style="text-align: left;">0.0415</td>
+<td style="text-align: left;">0.0409</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">risk difference</td>
+<td style="text-align: left;">-0.02620</td>
+<td style="text-align: left;">-0.02724</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">risk ratio</td>
+<td style="text-align: left;">0.6127</td>
+<td style="text-align: left;">0.6001</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The complete-data analysis is the benchmark for everything that follows. It does not reproduce the oracle to the last digit — the risk ratio is 0.613 against a true 0.600 — because the additive working model imposes a constant log risk ratio that the data-generating process does not quite have. That residual gap is a model-specification question, treated in Chapter 28, and it is not a missing-data question. Holding it fixed is what makes the comparisons below interpretable: a method that reproduces 0.6127 has recovered everything the missing values were carrying.</p>
+</section>
+<section id="deleting-rows-and-filling-in-a-mean" class="level2" data-number="30.4">
+<h2 data-number="30.4" class="anchored" data-anchor-id="deleting-rows-and-filling-in-a-mean"><span class="header-section-number">30.4</span> Deleting rows, and filling in a mean</h2>
+<p>The two reflexive responses are to drop incomplete rows and to substitute a summary value for the gap.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cc_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(col) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> df; d<span class="sc">$</span>severity <span class="ot">&lt;-</span> d[[col]]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  obs <span class="ot">&lt;-</span> <span class="sc">!</span><span class="fu">is.na</span>(d<span class="sc">$</span>severity)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">eff</span>(<span class="fu">glm</span>(FML, <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> d[obs, ]))   <span class="co"># standardised to complete cases</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>mean_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(col) {</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> df; d<span class="sc">$</span>severity <span class="ot">&lt;-</span> d[[col]]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>severity[<span class="fu">is.na</span>(d<span class="sc">$</span>severity)] <span class="ot">&lt;-</span> <span class="fu">mean</span>(d<span class="sc">$</span>severity, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">eff</span>(<span class="fu">glm</span>(FML, <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> d))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Row deletion and mean substitution. The complete-data reference is RR 0.613, RD -0.02620, E[Y(0)] 0.0677; omitting severity from the model entirely gives RR 1.183.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">mechanism</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">complete case: RR</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mean substitution: RR</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">complete case: RD</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mean substitution: RD</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">complete case: EY0</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mean substitution: EY0</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MCAR</td>
+<td style="text-align: left;">0.602</td>
+<td style="text-align: left;">0.791</td>
+<td style="text-align: left;">-0.02726</td>
+<td style="text-align: left;">-0.01171</td>
+<td style="text-align: left;">0.0684</td>
+<td style="text-align: left;">0.0560</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MAR</td>
+<td style="text-align: left;">0.605</td>
+<td style="text-align: left;">0.834</td>
+<td style="text-align: left;">-0.02422</td>
+<td style="text-align: left;">-0.00898</td>
+<td style="text-align: left;">0.0613</td>
+<td style="text-align: left;">0.0539</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">outcome-dependent</td>
+<td style="text-align: left;">0.615</td>
+<td style="text-align: left;">1.182</td>
+<td style="text-align: left;">-0.00990</td>
+<td style="text-align: left;">+0.00777</td>
+<td style="text-align: left;">0.0257</td>
+<td style="text-align: left;">0.0427</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MNAR</td>
+<td style="text-align: left;">0.608</td>
+<td style="text-align: left;">1.049</td>
+<td style="text-align: left;">-0.01705</td>
+<td style="text-align: left;">+0.00224</td>
+<td style="text-align: left;">0.0435</td>
+<td style="text-align: left;">0.0461</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p><strong>Mean substitution fails everywhere</strong>, including under MCAR, where nothing about the missingness is informative. Its risk ratios are pulled toward 1.18, the value obtained by leaving <code>severity</code> out of the model altogether. The reason is not subtle: replacing a quarter of a confounder’s values with a constant destroys a quarter of its covariation with treatment and outcome, so the variable can no longer do the adjusting it was included to do. Partial adjustment for a confounder is not partial protection from confounding, and under two of the four mechanisms the partially adjusted estimate crosses the null and reports the drug as harmful. The same argument applies to the missing-indicator method, which adds a binary flag and sets the gaps to an arbitrary constant; it is unbiased only under conditions close to MCAR and is not recommended in observational work.</p>
+<p><strong>Row deletion leaves the risk ratio near the reference under all four mechanisms.</strong> Under MCAR and MAR that is what the graph rule predicts. Under MNAR it is also what the rule predicts, and it is the first of the chapter’s two reversals: the mechanism the taxonomy treats as the worst case is harmless here, because <code>severity</code> is in the adjustment set and conditioning on it blocks the <span class="math inline">\(L \to R\)</span> path.</p>
+<p>Under outcome-dependent missingness the rule predicts a biased ratio, and the ratio is not visibly biased. The rule is not wrong; this cohort is a special case, and the reason is worth stating because it does not generalise. Selection that depends on the outcome given the covariates leaves the odds ratio of a logistic model unchanged — the principle that makes case-control sampling work — and with an outcome as rare as stroke the risk ratio is close to the odds ratio. A common outcome would separate the two and the ratio would move. What generalises is the d-separation rule, not this column of numbers; and nothing in the argument protects the absolute risks.</p>
+<p><strong>On the absolute scale, row deletion fails under three of the four mechanisms</strong>, and this is the second requirement coming apart from the first. Under MAR, MNAR and outcome-dependent missingness the complete-case risk ratio is at or near the reference while <span class="math inline">\(E[Y(0)]\)</span> is not: the model is right, but it has been standardised over the complete cases, who are younger (MAR), less severely ill (MNAR), or much less likely to have had a stroke (outcome-dependent) than the cohort. Under the last of these the estimated baseline risk is 0.0257 against a reference of 0.0677, and the risk difference is understated by 62%; under MNAR it is understated by 35%. The estimate answers a question about a population that no one chose. Correcting it would require standardising the fitted model over the <em>cohort’s</em> covariate distribution — which cannot be done, because that distribution includes the <code>severity</code> values that are missing. This is the sharpest argument for imputation, and it is not the usual one: even when deletion estimates the conditional model without bias, it cannot deliver a marginal causal contrast for the population that was actually studied.</p>
+</section>
+<section id="multiple-imputation" class="level2" data-number="30.5">
+<h2 data-number="30.5" class="anchored" data-anchor-id="multiple-imputation"><span class="header-section-number">30.5</span> Multiple imputation</h2>
+<p>Multiple imputation replaces each missing value not with one number but with <span class="math inline">\(m\)</span> draws from its predictive distribution given the observed data, producing <span class="math inline">\(m\)</span> complete data sets.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Each is analysed by the method that would have been used on complete data, and the <span class="math inline">\(m\)</span> answers are combined by Rubin’s rules: the estimate is the average, and the variance adds the average within-imputation variance to the between-imputation variance, the second term being what represents the uncertainty due to the missing values.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-mi-steps" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mi-steps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch25-missing-data_files/figure-html/fig-mi-steps-1.png" class="img-fluid figure-img" width="782">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mi-steps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;30.2: The three stages of multiple imputation. The imputation model is fitted to the observed data and used to draw m completed data sets; the substantive model is fitted to each; the m answers are pooled by Rubin’s rules. The between-imputation variance is the part of the final interval contributed by not knowing the missing values, and it is the reason single imputation understates uncertainty.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rubin's rules for one scalar estimate q with variance u, over m imputations.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rubin <span class="ot">&lt;-</span> <span class="cf">function</span>(q, u) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">length</span>(q)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  qbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(q)                       <span class="co"># pooled point estimate</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ubar <span class="ot">&lt;-</span> <span class="fu">mean</span>(u)                       <span class="co"># within-imputation variance</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  B    <span class="ot">&lt;-</span> <span class="fu">var</span>(q)                        <span class="co"># between-imputation variance</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  Tv   <span class="ot">&lt;-</span> ubar <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> m) <span class="sc">*</span> B        <span class="co"># total variance</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">est =</span> qbar, <span class="at">se =</span> <span class="fu">sqrt</span>(Tv), <span class="at">fmi =</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> m) <span class="sc">*</span> B <span class="sc">/</span> Tv)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The last element, the fraction of missing information, is the share of the total variance contributed by not knowing the missing values. It is the quantity to report alongside an imputed estimate, and the usual guidance is to take <span class="math inline">\(m\)</span> at least as large as the percentage of incomplete cases, so we use <span class="math inline">\(m = 20\)</span> here.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<p>The consequential decision is not <span class="math inline">\(m\)</span> but <strong>which variables enter the imputation model</strong>. The imputation model must preserve every association that the substantive model will later estimate; if it omits a variable, it imputes values for which that variable’s association with <code>severity</code> is zero, and the analysis inherits the attenuation. In particular the <strong>outcome belongs in the imputation model</strong>, which strikes many analysts as circular and is not: the imputation model is a description of the joint distribution of the observed data, not a causal claim, and <code>stroke</code> is one of the observed variables that carries information about a patient’s severity.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> The requirement that the imputation model be compatible with the substantive model is the congeniality condition, and imputation methods built to enforce it are available when the substantive model contains interactions or non-linear terms.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mi_run <span class="ot">&lt;-</span> <span class="cf">function</span>(col, <span class="at">m =</span> <span class="dv">20</span>, <span class="at">with_outcome =</span> <span class="cn">TRUE</span>, <span class="at">delta =</span> <span class="dv">0</span>) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> df; d<span class="sc">$</span>severity <span class="ot">&lt;-</span> d[[col]]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  miss <span class="ot">&lt;-</span> <span class="fu">is.na</span>(d<span class="sc">$</span>severity)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"severity"</span>, <span class="st">"age_c"</span>, <span class="st">"diabetes"</span>, <span class="st">"drug"</span>, <span class="cf">if</span> (with_outcome) <span class="st">"stroke"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  imp  <span class="ot">&lt;-</span> <span class="fu">mice</span>(d[, vars], <span class="at">m =</span> m, <span class="at">method =</span> <span class="st">"norm"</span>, <span class="at">printFlag =</span> <span class="cn">FALSE</span>, <span class="at">seed =</span> <span class="dv">7</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  done <span class="ot">&lt;-</span> <span class="fu">complete</span>(imp, <span class="st">"all"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  q <span class="ot">&lt;-</span> u <span class="ot">&lt;-</span> <span class="fu">numeric</span>(m); E <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA_real_</span>, m, <span class="dv">4</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(m)) {</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> done[[i]]</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    x<span class="sc">$</span>stroke <span class="ot">&lt;-</span> d<span class="sc">$</span>stroke               <span class="co"># stroke is never missing; restore it when the</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                                       <span class="co"># imputation model was fitted without it</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    x<span class="sc">$</span>severity[miss] <span class="ot">&lt;-</span> x<span class="sc">$</span>severity[miss] <span class="sc">+</span> delta   <span class="co"># MNAR sensitivity shift, 0 by default</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(FML, <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> x)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    lr  <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(fit, <span class="at">variables =</span> <span class="st">"drug"</span>, <span class="at">comparison =</span> <span class="st">"lnratioavg"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    q[i] <span class="ot">&lt;-</span> lr<span class="sc">$</span>estimate; u[i] <span class="ot">&lt;-</span> lr<span class="sc">$</span>std.error<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    E[i, ] <span class="ot">&lt;-</span> <span class="fu">eff</span>(fit)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">pooled =</span> <span class="fu">rubin</span>(q, u), <span class="at">eff =</span> <span class="fu">setNames</span>(<span class="fu">colMeans</span>(E), <span class="fu">c</span>(<span class="st">"EY0"</span>, <span class="st">"EY1"</span>, <span class="st">"RD"</span>, <span class="st">"RR"</span>)))</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mi_yes <span class="ot">&lt;-</span> <span class="fu">map</span>(MECH, mi_run)                             <span class="co"># outcome in the imputation model</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mi_no  <span class="ot">&lt;-</span> <span class="fu">map</span>(MECH, mi_run, <span class="at">with_outcome =</span> <span class="cn">FALSE</span>)       <span class="co"># outcome left out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Multiple imputation with m = 20. The first five columns include the outcome in the imputation model; the sixth omits it. The last column repeats the complete-case risk difference for comparison. The complete-data reference is RR 0.613, RD -0.02620.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">mechanism</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">MI: RR</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">95% interval</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">MI: RD</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">fraction missing info</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">MI: RR, outcome omitted</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">complete case: RD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MCAR</td>
+<td style="text-align: left;">0.614</td>
+<td style="text-align: left;">(0.554, 0.681)</td>
+<td style="text-align: left;">-0.02609</td>
+<td style="text-align: left;">0.06</td>
+<td style="text-align: left;">0.722</td>
+<td style="text-align: left;">-0.02726</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MAR</td>
+<td style="text-align: left;">0.603</td>
+<td style="text-align: left;">(0.543, 0.670)</td>
+<td style="text-align: left;">-0.02721</td>
+<td style="text-align: left;">0.10</td>
+<td style="text-align: left;">0.747</td>
+<td style="text-align: left;">-0.02422</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">outcome-dependent</td>
+<td style="text-align: left;">0.611</td>
+<td style="text-align: left;">(0.547, 0.683)</td>
+<td style="text-align: left;">-0.02637</td>
+<td style="text-align: left;">0.20</td>
+<td style="text-align: left;">0.963</td>
+<td style="text-align: left;">-0.00990</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MNAR</td>
+<td style="text-align: left;">0.752</td>
+<td style="text-align: left;">(0.679, 0.832)</td>
+<td style="text-align: left;">-0.01440</td>
+<td style="text-align: left;">0.10</td>
+<td style="text-align: left;">0.924</td>
+<td style="text-align: left;">-0.01705</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Three readings of the table.</p>
+<p><strong>Leaving the outcome out of the imputation model biases every mechanism</strong>, including MCAR, and in the same direction as mean substitution: toward the estimate that ignores <code>severity</code>. This is the most common error in applied practice and the easiest to avoid.</p>
+<p><strong>With the outcome included, imputation handles MCAR, MAR and the outcome-dependent mechanism</strong>, and it handles them on both scales — including the absolute risks that complete-case analysis lost. Because imputation retains every patient, the estimate is standardised over the cohort rather than over the survivors of a deletion rule, so the target population is the intended one. That is the case for imputation, and it is a real one: missingness caused by the outcome is common, since patients who have the event are investigated differently.</p>
+<p><strong>Under MNAR, imputation is biased and complete-case analysis is not.</strong> The imputed values are drawn as though patients with missing <code>severity</code> resembled recorded patients with the same age, diabetes, treatment and outcome. They do not: they were selected for having high severity, and no feature of the observed data reveals it. The imputation model fills the gaps with values that are too low, weakening the measured confounder, and the estimate moves from 0.613 toward 1.18, the value obtained by not adjusting for <code>severity</code> at all. This is the reversal the chapter opened with, and it is a documented property of the two methods rather than an artefact of this simulation.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+</section>
+<section id="separating-bias-from-sampling-noise" class="level2" data-number="30.6">
+<h2 data-number="30.6" class="anchored" data-anchor-id="separating-bias-from-sampling-noise"><span class="header-section-number">30.6</span> Separating bias from sampling noise</h2>
+<p>A single missingness draw cannot distinguish a systematic error from a lucky one. Repeating the deletion many times on the <em>same</em> cohort holds the sampling variability of the cohort fixed and isolates what the missingness mechanism does.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>R_REP <span class="ot">&lt;-</span> <span class="dv">60</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>draw_missing <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span>(k,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">MCAR =</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.25</span>) <span class="sc">==</span> <span class="dv">1</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">MAR  =</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">plogis</span>(<span class="sc">-</span><span class="fl">1.2</span> <span class="sc">+</span> <span class="fl">0.6</span> <span class="sc">*</span> df<span class="sc">$</span>age_c)) <span class="sc">==</span> <span class="dv">1</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">outcome-dependent</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">plogis</span>(<span class="sc">-</span><span class="fl">1.29</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> df<span class="sc">$</span>age_c <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                                                <span class="fl">2.0</span> <span class="sc">*</span> df<span class="sc">$</span>stroke)) <span class="sc">==</span> <span class="dv">1</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">MNAR =</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">plogis</span>(<span class="sc">-</span><span class="fl">2.54</span> <span class="sc">+</span> <span class="fl">2.5</span> <span class="sc">*</span> df<span class="sc">$</span>severity)) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">99</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>rep_res <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(<span class="fu">seq_len</span>(R_REP), <span class="cf">function</span>(i) {</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(<span class="fu">names</span>(MECH), <span class="cf">function</span>(k) {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> df; d<span class="sc">$</span>severity[<span class="fu">draw_missing</span>(k)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    obs <span class="ot">&lt;-</span> <span class="sc">!</span><span class="fu">is.na</span>(d<span class="sc">$</span>severity)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    cc  <span class="ot">&lt;-</span> <span class="fu">eff</span>(<span class="fu">glm</span>(FML, <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> d[obs, ]))</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(d[, <span class="fu">c</span>(<span class="st">"severity"</span>, <span class="st">"age_c"</span>, <span class="st">"diabetes"</span>, <span class="st">"drug"</span>, <span class="st">"stroke"</span>)],</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">m =</span> <span class="dv">5</span>, <span class="at">method =</span> <span class="st">"norm"</span>, <span class="at">printFlag =</span> <span class="cn">FALSE</span>, <span class="at">seed =</span> <span class="dv">100</span> <span class="sc">+</span> i)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    mi <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(<span class="fu">sapply</span>(<span class="fu">complete</span>(imp, <span class="st">"all"</span>),</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>                          <span class="cf">function</span>(x) <span class="fu">eff</span>(<span class="fu">glm</span>(FML, <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> x))))</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">mechanism =</span> k,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>           <span class="st">`</span><span class="at">complete case: RR</span><span class="st">`</span> <span class="ot">=</span> cc[<span class="st">"RR"</span>], <span class="st">`</span><span class="at">complete case: RD</span><span class="st">`</span> <span class="ot">=</span> cc[<span class="st">"RD"</span>],</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>           <span class="st">`</span><span class="at">imputation: RR</span><span class="st">`</span>    <span class="ot">=</span> mi[<span class="dv">4</span>],    <span class="st">`</span><span class="at">imputation: RD</span><span class="st">`</span>    <span class="ot">=</span> mi[<span class="dv">3</span>])</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Mean estimate over 60 replicate missingness draws on the same cohort. Each cell gives the mean, then the bias against the complete-data reference (RR 0.613, RD -0.02620) in brackets; the risk-ratio cells add the Monte Carlo standard error of the mean. A bias larger than about twice that standard error is systematic rather than noise.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">mechanism</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">complete case: RR</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">complete case: RD</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">imputation: RR</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">imputation: RD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MCAR</td>
+<td style="text-align: left;">0.612 (-0.001, se 0.002)</td>
+<td style="text-align: left;">-0.02632 (-0.00012)</td>
+<td style="text-align: left;">0.611 (-0.001, se 0.001)</td>
+<td style="text-align: left;">-0.02635 (-0.00015)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MAR</td>
+<td style="text-align: left;">0.623 (+0.011, se 0.002)</td>
+<td style="text-align: left;">-0.02303 (+0.00318)</td>
+<td style="text-align: left;">0.615 (+0.003, se 0.001)</td>
+<td style="text-align: left;">-0.02598 (+0.00023)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">outcome-dependent</td>
+<td style="text-align: left;">0.614 (+0.001, se 0.006)</td>
+<td style="text-align: left;">-0.00981 (+0.01640)</td>
+<td style="text-align: left;">0.620 (+0.007, se 0.003)</td>
+<td style="text-align: left;">-0.02564 (+0.00056)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MNAR</td>
+<td style="text-align: left;">0.598 (-0.014, se 0.002)</td>
+<td style="text-align: left;">-0.01698 (+0.00922)</td>
+<td style="text-align: left;">0.766 (+0.153, se 0.001)</td>
+<td style="text-align: left;">-0.01345 (+0.01275)</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The replication confirms the reading of the single draw and sharpens it in one respect: the two scales disagree about which method is in trouble. On the <strong>risk ratio</strong>, complete-case analysis carries no material bias under any of the four mechanisms — the outcome-dependent column included, for the rare-outcome reason given above — while imputation carries a large one under MNAR. On the <strong>risk difference</strong>, complete-case analysis is badly biased under outcome-dependent missingness and MNAR, and imputation is biased only under MNAR. Neither method dominates. Imputation is the better default, because it fails under one mechanism rather than two and because it delivers the absolute quantities; but under MNAR it is the worse of the two, and no diagnostic run on the observed data distinguishes MNAR from MAR.</p>
+<p>Two cautions about reading a table of this kind. The bias figures are conditional on the outcome model being correct: the working model imposes a constant log risk ratio while the cohort’s true log risk ratio varies slightly with severity, so the quantity being targeted is a weighted average whose weights shift when the composition of the analysed sample shifts. Small residual biases in these columns can come from that rather than from the missing data. And the replication holds one cohort fixed and redraws only the missingness, which is what isolates the mechanism; it does not describe the sampling variability an analyst faces, which the credible intervals in the earlier table do.</p>
+</section>
+<section id="imputation-as-bayesian-inference" class="level2" data-number="30.7">
+<h2 data-number="30.7" class="anchored" data-anchor-id="imputation-as-bayesian-inference"><span class="header-section-number">30.7</span> Imputation as Bayesian inference</h2>
+<p>Rubin’s rules are a device for combining separate analyses, and the separation is an artefact of doing the imputation and the analysis in two programs. A missing value is an unknown quantity; a Bayesian model treats unknown quantities as parameters and gives them a posterior. Fitting the imputation model and the substantive model <em>jointly</em> therefore requires no pooling rule at all: the missing <code>severity</code> values are sampled alongside the coefficients, and every posterior draw of the causal contrast already carries the uncertainty that Rubin’s between-imputation variance was constructed to approximate.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
+<p><code>brms</code> expresses this with <code>mi()</code>. One submodel describes <code>severity</code>; the outcome model refers to it with <code>mi(severity)</code> rather than to the observed column.</p>
+<p>Because each missing value becomes a parameter, the cost of the joint model scales with the number of gaps rather than with the number of patients — 12 500 extra parameters at the full cohort size. The demonstration therefore uses a 10 000-patient subsample, with complete-case and imputation estimates recomputed on the same subsample so that the three are comparable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sub <span class="ot">&lt;-</span> df[<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>, ]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sub<span class="sc">$</span>sevobs <span class="ot">&lt;-</span> sub<span class="sc">$</span>sev_mar          <span class="co"># the MAR mechanism</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pri <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">1</span>),  <span class="at">class =</span> <span class="st">"Intercept"</span>, <span class="at">resp =</span> <span class="st">"stroke"</span>),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.5</span>), <span class="at">class =</span> <span class="st">"b"</span>,         <span class="at">resp =</span> <span class="st">"stroke"</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>f_joint <span class="ot">&lt;-</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(stroke <span class="sc">~</span> <span class="fu">mi</span>(sevobs) <span class="sc">+</span> drug <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">family =</span> <span class="fu">poisson</span>()) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(sevobs <span class="sc">|</span> <span class="fu">mi</span>() <span class="sc">~</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> drug,       <span class="at">family =</span> <span class="fu">gaussian</span>()) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_rescor</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>jm <span class="ot">&lt;-</span> <span class="fu">brm</span>(f_joint, <span class="at">data =</span> sub, <span class="at">prior =</span> pri,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">1000</span>, <span class="at">warmup =</span> <span class="dv">500</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">"models/ch29_joint_mar"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The fit carries one parameter per missing value, so a single maximum <span class="math inline">\(\hat{R}\)</span> over all parameters is dominated by the 2 547 imputed values and says little about the coefficients. The two groups are worth separating.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rh <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">rhat</span>(jm)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">max_rhat_coefficients =</span> <span class="fu">max</span>(rh[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"^Ymi_"</span>, <span class="fu">names</span>(rh))], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_rhat_imputed      =</span> <span class="fu">max</span>(rh[ <span class="fu">grepl</span>(<span class="st">"^Ymi_"</span>, <span class="fu">names</span>(rh))], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">divergent =</span> <span class="fu">sum</span>(<span class="fu">subset</span>(brms<span class="sc">::</span><span class="fu">nuts_params</span>(jm), Parameter <span class="sc">==</span> <span class="st">"divergent__"</span>)<span class="sc">$</span>Value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>max_rhat_coefficients      max_rhat_imputed             divergent 
+             1.004868              1.019632              0.000000 </code></pre>
+</div>
+</div>
+<p>Both are acceptable and there are no divergent transitions. This model needs appreciably more sampling than the single-response fits of Chapter 28 to reach that point: at two chains of 700 iterations the coefficients had not mixed, with <span class="math inline">\(\hat{R}\)</span> above 1.05.</p>
+<p>Note what the severity submodel does <em>not</em> contain: <code>stroke</code>. In the two-stage procedure the outcome had to be written into the imputation model by hand, and omitting it was the error that biased every row of the earlier table. Here the joint likelihood supplies it automatically. A missing <code>severity</code> value appears in both submodels, so its posterior is informed by the outcome model’s likelihood as well as by the severity model’s, and the association between severity and stroke is preserved without the analyst having to remember to preserve it. What must still be specified is <code>drug</code>. Severity causes treatment rather than the reverse, so an arrow from <code>drug</code> to <code>severity</code> would be wrong as a causal claim — but the severity submodel is not a causal model. It is a conditional distribution used to fill gaps, and leaving <code>drug</code> out of it would impute severity values in which the confounding by indication has been erased, which is the same failure as omitting the outcome. The exercises ask what that costs.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The 10 000-patient subsample under the MAR mechanism. The joint Bayesian estimate is the posterior median of the risk ratio, with a 95% credible interval that required no pooling rule. The three incomplete-data methods agree to within that interval.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">method</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">risk ratio</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">interval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">complete data (subsample)</td>
+<td style="text-align: left;">0.589</td>
+<td style="text-align: left;">--</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">complete case</td>
+<td style="text-align: left;">0.595</td>
+<td style="text-align: left;">--</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">multiple imputation, m = 20</td>
+<td style="text-align: left;">0.595</td>
+<td style="text-align: left;">--</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">joint Bayesian model</td>
+<td style="text-align: left;">0.635</td>
+<td style="text-align: left;">(0.511, 0.784)</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The three incomplete-data methods agree to within the posterior interval, which is the result to take from the table. The joint estimate is the highest of them, and the reason is the prior rather than the imputation: <code>normal(0, 0.5)</code> on the log risk ratio pulls an estimate near <span class="math inline">\(\log 0.59 = -0.53\)</span> a few per cent toward zero, and at this subsample size the likelihood is not sharp enough to override it entirely. That is a property of the Bayesian fit, not of the way the missing values were handled, and Chapter 22 is where the choice of prior is examined.</p>
+<p>The joint model is not a different assumption set — it is MAR-based like the imputation it replaces, and it fails under MNAR for the same reason. What it removes is a class of implementation error: the imputation model cannot be left uncongenial with the substantive model, because there is only one model. What it adds is cost. Every missing value is a parameter, so the fit is larger and slower than the two-stage procedure by a wide margin, and the sampler needs more iterations to mix.</p>
+</section>
+<section id="weighting-rather-than-filling-in" class="level2" data-number="30.8">
+<h2 data-number="30.8" class="anchored" data-anchor-id="weighting-rather-than-filling-in"><span class="header-section-number">30.8</span> Weighting rather than filling in</h2>
+<p>Methods for incomplete data divide into two families. Imputation models the distribution of the missing values given what was observed. Weighting models the occurrence of the missingness and fills in nothing: the records that survive are re-weighted so that each one stands for the records like it that did not.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> Choosing between the two is a choice about which model the analyst is prepared to specify.</p>
+<p>In the setting of this chapter the weighting approach is not complicated. Fit a model for <span class="math inline">\(P(R = 1 \mid \text{observed})\)</span>, keep the complete records, and weight each by the inverse of its fitted probability. The estimate is consistent under the same MAR condition that licenses imputation, and it is generally the less efficient of the two, because an incomplete record contributes nothing beyond its contribution to the weight model whereas imputation uses whatever it does contain.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> That comparison is a property of the static problem posed here. It does not generalise, and the reason is the subject of the rest of this section.</p>
+<section id="two-weights-for-two-missing-data-problems" class="level3" data-number="30.8.1">
+<h3 data-number="30.8.1" class="anchored" data-anchor-id="two-weights-for-two-missing-data-problems"><span class="header-section-number">30.8.1</span> Two weights for two missing-data problems</h3>
+<p>Consider a cohort followed over visits <span class="math inline">\(k = 0, \dots, K\)</span>, with treatment <span class="math inline">\(A_k\)</span>, time-varying covariates <span class="math inline">\(L_k\)</span>, and a censoring indicator <span class="math inline">\(C_k\)</span> recording whether the patient is still under observation. An overbar denotes history, so <span class="math inline">\(\bar A_{k-1}\)</span> is treatment through the previous visit. Two quantities are missing, for different reasons.</p>
+<p>The first is the counterfactual outcome. Under a treatment strategy <span class="math inline">\(\bar a\)</span>, the quantity <span class="math inline">\(Y^{\bar a}\)</span> is unobserved for every patient who did not follow <span class="math inline">\(\bar a\)</span>, and who followed it was decided by <span class="math inline">\(\bar L\)</span>. The stabilised inverse-probability-of-treatment weight is the running product of Chapter 14,</p>
+<p><span class="math display">\[SW^A = \prod_{k} \frac{P(A_k = a_k \mid \bar A_{k-1})}
+                       {P(A_k = a_k \mid \bar A_{k-1}, \bar L_k)} .\]</span></p>
+<p>The second is the outcome itself, unobserved for anyone who left the study before it occurred — through dropout, through loss to follow-up, or, in a per-protocol analysis, through an artificial censoring imposed at the visit where the patient stopped following the assigned strategy.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> The inverse-probability-of-censoring weight has the same form, with remaining uncensored in place of taking the treatment:</p>
+<p><span class="math display">\[SW^C = \prod_{k} \frac{P(C_k = 0 \mid \bar C_{k-1} = 0, \bar A_{k-1})}
+                       {P(C_k = 0 \mid \bar C_{k-1} = 0, \bar A_{k-1}, \bar L_k)} .\]</span></p>
+<p>The marginal structural model is then fitted on uncensored person-time with the product <span class="math inline">\(W = SW^A \times SW^C\)</span>.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> <a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> In the resulting pseudo-population, treatment at each visit is unrelated to <span class="math inline">\(\bar L\)</span> and nobody has been lost to follow-up, which is the population the causal contrast is defined in.</p>
+<p>The two weights correct structurally different biases. Confounding arises from a common cause of treatment and outcome; selection bias, including the bias from informative censoring, arises from conditioning on a common effect.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> That one device repairs both is a property of weighting and not a sign that the two are the same problem.</p>
+</section>
+<section id="why-the-efficiency-comparison-does-not-carry-over" class="level3" data-number="30.8.2">
+<h3 data-number="30.8.2" class="anchored" data-anchor-id="why-the-efficiency-comparison-does-not-carry-over"><span class="header-section-number">30.8.2</span> Why the efficiency comparison does not carry over</h3>
+<p>In the static problem, weighting and imputation both work and weighting is the less efficient. In the longitudinal problem the comparison does not arise, because regression adjustment does not work at all. When <span class="math inline">\(L_k\)</span> confounds <span class="math inline">\(A_k \to Y\)</span> and is also a consequence of <span class="math inline">\(A_{k-1}\)</span>, conditioning on it blocks part of the effect and omitting it leaves confounding, and this is true whether <span class="math inline">\(L_k\)</span> is fully observed or imputed without error (Chapter 14). Weighting is used there because it identifies the effect, not because it is the cheaper of two valid options.</p>
+<p>The imputation member of the pair in that setting is not multiple imputation but the g-formula: model <span class="math inline">\(P(L_k \mid \text{past})\)</span> and <span class="math inline">\(P(Y \mid \text{past})\)</span>, then simulate the cohort forward under the strategy of interest (Chapter 28). It fills in the counterfactual trajectory in the way multiple imputation fills in a covariate. The two families therefore correspond at both levels:</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>Model the missingness</th>
+<th>Model the missing values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Incomplete covariate</td>
+<td>Inverse probability weighting</td>
+<td>Multiple imputation</td>
+</tr>
+<tr class="even">
+<td>Time-varying treatment</td>
+<td>IPTW and IPCW, in a marginal structural model</td>
+<td>The g-formula</td>
+</tr>
+</tbody>
+</table>
+<p>The correspondence is not a symmetry of costs, and the g-formula carries a failure mode that weighting does not. In some settings consistent with the conditions that motivate the method — identifiability holds, and the measured time-varying confounders are affected by past treatment — misspecification of the g-formula’s component models is guaranteed. This is the <em>g-null paradox</em>, named for the hypothesis under which it operates: if treatment has no effect on the outcome at any time, the usual parametric models for the components cannot all be correct, and a parsimoniously specified g-formula will generally return a non-null estimate of an effect that is absent. The response is to avoid overly parsimonious models for the components rather than to abandon the method, and the magnitude of the resulting bias is a quantity that can be examined rather than a reason to prefer weighting by default.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> A marginal structural model is not exposed to the paradox, because the causal null is a value its parameter can take: a treatment coefficient of zero describes a null effect without contradicting anything else in the model.</p>
+</section>
+<section id="the-bayesian-version" class="level3" data-number="30.8.3">
+<h3 data-number="30.8.3" class="anchored" data-anchor-id="the-bayesian-version"><span class="header-section-number">30.8.3</span> The Bayesian version</h3>
+<p>Weighting is not a likelihood, so an inverse-probability estimate has no posterior of its own and its interval is a sandwich or bootstrap construction. This makes weighting appear to be the frequentist member of the pair and imputation the Bayesian one, which is misleading in both directions.</p>
+<p>A Bayesian treatment of weighting exists, and it takes the pseudo-population seriously as a data-generating mechanism. The weights are then derived from the <em>posterior predictive</em> treatment-assignment and censoring probabilities rather than from fitted point estimates, which is also the answer to how uncertainty in the weight models should propagate into the marginal structural model.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> What this yields is a Bayesian importance sampling scheme, not a Bayesian imputation scheme. Nothing is drawn for a missing value; what is drawn is the probability that determines how much each observed record counts.</p>
+<p>The two cannot simply be merged into one joint model, and the obstacle is feedback. In the joint model of the previous section the coupling between submodels is wanted: <code>mi()</code> draws <code>severity</code> from a submodel containing <code>stroke</code>, and that is what makes the imputation congenial. Apply the same coupling to a treatment-assignment model and the outcome data flow back into it, the fitted probabilities cease to be a function of the assignment mechanism alone, and the balancing property the weights rely on is lost. Implementations therefore keep the two fits separate by construction, for example by estimating the marginal structural model parameters with a Bayesian bootstrap.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
+<p>This reverses one of the rules of this chapter. Rule 4 below requires the outcome to appear in the model for the incomplete variable, because omitting it imputes away the association the analysis is about. In weighting, the outcome must be kept out of the weight models. The underlying condition is the same one stated from the other side: an imputation model is good when it borrows the outcome’s information, and a weight model is valid when it does not.</p>
+</section>
+<section id="where-the-two-families-meet" class="level3" data-number="30.8.4">
+<h3 data-number="30.8.4" class="anchored" data-anchor-id="where-the-two-families-meet"><span class="header-section-number">30.8.4</span> Where the two families meet</h3>
+<p>Because one family models the missingness and the other the missing values, an estimator can use both and require only one of them to be correct. Doubly robust estimators are consistent if either the weight models or the outcome models are correctly specified, and are typically more efficient than weighting alone and less reliant on extrapolation than imputation alone.<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a> For the configuration described here — treatment weights and censoring weights together, augmented by outcome regressions — the longitudinal case has been worked out for dropout and truncation by death, and the point-treatment case for missingness in the exposure, the outcome or a confounder.<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a></p>
+<p>Two practical points. The product <span class="math inline">\(SW^A \times SW^C\)</span> has a heavier right tail than either factor, so weights that are acceptable for treatment and acceptable for censoring can be unusable once multiplied; diagnose the two distributions separately before combining them, report the distribution of the product, and treat truncation as a bias–variance trade rather than a repair.<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a> And whether censoring weights are required at all depends on the graph and on the estimand, since a relative and an absolute measure are not equally vulnerable to loss to follow-up.<a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a></p>
+</section>
+</section>
+<section id="when-the-mechanism-is-not-ignorable" class="level2" data-number="30.9">
+<h2 data-number="30.9" class="anchored" data-anchor-id="when-the-mechanism-is-not-ignorable"><span class="header-section-number">30.9</span> When the mechanism is not ignorable</h2>
+<p>Under MNAR neither method recovers the answer, and no amount of computation changes that, because the information required is not in the data. The distribution of <code>severity</code> among patients whose <code>severity</code> was not recorded is not identified. What can be done is to state a range of assumptions about it and report how the conclusion moves across that range.</p>
+<p>The standard device is <strong>delta adjustment</strong>: impute under MAR, then shift every imputed value by a fixed amount <span class="math inline">\(\delta\)</span> before analysis.<a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a> Here <span class="math inline">\(\delta\)</span> is the number of severity units by which patients with unrecorded severity exceed otherwise similar patients with recorded severity. <span class="math inline">\(\delta = 0\)</span> is the MAR analysis; increasing <span class="math inline">\(\delta\)</span> encodes progressively stronger selection.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>deltas   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">1.0</span>, <span class="fl">1.25</span>, <span class="fl">1.5</span>, <span class="fl">2.0</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>delta_rr <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(deltas, <span class="sc">~</span> <span class="fu">mi_run</span>(<span class="st">"sev_mnar"</span>, <span class="at">m =</span> <span class="dv">10</span>, <span class="at">delta =</span> .x)<span class="sc">$</span>eff[<span class="st">"RR"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-delta" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-delta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch25-missing-data_files/figure-html/fig-delta-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-delta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;30.3: Delta-adjustment sensitivity analysis under the MNAR mechanism. Each point is a multiple-imputation estimate in which every imputed severity value has been shifted upward by delta before the outcome model is fitted. The horizontal dashed line is the complete-data reference. The MAR analysis is the leftmost point. The curve approaches the reference and then turns back: a shift of the mean is a restricted family of departures from MAR, and no value of delta reproduces the complete-data answer.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The curve, not any point on it, is the output of the analysis, and it supports three statements of different strength.</p>
+<p><strong>The magnitude is not robust.</strong> At <span class="math inline">\(\delta = 0\)</span> — the MAR analysis anyone would report by default — the risk ratio is 0.751. Across a range of <span class="math inline">\(\delta\)</span> that no observed quantity can rule out it falls to 0.626, close to the complete-data reference of 0.613. Since <code>severity</code> has a standard deviation of about 1.1, the shift that does the work is roughly one standard deviation, which is a substantial but not outlandish claim about who goes unmeasured. Any report of the MAR estimate alone overstates what is known about the size of the effect.</p>
+<p><strong>The direction is robust.</strong> Every point on the curve is well below 1, so the qualitative conclusion — the drug is protective — survives the whole range. That is the statement to make, and it is weaker than the one the MAR analysis appeared to license. Where the qualitative conclusion does change somewhere in the plausible range, the value of <span class="math inline">\(\delta\)</span> at which it changes is the <em>tipping point</em>, and reporting it converts an unanswerable question into one a subject-matter reader can assess: is it credible that patients whose severity went unrecorded were this much sicker than comparable patients whose severity was recorded?</p>
+<p><strong>The device itself is limited.</strong> The curve approaches the reference near <span class="math inline">\(\delta =\)</span> 1.25 and then turns back rather than crossing. A constant shift moves the mean of the imputed values, and the true mechanism did more than shift a mean: selecting on <code>severity</code> truncated the distribution, changing its spread and its association with treatment as well. Delta adjustment explores one direction in a much larger space of departures from MAR, so a sensitivity analysis that stays flat is weaker evidence of robustness than it appears.</p>
+<p>Two further remarks. <span class="math inline">\(\delta\)</span> is not estimable; choosing it is an external judgement, and the appropriate report is the range over which conclusions hold rather than a preferred value. Placing a prior on <span class="math inline">\(\delta\)</span> instead of stepping along a grid gives the Bayesian version of the same analysis and is preferable when genuine information about the mechanism exists.<a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a> And the limit is not a limit of imputation. A weighting analysis is in the same position for the same reason: the assumption about the unrecorded values has to be supplied from outside, whether it enters the distribution of the imputed values or the model for <span class="math inline">\(R\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Choosing a method for incomplete data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Draw <span class="math inline">\(R\)</span> on the DAG.</strong> Ask what caused each variable to go unrecorded, and add those arrows. Do this before choosing a method.</li>
+<li><strong>Check whether <span class="math inline">\(R\)</span> is d-separated from the outcome given the model’s variables.</strong> If it is, complete-case analysis estimates the conditional model without bias — including under MNAR.</li>
+<li><strong>Ask whether the estimand is conditional or standardised.</strong> A marginal risk, a risk difference or any g-computation is standardised over a population, and deleting rows changes that population. This is a reason to impute even when deletion would estimate the coefficients correctly.</li>
+<li><strong>If imputing, put the outcome and every analysis variable in the imputation model.</strong> Omitting a variable imputes away its association. A joint Bayesian model enforces this by construction.</li>
+<li><strong>Report the fraction of missing information</strong>, not only the missingness rate.</li>
+<li><strong>If any arrow runs from an incomplete variable into <span class="math inline">\(R\)</span>, report a sensitivity analysis</strong>, not a point estimate. Give the range over which the conclusion holds, and the tipping point if there is one inside that range.</li>
+<li><strong>Do not choose between methods by comparing standard errors.</strong> Precision and bias are separate questions, and single-value substitution scores well on the first precisely because it treats filled-in values as though they had been observed.</li>
+<li><strong>Weighting is the alternative to imputing, not a weaker form of it.</strong> Model <span class="math inline">\(R\)</span> and re-weight the complete records when the missingness model is the one that can be specified with confidence, or when the estimand requires it — as it does for a time-varying treatment, where no imputation of the confounder identifies the effect.</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="what-imputation-does-not-fix" class="level2" data-number="30.10">
+<h2 data-number="30.10" class="anchored" data-anchor-id="what-imputation-does-not-fix"><span class="header-section-number">30.10</span> What imputation does not fix</h2>
+<p>The chapter has held the adjustment set fixed throughout, which conceals the larger limitation. Every result above compares a method against the complete-data analysis, and the complete-data analysis is only as good as the identification argument behind it. If <code>severity</code> were an incomplete measurement of a confounder rather than the confounder itself, imputing its missing values perfectly would still leave the estimate confounded. Imputation recovers information that the data contain and the analyst has lost; it creates none. A variable never measured on anyone is not a missing-data problem and is not treated by any technique in this chapter — it is the subject of Chapter 19.</p>
+<p>Two smaller cautions follow from the same point. Diagnostics on imputed data check the imputation model’s fit to the <em>observed</em> values, so they can detect a badly specified predictive distribution but cannot detect MNAR: the two mechanisms are observationally equivalent by construction. And a test of MCAR, where one is reported, does not license a MAR-based analysis, because the alternative to MCAR includes both MAR and MNAR and the test cannot separate them.</p>
+</section>
+<section id="key-points" class="level2" data-number="30.11">
+<h2 data-number="30.11" class="anchored" data-anchor-id="key-points"><span class="header-section-number">30.11</span> Key points</h2>
+<ul>
+<li><strong>Missingness is a variable with causes.</strong> Adding the indicator <span class="math inline">\(R\)</span> to the DAG turns the choice of method into a d-separation question and replaces the MCAR / MAR / MNAR labels with something that can be reasoned about.</li>
+<li><strong>Complete-case analysis conditions on <span class="math inline">\(R = 1\)</span>.</strong> It estimates the conditional model without bias whenever <span class="math inline">\(R \perp Y \mid A, C\)</span> — which permits an arrow from the incomplete variable into <span class="math inline">\(R\)</span>, and forbids one from the outcome. Complete-case analysis is therefore valid under some MNAR mechanisms and invalid under some MAR ones.</li>
+<li><strong>A standardised estimate has a second requirement.</strong> Deleting rows changes the population the estimate is standardised to, so marginal risks and risk differences are wrong even when the coefficients are right. This is the argument for imputing that survives even when deletion is unbiased for the regression.</li>
+<li><strong>Single-value substitution is not a weak version of imputation but a different and worse procedure.</strong> Mean substitution and the missing-indicator method attenuate the confounder and here move the estimate across the null, under every mechanism including MCAR.</li>
+<li><strong>The imputation model must contain every variable the analysis will use, including the outcome.</strong> Omitting the outcome biased every mechanism in this chapter. A joint Bayesian model with <code>mi()</code> enforces congeniality by construction and returns a posterior directly, with no pooling rule.</li>
+<li><strong>Neither method dominates.</strong> In the master cohort, imputation repairs the outcome-dependent missingness that defeats deletion on the absolute scale, and deletion survives an MNAR mechanism that drags imputation back toward the confounded estimate.</li>
+<li><strong>Weighting and imputation are two families, not one.</strong> Imputation models the missing values; weighting models the missingness and fills in nothing. In the static problem of this chapter they are alternatives and imputation is the more efficient. For a time-varying treatment the choice narrows to weighting or the g-formula, and dropout enters the same fit as a second missing-data problem handled by a censoring weight.</li>
+<li><strong>MNAR is not identified.</strong> The response is a sensitivity analysis — delta adjustment, and a reported range over which the conclusion holds — not a better estimator. A flat sensitivity curve is weaker reassurance than it looks, because a constant shift explores only one direction in the space of departures from MAR.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="30.12">
+<h2 data-number="30.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">30.12</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Read the graph, then check it.</strong> For each of the four mechanisms, state from <a href="#fig-mgraph" class="quarto-xref">Figure&nbsp;<span>30.1</span></a> alone whether complete-case analysis should be unbiased for the conditional model, before looking at any output. Then construct a fifth mechanism in which <span class="math inline">\(R\)</span> depends on <code>drug</code> only, predict the behaviour of both methods, and verify it by replication.</p></li>
+<li><p><strong>The subsample joint model without <code>drug</code>.</strong> Refit <code>jm</code> with the severity submodel <code>sevobs | mi() ~ age_c + diabetes</code>, dropping <code>drug</code>. Compare the risk ratio with the correctly specified fit. Explain, in terms of the cohort’s structural equations, why an arrow that runs <em>from</em> severity <em>to</em> drug nonetheless requires <code>drug</code> to appear on the right-hand side of the severity submodel.</p></li>
+<li><p><strong>Fraction of missing information.</strong> Repeat the MAR imputation with <span class="math inline">\(m = 2, 5, 20, 50\)</span> and record the pooled estimate, its standard error and the fraction of missing information. Which of the three stabilises last, and what does that imply for the usual advice about choosing <span class="math inline">\(m\)</span>?</p></li>
+<li><p><strong>Missingness in the exposure and in the outcome.</strong> Delete 25% of <code>drug</code> values under a mechanism of your choice, then 25% of <code>stroke</code> values, and repeat the comparison. Which of the two is more damaging, and does the d-separation rule of this chapter still identify the cases where deletion is safe?</p></li>
+<li><p><strong>The rare-outcome escape.</strong> Complete-case analysis kept the risk ratio under outcome-dependent missingness because stroke is rare and the odds ratio is preserved under selection on the outcome. Raise the baseline risk by refitting the cohort with <code>simulate_cohort(params = modifyList(default_params(), list(r0 = 0.25)))</code>, repeat the outcome-dependent deletion, and report what happens to the complete-case risk ratio. Does multiple imputation still repair it? State the general rule your two results support.</p></li>
+<li><p><strong>A sensitivity analysis to report.</strong> Using the MNAR variant, extend the delta sweep to the risk difference and its credible interval rather than the point estimate of the risk ratio. Over what range of <span class="math inline">\(\delta\)</span> does the interval continue to exclude zero? Write the two-sentence conclusion you would put in a paper, and mark which quantity in it is an assumption rather than an estimate.</p></li>
+<li><p><strong>Conceptual.</strong> A reviewer objects that including <code>stroke</code> in the imputation model for <code>severity</code> is circular, since <code>severity</code> is then used to predict <code>stroke</code>. Write a reply. Then describe a situation in which the reviewer’s objection would be correct — that is, where conditioning on the outcome during imputation does damage — and relate it to the collider discussion of Chapter 11.</p></li>
+<li><p><strong>The outcome, in and out.</strong> The joint model of this chapter requires <code>stroke</code> in the submodel for <code>severity</code>, whereas a treatment-weight model requires that the outcome be kept out. State the criterion each rule serves, and say what fails if the two are swapped. Then decide which of the two rules a <em>censoring</em>-weight model follows, and justify the answer from the definition of the pseudo-population rather than by analogy.</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Mohan K, Pearl J, “Graphical Models for Processing Missing Data,” <em>J Am Stat Assoc</em> 2021;116:1023-1037 (<a href="https://doi.org/10.1080/01621459.2021.1874961">DOI</a>). Not indexed in PubMed; citation verified against the publisher’s record.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Rubin DB, “Inference and missing data,” <em>Biometrika</em> 1976;63:581-592 (<a href="https://doi.org/10.1093/biomet/63.3.581">DOI</a>). Not indexed in PubMed; citation verified against the publisher’s record.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Daniel RM, Kenward MG, Cousens SN, De Stavola BL, “Using causal diagrams to guide analysis in missing data problems,” <em>Stat Methods Med Res</em> 2012;21:243-256 (<a href="https://doi.org/10.1177/0962280210394469">DOI</a>); Moreno-Betancur M, Lee KJ, Leacy FP, White IR, Simpson JA, Carlin JB, “Canonical Causal Diagrams to Guide the Treatment of Missing Data in Epidemiologic Studies,” <em>Am J Epidemiol</em> 2018;187:2705-2715 (<a href="https://doi.org/10.1093/aje/kwy173">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Westreich D, “Berkson’s bias, selection bias, and missing data,” <em>Epidemiology</em> 2012;23:159-164 (<a href="https://doi.org/10.1097/EDE.0b013e31823b6296">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>White IR, Carlin JB, “Bias and efficiency of multiple imputation compared with complete-case analysis for missing covariate values,” <em>Stat Med</em> 2010;29:2920-2931 (<a href="https://doi.org/10.1002/sim.3944">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Hughes RA, Heron J, Sterne JAC, Tilling K, “Accounting for missing data in statistical analyses: multiple imputation is not always the answer,” <em>Int J Epidemiol</em> 2019;48:1294-1304 (<a href="https://doi.org/10.1093/ije/dyz032">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Zou G, “A modified Poisson regression approach to prospective studies with binary data,” <em>Am J Epidemiol</em> 2004;159:702-706 (<a href="https://doi.org/10.1093/aje/kwh090">DOI</a>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>van Buuren S, Groothuis-Oudshoorn K, “mice: Multivariate Imputation by Chained Equations in R,” <em>J Stat Softw</em> 2011;45:1-67 (<a href="https://doi.org/10.18637/jss.v045.i03">DOI</a>). Not indexed in PubMed; citation verified against the journal’s record.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>White IR, Royston P, Wood AM, “Multiple imputation using chained equations: Issues and guidance for practice,” <em>Stat Med</em> 2011;30:377-399 (<a href="https://doi.org/10.1002/sim.4067">DOI</a>).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Sterne JAC, White IR, Carlin JB, Spratt M, Royston P, Kenward MG, Wood AM, Carpenter JR, “Multiple imputation for missing data in epidemiological and clinical research: potential and pitfalls,” <em>BMJ</em> 2009;338:b2393 (<a href="https://doi.org/10.1136/bmj.b2393">DOI</a>).<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Bartlett JW, Seaman SR, White IR, Carpenter JR, “Multiple imputation of covariates by fully conditional specification: Accommodating the substantive model,” <em>Stat Methods Med Res</em> 2015;24:462-487 (<a href="https://doi.org/10.1177/0962280214521348">DOI</a>). The congeniality condition is due to Meng XL, “Multiple-Imputation Inferences with Uncongenial Sources of Input,” <em>Statist Sci</em> 1994;9:538-558 (<a href="https://doi.org/10.1214/ss/1177010269">DOI</a>), which is not indexed in PubMed; that citation was verified against the publisher’s record.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>White IR, Carlin JB, “Bias and efficiency of multiple imputation compared with complete-case analysis for missing covariate values,” <em>Stat Med</em> 2010;29:2920-2931 (<a href="https://doi.org/10.1002/sim.3944">DOI</a>).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Erler NS, Rizopoulos D, van Rosmalen J, Jaddoe VWV, Franco OH, Lesaffre EMEH, “Dealing with missing covariates in epidemiologic studies: a comparison between multiple imputation and a full Bayesian approach,” <em>Stat Med</em> 2016;35:2955-2974 (<a href="https://doi.org/10.1002/sim.6944">DOI</a>).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Seaman SR, Vansteelandt S, “Introduction to Double Robust Methods for Incomplete Data,” <em>Stat Sci</em> 2018;33:184-197 (<a href="https://doi.org/10.1214/18-STS647">DOI</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Seaman SR, White IR, “Review of inverse probability weighting for dealing with missing data,” <em>Stat Methods Med Res</em> 2013;22:278-295 (<a href="https://doi.org/10.1177/0962280210395740">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Hernán MA, Robins JM, “Per-Protocol Analyses of Pragmatic Trials,” <em>N Engl J Med</em> 2017;377:1391-1398 (<a href="https://doi.org/10.1056/NEJMsm1605385">DOI</a>).<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Robins JM, Hernán MA, Brumback B, “Marginal structural models and causal inference in epidemiology,” <em>Epidemiology</em> 2000;11:550-560 (<a href="https://doi.org/10.1097/00001648-200009000-00011">DOI</a>).<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>Robins JM, Finkelstein DM, “Correcting for noncompliance and dependent censoring in an AIDS Clinical Trial with inverse probability of censoring weighted (IPCW) log-rank tests,” <em>Biometrics</em> 2000;56:779-788 (<a href="https://doi.org/10.1111/j.0006-341x.2000.00779.x">DOI</a>).<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Hernán MA, Hernández-Díaz S, Robins JM, “A structural approach to selection bias,” <em>Epidemiology</em> 2004;15:615-625 (<a href="https://doi.org/10.1097/01.ede.0000135174.63482.43">DOI</a>).<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>McGrath S, Young JG, Hernán MA, “Revisiting the g-null Paradox,” <em>Epidemiology</em> 2022;33:114-120 (<a href="https://doi.org/10.1097/EDE.0000000000001431">DOI</a>). The paradox is due to Robins JM, Wasserman LA, “Estimation of Effects of Sequential Treatments by Reparameterizing Directed Acyclic Graphs,” in <em>Proceedings of the Thirteenth Conference on Uncertainty in Artificial Intelligence</em>, Morgan Kaufmann, 1997:409-420 (<a href="https://arxiv.org/abs/1302.1566">arXiv</a>), which is not indexed in PubMed; that citation was verified against the conference proceedings record.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>Saarela O, Stephens DA, Moodie EEM, Klein MB, “On Bayesian estimation of marginal structural models,” <em>Biometrics</em> 2015;71:279-288 (<a href="https://doi.org/10.1111/biom.12269">DOI</a>); Capistrano ESM, Moodie EEM, Schmidt AM, “Bayesian estimation of the average treatment effect on the treated using inverse weighting,” <em>Stat Med</em> 2019;38:2447-2466 (<a href="https://doi.org/10.1002/sim.8121">DOI</a>), which adopts the Bayesian bootstrap in order to avoid the feedback that arises when a joint likelihood is used.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>Saarela O, Stephens DA, Moodie EEM, Klein MB, “On Bayesian estimation of marginal structural models,” <em>Biometrics</em> 2015;71:279-288 (<a href="https://doi.org/10.1111/biom.12269">DOI</a>); Capistrano ESM, Moodie EEM, Schmidt AM, “Bayesian estimation of the average treatment effect on the treated using inverse weighting,” <em>Stat Med</em> 2019;38:2447-2466 (<a href="https://doi.org/10.1002/sim.8121">DOI</a>), which adopts the Bayesian bootstrap in order to avoid the feedback that arises when a joint likelihood is used.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>Seaman SR, Vansteelandt S, “Introduction to Double Robust Methods for Incomplete Data,” <em>Stat Sci</em> 2018;33:184-197 (<a href="https://doi.org/10.1214/18-STS647">DOI</a>).<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24"><p>Shardell M, Hicks GE, Ferrucci L, “Doubly robust estimation and causal inference in longitudinal studies with dropout and truncation by death,” <em>Biostatistics</em> 2015;16:155-168 (<a href="https://doi.org/10.1093/biostatistics/kxu032">DOI</a>); Williamson EJ, Forbes A, Wolfe R, “Doubly robust estimators of causal exposure effects with missing data in the outcome, exposure or a confounder,” <em>Stat Med</em> 2012;31:4382-4400 (<a href="https://doi.org/10.1002/sim.5643">DOI</a>).<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn25"><p>Cole SR, Hernán MA, “Constructing inverse probability weights for marginal structural models,” <em>Am J Epidemiol</em> 2008;168:656-664 (<a href="https://doi.org/10.1093/aje/kwn164">DOI</a>).<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn26"><p>Howe CJ, Cole SR, Lau B, Napravnik S, Eron JJ, “Selection Bias Due to Loss to Follow Up in Cohort Studies,” <em>Epidemiology</em> 2016;27:91-97 (<a href="https://doi.org/10.1097/EDE.0000000000000409">DOI</a>).<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn27"><p>Leacy FP, Floyd S, Yates TA, White IR, “Analyses of Sensitivity to the Missing-at-Random Assumption Using Multiple Imputation With Delta Adjustment: Application to a Tuberculosis/HIV Prevalence Survey With Incomplete HIV-Status Data,” <em>Am J Epidemiol</em> 2017;185:304-315 (<a href="https://doi.org/10.1093/aje/kww107">DOI</a>).<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn28"><p>Kawabata E, Major-Smith D, Clayton GL, Shapland CY, Morris TP, Carter AR, Fernández-Sanlés A, Borges MC, Tilling K, Griffith GJ, Millard LAC, Davey Smith G, Lawlor DA, Hughes RA, “Accounting for bias due to outcome data missing not at random: comparison and illustration of two approaches to probabilistic bias analysis: a simulation study,” <em>BMC Med Res Methodol</em> 2024;24:278 (<a href="https://doi.org/10.1186/s12874-024-02382-4">DOI</a>).<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch24-bayesian-g-computation.html" class="pagination-link" aria-label="Bayesian g-computation and standardisation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./10-appendix-best-practices.html" class="pagination-link" aria-label="Appendix: Exploratory Data Analysis">
+        <span class="nav-page-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

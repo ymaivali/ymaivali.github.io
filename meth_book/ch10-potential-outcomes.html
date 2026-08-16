@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 11&nbsp; The potential-outcomes framework</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch11-dags.html" rel="next">
+<link href="./06-bayesian-inference.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a-second-outcome-that-never-happens" id="toc-a-second-outcome-that-never-happens" class="nav-link active" data-scroll-target="#a-second-outcome-that-never-happens"><span class="header-section-number">11.1</span> A second outcome that never happens</a></li>
+  <li><a href="#the-estimands-average-effects-and-their-scales" id="toc-the-estimands-average-effects-and-their-scales" class="nav-link" data-scroll-target="#the-estimands-average-effects-and-their-scales"><span class="header-section-number">11.2</span> The estimands: average effects and their scales</a></li>
+  <li><a href="#why-the-crude-contrast-is-not-the-effect" id="toc-why-the-crude-contrast-is-not-the-effect" class="nav-link" data-scroll-target="#why-the-crude-contrast-is-not-the-effect"><span class="header-section-number">11.3</span> Why the crude contrast is not the effect</a></li>
+  <li><a href="#what-it-takes-to-identify-an-effect" id="toc-what-it-takes-to-identify-an-effect" class="nav-link" data-scroll-target="#what-it-takes-to-identify-an-effect"><span class="header-section-number">11.4</span> What it takes to identify an effect</a></li>
+  <li><a href="#the-do-operator-and-the-do-calculus" id="toc-the-do-operator-and-the-do-calculus" class="nav-link" data-scroll-target="#the-do-operator-and-the-do-calculus"><span class="header-section-number">11.5</span> The do-operator, and the do-calculus</a></li>
+  <li><a href="#the-question-and-the-road-from-here" id="toc-the-question-and-the-road-from-here" class="nav-link" data-scroll-target="#the-question-and-the-road-from-here"><span class="header-section-number">11.6</span> The question, and the road from here</a></li>
+  <li><a href="#a-hard-case-causal-questions-about-race" id="toc-a-hard-case-causal-questions-about-race" class="nav-link" data-scroll-target="#a-hard-case-causal-questions-about-race"><span class="header-section-number">11.7</span> A hard case: causal questions about race</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">11.8</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.9</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Chapter 4 made the case that a causal claim is a claim about parallel worlds — what would happen to a particular patient if treated, against what would happen to the same patient if not — and that the randomised experiment is the machine that lets us compare those worlds fairly. This chapter turns that picture into notation that says, <em>which</em> statistical quantity a study is trying to estimate, and <em>what would have to be true</em> for the ordinary machinery of averages and regressions to estimate it. Thus, “the effect of the drug” becomes a quantity we can define, before we try to compute it.</p>
+<section id="a-second-outcome-that-never-happens" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="a-second-outcome-that-never-happens"><span class="header-section-number">11.1</span> A second outcome that never happens</h2>
+<p>Fix a patient and a binary treatment — our blood-pressure drug, <span class="math inline">\(A = 1\)</span> for treated, <span class="math inline">\(A = 0\)</span> for not. Write <span class="math inline">\(Y(1)\)</span> for the stroke outcome this patient <em>would</em> have under treatment and <span class="math inline">\(Y(0)\)</span> for the outcome the <em>same</em> patient would have without it. These hypotheticals are the <strong>potential outcomes</strong>: two values attached to one person, only one of which the world will ever reveal. The patient’s <strong>individual causal effect</strong> is the contrast <span class="math inline">\(Y(1) - Y(0)\)</span> — which is, in general, unknowable, because we see the patient under one treatment only. The other potential outcome is a counterfactual: real enough to define, impossible to observe. This is <strong>Holland’s fundamental problem of causal inference</strong>.</p>
+<p>Two assumptions glue this notation to data. The first is <strong>consistency</strong>: the outcome we actually observe is the potential outcome for the treatment actually received, <span class="math inline">\(Y = Y(A)\)</span>. It sounds trivial, but is not — it presumes the intervention is <em>well defined</em>, that “treated” refers to one thing and not to a bundle of different things with different effects (the dose, route, adherence). The second is <strong>no interference</strong> (part of SUTVA): one patient’s treatment does not change another’s outcome, so <span class="math inline">\(Y_i(a)\)</span> depends on patient <span class="math inline">\(i\)</span>’s own treatment alone. Both can fail — interference is the rule in vaccine and network studies — and when they do, the contrast <span class="math inline">\(Y(1)-Y(0)\)</span> is no longer the right target and has to be redefined; <em>how</em> depends on which part broke (see below).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+SUTVA: what lets us write <span class="math inline">\(Y_i(a)\)</span> at all
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The notation <span class="math inline">\(Y_i(a)\)</span> — one potential outcome per unit per treatment level — comes from the <strong>Stable Unit Treatment Value Assumption</strong> (SUTVA, Rubin’s term). It has two parts, both of which must hold for the expression even to make sense.</p>
+<ul>
+<li><strong>No interference.</strong> Unit <span class="math inline">\(i\)</span>’s potential outcomes depend only on <span class="math inline">\(i\)</span>’s <em>own</em> treatment, so we may write <span class="math inline">\(Y_i(a)\)</span> rather than <span class="math inline">\(Y_i(a_1, a_2, \dots)\)</span>. This fails whenever one unit’s treatment can influence another — vaccines and herd immunity, infectious disease, treated partners in a household, classroom- or village-level assignment, market-wide effects. Then each unit has a separate potential outcome for <em>every configuration of everyone’s</em> treatment, and the tidy contrast <span class="math inline">\(Y(1) - Y(0)\)</span> is not even defined.</li>
+<li><strong>One version of treatment</strong> (no hidden variations). “Treated” must name a single, well-specified intervention. If <span class="math inline">\(A = 1\)</span> secretly bundles many versions with different effects — different doses, formulations, surgeons, or simply different ways of “being treated” — then <span class="math inline">\(Y(1)\)</span> is an average over an unspecified mixture and changes meaning with it. This is the same demand as <strong>consistency</strong>: <span class="math inline">\(Y = Y(A)\)</span> is only informative when <span class="math inline">\(A = 1\)</span> refers to one thing.</li>
+</ul>
+<p>SUTVA is therefore not a box to tick at the end of an analysis; it is the licence to write the estimand in the first place. When meeting it is doubtful, one should sharpen the intervention (a specific dose and schedule) or model the interference explicitly (partial-interference or network designs), rather than press on with an ambiguous <span class="math inline">\(Y(a)\)</span>. It is also why an “effect” of a fixed attribute — the “effect of <em>sex</em>”, say, or “of <em>race</em>” — strains the framework: there is no agreed intervention that <em>sets</em> such a variable, so its potential outcome has no settled referent (contrast a <em>modifiable</em> trait like <em>obesity</em>, where the trouble is the opposite — many different ways one could intervene, with different effects). This is the well-defined-intervention point we return to at the end of the chapter.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How <span class="math inline">\(Y(1)-Y(0)\)</span> is redefined depends on which half of SUTVA gave way
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the failure is <strong>interference</strong>, a unit’s outcome depends on the whole pattern of treatment, then the potential outcome gains arguments — <span class="math inline">\(Y_i(\mathbf{a})\)</span>, a function of the entire assignment vector <span class="math inline">\(\mathbf{a} = (a_1, \dots, a_n)\)</span> rather than of <span class="math inline">\(a_i\)</span> alone. That is up to <span class="math inline">\(2^n\)</span> potential outcomes per person instead of two, which is hopeless without structure, so one must impose some. <strong>Partial interference</strong> assumes units sit in groups — households, classrooms, villages — with spillover only <em>within</em> a group; an <strong>exposure mapping</strong> assumes further that a unit’s outcome depends on the rest only through a low-dimensional summary, typically the <strong>coverage</strong> <span class="math inline">\(c\)</span> (the fraction treated in its group), which collapses the outcome to <span class="math inline">\(Y_i(a_i, c)\)</span> in own-treatment <span class="math inline">\(a_i\)</span> and coverage <span class="math inline">\(c\)</span>. The single contrast then splits into a family of well-defined effects:</p>
+<ul>
+<li>a <strong>direct effect</strong> — switch my own treatment, holding the group’s coverage fixed;</li>
+<li>an <strong>indirect</strong>, or <strong>spillover</strong>, effect — change the group’s coverage, holding my own treatment fixed (the protection an <em>unvaccinated</em> person gains from a vaccinated community);</li>
+<li>a <strong>total effect</strong> — the two together, treated-under-high-coverage versus untreated-under-low; and</li>
+<li>an <strong>overall effect</strong> — compare two whole <em>allocation programmes</em>, say 0% against 70% coverage, averaged over everyone.</li>
+</ul>
+<p>Which of these is “the” effect?: “should this patient be vaccinated?” asks for the direct effect; “should we fund a 70%-coverage programme?” asks for the overall effect; and — herd immunity being the point of vaccination — the two can diverge sharply. These effects are not mere definitions: once the exposure structure is recorded — who was treated directly, and who only through a treated network member — they are identifiable and routinely estimated in network-randomised trials with standard correlated-data methods.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>If instead the failure is <strong>multiple versions of treatment</strong>, redefinition means <em>naming the version</em>. The estimand becomes the effect of one specified intervention — a dose, a schedule, a surgical technique — or, when the versions genuinely cannot be pinned down, the effect of a stated <em>distribution</em> over them (a “modified treatment policy” that assigns versions as they arise in practice). Either way the manoeuvre is the same in spirit: replace a vague switch with a contrast of interventions sharp enough that <span class="math inline">\(Y(\cdot)\)</span> has a single value again — which is, in the end, the lesson of the well-defined-intervention caveat at the close of this chapter.</p>
+</div>
+</div>
+<p>In real life the counterfactual column is missing. In our simulated cohort it is not: we could compute each patient’s risk under both treatments. It is worth looking at the thing we almost never get to see.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cohort <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(df) <span class="sc">|&gt;</span>                            <span class="co"># the observable cohort, plus ...</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">as_tibble</span>(<span class="fu">attr</span>(df, <span class="st">"oracle"</span>)) <span class="sc">|&gt;</span>          <span class="co"># ... the oracle's potential-outcome</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(risk0, risk1))                   <span class="co">#     risks Y(0) and Y(1)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>cohort <span class="sc">|&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(id, <span class="at">severity =</span> <span class="fu">round</span>(severity, <span class="dv">1</span>), drug, <span class="at">observed_stroke =</span> stroke,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">risk Y(0)</span><span class="st">`</span> <span class="ot">=</span> risk0, <span class="st">`</span><span class="at">risk Y(1)</span><span class="st">`</span> <span class="ot">=</span> risk1, <span class="st">`</span><span class="at">risk difference</span><span class="st">`</span> <span class="ot">=</span> risk1 <span class="sc">-</span> risk0) <span class="sc">|&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Six patients with *both* potential-outcome risks. In reality only the column matching `drug` is observable; the other is the counterfactual the oracle reveals."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Six patients with *both* potential-outcome risks. In reality only the column matching `drug` is observable; the other is the counterfactual the oracle reveals.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">id</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">severity</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">drug</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">observed_stroke</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">risk Y(0)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">risk Y(1)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">risk difference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.029</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">-0.009</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.063</td>
+<td style="text-align: right;">0.041</td>
+<td style="text-align: right;">-0.022</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.043</td>
+<td style="text-align: right;">0.029</td>
+<td style="text-align: right;">-0.014</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">0.013</td>
+<td style="text-align: right;">-0.008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1.3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.090</td>
+<td style="text-align: right;">0.057</td>
+<td style="text-align: right;">-0.033</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2.1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.276</td>
+<td style="text-align: right;">0.164</td>
+<td style="text-align: right;">-0.112</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>For each patient the drug lowers the stroke <em>risk</em> — <code>risk Y(1)</code> &lt; <code>risk Y(0)</code> — yet the realised <code>observed_stroke</code> is a coin flip that may land either way, and only the potential outcome matching that patient’s <code>drug</code> value is something a real study could ever record. Everything that follows is about learning about the hidden contrafactual column from the visible one.</p>
+</section>
+<section id="the-estimands-average-effects-and-their-scales" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="the-estimands-average-effects-and-their-scales"><span class="header-section-number">11.2</span> The estimands: average effects and their scales</h2>
+<p>As individual effects are out of reach, we target <em>averages</em>. The <strong>average treatment effect</strong> is the contrast of potential outcomes over the whole population, <span class="math display">\[ \text{ATE} \;=\; E[Y(1)] - E[Y(0)], \]</span> the stroke risk if <em>everyone</em> were treated against the risk if <em>no one</em> were. A close relative is the <strong>average treatment effect in the treated</strong>, <span class="math inline">\(\text{ATT} = E[Y(1) - Y(0) \mid A = 1]\)</span>, the effect among the patients who actually got the drug — a different and often more policy-relevant quantity whenever the effect varies across people. Its counterpart, the <strong>average treatment effect in the untreated</strong>, <span class="math inline">\(\text{ATU} = E[Y(1) - Y(0) \mid A = 0]\)</span>, asks what the drug <em>would</em> do for those who did not receive it. This is the estimand behind a decision to <em>extend</em> treatment to them, as against ATT’s question of whether to <em>withdraw</em> it from those who have it. The three are tied by the share treated, <span class="math inline">\(\text{ATE} = P(A{=}1)\,\text{ATT} + P(A{=}0)\,\text{ATU}\)</span>, so once the effect varies across people they part company — and the <em>gap between ATT and ATU</em> is itself a causal signal: it says whether treatment reached the people it helps most. These are <strong>estimands</strong>: precise targets chosen <em>before</em> estimation, not whatever a model happens to spit out.</p>
+<p>A contrast also needs a <em>scale</em>, the choice of which is substantive. The same two risks <span class="math inline">\(E[Y(1)]\)</span> and <span class="math inline">\(E[Y(0)]\)</span> can be reported as a <strong>risk difference</strong> <span class="math inline">\(E[Y(1)] - E[Y(0)]\)</span>, a <strong>risk ratio</strong> <span class="math inline">\(E[Y(1)]/E[Y(0)]\)</span>, or an <strong>odds ratio</strong>. They answer different questions — absolute public-health burden versus relative effect — and they are not interchangeable; the odds ratio in particular is <em>non-collapsible</em>, so it can shift when you add covariates even with no confounding (Chapter 24). Our oracle reports all of them.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Odds ratios and hazard ratios make poor causal estimands
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Of the scales above, the <strong>risk difference</strong> and <strong>risk ratio</strong> are <em>collapsible</em> and are on the probability scale a patient or policy-maker actually reasons in. The <strong>odds ratio</strong> and the <strong>hazard ratio</strong> are neither, and both should be avoided as causal summaries.</p>
+<p><strong>Non-collapsibility.</strong> A measure is <em>collapsible</em> when the population (marginal) value is a weighted average of the stratum-specific ones; the risk difference and risk ratio are, while the odds ratio is not. The consequence is unsettling: with no confounding whatsoever, the odds ratio adjusted for a covariate differs from the unadjusted one — adding a risk factor that only causally affects the outcome, but has no causal link to the treatment, to a logistic model does not bias the causal interpretation of RR and RD (while narrowing the CI-s), while it drives the OR <em>away from 1</em>. So the OR depends on which covariates are included in the model for reasons that have nothing to do with bias, two correctly specified analyses can report different ORs, and you cannot read a population-average effect off a logistic coefficient (Chapter 24). This is <em>not</em> confounding but it makes the OR treacherous to interpret and to compare across studies.</p>
+<p>Under a logistic risk model the mechanism is explicit. If <span class="math inline">\(\operatorname{logit} P(Y{=}1 \mid A, L) = \alpha + \beta A + \gamma L\)</span>, then <span class="math inline">\(\beta\)</span> is the log-odds-ratio <em>within</em> a level of <span class="math inline">\(L\)</span> — a conditional effect. The marginal log-odds-ratio, obtained by averaging the fitted risks over the distribution of <span class="math inline">\(L\)</span> and only then forming the odds ratio, is smaller in magnitude than <span class="math inline">\(\beta\)</span> whenever <span class="math inline">\(\gamma \neq 0\)</span>, because the logit is nonlinear and the odds ratio of an average is not the average of the odds ratios. The gap is present even when <span class="math inline">\(L\)</span> is independent of <span class="math inline">\(A\)</span>, so it is not confounding: the conditional and marginal odds ratios are distinct estimands, and adding a pure outcome predictor to the model increases the magnitude of <span class="math inline">\(\beta\)</span> while leaving the marginal odds ratio unchanged. A logistic coefficient is therefore specific to its adjustment set and is not comparable across models that condition on different covariates. To obtain a marginal odds ratio from a logistic fit, average the predicted risks over the covariate distribution and form the contrast on the risk scale (standardisation, Chapter 12) rather than exponentiating <span class="math inline">\(\beta\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The hazard ratio is non-collapsible in the same way.</p>
+<p><strong>Odds (P/(1 - P)) are not probabilities (P).</strong> An odds ratio (<em>(P1/(1 - P1))/(P2/(1 - P2)</em>) approximates the risk ratio (<em>P1/P2</em>) only when the outcome is <em>rare</em>. For purely mathematical reasons, an OR always exaggerates the effect in comparison to RR; for a common outcome it exaggerates a lot: against a <span class="math inline">\(30\%\)</span> baseline risk, an OR of <span class="math inline">\(2.0\)</span> corresponds to a just <span class="math inline">\(46\%\)</span> increase, and to a RR of about <span class="math inline">\(1.5\)</span>. People routinely misread an OR as an RR and so overstate the effect. Odds answer no question a clinician or a patient actually asks; risks do.</p>
+<p><strong>Hazard ratios hide a selection effect.</strong> A hazard at time <span class="math inline">\(t\)</span> is a rate <em>among those still event-free at <span class="math inline">\(t\)</span></em>. Once treatment has begun to act, the survivors in the two arms are no longer comparable — treatment has selectively kept some high-risk people event-free, so the treated risk set is <em>frailer</em> than the control risk set. The hazard ratio therefore conditions on a post-treatment variable (survival), blending the genuine effect with a time-varying <strong>depletion-of-susceptibles</strong> selection.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> That is why a constant hazard ratio need not reflect a constant individual effect, and why even a flawless randomised trial can report a hazard ratio with no clean causal interpretation. The proportional-hazards assumption that compresses HR to a single number rarely holds either.</p>
+<p><strong>What to report instead.</strong> Prefer estimands that are collapsible, on the probability scale, and tied to an intervention: the <strong>risk difference</strong> and <strong>risk ratio</strong> at a stated time horizon, <strong>survival or cumulative-incidence differences</strong>, or the <strong>restricted mean survival time</strong>. This book targets the ATE on the risk-difference and risk-ratio scales throughout.</p>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>estimands <span class="ot">&lt;-</span> cohort <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">crude_RD =</span> <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">0</span>]),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">crude_RR =</span> <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">0</span>]),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">ATE_RD   =</span> <span class="fu">mean</span>(risk1) <span class="sc">-</span> <span class="fu">mean</span>(risk0),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ATE_RR   =</span> <span class="fu">mean</span>(risk1) <span class="sc">/</span> <span class="fu">mean</span>(risk0),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ATE_OR   =</span> (<span class="fu">mean</span>(risk1) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(risk1))) <span class="sc">/</span> (<span class="fu">mean</span>(risk0) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(risk0))),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">ATT_RD   =</span> <span class="fu">mean</span>(risk1[drug <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">-</span> risk0[drug <span class="sc">==</span> <span class="dv">1</span>]))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>estimands <span class="sc">|&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"estimand"</span>, <span class="at">values_to =</span> <span class="st">"value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 x 2
+  estimand   value
+  &lt;chr&gt;      &lt;dbl&gt;
+1 crude_RD  0.0186
+2 crude_RR  1.57  
+3 ATE_RD   -0.0268
+4 ATE_RR    0.601 
+5 ATE_OR    0.584 
+6 ATT_RD   -0.0388</code></pre>
+</div>
+</div>
+<p>The true ATE is protective on every scale — a risk ratio of 0.6, about 2.7 strokes prevented per hundred treated. The crude contrast, the thing a naive analysis reports, says the opposite: a risk ratio of 1.57 — the drug looks <em>harmful</em>. Both numbers are computed from the same cohort. Only one is the effect.</p>
+<p>The treated and the untreated are not given the same effect, and how they differ is worth a look. Compare the ATT and the ATU on both scales:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>att_atu <span class="ot">&lt;-</span> cohort <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(drug) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RD =</span> <span class="fu">mean</span>(risk1 <span class="sc">-</span> risk0),                 <span class="co"># E[Y(1) - Y(0)] within the arm</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">RR =</span> <span class="fu">mean</span>(risk1) <span class="sc">/</span> <span class="fu">mean</span>(risk0), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>att <span class="ot">&lt;-</span> att_atu <span class="sc">|&gt;</span> <span class="fu">filter</span>(drug <span class="sc">==</span> <span class="dv">1</span>)                   <span class="co"># treated   -&gt; ATT</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>atu <span class="ot">&lt;-</span> att_atu <span class="sc">|&gt;</span> <span class="fu">filter</span>(drug <span class="sc">==</span> <span class="dv">0</span>)                   <span class="co"># untreated -&gt; ATU</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>att_atu <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">group =</span> <span class="fu">if_else</span>(drug <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"treated (ATT)"</span>, <span class="st">"untreated (ATU)"</span>), RD, RR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 x 3
+  group                RD    RR
+  &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt;
+1 untreated (ATU) -0.0122 0.635
+2 treated (ATT)   -0.0388 0.591</code></pre>
+</div>
+</div>
+<p>On the risk-difference scale the drug averts far more among the treated (ATT <span class="math inline">\(\approx\)</span> -0.039) than it would among the untreated (ATU <span class="math inline">\(\approx\)</span> -0.012) — nearly three times the absolute benefit. Yet on the risk-ratio scale the two are all but identical (0.591 versus 0.635). Both facts hold because the drug cuts risk by a near-constant <em>fraction</em>, and the treated are the sicker patients, with much higher baseline risk, so the same relative cut delivers a larger absolute reduction. The confounding-by-indication that ruins the crude comparison thus has a flip side — treatment was steered toward exactly those with the most absolute risk to lose. Whether “the effect” is larger in the treated is therefore not a fact about the drug but about the <em>scale</em> you read it on (Chapter 16). ATT, ATU and ATE coincide only when the effect is homogeneous on that scale. That the <em>ratio</em> scale is so often the one on which effects are near-homogeneous — genuine interaction being comparatively rare multiplicatively — is a broad empirical regularity;<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> the catch is that a constant risk ratio forces a risk difference that climbs with baseline risk, so the more portable scale is not the one a public-health decision actually needs.</p>
+<p>The absolute effect can be easier to grasp as a <strong>number needed to treat</strong> (NNT): the number of patients one must treat, to prevent a single event over a stated period. It is the reciprocal of the absolute risk difference, <span class="math inline">\(\text{NNT} = 1/|\text{RD}|\)</span>, so it carries the causal content of the RD. An NNT built from the ATE is a population causal quantity, while an NNT built from the <em>crude</em> risk difference is every bit as confounded as that difference. From the cohort’s true ATE, <span class="math inline">\(\text{NNT} \approx\)</span> 38: treat about 40 patients to avert one stroke. In our example, the NNT is far smaller in the high-risk treated (NNT <span class="math inline">\(\approx\)</span> 26) than in the lower-risk untreated (NNT <span class="math inline">\(\approx\)</span> 82), even though the <em>relative</em> effect is identical in the two groups. An NNT is not a property of the drug alone but of the drug applied to a particular baseline risk over a particular time horizon, and it must be reported with both. Turned around, a harmful contrast yields a <strong>number needed to harm</strong>: taken at face value, this cohort’s crude comparison would pin an NNH of about 54 on a drug that in truth prevents strokes.</p>
+</section>
+<section id="why-the-crude-contrast-is-not-the-effect" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="why-the-crude-contrast-is-not-the-effect"><span class="header-section-number">11.3</span> Why the crude contrast is not the effect</h2>
+<p>The crude contrast estimates the <strong>association</strong> <span class="math inline">\(E[Y \mid A=1] - E[Y \mid A=0]\)</span>, and an association is a comparison of <em>different patients</em> — those who took the drug versus those who did not. The causal effect is a comparison of the <em>same</em> patients across worlds. The gap between them has an exact algebraic form. Among the treated, what we observe is <span class="math inline">\(E[Y \mid A=1] = E[Y(1) \mid A=1]\)</span> by consistency; among the untreated, <span class="math inline">\(E[Y \mid A=0] = E[Y(0) \mid A=0]\)</span>. Add and subtract the missing counterfactual <span class="math inline">\(E[Y(0) \mid A=1]\)</span> — the risk the treated <em>would</em> have run untreated — and the association splits cleanly: <span class="math display">\[
+\underbrace{E[Y\mid A{=}1] - E[Y\mid A{=}0]}_{\text{association}}
+=\underbrace{E[Y(1)\mid A{=}1]-E[Y(0)\mid A{=}1]}_{\text{ATT: a real effect}}
++\underbrace{E[Y(0)\mid A{=}1]-E[Y(0)\mid A{=}0]}_{\text{confounding bias}} .
+\]</span> The second term is the whole problem. It compares the untreated risk of the treated with the untreated risk of the untreated — two groups that, if treatment was assigned for a reason, were never alike to begin with. Normally it is invisible, because <span class="math inline">\(E[Y(0)\mid A=1]\)</span> is counterfactual. The oracle shows it to us.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>EY0 <span class="ot">&lt;-</span> cohort <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(drug) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">EY0 =</span> <span class="fu">mean</span>(risk0), <span class="at">.groups =</span> <span class="st">"drop"</span>)      <span class="co"># untreated risk E[Y(0)] in each arm</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>EY0_treated   <span class="ot">&lt;-</span> EY0 <span class="sc">|&gt;</span> <span class="fu">filter</span>(drug <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(EY0)   <span class="co"># E[Y(0) | A=1]  -- counterfactual</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>EY0_untreated <span class="ot">&lt;-</span> EY0 <span class="sc">|&gt;</span> <span class="fu">filter</span>(drug <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(EY0)   <span class="co"># E[Y(0) | A=0]  -- observable</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="st">`</span><span class="at">E[Y(0)|treated]</span><span class="st">`</span>   <span class="ot">=</span> EY0_treated,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">E[Y(0)|untreated]</span><span class="st">`</span> <span class="ot">=</span> EY0_untreated,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">confounding_gap     =</span> EY0_treated <span class="sc">-</span> EY0_untreated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 3
+  `E[Y(0)|treated]` `E[Y(0)|untreated]` confounding_gap
+              &lt;dbl&gt;               &lt;dbl&gt;           &lt;dbl&gt;
+1            0.0950              0.0335          0.0615</code></pre>
+</div>
+</div>
+<p>The treated, <em>had they gone untreated</em>, would have had a stroke risk of 0.095 — nearly three times the 0.034 of those actually untreated. The treated were sicker all along (the drug goes to high-<code>severity</code> patients), so the confounding term is large and positive, 0.061, and it swamps the genuinely protective ATT, turning a beneficial drug into an apparently harmful one. This is <strong>confounding by indication</strong>, seen for once with the counterfactual laid bare rather than inferred.</p>
+</section>
+<section id="what-it-takes-to-identify-an-effect" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="what-it-takes-to-identify-an-effect"><span class="header-section-number">11.4</span> What it takes to identify an effect</h2>
+<p>If the bias is the term <span class="math inline">\(E[Y(0)\mid A=1] - E[Y(0)\mid A=0]\)</span>, the cure is any condition that erases it.</p>
+<ul>
+<li><strong>Exchangeability.</strong> The treated and untreated groups are comparable: <span class="math inline">\(Y(a) \perp A\)</span>. In other words, if we had, contrafactually, given the treatment to the placebo group and <em>vice versa</em>, the causal estimate would not have changed. Marginally this is a strong demand, met by design in RCTs by <strong>randomisation</strong> (Chapter 4). In observational studies we aim for the weaker <strong>conditional exchangeability</strong>, <span class="math inline">\(Y(a) \perp A \mid L\)</span>: comparability <em>within levels</em> of a set of covariates <span class="math inline">\(L\)</span>. This means that for exchangeability we need to have the full adjustment set, measured correctly, and modelled correctly. The next chapter shows how to think of this with the help of graphs (DAGs).</li>
+<li><strong>Positivity.</strong> Every kind of patient could, with some non-zero probability, have received either treatment: <span class="math inline">\(0 &lt; P(A = a \mid L) &lt; 1\)</span> for every <span class="math inline">\(L\)</span> that occurs. Without it there are strata with no treated (or no untreated) patients to compare, and <em>nonparametrically</em> no amount of data fills the hole. Two kinds of failure are worth separating. A <strong>structural</strong> violation — some stratum <em>can never</em> be treated, a contraindication say — is a hole in the question itself, mendable only by restricting the target population or redefining the intervention. A <strong>practical</strong> violation is mere finite-sample sparsity, and how much it costs depends on the estimator: inverse-probability weighting is the most fragile, near-empty strata throwing up extreme weights and unstable estimates (Chapter 12), whereas an outcome model <em>extrapolates</em> across the gap — which rescues identification only by leaning on its functional form in a region the data barely constrain.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Either way the assumption does not disappear; modelling merely trades a requirement on the data for a stronger one on the model.</li>
+<li><strong>Consistency.</strong> As above: the intervention is well defined and <span class="math inline">\(Y = Y(A)\)</span>. When “treated” is really a bundle of versions, what gets identified is the effect of the <em>mixture</em> of versions as it arose in this population — a quantity that need not carry over to a population where the mixture differs.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></li>
+</ul>
+<p>When the above conditions hold, the counterfactual mean is <strong>identified</strong> — written entirely in terms of observable quantities: <span class="math display">\[ E[Y(a)] \;=\; \sum_{l} E[Y \mid A=a,\, L=l]\; P(L=l). \]</span> This is <strong>standardisation</strong>, and equivalently the <strong>g-formula</strong>: estimate the risk within each stratum of <span class="math inline">\(L\)</span>, then average over the population’s mix of <span class="math inline">\(L\)</span>. It is the whole of Chapter 12, and inverse-probability weighting is its mirror image. The formula also exposes the two assumptions: it needs every stratum to contain both treated and untreated patients (positivity), and it only equals the causal effect if <span class="math inline">\(L\)</span> makes the groups exchangeable — which raises the question, <em>which variables belong in <span class="math inline">\(L\)</span>?</em> Throw in too few and the bias survives; put in the wrong ones — a mediator, a collider — and you create fresh bias(see Chapter 11).</p>
+<p>Conditional exchangeability is not magic; we can watch it work. The confounding gap above was 0.061 over the whole cohort. Compare the treated and untreated <em>within</em> strata of severity and most of it disappears:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cohort <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">severity_q =</span> <span class="fu">cut</span>(severity, <span class="fu">quantile</span>(severity, <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.2</span>)),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">include.lowest =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(severity_q) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">`</span><span class="at">E[Y(0)|treated]</span><span class="st">`</span>   <span class="ot">=</span> <span class="fu">mean</span>(risk0[drug <span class="sc">==</span> <span class="dv">1</span>]),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">E[Y(0)|untreated]</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">mean</span>(risk0[drug <span class="sc">==</span> <span class="dv">0</span>]),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">gap =</span> <span class="st">`</span><span class="at">E[Y(0)|treated]</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">E[Y(0)|untreated]</span><span class="st">`</span>, <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Within strata of severity the untreated-risk gap nearly closes. The residue is the other measured confounders (age, diabetes)."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Within strata of severity the untreated-risk gap nearly closes. The residue is the other measured confounders (age, diabetes).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">severity_q</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">E[Y(0)|treated]</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">E[Y(0)|untreated]</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">gap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">[-3.89,-0.838]</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.013</td>
+<td style="text-align: right;">0.003</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(-0.838,-0.188]</td>
+<td style="text-align: right;">0.028</td>
+<td style="text-align: right;">0.026</td>
+<td style="text-align: right;">0.002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">(-0.188,0.384]</td>
+<td style="text-align: right;">0.044</td>
+<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">0.003</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(0.384,1.05]</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">0.066</td>
+<td style="text-align: right;">0.006</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">(1.05,4.58]</td>
+<td style="text-align: right;">0.188</td>
+<td style="text-align: right;">0.140</td>
+<td style="text-align: right;">0.047</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Inside a severity band the treated and untreated would have run nearly the same risk untreated: that is conditional exchangeability appearing in the data. The small remaining gap is the part of the confounding carried by <code>age</code> and <code>diabetes</code>, which a full adjustment set would also have to absorb — the subject of the next two chapters.</p>
+<p>But notice what licensed that picture: we read <code>risk0</code> for the <em>treated</em> — a counterfactual column only the oracle supplies. A real study cannot draw this table, so conditional exchangeability is never something the data confirm; it is an assumption, defended by argument about which confounders were measured and overturned by the one that was not. The disciplined response to that irreducible doubt is a <strong>sensitivity analysis</strong> — asking how strong an unmeasured confounder would have to be to explain the effect away. The <strong>E-value</strong> makes the question concrete: the minimum association such a confounder would need with <em>both</em> treatment and outcome to account for the observed effect.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> Chapter 19 takes this up in full.</p>
+</section>
+<section id="the-do-operator-and-the-do-calculus" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="the-do-operator-and-the-do-calculus"><span class="header-section-number">11.5</span> The do-operator, and the do-calculus</h2>
+<p>Potential outcomes have a twin notation, due to Pearl, that will briefly reappear when we turn to graphs. Writing <span class="math inline">\(P\!\left(Y \mid \mathrm{do}(A=a)\right)\)</span> means the distribution of <span class="math inline">\(Y\)</span> in the world where treatment is <em>set</em> to <span class="math inline">\(a\)</span> by intervention — as opposed to <span class="math inline">\(P(Y \mid A=a)\)</span>, the distribution among those merely <em>observed</em> to take <span class="math inline">\(a\)</span>. The two differ when there is confounding. The bridge is an identity: <span class="math inline">\(E[Y(a)] = E\!\left[Y \mid \mathrm{do}(A=a)\right]\)</span> — “the average potential outcome” and “the mean under intervention” are two names for one quantity. Potential outcomes and the do-operator are alternative notations, not rival theories; we use the first for stating estimands and the second when we reason on a diagram.</p>
+<p>The do-notation leads to Pearl’s <strong>do-calculus</strong>, which is based on three rules that rewrite an expression containing <span class="math inline">\(\mathrm{do}(\cdot)\)</span> into one without it — into ordinary conditional probabilities estimable from observational data — using only the structure of the causal graph (Chapter 11). The adjustment formula of the previous section, <span class="math inline">\(E[Y \mid \mathrm{do}(A=a)] = \sum_l E[Y \mid A=a, L=l]\,P(L=l)\)</span>, is the most familiar thing the rules deliver: the algebraic face of the backdoor criterion. When <em>no</em> set of measured variables blocks the back doors, the same calculus can sometimes still identify the effect by another route — the <strong>front-door</strong> formula of Chapter 18 is the classic case. The calculus is <strong>complete</strong>, if a causal effect can be identified from the assumed graph and observational data by <em>any</em> means. Then the three rules can derive a formula for it. And if they cannot, then the causal effect is unidentifiable in principe without extra assumptions. This book mostly uses potential outcomes and the backdoor criterion, which carry us through most applied problems. The do-calculus is the general engine behind them — invoked explicitly when sutting the back door (Chapter 18) and when we simulate interventions wholesale to form a posterior over the causal contrast (Chapter 25).</p>
+</section>
+<section id="the-question-and-the-road-from-here" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="the-question-and-the-road-from-here"><span class="header-section-number">11.6</span> The question, and the road from here</h2>
+<p>The framework lets us write the master-cohort question without ambiguity. <em>Does the drug prevent stroke?</em> becomes: estimate <span class="math inline">\(\text{ATE} = E[Y(1)] - E[Y(0)]\)</span> (or its risk ratio), the contrast of two counterfactual worlds. We have seen that the crude comparison estimates the wrong thing, that the error is a specific confounding term, and that three assumptions — conditional exchangeability, positivity, consistency — would license the g-formula to recover the right one. What remains is a division of labour the rest of Part III carries out:</p>
+<ul>
+<li><em>Which</em> variables make the groups exchangeable, and which would wreck the estimate if included — <strong>Chapter 11</strong> (causal diagrams) answers this by reading the structure off a graph.</li>
+<li><em>How</em> to compute <span class="math inline">\(E[Y(a)]\)</span> from those variables — <strong>Chapter 12</strong> does it by hand, with standardisation and weighting, and <strong>Chapter 28</strong> does it with a fitted Bayesian model and full posterior uncertainty.</li>
+</ul>
+<p>The potential-outcome notation is what makes it possible by stating the target clearly.</p>
+<p>A word of caution. This counterfactual apparatus is an <em>operational</em> convenience for reasoning about interventions, not a theory of physical or biological causation, and it is only as meaningful as the intervention it names. For a manipulable treatment — give the drug or not — <span class="math inline">\(Y(a)\)</span> is crisp. For an attribute that no experiment could assign — the effect of a fixed characteristic, say — “<span class="math inline">\(Y(a)\)</span>” can be ill defined, because there is no agreed action that sets it, and different imagined interventions yield different effects. When the intervention is vague, the estimand is vague, so that the first question of a causal analysis is not “what is the effect?”, but “the effect of <em>which intervention</em>, in <em>which population</em>?” No case presses that question harder than race.</p>
+</section>
+<section id="a-hard-case-causal-questions-about-race" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="a-hard-case-causal-questions-about-race"><span class="header-section-number">11.7</span> A hard case: causal questions about race</h2>
+<p>Race is the paradigm <em>fixed attribute</em>: there is no agreed action that <em>sets</em> a person’s race, so <span class="math inline">\(Y(\text{race})\)</span> has no settled referent, and Holland’s slogan — <em>no causation without manipulation</em> — seems to rule the question out of court. Yet discrimination based on race is urgently in need of causal answers. The counterfactual framework’s response is to force a sharper question: <em>intervene on what?</em> Before taking that turn, a dissent is worth registering: a strand of epidemiology holds that the <em>overall</em> association of race or sex with an outcome is itself a legitimate target — a description of how much disadvantage tracks the category, and a natural starting point for disparities research, with the hunt for manipulable pathways coming second.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p><strong>Move the intervention from the person to the signal.</strong> A hiring manager does not respond to an applicant’s race in some metaphysical sense; she responds to what she <em>perceives</em> at the moment of decision — a name, a photograph, a voice, a postcode. Reframe the estimand as the effect of that <em>perceived</em> signal, assessed at the decision point — the move Greiner and Rubin formalise as the causal effect of a perceived immutable characteristic. The potential outcomes — the application that signals one race versus an otherwise identical application that signals another — are now well defined and <em>manipulable</em>.</p>
+<p><strong>The hiring case, done cleanly.</strong> This is the <strong>audit</strong>, or <strong>correspondence</strong>, study. Bertrand and Mullainathan sent employers résumés identical but for racially associated names (“Emily and Greg” versus “Lakisha and Jamal”) and measured call-backs. Because the signal is randomised over otherwise identical applications, consistency, no-interference and exchangeability hold <em>by construction</em>: this is a genuine randomised experiment, and the call-back gap is a clean causal estimate. Note carefully what the estimand is and is not. It is the effect of the <em>perceived racial signal</em> on <em>this</em> decision, at <em>this</em> stage, for the applications studied. It is not “the effect of being Black” over a life, and cannot be — but it answers a real question, squarely within the counterfactual paradigm.</p>
+<p><strong>Race as a bundle, not an atom.</strong> Generalising beyond a single signal, Sen and Wasow propose treating race as a <em>bundle of sticks</em> — a composite of manipulable constituents (name, dialect, skin tone, neighbourhood, signalled class) — and studying one stick at a time. “The effect of race” then dissolves into a family of sharper, answerable questions about components, and the analyst must say which.</p>
+<p><strong>Disparate treatment, disparate impact.</strong> The two notions map onto causal language. <em>Disparate treatment</em> — being handled differently <em>because of</em> race — is naturally a <strong>direct effect</strong>: the effect of the racial signal <em>not</em> operating through legitimate qualifications. <em>Disparate impact</em> — a neutral rule that falls unequally — is closer to a <strong>total</strong> effect, or a population disparity. This mapping (developed by VanderWeele and Robinson) is useful, but it is also where the trouble resides, because a direct effect asks us to <em>hold qualifications fixed</em> while changing race.</p>
+<p><strong>The open problem</strong> Kohler-Hausmann argues that the counterfactual recipe — change race, hold all else equal — misconstrues what race <em>is</em>. Race is not a detachable treatment applied to an otherwise-fixed person; it is <strong>constitutive</strong> of the very covariates one would hold constant — the name, the neighbourhood, the schooling, the accumulated qualifications, even how the applicant is perceived. There is then no coherent possible world in which this person is of a different race yet identical in everything race helped produce, so the “all else equal” contrast has no determinate meaning. Discrimination, on this view, is a property of a social and institutional <em>process</em> and of a <em>constructed</em> category, and calls for a constructivist account rather than a swap-and-compare counterfactual. The manipulationist reply — that the audit study still answers a well-posed question about <em>identical</em> applications — does not fully dissolve the objection, because “identical except the signal” is itself a stipulation that brackets all the upstream ways race shaped those résumés to begin with. (Similar critique has been made for sex, by Hu and Kohler-Hausmann.) This debate is not settled; it runs along disciplinary lines — economics and statistics largely at ease with the signal-manipulation estimand, much of law and sociology insisting it misses the structural phenomenon. The machine-learning notion of <strong>counterfactual fairness</strong> (Kusner et al.) — a decision is fair if it is unchanged in a world where the protected attribute and its descendants were different — bites the bullet by positing a full structural model with race as a root cause, and so inherits Kohler-Hausmann’s worry: it must commit to how race <em>causes</em> everything downstream.</p>
+<p><strong>Conclusion</strong> The counterfactual framework does not forbid causal questions about race; it <em>disciplines</em> them. It insists you name the manipulable thing — a signal, a perception, a component, or a policy — and then report the effect of <em>that</em>, in a population, rather than an undefined “effect of race”. Sometimes the appropriate quantity is <em>descriptive</em> — how much of a disparity is accounted for by measured factors (a decomposition), not a causal effect at all — and saying so plainly is part of the discipline. The one move the counterfactual framework rules out without exception is regressing the outcome on race alongside a grab-bag of controls and reading the race coefficient as “the effect of race”. That is the effect of no defined intervention, adjusted by whatever happened to enter the model — the Table-2 fallacy (Chapter 26).</p>
+</section>
+<section id="key-points" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="key-points"><span class="header-section-number">11.8</span> Key points</h2>
+<ul>
+<li>Each unit has <strong>two potential outcomes</strong>, <span class="math inline">\(Y(1)\)</span> and <span class="math inline">\(Y(0)\)</span>; their contrast is the individual effect, and only one is ever observed (<strong>the fundamental problem</strong>).</li>
+<li><strong>Consistency</strong> (<span class="math inline">\(Y = Y(A)\)</span>) and <strong>no interference</strong> tie the notation to data and require a <em>well-defined</em> intervention.</li>
+<li>The targets are <strong>estimands</strong> chosen in advance — <strong>ATE</strong>, <strong>ATT</strong>, <strong>ATU</strong> — reported on a chosen <strong>scale</strong> (risk difference, risk ratio, odds ratio).</li>
+<li>The crude contrast equals the effect plus a <strong>confounding term</strong>, <span class="math inline">\(E[Y(0)\mid A{=}1] - E[Y(0)\mid A{=}0]\)</span>.</li>
+<li>An effect is <strong>identified</strong> under <strong>conditional exchangeability</strong>, <strong>positivity</strong>, and <strong>consistency</strong>, via standardisation / the <strong>g-formula</strong> — but the formula cannot tell you which variables to condition on (Chapter 11) or how to estimate it (Chapters 12, 24), and exchangeability itself is <strong>untestable</strong>, to be probed by <strong>sensitivity analysis</strong> (the <strong>E-value</strong>, Chapter 19).</li>
+<li><span class="math inline">\(E[Y(a)] = E[Y\mid \mathrm{do}(A=a)]\)</span> links potential outcomes to Pearl’s <strong>do-operator</strong>; the <strong>do-calculus</strong> is the complete engine for deciding identifiability from a graph, used in Chapters 18 and 24.</li>
+<li>For a <strong>fixed attribute like race</strong>, “the effect of race” is an undefined intervention, but the framework licenses sharper estimands — the effect of a <strong>perceived signal</strong> (audit studies), of a <strong>component</strong> (race as a bundle of sticks), or of a <strong>policy</strong>. Whether such reframing captures <em>structural</em> discrimination is a genuine open problem (Kohler-Hausmann).</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="11.9">
+<h2 data-number="11.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.9</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Decompose the bias.</strong> Verify numerically the identity <span class="math inline">\(E[Y\mid A{=}1]-E[Y\mid A{=}0] = \text{ATT} + \{E[Y(0)\mid A{=}1]-E[Y(0)\mid A{=}0]\}\)</span> on the cohort (use the oracle for the counterfactual term). By how much does the confounding term have to fall before the crude contrast turns protective?</p></li>
+<li><p><strong>Positivity, by hand.</strong> Find a stratum of <code>severity</code> (say, the top 1%) and check the proportion treated. What happens to the standardisation formula if some stratum has no untreated patients? Relate your answer to why extreme confounding and positivity violations travel together.</p></li>
+<li><p><strong>Randomise it.</strong> Modify the generator so that <code>drug</code> is assigned by a fair coin independent of <code>severity</code>. Recompute the crude contrast and the ATE. Why does marginal exchangeability now hold, and why does the confounding term vanish?</p></li>
+<li><p><strong>Conceptual: which intervention?</strong> A colleague wants “the causal effect of obesity on stroke”. Using consistency and the well-defined-intervention idea, explain why this estimand is ambiguous, and rewrite it as a question with a manipulable treatment.</p></li>
+<li><p><strong>do and see.</strong> In your own words, give an example of two quantities <span class="math inline">\(P(Y\mid A=a)\)</span> and <span class="math inline">\(P(Y\mid \mathrm{do}(A=a))\)</span> that are equal, and two that are not, and say what feature of the cohort makes the difference.</p></li>
+<li><p><strong>Make the question answerable.</strong> A team wants “the causal effect of race on hiring.”</p>
+<ol type="a">
+<li>Reframe it as the effect of a <em>manipulable signal</em> and sketch an audit study that would estimate it, stating precisely what the estimand does and does not cover.</li>
+<li>Explain Kohler-Hausmann’s objection that “change race, hold qualifications fixed” is incoherent, and argue whether your audit estimand escapes it.</li>
+</ol></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Buchanan AL, Vermund SH, Friedman SR, Spiegelman D, “Assessing Individual and Disseminated Effects in Network-Randomized Studies,” <em>Am J Epidemiol</em> 2018;187:2449-2459 (<a href="https://doi.org/10.1093/aje/kwy149">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Whitcomb BW, Naimi AI, “Defining, Quantifying, and Interpreting”Noncollapsibility” in Epidemiologic Studies of Measures of “Effect”,” <em>Am J Epidemiol</em> 2021;190:697-700 (<a href="https://doi.org/10.1093/aje/kwaa267">DOI</a>). ```<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Hernán MA, “The hazards of hazard ratios,” <em>Epidemiology</em> 2010;21:13-15 (<a href="https://doi.org/10.1097/EDE.0b013e3181c1ea43">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Spiegelman D, VanderWeele TJ, “Evaluating Public Health Interventions: 6. Modeling Ratios or Differences? Let the Data Tell Us,” <em>Am J Public Health</em> 2017;107:1087-1091 (<a href="https://doi.org/10.2105/AJPH.2017.303810">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Petersen ML, Porter KE, Gruber S, Wang Y, van der Laan MJ, “Diagnosing and responding to violations in the positivity assumption,” <em>Stat Methods Med Res</em> 2012;21:31-54 (<a href="https://doi.org/10.1177/0962280210386207">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Hernán MA, VanderWeele TJ, “Compound treatments and transportability of causal inference,” <em>Epidemiology</em> 2011;22:368-377 (<a href="https://doi.org/10.1097/EDE.0b013e3182109296">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>VanderWeele TJ, Ding P, “Sensitivity Analysis in Observational Research: Introducing the E-Value,” <em>Ann Intern Med</em> 2017;167:268-274 (<a href="https://doi.org/10.7326/M16-2607">DOI</a>); Ding P, VanderWeele TJ, “Sensitivity Analysis Without Assumptions,” <em>Epidemiology</em> 2016;27:368-377 (<a href="https://doi.org/10.1097/EDE.0000000000000457">DOI</a>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Glymour MM, Spiegelman D, “Evaluating Public Health Interventions: 5. Causal Inference in Public Health Research—Do Sex, Race, and Biological Factors Cause Health Outcomes?,” <em>Am J Public Health</em> 2017;107:81-85 (<a href="https://doi.org/10.2105/AJPH.2016.303539">DOI</a>).<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./06-bayesian-inference.html" class="pagination-link" aria-label="Bayesian inference in practice">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch11-dags.html" class="pagination-link" aria-label="Causal diagrams (DAGs)">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

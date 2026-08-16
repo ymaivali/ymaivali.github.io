@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 15&nbsp; Time-varying confounding and g-methods</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch15-mediation.html" rel="next">
+<link href="./ch13-target-trial-emulation.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch14-time-varying-confounding.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#when-the-confounder-is-also-a-consequence-of-treatment" id="toc-when-the-confounder-is-also-a-consequence-of-treatment" class="nav-link active" data-scroll-target="#when-the-confounder-is-also-a-consequence-of-treatment"><span class="header-section-number">15.1</span> When the confounder is also a consequence of treatment</a></li>
+  <li><a href="#a-cohort-followed-over-time" id="toc-a-cohort-followed-over-time" class="nav-link" data-scroll-target="#a-cohort-followed-over-time"><span class="header-section-number">15.2</span> A cohort followed over time</a></li>
+  <li><a href="#the-dilemma-adjust-and-you-block-the-effect-do-not-and-you-confound" id="toc-the-dilemma-adjust-and-you-block-the-effect-do-not-and-you-confound" class="nav-link" data-scroll-target="#the-dilemma-adjust-and-you-block-the-effect-do-not-and-you-confound"><span class="header-section-number">15.3</span> The dilemma: adjust and you block the effect, do not and you confound</a></li>
+  <li><a href="#inverse-probability-weighting-over-time" id="toc-inverse-probability-weighting-over-time" class="nav-link" data-scroll-target="#inverse-probability-weighting-over-time"><span class="header-section-number">15.4</span> Inverse-probability weighting over time</a></li>
+  <li><a href="#the-g-formula-over-time" id="toc-the-g-formula-over-time" class="nav-link" data-scroll-target="#the-g-formula-over-time"><span class="header-section-number">15.5</span> The g-formula over time</a></li>
+  <li><a href="#static-and-dynamic-strategies" id="toc-static-and-dynamic-strategies" class="nav-link" data-scroll-target="#static-and-dynamic-strategies"><span class="header-section-number">15.6</span> Static and dynamic strategies</a></li>
+  <li><a href="#the-fine-print" id="toc-the-fine-print" class="nav-link" data-scroll-target="#the-fine-print"><span class="header-section-number">15.7</span> The fine print</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">15.8</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.9</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch14-time-varying-confounding.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In Chapter 12 a patient was treated once, and a fixed set of baseline confounders stood between treatment and outcome. Standardising over those confounders, or weighting by them, recovered the causal effect. Most clinical treatment is not like that. A drug is started, continued, stopped, and restarted over months or years, and the variables a clinician watches when deciding to treat — blood pressure, symptoms, lab values — change over time and are themselves moved by the treatment. This chapter is about that setting, and about why it defeats the methods of Chapter 12 when they are applied in the obvious way.</p>
+<p>The difficulty has a precise shape. A variable measured during follow-up can be a confounder of <em>later</em> treatment and, at the same time, a consequence of <em>earlier</em> treatment. Adjusting for it removes the confounding but blocks part of the effect; not adjusting for it leaves the confounding in place. Neither choice is correct. The g-methods — inverse-probability weighting and the g-formula — resolve this by accounting for the variable without conditioning on it in an outcome model.</p>
+<section id="when-the-confounder-is-also-a-consequence-of-treatment" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="when-the-confounder-is-also-a-consequence-of-treatment"><span class="header-section-number">15.1</span> When the confounder is also a consequence of treatment</h2>
+<p>Consider our blood-pressure drug given over a sequence of visits. At each visit the clinician sees the patient’s current systolic blood pressure (SBP) and is more likely to start or continue the drug when SBP is high. The drug then lowers SBP at the next visit, and SBP drives the risk of stroke. So SBP sits in two roles at once. The diagram below shows two visits.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-feedback-dag" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-feedback-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch14-time-varying-confounding_files/figure-html/fig-feedback-dag-1.png" class="img-fluid figure-img" width="669">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-feedback-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.1: Treatment-confounder feedback over two visits. SBP at visit 1 (L1) confounds the visit-1 treatment-outcome relation and is also a consequence of visit-0 treatment, through A0 -&gt; L1 -&gt; Y.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Read the arrows around <code>L1</code>. Because <code>L1 -&gt; A1</code> and <code>L1 -&gt; Y</code>, blood pressure at visit 1 is a confounder of the visit-1 treatment decision: to estimate the effect of <code>A1</code> we must account for it (Chapter 11). But <code>A0 -&gt; L1 -&gt; Y</code> is a causal path from earlier treatment to the outcome — the drug works partly <em>by</em> lowering blood pressure — so <code>L1</code> is a mediator of <code>A0</code>. Conditioning on a mediator blocks the path it lies on (Chapter 15), and <code>L1</code> is also a descendant of treatment, so conditioning on it opens a further bias. A single regression that includes <code>L1</code> cannot be right for both treatment decisions at once.</p>
+</section>
+<section id="a-cohort-followed-over-time" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="a-cohort-followed-over-time"><span class="header-section-number">15.2</span> A cohort followed over time</h2>
+<p>The longitudinal version of our master cohort puts this structure into data. Each patient is seen at five visits; at each visit we record blood pressure, the treatment decision for that interval, and whether a stroke occurred. The generator is in <code>R/simulate_cohort_longitudinal.R</code>; its three structural equations are the feedback in code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># at each visit k, for every patient still at risk:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>treat_prob <span class="ot">&lt;-</span> <span class="fu">plogis</span>(a0 <span class="sc">+</span> a_sbp<span class="sc">*</span>(sbp_prev <span class="sc">-</span> <span class="dv">140</span>)<span class="sc">/</span><span class="dv">10</span> <span class="sc">+</span> a_sev<span class="sc">*</span>severity <span class="sc">+</span> a_prev<span class="sc">*</span>treated_last)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>A          <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, treat_prob)               <span class="co"># high SBP -&gt; more likely treated</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sbp        <span class="ot">&lt;-</span> mean_sbp <span class="sc">+</span> rho<span class="sc">*</span>(sbp_prev <span class="sc">-</span> mean_sbp) <span class="sc">-</span> s_drug<span class="sc">*</span>A <span class="sc">+</span> noise   <span class="co"># the drug lowers SBP</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>stroke     <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">plogis</span>(y0 <span class="sc">+</span> y_sbp<span class="sc">*</span>(sbp <span class="sc">-</span> <span class="dv">140</span>)<span class="sc">/</span><span class="dv">10</span> <span class="sc">+</span> ... ))    <span class="co"># SBP drives stroke</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Treatment is drawn from a logistic model rather than a hard rule, which keeps the positivity assumption alive: at every history there is some chance of either treatment, so weighting is possible.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>obs   <span class="ot">&lt;-</span> <span class="fu">simulate_cohort_longitudinal</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">attr</span>(obs, <span class="st">"truth"</span>)          <span class="co"># the oracle, available because we built the cohort</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>obs<span class="sc">$</span>kf <span class="ot">&lt;-</span> <span class="fu">factor</span>(obs<span class="sc">$</span>k)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="fu">max</span>(obs<span class="sc">$</span>k)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>obs <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="at">visit =</span> k, sbp_lag, A, sbp, Y, cum_A) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">1</span>, <span class="at">caption =</span> <span class="st">"Two patients' trajectories (person-period format)."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Two patients' trajectories (person-period format).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">id</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">visit</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sbp_lag</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">A</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sbp</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">cum_A</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">162.9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">159.3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">110000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">159.3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">143.3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">110002</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">143.3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">142.6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">110004</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">142.6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">134.6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">110006</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">134.6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">128.9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">159.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">161.4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">210000</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">161.4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">149.9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">210002</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">149.9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">154.9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">210004</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">154.9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">148.9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">210006</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">148.9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">145.7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Each row is one patient-visit. <code>sbp_lag</code> is the blood pressure the clinician saw when deciding this interval’s treatment <code>A</code>; <code>sbp</code> is the value after it; <code>cum_A</code> counts the intervals treated so far. The question is the effect of a <em>sustained strategy</em>, in the sense of Chapter 13: what would the five-year stroke risk be if every patient were treated at every visit (“always treat”) versus never treated (“never treat”)? Because we built the cohort, we can read off the answer.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">risk_always =</span> truth<span class="sc">$</span>risk_always, <span class="at">risk_never =</span> truth<span class="sc">$</span>risk_never,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">RD =</span> truth<span class="sc">$</span>RD, <span class="at">RR =</span> truth<span class="sc">$</span>RR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>risk_always  risk_never          RD          RR 
+ 0.05555979  0.10182728 -0.04626749  0.54562779 </code></pre>
+</div>
+</div>
+<p>Sustained treatment lowers five-year stroke risk from 0.102 to 0.056 — a risk difference of -0.046, a risk ratio of 0.55. That is the number every estimator below is trying to recover.</p>
+</section>
+<section id="the-dilemma-adjust-and-you-block-the-effect-do-not-and-you-confound" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="the-dilemma-adjust-and-you-block-the-effect-do-not-and-you-confound"><span class="header-section-number">15.3</span> The dilemma: adjust and you block the effect, do not and you confound</h2>
+<p>A natural first attempt extends Chapter 12: fit a pooled model for the per-visit stroke hazard, adjust for the baseline confounders, summarise treatment by the cumulative number of treated intervals, and standardise to compare “always” with “never”. We define a small helper that standardises any fitted hazard model to the two strategies, then apply it.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>base <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span> <span class="fu">filter</span>(k <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(age_c, diabetes, severity)   <span class="co"># baseline of every patient</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>strategy_risk <span class="ot">&lt;-</span> <span class="cf">function</span>(model, cum_at) {     <span class="co"># cum_at(k) = treated-count at visit k under the strategy</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  surv <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(base))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    nd   <span class="ot">&lt;-</span> base <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">cum_A =</span> <span class="fu">cum_at</span>(k), <span class="at">kf =</span> <span class="fu">factor</span>(k, <span class="at">levels =</span> <span class="fu">levels</span>(obs<span class="sc">$</span>kf)))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    surv <span class="ot">&lt;-</span> surv <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">predict</span>(model, nd, <span class="at">type =</span> <span class="st">"response"</span>))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="dv">1</span> <span class="sc">-</span> surv)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>rd_always_vs_never <span class="ot">&lt;-</span> <span class="cf">function</span>(model)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strategy_risk</span>(model, \(k) k) <span class="sc">-</span> <span class="fu">strategy_risk</span>(model, \(k) <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m_baseline <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y <span class="sc">~</span> cum_A <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> severity <span class="sc">+</span> kf, <span class="at">family =</span> binomial, <span class="at">data =</span> obs)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>naive_rd   <span class="ot">&lt;-</span> <span class="fu">rd_always_vs_never</span>(m_baseline)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>naive_rd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.02928513</code></pre>
+</div>
+</div>
+<p>This model adjusts for baseline severity but not for the time-varying blood pressure, and it is confounded: the estimated risk difference is -0.029, well short of the true -0.046. Treated intervals are the intervals with high blood pressure, so treatment keeps company with high stroke risk, and the protective effect is understated.</p>
+<p>The remedy from Chapter 12 was to adjust for the confounder. Here the confounder is blood pressure, so we add it to the model. Watch the coefficient on cumulative treatment.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>logor_nosbp <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">glm</span>(Y <span class="sc">~</span> cum_A <span class="sc">+</span>       severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> kf, binomial, obs))[<span class="st">"cum_A"</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>logor_sbp   <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">glm</span>(Y <span class="sc">~</span> cum_A <span class="sc">+</span> sbp <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> kf, binomial, obs))[<span class="st">"cum_A"</span>]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">without_sbp =</span> logor_nosbp, <span class="at">with_sbp =</span> logor_sbp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>without_sbp.cum_A    with_sbp.cum_A 
+      -0.14442816       -0.01800166 </code></pre>
+</div>
+</div>
+<p>Adding blood pressure pulls the per-interval treatment coefficient from -0.144 to -0.018 — close to zero. The drug acts largely by lowering blood pressure, and conditioning on blood pressure removes that pathway from the estimate. We have traded confounding for a blocked mediator. The two obvious uses of a regression sit on either side of the right answer, and no choice of what to put in a single outcome model lands on it.</p>
+</section>
+<section id="inverse-probability-weighting-over-time" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="inverse-probability-weighting-over-time"><span class="header-section-number">15.4</span> Inverse-probability weighting over time</h2>
+<p>The way out is to stop conditioning on blood pressure in the outcome model and to use it instead to <em>weight</em>. This is the inverse-probability weighting of Chapter 12, extended across visits. At each visit we model the probability of the treatment the patient actually received, given the history up to that point, and weight each patient by the running product of the inverse probabilities. In the reweighted population, treatment at each visit is detached from the time-varying blood pressure, so the confounding is removed — but blood pressure is never conditioned on, so the mediated pathway survives.</p>
+<p>The weights are <em>stabilised</em>: the numerator model contains the baseline variables and past treatment, the denominator adds the time-varying blood pressure. Only the time-varying confounding is removed by the weights; the baseline variables are handled by including them in the final model.</p>
+<p>The scheme below traces the construction. Read it as a pipeline: at each visit two propensity models produce a weight, the weights are multiplied along each patient’s path and trimmed, and one weighted outcome model then delivers the contrast. Nowhere is blood pressure put into an outcome model — its whole job is to shape the weights.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ipw-pipeline" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ipw-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch14-time-varying-confounding_files/figure-html/fig-ipw-pipeline-1.png" class="img-fluid figure-img" width="298">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ipw-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.2: Inverse-probability weighting builds a pseudo-population. At each visit two propensity models give the probability of the treatment actually taken: the denominator conditions on the full history including time-varying blood pressure, the numerator drops it. Their ratio (num / den) is the visit’s stabilised contribution, and the running product across a patient’s visits is the weight. Re-weighting detaches treatment from blood pressure (confounding removed) without ever conditioning on it (the mediated path A -&gt; SBP -&gt; Y survives). A weighted outcome model on cumulative treatment, standardised to always- versus never-treat, gives the risk difference.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Step by step, mapping each line of the code below onto the scheme:</p>
+<ol type="1">
+<li><strong>Two propensity models, not an outcome model.</strong> <code>den</code> models the probability of the treatment actually received given the full history — past treatment <code>A_lag</code>, baseline, and the time-varying blood pressure <code>sbp_lag</code>. <code>num</code> is the same model with blood pressure removed. Neither looks at the stroke outcome at all; this is the opposite of conditioning on blood pressure in a regression for <code>Y</code>.</li>
+<li><strong>Per-visit contribution.</strong> For each patient-visit, <code>contrib</code> is the ratio of the numerator to the denominator probability of the treatment the patient <em>actually took</em> — <code>p_num / p_den</code> when treated, <code>(1 - p_num) / (1 - p_den)</code> when not. This is the stabilised ingredient: the numerator keeps the weights near one.</li>
+<li><strong>Running product is the weight.</strong> <code>cumprod(contrib)</code> along a patient’s visits gives the stabilised weight <code>sw</code>. A patient who happened to be treated exactly when their blood pressure made treatment likely gets a weight near one; a patient treated against the odds of their history gets a large weight.</li>
+<li><strong>What the weight buys.</strong> In the re-weighted pseudo-population, treatment at each visit is detached from blood pressure, so the time-varying confounding is gone — yet blood pressure was never entered into an outcome model, so the mediated path <code>A -&gt; SBP -&gt; Y</code> is left intact. This is the trade the g-formula made the other way.</li>
+<li><strong>Truncate.</strong> The weights have a long right tail (histories where treatment is nearly certain — a brush with positivity). <code>trunc</code> caps <code>sw</code> at the 1st and 99th percentiles, trading a little bias for stability.</li>
+<li><strong>Weighted outcome model — the MSM.</strong> Fit <code>Y ~ cum_A + baseline</code> with <code>weights = sw</code>. Blood pressure is absent because the weights already did its work. The baseline variables stay in the model directly, which is exactly why the weights are <em>stabilised</em> rather than carrying that confounding too.</li>
+<li><strong>Standardise and contrast.</strong> <code>rd_always_vs_never</code> runs the fitted MSM forward with cumulative treatment counting up (“always”) and held at zero (“never”) and takes the difference — the risk difference between the two sustained strategies.</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>den <span class="ot">&lt;-</span> <span class="fu">glm</span>(A <span class="sc">~</span> A_lag <span class="sc">+</span> <span class="fu">I</span>((sbp_lag <span class="sc">-</span> <span class="dv">140</span>) <span class="sc">/</span> <span class="dv">10</span>) <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> kf, binomial, obs)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>num <span class="ot">&lt;-</span> <span class="fu">glm</span>(A <span class="sc">~</span> A_lag                            <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> kf, binomial, obs)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>obs <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_den =</span> <span class="fu">predict</span>(den, <span class="at">type =</span> <span class="st">"response"</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">p_num =</span> <span class="fu">predict</span>(num, <span class="at">type =</span> <span class="st">"response"</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">contrib =</span> <span class="fu">if_else</span>(A <span class="sc">==</span> <span class="dv">1</span>, p_num <span class="sc">/</span> p_den, (<span class="dv">1</span> <span class="sc">-</span> p_num) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> p_den))) <span class="sc">|&gt;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sw =</span> <span class="fu">cumprod</span>(contrib)) <span class="sc">|&gt;</span>          <span class="co"># running product over a patient's visits</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>trunc <span class="ot">&lt;-</span> <span class="fu">quantile</span>(obs<span class="sc">$</span>sw, <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>))     <span class="co"># truncate extreme weights</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>obs   <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">sw =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(sw, trunc[<span class="dv">1</span>]), trunc[<span class="dv">2</span>]))</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>msm    <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y <span class="sc">~</span> cum_A <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> severity <span class="sc">+</span> kf,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> quasibinomial, <span class="at">weights =</span> sw, <span class="at">data =</span> obs)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>ipw_rd <span class="ot">&lt;-</span> <span class="fu">rd_always_vs_never</span>(msm)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean_weight =</span> <span class="fu">mean</span>(obs<span class="sc">$</span>sw), <span class="at">ipw_RD =</span> ipw_rd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>mean_weight      ipw_RD 
+ 0.95685602 -0.03514349 </code></pre>
+</div>
+</div>
+<p>The weighted estimate, -0.035, recovers most of the true -0.046 — and is far from both the confounded -0.029 and the collapsed blood-pressure-adjusted estimate. The mean stabilised weight is near one, as it should be. It does not land exactly on the truth, for two reasons worth stating. The weights have a long right tail, so truncation trades a little bias for stability; and the model summarises a sustained strategy by a single cumulative-treatment term, which is an approximation to the real accumulation of effect through blood pressure. Weighting is robust and makes few assumptions about the outcome, but it pays for that in precision.</p>
+</section>
+<section id="the-g-formula-over-time" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="the-g-formula-over-time"><span class="header-section-number">15.5</span> The g-formula over time</h2>
+<p>The second g-method models the machinery directly and then simulates it. Where IP weighting <em>refused</em> to model blood pressure and reweighted around it, the g-formula does the opposite: it writes down how blood pressure evolves and how it drives the outcome, then runs that little world forward under each strategy and reads off the risk. We fit two models — one for how blood pressure evolves (given its past, treatment, and baseline) and one for the stroke hazard — then play the cohort forward under “always treat” and again under “never treat”. The key is that blood pressure is <em>re-simulated</em> at each step rather than held fixed, so the pathway from treatment through blood pressure to the outcome is preserved.</p>
+<p>The scheme below shows one trip through the loop. Read it as a recipe run separately for each strategy: treatment is <em>set</em> by the strategy, blood pressure is <em>redrawn</em> from its model, and the two feed the hazard before the loop carries the new blood pressure into the next visit.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-gformula-loop" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gformula-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch14-time-varying-confounding_files/figure-html/fig-gformula-loop-1.png" class="img-fluid figure-img" width="290">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gformula-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.3: The g-formula as forward simulation. For a fixed strategy, each visit sets treatment by the strategy, re-simulates blood pressure from the fitted SBP model (SBP = predict(SBP_prev, A, X) + noise), converts it to a per-visit stroke hazard (h = predict(SBP, A, X)), and accumulates survival; the new SBP is then carried into the next visit. Because treatment A enters the SBP model, the drug’s effect on blood pressure is reproduced rather than held fixed. Running the loop with A = 1 (always treat) and again with A = 0 (never treat) gives the two counterfactual risks; their difference is the risk difference.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Step by step, mapping each line of the code below onto the scheme:</p>
+<ol type="1">
+<li><strong>Fit the confounder’s law of motion.</strong> <code>sbp_model</code> learns how this visit’s blood pressure depends on last visit’s blood pressure, the current treatment, and baseline. This is exactly the equation IP weighting declined to write down; the g-formula leans on it.</li>
+<li><strong>Fit the outcome model.</strong> <code>haz_model</code> learns the per-visit stroke hazard from the current blood pressure, treatment, and baseline. Blood pressure is a predictor here — but at prediction time it will be a <em>simulated</em> value under the strategy, not the patient’s observed value, which is what stops it from blocking the mediated path.</li>
+<li><strong>Start everyone at their real baseline.</strong> <code>sbp_prev</code> is each patient’s first-visit blood pressure and everyone begins alive (<code>surv = 1</code>). Only the starting point is taken from data; everything after is generated.</li>
+<li><strong>Set treatment by the strategy, not by the data.</strong> Inside the loop <code>A = set_drug</code> — <code>1</code> for “always”, <code>0</code> for “never”. We overwrite what each patient actually received with what the strategy dictates. This is the intervention.</li>
+<li><strong>Re-simulate blood pressure.</strong> Predict the mean blood pressure from <code>sbp_model</code> at the strategy’s treatment, then add noise (<code>rnorm</code>). Because <code>A</code> enters this model, “always treat” yields a <em>lower</em> simulated blood pressure than “never treat” — the drug’s effect on blood pressure is reproduced, not assumed away. This is the line that would be wrong if blood pressure were held fixed.</li>
+<li><strong>Turn blood pressure into risk.</strong> Feed the freshly simulated blood pressure and the strategy’s treatment into <code>haz_model</code> to get this visit’s stroke hazard.</li>
+<li><strong>Accumulate survival.</strong> Multiply the running survival probability by <code>(1 - haz)</code>.</li>
+<li><strong>Carry blood pressure forward.</strong> Set <code>sbp_prev = sbp</code> so the next visit’s simulation starts from this visit’s value. This is the link that lets the effect compound: a treated patient enters the next visit already at the lower blood pressure the drug produced, which lowers the next blood pressure again, and so on.</li>
+<li><strong>Average, then contrast.</strong> After <code>K</code> visits the five-year risk is the mean of <code>(1 - surv)</code>. Run the whole loop once with <code>set_drug = 1</code> and once with <code>set_drug = 0</code>; the difference of the two risks is the risk difference.</li>
+</ol>
+<p>The pivot is steps 5 and 8 together. Holding blood pressure fixed — at its baseline or its observed value — would sever <code>A -&gt; SBP</code>, erasing the mediated effect, the same failure as conditioning on it in a regression. Redrawing it from a model that contains <code>A</code>, and feeding it forward, is what keeps the pathway alive while still adjusting for the confounding.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sbp_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sbp <span class="sc">~</span> sbp_lag <span class="sc">+</span> A <span class="sc">+</span> severity <span class="sc">+</span> age_c, <span class="at">data =</span> obs)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>haz_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y <span class="sc">~</span> sbp <span class="sc">+</span> A <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">family =</span> binomial, <span class="at">data =</span> obs)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sigma_sbp <span class="ot">&lt;-</span> <span class="fu">sigma</span>(sbp_model)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span> <span class="fu">filter</span>(k <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(severity, age_c, diabetes, sbp_lag)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>gformula_risk <span class="ot">&lt;-</span> <span class="cf">function</span>(set_drug) {</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  sbp_prev <span class="ot">&lt;-</span> b0<span class="sc">$</span>sbp_lag; surv <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(b0))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    mu   <span class="ot">&lt;-</span> <span class="fu">predict</span>(sbp_model, <span class="fu">mutate</span>(b0, <span class="at">sbp_lag =</span> sbp_prev, <span class="at">A =</span> set_drug))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    sbp  <span class="ot">&lt;-</span> mu <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(mu), <span class="dv">0</span>, sigma_sbp)               <span class="co"># re-simulate, do not fix</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    haz  <span class="ot">&lt;-</span> <span class="fu">predict</span>(haz_model, <span class="fu">mutate</span>(b0, <span class="at">sbp =</span> sbp, <span class="at">A =</span> set_drug), <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    surv <span class="ot">&lt;-</span> surv <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> haz); sbp_prev <span class="ot">&lt;-</span> sbp</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="dv">1</span> <span class="sc">-</span> surv)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>gform_rd <span class="ot">&lt;-</span> <span class="fu">gformula_risk</span>(<span class="dv">1</span>) <span class="sc">-</span> <span class="fu">gformula_risk</span>(<span class="dv">0</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>gform_rd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.04845002</code></pre>
+</div>
+</div>
+<p>The g-formula estimate, -0.048, is close to the true -0.046. It uses blood pressure as a predictor at every step yet never conditions on it as if fixed, which is exactly what lets it adjust for the confounding while keeping the mediated effect. The price is the opposite of weighting’s: the g-formula needs a correct model for the confounder’s evolution as well as for the outcome, and it is only as good as those models.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="fu">c</span>(<span class="st">"truth (oracle)"</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"naive: adjust baseline only"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"naive: adjust for blood pressure"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"IP-weighted MSM"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">"parametric g-formula"</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> <span class="fu">c</span>(<span class="fu">sprintf</span>(<span class="st">"RD = %.3f"</span>, truth<span class="sc">$</span>RD),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>               <span class="fu">sprintf</span>(<span class="st">"RD = %.3f"</span>, naive_rd),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>               <span class="fu">sprintf</span>(<span class="st">"treatment log-OR collapses %.2f -&gt; %.2f"</span>, logor_nosbp, logor_sbp),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>               <span class="fu">sprintf</span>(<span class="st">"RD = %.3f"</span>, ipw_rd),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>               <span class="fu">sprintf</span>(<span class="st">"RD = %.3f"</span>, gform_rd)),</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">verdict =</span> <span class="fu">c</span>(<span class="st">"the target"</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"confounded (effect understated)"</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"mediator blocked (effect erased)"</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">"recovers most of the effect"</span>,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>              <span class="st">"recovers the effect"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="fu">kbl</span>(<span class="at">caption =</span> <span class="st">"Five analyses of the same cohort."</span>) <span class="sc">|&gt;</span> <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Five analyses of the same cohort.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">method</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">truth (oracle)</td>
+<td style="text-align: left;">RD = -0.046</td>
+<td style="text-align: left;">the target</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">naive: adjust baseline only</td>
+<td style="text-align: left;">RD = -0.029</td>
+<td style="text-align: left;">confounded (effect understated)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">naive: adjust for blood pressure</td>
+<td style="text-align: left;">treatment log-OR collapses -0.14 -&gt; -0.02</td>
+<td style="text-align: left;">mediator blocked (effect erased)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IP-weighted MSM</td>
+<td style="text-align: left;">RD = -0.035</td>
+<td style="text-align: left;">recovers most of the effect</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">parametric g-formula</td>
+<td style="text-align: left;">RD = -0.048</td>
+<td style="text-align: left;">recovers the effect</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</section>
+<section id="static-and-dynamic-strategies" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="static-and-dynamic-strategies"><span class="header-section-number">15.6</span> Static and dynamic strategies</h2>
+<p>The two g-methods estimate the effect of a strategy, and the strategy need not be “always” or “never”. A clinician does not treat regardless; she treats when blood pressure is high. That is a <em>dynamic</em> strategy — treat at a visit if SBP exceeds a threshold — and it is often the policy of real interest (Chapter 13). The cohort’s oracle gives its five-year risk too:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">risk_always =</span> truth<span class="sc">$</span>risk_always, <span class="at">risk_dynamic =</span> truth<span class="sc">$</span>risk_dynamic,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">risk_never =</span> truth<span class="sc">$</span>risk_never)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> risk_always risk_dynamic   risk_never 
+  0.05555979   0.05705873   0.10182728 </code></pre>
+</div>
+</div>
+<p>Treating only when blood pressure is high, 0.057, comes close to the risk under always-treat, 0.056, at a fraction of the treatment. Standard regression cannot compare such strategies at all, because a dynamic strategy is defined through the time-varying blood pressure that the regression would have to condition on. The g-methods can, because they intervene on the strategy rather than condition on its inputs.</p>
+</section>
+<section id="the-fine-print" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="the-fine-print"><span class="header-section-number">15.7</span> The fine print</h2>
+<p>The assumptions of Chapter 12 return, now indexed by visit. <strong>Sequential exchangeability</strong> asks that, at each visit, the measured history is enough to make the treated and untreated comparable for that interval — no unmeasured time-varying confounding. <strong>Positivity</strong> must hold at every visit: at each history there is a real chance of either treatment. This is harder to satisfy over time, because a patient whose blood pressure makes treatment nearly certain contributes an extreme weight, which is why the weights had a long tail. <strong>Consistency</strong> requires that the strategy names a well-defined intervention at each visit.</p>
+<p>These methods do not lower the bar of causal reasoning; they raise it, because the assumptions must hold at every step. What they buy is the ability to ask a question that standard adjustment cannot answer at all: the effect of a treatment carried over time, when the reasons for treating it are themselves changed by it. The Bayesian version of the g-formula, with full posterior uncertainty on the strategy contrast, is the subject of Chapter 28.</p>
+</section>
+<section id="key-points" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="key-points"><span class="header-section-number">15.8</span> Key points</h2>
+<ul>
+<li>A variable measured during follow-up can be a <strong>confounder of later treatment and a mediator of earlier treatment at once</strong>. Standard regression cannot handle both roles: leaving it out confounds the estimate, putting it in blocks the mediated effect.</li>
+<li><strong>G-methods</strong> resolve this by accounting for the time-varying confounder without conditioning on it in an outcome model — by <strong>weighting</strong> (inverse-probability weighting / marginal structural models) or by <strong>simulation</strong> (the g-formula).</li>
+<li>They are the same logic as Chapter 12 extended over time: IP weighting generalises the weighting estimator, the g-formula generalises standardisation. The single-time case was the special case with no feedback.</li>
+<li>The two carry <strong>opposite costs</strong>: weighting needs no outcome model but loses precision to unstable weights; the g-formula is efficient but needs a correct model for the confounder’s evolution.</li>
+<li>G-methods estimate the effect of a <strong>strategy</strong>, including dynamic treat-when-indicated strategies that standard regression cannot evaluate.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.9</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Watch the weights.</strong> Re-fit the IP-weighted model without truncating the weights, and again truncating at the 5th and 95th percentiles. How does the estimate change, and how does the largest weight change? Relate what you see to positivity.</p></li>
+<li><p><strong>Break sequential exchangeability.</strong> The generator’s treatment depends on blood pressure, which we measure. Modify it so treatment also depends on an <em>unmeasured</em> time-varying variable that affects stroke. Re-run the IP-weighted and g-formula estimates. Why do both now miss the truth?</p></li>
+<li><p><strong>A dynamic strategy by g-formula.</strong> Extend <code>gformula_risk()</code> to a dynamic strategy: treat at visit <code>k</code> only if the simulated blood pressure exceeds 140. Compare your estimate to the oracle’s <code>risk_dynamic</code>.</p></li>
+<li><p><strong>The cost of the mediator.</strong> Using the cohort, estimate the effect of treatment at the <em>final</em> visit only, adjusting for blood pressure at that visit. Is adjusting for blood pressure wrong here? Explain how this differs from adjusting for it when estimating the sustained-strategy effect.</p></li>
+<li><p><strong>Conceptual.</strong> A reviewer objects that the g-formula “just assumes the answer” by modelling blood pressure. Using the contrast between the two g-methods, explain what each one assumes and why neither assumes the effect it estimates. ```</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch13-target-trial-emulation.html" class="pagination-link" aria-label="Target trial emulation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch15-mediation.html" class="pagination-link" aria-label="DAG-based mediation">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

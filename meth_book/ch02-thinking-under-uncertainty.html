@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 2&nbsp; How to think under uncertainty</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04-rational-certainty.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-superforecaster" id="toc-the-superforecaster" class="nav-link active" data-scroll-target="#the-superforecaster"><span class="header-section-number">2.1</span> The superforecaster</a></li>
+  <li><a href="#bayesian-reasoning-without-the-formulas" id="toc-bayesian-reasoning-without-the-formulas" class="nav-link" data-scroll-target="#bayesian-reasoning-without-the-formulas"><span class="header-section-number">2.2</span> Bayesian reasoning without the formulas</a></li>
+  <li><a href="#probability-as-risk" id="toc-probability-as-risk" class="nav-link" data-scroll-target="#probability-as-risk"><span class="header-section-number">2.3</span> Probability as risk</a></li>
+  <li><a href="#expected-value" id="toc-expected-value" class="nav-link" data-scroll-target="#expected-value"><span class="header-section-number">2.4</span> Expected value</a></li>
+  <li><a href="#the-lottery-ticket" id="toc-the-lottery-ticket" class="nav-link" data-scroll-target="#the-lottery-ticket"><span class="header-section-number">2.5</span> The lottery ticket</a></li>
+  <li><a href="#breast-cancer-screening" id="toc-breast-cancer-screening" class="nav-link" data-scroll-target="#breast-cancer-screening"><span class="header-section-number">2.6</span> Breast-cancer screening</a></li>
+  <li><a href="#many-heads-prediction-markets" id="toc-many-heads-prediction-markets" class="nav-link" data-scroll-target="#many-heads-prediction-markets"><span class="header-section-number">2.7</span> Many heads: prediction markets</a></li>
+  <li><a href="#how-thinking-goes-wrong-tversky-and-kahneman" id="toc-how-thinking-goes-wrong-tversky-and-kahneman" class="nav-link" data-scroll-target="#how-thinking-goes-wrong-tversky-and-kahneman"><span class="header-section-number">2.8</span> How thinking goes wrong: Tversky and Kahneman</a></li>
+  <li><a href="#a-critical-look-at-a-nomenclature-of-irrationality" id="toc-a-critical-look-at-a-nomenclature-of-irrationality" class="nav-link" data-scroll-target="#a-critical-look-at-a-nomenclature-of-irrationality"><span class="header-section-number">2.9</span> A critical look at a nomenclature of irrationality</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">2.10</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">2.11</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Chapter 1 described a rational agent as one who forms degrees of belief from limited and noisy information and converts those beliefs into decisions. This chapter asks, how a person reasons well under uncertainty, what separates him from someone who reasons badly. The account is a qualitative version of the probability calculus derived in Chapter 5 and of the Bayesian updating made quantitative in Chapter 8; the only piece of arithmetic the chapter needs is the expected value, introduced later.</p>
+<p>The words “right” and “wrong” carry quotation marks, because there is no single recipe that is uniquely correct, and several of the reasoning errors catalogued at the end of the chapter are not errors in every setting: a fast, frugal rule of thumb that misleads in a probability puzzle can serve well in the circumstances it was acquired for. The chapter therefore begins with a description of good reasoning, treated as a target to aim at, and only then turns to the systematic ways ordinary reasoning departs from it.</p>
+<section id="the-superforecaster" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="the-superforecaster"><span class="header-section-number">2.1</span> The superforecaster</h2>
+<p>Between 2011 and 2015 the United States intelligence community sponsored a series of forecasting tournaments designed to find out which methods produce accurate probability estimates of geopolitical events.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Five university-based research groups competed to recruit volunteer forecasters, elicit their predictions, and aggregate them.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Forecasters were given questions with a clear resolution and a deadline — whether a particular leader would still hold office by a given date, whether a border clash would exceed a casualty threshold — and were asked not for a yes or no but for a probability. As each question resolved, the forecast was scored.</p>
+<p>The scoring rule was the <strong>Brier score</strong>: the squared difference between the probability a forecaster assigned and the outcome, coded as 1 if the event happened and 0 if it did not, averaged over many questions.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> A lower score is better and zero is perfect. Scoring this way rewards two distinct virtues at once. A forecaster should be <strong>calibrated</strong> — of all the events to which she assigns a probability of 70%, about 70% should occur — and she should have <strong>resolution</strong>, meaning she assigns different probabilities to events that do and do not happen rather than hedging near 50% for everything. A forecaster who answers “50%” to every question can be perfectly calibrated over a balanced set of questions and still be useless, because she has no resolution.</p>
+<p>The project that won, the Good Judgment Project, identified a small group of consistently accurate forecasters — the top 2% of the first year — and grouped them into elite teams.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> These “superforecasters” went on defying the expected regression towards the mean, holding their accuracy across hundreds of questions and a wide range of topics over the following years.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> What set them apart was not principally raw intelligence or subject-matter expertise. The investigators attributed their performance to four reinforcing factors — cognitive abilities and styles, task-specific skills, motivation and commitment, and the enriched environment of a forecasting team — and concluded that superforecasters are partly discovered and partly trained.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>For the purposes of this chapter the relevant factor is the reasoning <em>style</em>, because it can be described and learned.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> A superforecaster treats a belief as a hypothesis to be tested against evidence rather than a position to be defended. She thinks in degrees, using the whole range from 0 to 100% and revising in fine gradations, instead of collapsing a question to <em>will</em> or <em>won’t</em>. She begins from how often events of this kind occur in general before weighing the particulars of the case. She updates often and by small amounts as information arrives. And she actively seeks out views that differ from her own and combines them, a habit Tetlock calls taking the “dragonfly eye” — assembling many partial perspectives into one composite picture.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> The contrast is with the way most people forecast: committing early to a single narrative, anchoring on a first impression, and then either ignoring later information or swinging hard with each dramatic headline.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>How large the trainable component is remains contested. A reanalysis of the tournament data, modelling each forecaster’s latent ability with an item-response framework and controlling for extraneous differences between forecasters, found that the measured effects of teaming and training shrank substantially and in places reversed, and that it is difficult to isolate which latent traits underlie superforecaster performance.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> The portrait above should therefore be read as a description of a reasoning style that is associated with accuracy and can be practised, not as a settled causal account of what makes a superforecaster.</p>
+</div>
+</div>
+</div>
+<p>The reasoning style is worth dwelling on because, stripped of the geopolitics, it is Bayesian inference carried out without any of the formulae. Each habit corresponds to one ingredient of the probability calculus that Chapters 5 and 8 set out formally.</p>
+</section>
+<section id="bayesian-reasoning-without-the-formulas" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="bayesian-reasoning-without-the-formulas"><span class="header-section-number">2.2</span> Bayesian reasoning without the formulas</h2>
+<p>Bayes’ theorem, derived in Chapter 8, combines a prior belief with the evidence in the data to give an updated belief. The superforecaster’s habits are the same operation done by hand. Four components do the work.</p>
+<p><strong>Background knowledge is the prior.</strong> Before examining the specifics of a case, a good forecaster asks how often things of this type turn out one way or the other — the base rate in a suitable reference class. To estimate whether a particular newly founded company will survive five years, she starts from the survival rate of comparable companies and adjusts from there; this is what Tetlock terms the “outside view”, taken before the “inside view” of the individual case.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> The base rate is the informal counterpart of the <em>prior probability</em> of Chapter 8. It is not a bias to be purged but information to be used, and the main way it goes wrong is the choice of reference class: too narrow a class, or one chosen to flatter a favoured conclusion, corrupts the starting point. Chapter 8 returns to this as the base-rate point, with the arithmetic supplied.</p>
+<p><strong>Evidence has a weight, and the weight is comparative.</strong> A new piece of information should move belief in proportion to how much more expected it is if one hypothesis is true than if its rival is true. Information that is equally probable either way carries no weight, however vivid or surprising it seems on its own. The superforecaster asks of each datum not “does this fit my view?” but “how much more likely is this observation if my view is right than if it is wrong?”. This is the qualitative form of the <strong>likelihood ratio</strong>; its logarithm is the <strong>weight of evidence</strong>, made precise in Chapter 8, where it has the convenient property of being additive, so that independent pieces of evidence can be summed. The practical consequence, developed there, is that evidence is never weighed against a hypothesis in isolation but always relative to a named alternative.</p>
+<p><strong>Belief shifts a little at a time.</strong> Good forecasters revise frequently and in small increments as evidence accumulates, rather than holding a fixed opinion until one event overturns it. Two opposite failures are common. One is under-reaction: anchoring on an initial estimate and treating subsequent data as mere confirmation, so that belief barely moves when it should. The other is over-reaction: lurching to each new report as though the earlier evidence counted for nothing. The Bayesian ideal between them is a sequence of many small, evidence-proportioned updates. This is exactly what Chapter 8’s iterative updating looks like when performed informally: yesterday’s posterior becomes today’s prior, each new observation enters through its likelihood, and there is no minimum amount of data below which an update is forbidden.</p>
+<p><strong>Calibration and extremising.</strong> Calibration, defined above, is the discipline of making stated probabilities match observed frequencies, and it is improved by the simple practice of recording forecasts and scoring them against outcomes — without a record there is no way to learn that one’s “90% sure” is right only 60% of the time. Extremising is a less obvious idea that emerged from the tournaments. When many forecasts that are individually well calibrated and based on partly independent information are averaged, the average is systematically under-confident, and pushing it away from 50%, towards 0 or 100%, improves accuracy.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> The reason is that each forecaster has seen only part of the relevant evidence; pooling their views justifies more confidence than any one of them is entitled to alone. The superforecaster’s dragonfly eye exploits the same effect inside a single head, and the tournament’s aggregation algorithms exploited it across forecasters. The caveat matters: extremising helps only when the forecasts are individually calibrated and draw on diverse, weakly correlated information. Applied to forecasts that share a common bias or merely echo one another, it makes the error worse.</p>
+<p>These four habits — start from base rates, weigh evidence by its diagnosticity, update in small steps, and keep stated probabilities calibrated while aggregating diverse views — are the qualitative skeleton of Bayesian inference. The chapters in Part II put numbers on the bones: Chapter 5 derives the rules these habits obey, and Chapter 8 turns the weight of evidence and the prior into a calculation. The remainder of the present chapter stays with the informal picture, first to show how probabilities feed into decisions, and then to catalogue the characteristic ways in which untrained reasoning violates each of the four habits in turn.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Rationality and intelligence: the rationality quotient
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The four habits describe a competence, and a natural hypothesis is that this competence is intelligence under another name. The individual-differences research of Keith Stanovich, Richard West, and Maggie Toplak indicates otherwise. Their Comprehensive Assessment of Rational Thinking (CART) is a test of rational thinking built on the model of an IQ test — its score is, informally, a rationality quotient — and its subtests measure the components of this chapter directly: probabilistic and statistical reasoning, resistance to framing and anchoring, use of base rates, calibration of knowledge against confidence, and the rejection of contaminated beliefs such as superstitious and conspiratorial thinking.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p>Two findings define the relation to intelligence. First, the correlation is positive but far from complete, so a person’s rationality cannot be read from an IQ score. Across seven studies, several of the classic biases catalogued later in this chapter — the conjunction fallacy, framing effects, anchoring, base-rate neglect — were essentially uncorrelated with cognitive ability, while others (belief bias, denominator neglect) showed the expected correlation; on the authors’ account, intelligence helps when the task itself signals that an intuitive response needs overriding, and fails to help when noticing the need for override is the difficult part.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> Second, intelligence does not protect against the <em>bias blind spot</em>, the tendency to judge oneself less biased than others: in two studies the blind spot was, if anything, slightly larger at higher cognitive ability.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> Stanovich’s term for the resulting pattern — intelligent people reasoning and deciding irrationally — is <em>dysrationalia</em>.</p>
+<p>High scorers are distinguished from low scorers by two classes of trait beyond intelligence. The first is a set of <strong>thinking dispositions</strong>: the reflective habit of checking an intuitive answer before accepting it, measured by the Cognitive Reflection Test, which predicts performance on heuristics-and-biases tasks over and above cognitive ability;<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> actively open-minded thinking — the willingness to give evidence against a held belief its full weight and to revise the belief when the evidence warrants it; the enjoyment of effortful thought (“need for cognition”); and low endorsement of superstitious beliefs.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> These are dispositions of thought, not personality traits in the psychometric sense: their correlation with the Big Five trait of openness to experience is only moderate, and the Big Five themselves predict rational-thinking performance weakly. A related disposition, studied outside the CART programme, is <strong>intellectual humility</strong> — the recognition that one’s own beliefs may be wrong. People high in it hold their beliefs with less certainty, respond more to the strength of an argument than to its agreement with their position, and do not count a changed mind against the person who changed it.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> Its absence appears as <strong>overclaiming</strong>: self-perceived expertise predicts claiming knowledge of concepts in one’s own field that do not exist, independently of actual knowledge, and the effect persists when participants are warned that some concepts are fictitious — indicating miscalibrated self-knowledge rather than the defence of a reputation.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> The evidence linking intellectual humility to performance on heuristics-and-biases tasks is thinner than for the CART dispositions and rests on self-report measures. The second class of trait is <strong>mindware</strong>: the learned rules — the probability calculus among them — that the dispositions put to work. Intelligence supplies the computational capacity to override an intuitive answer; the dispositions determine whether the override is attempted; the mindware determines whether a correct answer is available to replace it. Dispositions and mindware are both more trainable than intelligence, which is the psychological ground for treating the four habits of this section, like the superforecaster’s style, as learnable.</p>
+</div>
+</div>
+</section>
+<section id="probability-as-risk" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="probability-as-risk"><span class="header-section-number">2.3</span> Probability as risk</h2>
+<p>Chapter 1 placed every empirical question on a continuum of uncertainty. At one end lie games of chance, where a simple model gives the long-run frequency of each outcome and the probabilities are known about as well as anything can be. At the other end lies radical uncertainty, where there is too little information even to list the possibilities, let alone weigh them. Most scientific questions, and almost all clinical ones, fall between the ends.</p>
+<p>Wherever a question falls, a probability attached to an event is the <strong>risk</strong> of that event: a number between 0 and 1 measuring how much to expect it. In epidemiology <em>risk</em> has this precise meaning — the probability that a defined event, such as a diagnosis or a death, occurs in a defined group over a defined period. The number may come from a chance model near the games-of-chance end, or from a calibrated judgement near the other end, as the superforecaster’s does; in a decision it plays the same role either way. What makes a judged probability usable is the calibration of whoever states it, discussed above: a risk is only as trustworthy as the track record of the person who assigned it.</p>
+<p>Two ways of stating the same risk can leave very different impressions. The <strong>absolute risk</strong> is the probability itself — say, that 5 women in 1,000 die of a disease over ten years. The <strong>relative risk</strong> is the ratio of two absolute risks — say, that a treatment lowers that figure from 5 to 4 in 1,000. The one effect can be reported as “a 20% reduction in deaths” (relative) or as “one fewer death per 1,000 women” (absolute); the two descriptions are arithmetically identical but psychologically far apart. Reporting only the relative figure, which drops the baseline it is a fraction of, is a standard way of making a small effect look large, and surveys find that patients, journalists, and physicians alike are frequently misled by it.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a></p>
+<p>A related ambiguity affects probabilities attached to a single event. “A 30% chance of rain tomorrow” does not say 30% of what; stating the risk as a frequency — on 30% of days like tomorrow, it rains — names the reference class and is understood more reliably. The same preference for frequencies over bare probabilities returns in the breast-cancer-screening example later in the chapter, where it separates a transparent presentation of the numbers from an opaque one.</p>
+<p>These ways of expressing a risk are, for now, only descriptions. Their formal causal counterparts — the risk difference, the risk ratio, and the odds ratio, treated as estimands of a causal effect — are the subject of Chapter 10. Here the point is narrower: a probability is a risk, the same risk can be dressed in clothes that flatter or diminish it, and a careful reasoner reads through the presentation to the absolute numbers underneath.</p>
+<p>The distinction is concrete in road safety. A meta-analysis of 60 studies found that the relationship between blood alcohol concentration (BAC) and crash risk is approximately exponential: at BAC around 0.05 g/dL the relative risk of crash involvement is approximately 1.5–2.5 compared with a sober driver; at BAC ≥ 0.08 g/dL a prospective responsibility study found an odds ratio of 6.0 (95% CI 3.9–9.8) for being at fault in a crash.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a><a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> The effect is stronger for fatal than for non-fatal outcomes and, in Nordic and Baltic countries, is larger than the international average — probably because the baseline prevalence of impaired driving is lower there, so impaired drivers stand out against a more uniformly sober driving population. Consider a driver at BAC roughly 0.03–0.07 g/dL: above the Estonian legal limit of 0.02 g/dL but below the level most drivers associate with obvious impairment, and in the range where the relative risk is approximately 2. In an Estonian or Nordic driving environment a sober driver on a 10-km trip faces an absolute probability of any recorded crash of roughly 1–2 in 50,000; doubling this yields 2–4 in 50,000.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a> The increment is small enough that nearly all such trips end without incident, which is consistent with the reported experience of most occasional drunk drivers and does not represent a reasoning error on their part: given the absolute numbers, the per-trip risk is genuinely low.</p>
+<p>The error is in the inference from individual experience to the population. Approximately 2% of Estonian drivers report occasionally driving while inebriated.<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a> At a modest ten trips per year each, that is roughly 160,000 such trips annually. At an excess absolute crash risk of 1–2 per 50,000 — the increment corresponding to a relative risk of 2 — the expected number of attributable crashes from this group alone is in the range of 3–6 per year. Drivers at higher BAC levels, and those who drive while impaired more frequently or at night (when crash rates are elevated regardless of alcohol), contribute a larger share; the total alcohol-attributable fraction of serious crashes in Baltic and Nordic countries is typically estimated in the range of 15–25%.<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a> The relative risk was 2; the total burden is large not because any individual trip is particularly dangerous, but because a small absolute risk, multiplied by many exposures across a large population, produces a substantial expected count of events. A risk assessment conducted only at the individual level, using the relative risk alone, misses this. The formal causal question — what fraction of crashes are attributable to alcohol, after adjustment for characteristics of drivers who choose to drink and drive — is the subject of Chapter 10.</p>
+<p>These averages conceal a wide spread across drivers, which sharpens both the individual and the population points. Before any alcohol, the baseline risk of a fatal crash per distance driven varies several-fold with age and sex: in US data a man aged 16–19 is involved in about 3.7 times as many fatal crashes per mile as the average driver (some 9 against 2.5 per 100 million miles), the rate falls to a minimum in middle age, and it rises again in the oldest drivers, among whom increased fragility — dying in a crash a younger person would survive — contributes alongside any rise in crash frequency.<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a> The alcohol multiplier is not constant across these groups either. For the more severe outcome of a fatal single-vehicle crash, the relative risk just above the common 0.08 g/dL limit, measured against a sober driver of the same age and sex, has been put at about 11 for drivers aged 35 and over but around 50 for men aged 16–20, with each further 0.02 g/dL roughly doubling it.<a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a> Baseline and multiplier vary in the same direction and so compound: the same drink adds far more absolute risk for a young man — a high baseline scaled by a steep multiplier — than for an older driver, though the two cannot simply be multiplied here, as they are measured on different crash outcomes. “The risk of drink-driving” therefore has no single value; it depends on who is driving, the same dependence on the reference class that governs the choice of a prior. A relative risk quoted for the average driver understates the absolute hazard for the group that supplies most of it and overstates it for the safest.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Two ways to communicate a risk to a general audience">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Two ways to communicate a risk to a general audience
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The gap between relative and absolute risk is partly a problem of framing: the same number reads differently depending on how it is presented. Two communication strategies have accumulated evidence in their favour.<a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a></p>
+<p><strong>Natural frequencies.</strong> Replace “a 0.5% annual risk” with “5 people out of every 1,000 each year”. The denominator is made explicit and the quantity becomes countable. The same device transforms opaque conditional probabilities into transparent two-by-two tables in Chapter 8.</p>
+<p><strong>The betting scale.</strong> If the probability of an event is <span class="math inline">\(P = 1/N\)</span>, then a fair bet has you stake 1 EUR and collect <span class="math inline">\(N\)</span> EUR if the event occurs; paying less than <span class="math inline">\(N\)</span> EUR means accepting an unfair bet against yourself. The amount <span class="math inline">\(N\)</span> is a direct, intuitive scale for rarity: the rarer the event, the more you should demand before agreeing to bet your 1 EUR on it. As a calibration, consider US road traffic: in 2010 roughly 32,000 people died in traffic crashes among a population of 300 million, giving a per-person annual probability of approximately 1 in 10,000 — so you should collect around 10,000 EUR on a 1 EUR bet to call it fair. The table below places that figure on a wider scale of mortality risks.</p>
+<table class="table">
+<colgroup>
+<col style="width: 57%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Collect (EUR) for a 1 EUR bet</th>
+<th>Event</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">50,000,000</td>
+<td>You die on your next flight to Paris</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1,000,000</td>
+<td>You die in an accident on any given weekday</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100,000</td>
+<td>You die during a given day of recreational activity</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10,000</td>
+<td>You die in a road traffic crash within the next year</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5,000</td>
+<td>A cocaine user dies within the next year</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1,000</td>
+<td>A 48-year-old American man dies within the next year; a patient dies of influenza</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td>A person diagnosed with measles dies (UK, 1940s)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td>A UK infant dies within the first year of life; a 63-year-old man dies within the next year</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td>A 68-year-old man dies within the next year</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">75</td>
+<td>Calling from Everest base camp, you bet you will die on the summit attempt; a 72-year-old man dies within the next year</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td>A heroin user dies within the next year</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">25</td>
+<td>Calling from the summit, you bet on the descent; an 86-year-old man dies within the next year</td>
+</tr>
+</tbody>
+</table>
+<p>The two representations are complementary. Natural frequencies work well when comparing a risk against a reference group; the betting scale works well when the question is whether an individual risk is worth acting on. Both make it harder to mistake a relative figure for an absolute one.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="A continuous effect as a probability: the probability of superiority">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A continuous effect as a probability: the probability of superiority
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The absolute-versus-relative distinction is for binary events. When the outcome is continuous — a cognitive-test score, a biomarker, a blood-pressure reading — an effect is a difference in means, often reported in standardised form as <strong>Cohen’s <em>d</em></strong>: the difference in means between the treated and control groups divided by the pooled standard deviation of the outcome. A standardised difference is difficult to interpret directly; whether <span class="math inline">\(d = 0.2\)</span> is worth acting on is not something the number announces on its face.</p>
+<p>One re-expression restores an intuitive scale. The <strong>probability of superiority</strong> is the probability that a person drawn at random from the treated group has a higher score than a person drawn at random from the control group. If treatment changed nothing the two draws would be interchangeable and the probability would be <span class="math inline">\(0.5\)</span>; the further it rises above <span class="math inline">\(0.5\)</span>, the more the two score distributions have separated. It is a probability — a risk, in the sense of this section — attached to one concrete comparison, which is why it is easier to hold in mind than a standardised mean.<a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a></p>
+<p>Under a normal model with equal variances the two are linked by a fixed function, <span class="math inline">\(A = \Phi(d/\sqrt{2})\)</span>, where <span class="math inline">\(\Phi\)</span> is the standard normal distribution function. The probability rises slowly with the standardised effect:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Standardised difference <span class="math inline">\(d\)</span></th>
+<th style="text-align: right;">Probability of superiority <span class="math inline">\(A\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">0.53</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.2 (conventionally “small”)</td>
+<td style="text-align: right;">0.56</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.5 (conventionally “medium”)</td>
+<td style="text-align: right;">0.64</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.8 (conventionally “large”)</td>
+<td style="text-align: right;">0.71</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">0.92</td>
+</tr>
+</tbody>
+</table>
+<p>The lesson matches the one for absolute and relative risk. An effect that sounds substantial on the standardised scale corresponds to a probability only modestly above one-half: a “medium” effect of <span class="math inline">\(d = 0.5\)</span> means that, of two people picked at random, the treated one scores higher about 64% of the time — a coin weighted only slightly in the treatment’s favour. Read the other way, a headline such as “a 54% chance that a treated person scores higher than an untreated one” describes a standardised difference of about <span class="math inline">\(d = 0.14\)</span>, roughly a seventh of a standard deviation and small by any of the conventional labels. Stating an effect as the probability of a single comparison keeps its size in view where a standardised difference, or a bare relative change, can obscure it.</p>
+</div>
+</div>
+</section>
+<section id="expected-value" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="expected-value"><span class="header-section-number">2.4</span> Expected value</h2>
+<p>A chance experiment invites two different questions, and it is worth keeping them apart before combining them. The first is how likely a particular outcome is — its <strong>probability</strong>, <span class="math inline">\(\Pr(X)\)</span>, a number between 0 and 1. The second is what happens <em>on average</em> to some quantity that takes a different value on each outcome — its <strong>expected value</strong>, <span class="math inline">\(E(X)\)</span>. A single die shows the difference. The probability of rolling a six is <span class="math inline">\(\Pr(\text{six}) = 1/6\)</span>, a statement about one designated outcome; the expected value of the number of pips is the probability-weighted average of all six faces, which works out to 3.5. Probability singles out an event and measures its chance; expectation takes a number attached to every outcome and averages it.</p>
+<p>The two are relatives, not rivals. An expected value is assembled out of probabilities — each value the quantity can take, multiplied by the probability of taking it — so <span class="math inline">\(E(X)\)</span> cannot be formed without the <span class="math inline">\(\Pr\)</span>’s. The converse holds too: a probability is itself an expected value. If <span class="math inline">\(X\)</span> scores 1 when an event happens and 0 when it does not, then <span class="math inline">\(E(X) = \Pr(\text{event})\)</span>, so probability is the special case of expectation in which the only values are one and zero. The distinction is real, but it is a distinction within a single piece of arithmetic.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A historical aside: expectation came first
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The order of this section — probability first, expected value second — reverses the order of discovery. The mathematical theory of chance is usually dated to a 1654 correspondence between Pascal and Fermat on how to divide the stakes of an interrupted game, and the first printed treatise, Christiaan Huygens’s <em>De ratiociniis in ludo aleae</em> (1657), was built not on probability but on <strong>expectation</strong>: its primitive notion was the fair value of a player’s position in a game, from which Huygens derived that a player with <span class="math inline">\(p\)</span> equally likely chances of winning <span class="math inline">\(a\)</span> and <span class="math inline">\(q\)</span> chances of winning <span class="math inline">\(b\)</span> holds a position worth <span class="math inline">\((pa+qb)/(p+q)\)</span>. He counted chances rather than assigning probabilities, and had no separate, defined quantity called probability; yet his formula is the modern expected value in disguise, because <span class="math inline">\(p/(p+q)\)</span> and <span class="math inline">\(q/(p+q)\)</span> are simply the probabilities of the two outcomes. Probability as a number in its own right was abstracted from this calculus only later, in Jacob Bernoulli’s <em>Ars Conjectandi</em> (1713), and the word was fixed in its modern sense by de Moivre and Montmort soon after. The arrangement now standard — probability as the primitive, and expectation as the sum (or, in general, the integral) of values weighted by it — was not settled until Kolmogorov’s axioms of 1933. The identity <span class="math inline">\(E(X) = \Pr(\text{event})\)</span> for a 0/1 variable, which can look like a curiosity, is a trace of the older order in which the value of a chance, not its probability, was the thing first reasoned about.<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a></p>
+</div>
+</div>
+<p>For a decision, the quantity that usually matters is the expected value, because a probability says how likely an outcome is but not how much it matters. Attach to each possible outcome a <strong>value</strong> — money, lives, years of health, or any quantity that measures what is at stake — and weigh each value by the probability of the outcome that carries it. The sum is the <strong>expected value</strong> of the prospect.</p>
+<p>For a prospect with outcomes <span class="math inline">\(1, 2, \dots, n\)</span> that occur with probabilities <span class="math inline">\(p_1, p_2, \dots, p_n\)</span> (summing to 1) and carry values <span class="math inline">\(v_1, v_2, \dots, v_n\)</span>, the expected value <span class="math inline">\(E(X)\)</span> — written <span class="math inline">\(\text{EV}\)</span> for short — is</p>
+<p><span class="math display">\[\text{EV} = p_1 v_1 + p_2 v_2 + \dots + p_n v_n = \sum_{i=1}^{n} p_i\, v_i.\]</span></p>
+<p>This is the only formula the chapter requires. The fair die makes the mechanics explicit: each face <span class="math inline">\(1\)</span> to <span class="math inline">\(6\)</span> has probability <span class="math inline">\(1/6\)</span>, so the expected value of the number rolled is</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>faces <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(ev_die <span class="ot">&lt;-</span> <span class="fu">sum</span>(faces <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="dv">6</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.5</code></pre>
+</div>
+</div>
+<p>The result, 3.5, is a number that never comes up on any single roll. The expected value is a long-run average, not a prediction of the next trial: over many rolls the mean approaches 3.5, but on any one roll that figure is beside the point.</p>
+<p>A monetary prospect makes the use in a decision plain. Suppose a game pays €10 if a fair coin lands heads twice in a row, and nothing otherwise.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>outcomes    <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">0</span>)        <span class="co"># euros won</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>probability <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>)   <span class="co"># two heads in a row: 0.5 * 0.5</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>(ev_game <span class="ot">&lt;-</span> <span class="fu">sum</span>(outcomes <span class="sc">*</span> probability))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.5</code></pre>
+</div>
+</div>
+<p>The expected value of playing is €2.50. If the game costs €2 to enter, the expected net gain is €0.50, and a player who met this game many times would come out ahead; if it costs €3, the expected net gain is −€0.50, and the same player would lose in the long run. The rule this suggests — among the options available, prefer the one with the highest expected value — is the core of decision theory, and Chapter 1 gave its general form as maximising expected utility.</p>
+<p>The rule must be handled with care, because everything turns on what “value” means. When value is measured in money, expected value can give the wrong answer: people sensibly pay more than its expected value for insurance, and buy lottery tickets whose expected value is negative, because a euro is not worth the same at every level of wealth. The next two sections take up these decisions — the lottery ticket, and breast-cancer screening — and show where comparing expected values settles the matter and where it does not.</p>
+</section>
+<section id="the-lottery-ticket" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="the-lottery-ticket"><span class="header-section-number">2.5</span> The lottery ticket</h2>
+<p>A lottery is the simplest test of the expected-value rule, because everything in it is denominated in money. Consider the EuroJackpot, played across much of Europe, Estonia included. A ticket costs €2, and the chance of winning the jackpot with one ticket is about 1 in 140 million — precisely 1 in 139,838,160.<a href="#fn30" class="footnote-ref" id="fnref30" role="doc-noteref"><sup>30</sup></a> The jackpot starts at €10 million and is capped at €120 million. Take the most favourable case, a capped €120 million jackpot, and set aside the smaller prizes for a moment:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ticket  <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>jackpot <span class="ot">&lt;-</span> <span class="fl">120e6</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>odds    <span class="ot">&lt;-</span> <span class="dv">139838160</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>(ev_jackpot_only <span class="ot">&lt;-</span> jackpot <span class="sc">/</span> odds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8581349</code></pre>
+</div>
+</div>
+<p>The jackpot alone contributes about €0.86 to the expected value of the ticket, and that is the best case, at the maximum jackpot; at the €10 million minimum it contributes about €0.07. For the jackpot to repay the €2 price on its own it would have to exceed €280 million, more than twice the cap. The smaller prize tiers add something, but not enough to close the gap: like every lottery, EuroJackpot is arranged to pay out less in prizes than it collects in stakes, the difference funding the operator, the state, and designated good causes. The expected value of a ticket is therefore negative by design, and by the rule of the previous section no one should ever buy one.</p>
+<p>Yet sensible people buy them, and they are not obviously irrational. The resolution is that money is not value. A euro added to a fortune is worth less to its owner than a euro added to nothing — the <strong>diminishing marginal utility</strong> of wealth — and once value is measured in utility rather than in euros, the calculation changes. Daniel Bernoulli made this argument in 1738 to resolve a puzzle, the St.&nbsp;Petersburg paradox (box), proposing that people maximise expected <em>utility</em>, where utility rises with wealth but ever more slowly.<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a> Chapter 1 gave this as the general form of the decision rule.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The St.&nbsp;Petersburg paradox
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A casino offers this game. A fair coin is tossed until it first lands heads. The prize is €2 if heads appears on the first toss, €4 if it first appears on the second, €8 on the third, and so on, doubling for every extra toss the game survives. What is a fair price to play once?</p>
+<p>Apply the expected-value rule. The first heads falls on toss <span class="math inline">\(n\)</span> with probability <span class="math inline">\((1/2)^n\)</span>, and the prize is then <span class="math inline">\(2^n\)</span> euros, so each toss contributes <span class="math inline">\((1/2)^n \times 2^n = 1\)</span> euro to the expected value — and the number of tosses is unbounded:</p>
+<p><span class="math display">\[\text{EV} = \tfrac{1}{2}(2) + \tfrac{1}{4}(4) + \tfrac{1}{8}(8) + \dots = 1 + 1 + 1 + \dots = \infty.\]</span></p>
+<p>The expected prize is infinite, so the rule says you should be willing to pay any finite price — your whole fortune — to enter. Almost no one would pay more than a few euros. The reason is that the large prizes driving the sum upward are very unlikely: the game ends on the first toss half the time and pays €2, it pays €4 or less three-quarters of the time, and a prize above €1,000 requires nine tails in a row before the first heads, a chance of about 1 in 500.</p>
+<p>Bernoulli’s resolution was that a player values not the euros themselves but the utility they bring, and that utility rises ever more slowly as wealth grows. If utility is the logarithm of wealth, for example, the doubling prizes are offset by shrinking increments of utility; the sum then converges and the game is worth only a small, finite amount — close to what people will actually pay. The paradox dissolves once value is measured in utility rather than in money, the same correction that explains the lottery ticket.</p>
+</div>
+</div>
+<p>Diminishing marginal utility usually makes people risk-averse, and it is why paying more than its expected value for insurance can be rational: the large loss insured against falls on the steep part of the utility curve. The figure below sets this out for a concave utility curve.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="cf">function</span>(w) <span class="fu">log</span>(w)              <span class="co"># diminishing marginal utility of wealth</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>w0 <span class="ot">&lt;-</span> <span class="dv">20</span>                             <span class="co"># wealth if the insured loss occurs</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> <span class="dv">100</span>                            <span class="co"># wealth if it does not</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fl">0.5</span>                            <span class="co"># probability of the loss (exaggerated for clarity)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>Ew <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> p) <span class="sc">*</span> w1 <span class="sc">+</span> p <span class="sc">*</span> w0          <span class="co"># expected wealth</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>Eu <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> p) <span class="sc">*</span> <span class="fu">u</span>(w1) <span class="sc">+</span> p <span class="sc">*</span> <span class="fu">u</span>(w0)    <span class="co"># expected utility of the uninsured gamble</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>CE <span class="ot">&lt;-</span> <span class="fu">exp</span>(Eu)                        <span class="co"># certainty equivalent: u(CE) = Eu</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>curve_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">w =</span> <span class="fu">seq</span>(<span class="dv">15</span>, <span class="dv">108</span>, <span class="at">length.out =</span> <span class="dv">400</span>))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>curve_df<span class="sc">$</span>u <span class="ot">&lt;-</span> <span class="fu">u</span>(curve_df<span class="sc">$</span>w)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>yb <span class="ot">&lt;-</span> <span class="fu">u</span>(<span class="dv">15</span>)                          <span class="co"># baseline for the dotted guide lines</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>pts <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">w     =</span> <span class="fu">c</span>(w0,    w1,    Ew,    Ew),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">u     =</span> <span class="fu">c</span>(<span class="fu">u</span>(w0), <span class="fu">u</span>(w1), <span class="fu">u</span>(Ew), Eu),</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> <span class="fu">c</span>(<span class="dv">16</span>,    <span class="dv">16</span>,    <span class="dv">16</span>,    <span class="dv">21</span>)   <span class="co"># filled = on the curve; hollow = on the chord</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(curve_df, <span class="fu">aes</span>(w, u)) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> w0, <span class="at">y =</span> <span class="fu">u</span>(w0), <span class="at">xend =</span> w1, <span class="at">yend =</span> <span class="fu">u</span>(w1),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span>              <span class="co"># chord = averaging the outcomes</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span>                                       <span class="co"># the utility curve</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> CE, <span class="at">y =</span> yb, <span class="at">xend =</span> CE, <span class="at">yend =</span> Eu,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> Ew, <span class="at">y =</span> yb, <span class="at">xend =</span> Ew, <span class="at">yend =</span> <span class="fu">u</span>(Ew),</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> CE, <span class="at">y =</span> Eu, <span class="at">xend =</span> Ew, <span class="at">yend =</span> Eu,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">colour =</span> <span class="st">"grey55"</span>) <span class="sc">+</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> Ew, <span class="at">y =</span> Eu, <span class="at">xend =</span> Ew, <span class="at">yend =</span> <span class="fu">u</span>(Ew),</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>           <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">ends =</span> <span class="st">"both"</span>, <span class="at">length =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">"mm"</span>)), <span class="at">colour =</span> <span class="st">"grey25"</span>) <span class="sc">+</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> CE, <span class="at">xend =</span> Ew, <span class="at">y =</span> yb <span class="sc">-</span> <span class="fl">0.06</span>, <span class="at">yend =</span> yb <span class="sc">-</span> <span class="fl">0.06</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>           <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">ends =</span> <span class="st">"both"</span>, <span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">1.5</span>, <span class="st">"mm"</span>)), <span class="at">colour =</span> <span class="st">"grey25"</span>) <span class="sc">+</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> pts, <span class="fu">aes</span>(w, u), <span class="at">shape =</span> pts<span class="sc">$</span>shape, <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">2.4</span>) <span class="sc">+</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> w0,     <span class="at">y =</span> <span class="fu">u</span>(w0) <span class="sc">-</span> <span class="fl">0.13</span>, <span class="at">label =</span> <span class="st">"loss"</span>,    <span class="at">hjust =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> w1,     <span class="at">y =</span> <span class="fu">u</span>(w1) <span class="sc">+</span> <span class="fl">0.11</span>, <span class="at">label =</span> <span class="st">"no loss"</span>, <span class="at">hjust =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> Ew <span class="sc">+</span> <span class="dv">2</span>, <span class="at">y =</span> Eu <span class="sc">-</span> <span class="fl">0.02</span>,    <span class="at">label =</span> <span class="st">"expected utility of the gamble"</span>,      <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> Ew <span class="sc">+</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="fu">u</span>(Ew) <span class="sc">+</span> <span class="fl">0.03</span>, <span class="at">label =</span> <span class="st">"utility of the same wealth, insured"</span>, <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> (CE <span class="sc">+</span> Ew) <span class="sc">/</span> <span class="dv">2</span>, <span class="at">y =</span> yb <span class="sc">-</span> <span class="fl">0.15</span>, <span class="at">label =</span> <span class="st">"risk</span><span class="sc">\n</span><span class="st">premium"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">lineheight =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">33</span>, <span class="at">y =</span> <span class="fl">4.45</span>, <span class="at">label =</span> <span class="st">"u(w) == log(w)"</span>, <span class="at">parse =</span> <span class="cn">TRUE</span>, <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(w0, CE, Ew, w1),</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="fu">expression</span>(w[<span class="dv">0</span>]), <span class="st">"CE"</span>, <span class="fu">expression</span>(E<span class="sc">*</span><span class="st">"["</span><span class="sc">*</span>w<span class="sc">*</span><span class="st">"]"</span>), <span class="fu">expression</span>(w[<span class="dv">1</span>]))) <span class="sc">+</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(yb <span class="sc">-</span> <span class="fl">0.2</span>, <span class="fu">u</span>(<span class="dv">108</span>) <span class="sc">+</span> <span class="fl">0.05</span>), <span class="at">clip =</span> <span class="st">"off"</span>) <span class="sc">+</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"wealth"</span>, <span class="at">y =</span> <span class="st">"utility"</span>) <span class="sc">+</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ch02-thinking-under-uncertainty_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Why a cautious person pays more than the expected cost to insure. Picture a homeowner whose wealth stays at w1 as long as nothing goes wrong, but who would be left with the far smaller wealth w0 if her house burnt down. The curve, u(w) = log(w), records how much satisfaction each level of wealth brings her; it bends over because money matters more to a poorer person than to a richer one &lt;U+2014&gt; a euro that barely registers at w1 is precious at w0, so the slope is steep on the left and nearly flat on the right (diminishing marginal utility). Going uninsured is a gamble: with some probability she is left poor at w0, otherwise she stays well off at w1. Her expected wealth E[w] is the average of these two outcomes; the dashed line joining the points gives, at E[w], her average utility (hollow point). That point sits below the curve (filled point), because the steep left-hand slope means the fall to w0 costs her more satisfaction than the equally likely rise to w1 returns &lt;U+2014&gt; the bad outcome hurts more than the good one helps. The certainty equivalent CE is the guaranteed wealth she would value just as highly as the gamble, and it is less than E[w]. So she will pay not only the fair premium (w1 - E[w], her expected loss) but a further risk premium (E[w] - CE) to swap the gamble for the certain wealth that insurance leaves her with. The loss probability is set to 0.5 here to keep the gap visible.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A lottery runs the other way. The stake is trivial, so little utility is given up, while the prize is a discontinuous jump to a different kind of life, which may carry utility out of proportion to its monetary size; add the entertainment value of holding a ticket, and a negative-expected-value purchase can be a positive-expected-utility one. The expected-value rule has not failed — it has been applied to the wrong quantity. The general lesson is that a decision analysis is only as good as the values it places on the outcomes, and money is often a poor proxy for those values.</p>
+</section>
+<section id="breast-cancer-screening" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="breast-cancer-screening"><span class="header-section-number">2.6</span> Breast-cancer screening</h2>
+<p>A woman in her fifties is invited to screen for breast cancer by mammography. Whether to accept is a decision under risk, but unlike the lottery it cannot be reduced to a single currency. The structure is the same — weigh the probability of each outcome by how much it matters — yet the outcomes are a death avoided, an unnecessary cancer diagnosis, and years of anxiety, which come with no common unit ready-made, as money was for the lottery.</p>
+<p>Begin with the benefit, and with the distinction drawn in the section on probability as risk. Two large evidence reviews agree on the relative effect: pooling the randomised trials, both put the reduction in breast-cancer mortality among women invited to screening at about 20% (relative risk roughly 0.80). “A 20% reduction” is the figure that reaches posters and pamphlets, and it sounds decisive. Its absolute counterpart is less so. Expressed as a natural frequency, the Cochrane review estimates that for every 2,000 women invited to screening over ten years, one avoids dying of breast cancer;<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a> the UK independent panel, using different assumptions and a twenty-year horizon, estimates 43 fewer breast-cancer deaths per 10,000 women invited.<a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a></p>
+<p>The harms are in the same currency. Screening detects some cancers that would never have caused symptoms in a woman’s lifetime; these are <strong>overdiagnosed</strong>, and because they cannot be distinguished from dangerous cancers they are treated — by surgery, radiotherapy, sometimes chemotherapy — with no possibility of benefit. Screening also produces false alarms that resolve only after further tests.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two published natural-frequency summaries of inviting women to screening.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Both express the same ~20% relative mortality reduction in absolute terms.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>screening <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">source           =</span> <span class="fu">c</span>(<span class="st">"Cochrane 2013"</span>, <span class="st">"UK Panel 2012"</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">women_invited    =</span> <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">10000</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">years            =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">deaths_prevented =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">43</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">overdiagnosed    =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">129</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>screening</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 x 5
+  source        women_invited years deaths_prevented overdiagnosed
+  &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;
+1 Cochrane 2013          2000    10                1            10
+2 UK Panel 2012         10000    20               43           129</code></pre>
+</div>
+</div>
+<p>The two reviews disagree on the balance. The Cochrane review pairs each breast-cancer death averted with about ten women overdiagnosed and treated unnecessarily, and with more than 200 of the 2,000 who suffer lasting distress from false-positive results; it also finds no detectable reduction in all-cause mortality, and notes that breast-cancer mortality is itself biased in screening’s favour by misclassified causes of death.<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a> The UK panel reaches a more favourable ratio — about one death prevented for every three overdiagnosed cases — while stressing that its estimates carry substantial uncertainty and should be read only as an approximate guide.<a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a> A calibrated reader holds this as a range of defensible positions rather than a single number, which is what the present evidence supports.</p>
+<p>Two conclusions follow. First, the decision has no single expected value that holds for everyone, but the reason is narrower than incommensurability. A woman with coherent preferences can place death, overdiagnosis, and anxiety on one personal scale of value — this is what expected-<em>utility</em> theory assumes, and what health economics makes operational in the quality-adjusted life year — and on that scale the expected-utility rule of the earlier sections applies as it always does. What the outcomes lack is an <em>objective</em> exchange rate: how many overdiagnoses, or how many months of anxiety, equal one death averted is not a fact about the world but a judgement, and it differs from woman to woman. (The construction does assume she will trade the outcomes off at some finite rate; a woman who holds death as beyond any such trade-off is following a different, lexical rule, and for her the expected-utility framework genuinely does not apply.) The probabilities structure the decision; they do not settle it, because the values that would settle it are personal. This is why screening is a matter for shared decision-making rather than a default: the analysis needs an input that only the woman can supply. Second, the presentation of the numbers largely determines whether a woman can apply her own values to them. The same evidence stated as “a 20% reduction in breast-cancer deaths” and as “one death prevented per 2,000 women screened for ten years, against ten overdiagnoses” invites opposite intuitions. Reporting the benefit in relative terms while leaving the harms absolute, or omitting them, inflates the apparent case for screening; presenting every figure as a natural frequency, in absolute terms and on a common base, is what allows an informed choice.<a href="#fn36" class="footnote-ref" id="fnref36" role="doc-noteref"><sup>36</sup></a> The same natural-frequency device turns the opaque conditional probabilities of a diagnostic test into transparent counts in Chapter 8.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What is a life worth? Statistical lives and QALYs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It seems impossible, and offensive, to put a price on a life: no sum compensates an identified death, and most people would not sell their life for money. But that is the wrong question. The decisions that force the issue — buy the safer car or not, build the roundabout or not, fund the drug or not — do not trade money for a known death. People and governments trade money for a change in the <em>probability</em> of death, spread over many people, and that question can be answered from how people actually behave.</p>
+<p><strong>Willingness to pay.</strong> Suppose a safety feature costs €500 and lowers your chance of dying in a crash over the life of the car by 1 in 10,000. Paying for it reveals that you value that risk reduction at least €500, which is the same as valuing a whole life at €500 × 10,000 = €5 million. The €5 million is not the worth of any person; it is the rate at which people trade money against small mortality risks, scaled up to one statistical life. Observe enough such choices — what people pay for airbags or smoke detectors, or the extra wages workers demand for dangerous jobs — and a figure emerges: market studies cluster between a few million and about ten million dollars per statistical life.<a href="#fn37" class="footnote-ref" id="fnref37" role="doc-noteref"><sup>37</sup></a> This is the <strong>value of a statistical life (VSL)</strong>.</p>
+<p><strong>The threshold, run backwards (the roundabout).</strong> A government with a fixed safety budget faces the inverse problem. A €3 million roundabout expected to prevent one road death per decade costs €3 million per statistical life saved; a €20 million scheme preventing the same single death costs far more. Whether either is worth building is settled by comparing its cost per life saved with a VSL benchmark — agencies such as the US Department of Transportation use a figure of about US$12 million.<a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a> A scheme cheaper than the benchmark passes; one more expensive fails, because the same money would save more lives spent elsewhere. The VSL is the exchange rate between money and risk, read forwards to ask what one will pay and backwards to ask what a project must deliver.</p>
+<p><strong>Adding quality: the QALY.</strong> A death averted is not the only outcome that matters; medicine also alters how well, and how long, one lives. The <strong>quality-adjusted life year (QALY)</strong> weights each year of life by a quality factor running from 1 (full health) to 0 (death), with states judged worse than death scored below zero. Ten years lived at a quality of 0.7 are worth 7 QALYs, so a treatment that restores full health across those years gains 3. The weights are not invented but elicited from people, by methods such as the <strong>standard gamble</strong> (what risk of immediate death would you accept to be rid of the condition?) and the <strong>time trade-off</strong> (how many years in full health would you exchange for ten with the condition?).<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a> Health systems then rank interventions by <strong>cost per QALY gained</strong> against a threshold: the English body NICE has long used a band of roughly £20,000–£30,000 per QALY.<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a></p>
+<p>These devices supply the common scale that the screening outcomes lacked: VSL converts risk into money, the QALY converts illness and death into a single health unit, and either makes an expected-value calculation possible across a population. They do not abolish the value judgement — they make it explicit, consistent between decisions, and open to scrutiny, which is at once their use and their controversy. And they work at the level of populations: the QALY weight a health system applies is an average, and need not match the weight a particular woman places on her own anxiety or overdiagnosis — which is why a programme can be cost-effective in aggregate and still not be the right choice for her.</p>
+</div>
+</div>
+<p>These framing effects are not peculiar to medicine; the systematic patterns in human judgement that produce them are catalogued later in the chapter.</p>
+</section>
+<section id="many-heads-prediction-markets" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="many-heads-prediction-markets"><span class="header-section-number">2.7</span> Many heads: prediction markets</h2>
+<p>Everything so far has concerned a single mind: the superforecaster forming and revising her own probabilities, and the individual deciding whether to buy a ticket or accept an invitation to screen. A prediction market scales the same reasoning to many minds at once and reads the result off a price.</p>
+<p>A prediction market trades contracts that pay a fixed sum — say €1 — if a specified event occurs and nothing if it does not. A contract on “candidate X wins the election” trading at €0.60 implies that the market values a euro paid only if X wins at 60 cents, which is to say it puts the probability of X winning at about 0.60. The price is a probability, and so, as the section on probability as risk noted, a risk — but one set by the trades of many people rather than asserted by one. A trader who judges the true probability higher than the price buys the contract in the expectation of profit; one who judges it lower sells; their trading pushes the price until it reflects the balance of the information the traders hold. Information scattered across many people, each holding a fragment, is aggregated into one continuously updated number. This is the <strong>wisdom of crowds</strong> — the observation that an aggregate of many independent judgements is often more accurate than any single judgement<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a> — with two additions: a price mechanism to combine the views, and money at stake to reward being right.</p>
+<p>The money is what separates a market from a poll. A pundit pays no price for a confident forecast that proves wrong; a trader loses the stake, so posturing and wishful thinking are penalised and genuine information is rewarded. The market also performs the small-step updating described earlier, but collectively and in public: each trade is an incremental revision, and the price tracks events as they unfold. The forecasts are often accurate. The Iowa Electronic Markets, a small real-money market run for research since 1988, have predicted US presidential vote shares closer to the eventual result than the opinion polls a majority of the time, with their advantage greatest well before election day.<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a> In 2008 a group of prominent economists, several of them Nobel laureates, argued that markets aggregate dispersed information efficiently enough to deserve a wider role in business and government forecasting.<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a> A prediction market is, in this sense, institutionalised Bayesian aggregation: it turns many people’s background knowledge and evidence into a price that is a risk, with the profit motive standing in for the lone forecaster’s calibration.</p>
+<p>Markets are not infallible, and their limits are instructive. The price equals the average probability only approximately: when traders are risk-averse and disagree, it is a wealth- and risk-weighted aggregate, and documented distortions such as the favourite–longshot bias — long shots over-priced, favourites under-priced — can skew it.<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a> A thin market, with few traders and little money, produces noisy prices that are easier to manipulate. And some markets should not exist at all: in 2003 the United States Defense Advanced Research Projects Agency proposed a Policy Analysis Market in contracts on political and military events in the Middle East, including acts of terrorism; once public, it was condemned in the Senate as a betting parlour on atrocities and cancelled within a day, and the official responsible resigned. The episode marks an ethical limit — some events should not be traded — alongside the legal and political obstacles such markets face more broadly.<a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a> Used within those limits, a prediction market is among the most effective machines yet found for the aggregation that a superforecaster performs inside one well-trained head.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+When the stakes are not money
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The price in a money market is a <em>money-weighted</em> probability, and the distortions just noted follow from that: when traders are risk-averse and unequally wealthy, the price aggregates their beliefs in proportion to the money they stake, not the information they hold. This is the same gap that ran through the expected-value sections — money is a workable but imperfect proxy for the thing actually wanted, there a value, here an accurate probability.</p>
+<p>Some platforms therefore drop the money. <strong>Metaculus</strong>, a forecasting platform running since 2015, asks users for explicit probabilities rather than trades and combines them into a community forecast — a recency-weighted median, with versions that weight contributors by their past accuracy. There is no cash; forecasters are scored by a strictly proper rule, for which the best strategy is to report one’s true belief, and are ranked on a track record built over many resolved questions.<a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a> Play-money markets such as Manifold keep the trading mechanism but settle in points rather than currency. Each replaces the financial incentive with a reputational one.</p>
+<p>The notable finding is that dropping the money costs little accuracy — and, against intuition, does not clearly raise it. In a head-to-head over an American-football season a play-money market forecast about as well as a real-money one, and across other questions the two stayed close, with real money tending to hold a slight edge where the odds were not common knowledge; no study finds play money the more accurate.<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a> One might expect the wealth-weighting of a money market, where deeper pockets lead to louder voices, to handicap it, but the distortion is apparently offset by what the stakes also buy: a sharper incentive to do the costly work of finding information, and to trade against a mispriced contract. Take the money away and the distortion and the incentive go together. Where non-monetary aggregation has clearly outperformed, the edge has come from the aggregation method rather than the absence of cash: in the tournaments behind this chapter’s superforecasters, prediction <em>polls</em> combined with performance weighting and recalibration beat trading markets, though those same markets still beat a naive average of the polls.<a href="#fn48" class="footnote-ref" id="fnref48" role="doc-noteref"><sup>48</sup></a></p>
+<p>The Good Judgment Project, the chapter’s opening, was itself non-monetary, ranking forecasters by Brier score rather than profit. The lesson rhymes with the one from expected value: what a market needs is not money as such, but an incentive aligned with being right and a sound way to combine many views. Money supplies both at once; where it brings distortions, or where the question is one no one should — or legally could — bet on, accuracy-scored aggregation can stand in for it.</p>
+</div>
+</div>
+<p>Markets and superforecasters alike are devices for overcoming the flaws in ordinary individual judgement. Those flaws are systematic, they are well documented, and they are the subject of the rest of the chapter.</p>
+</section>
+<section id="how-thinking-goes-wrong-tversky-and-kahneman" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="how-thinking-goes-wrong-tversky-and-kahneman"><span class="header-section-number">2.8</span> How thinking goes wrong: Tversky and Kahneman</h2>
+<p>The flaws are best seen against the standard set earlier — the habits of good reasoning in the chapter’s opening sections. Most people, most of the time, do not reason that way, and the departures are not random: they are systematic, shared across people, and predictable. The research programme that mapped them was begun by Amos Tversky and Daniel Kahneman in the 1970s, and it is convenient to set it against the two-system sketch Kahneman later drew.<a href="#fn49" class="footnote-ref" id="fnref49" role="doc-noteref"><sup>49</sup></a> One mode of thought is fast, automatic, and effortless, and it answers a hard question by quietly substituting an easier one. Asked <em>how probable is this?</em> — a judgement that requires weighing the evidence against a base rate — it reaches instead for a question that can be settled without effort, such as <em>how much does this resemble a typical case?</em> or <em>how readily does an example come to mind?</em>, and reports the answer to that easy question as though it were the answer to the hard one. The swap goes unnoticed: the reasoner does not register that the question has changed. The three heuristics below are three versions of this same move. The other mode is slow, effortful, and deliberate, able to apply the rules of probability but lazy, and easily satisfied by the first answer the fast mode offers. The fast mode runs on <strong>heuristics</strong> — mental shortcuts that are economical and usually serviceable, but that produce characteristic errors. Tversky and Kahneman identified three.<a href="#fn50" class="footnote-ref" id="fnref50" role="doc-noteref"><sup>50</sup></a></p>
+<p><strong>Representativeness</strong> judges how probable something is by how closely it resembles a stereotype, and in doing so discards information a calibrated reasoner would keep. Three of its errors recur in science.</p>
+<p>The first is <strong>base-rate neglect</strong>, the discarding of the prior. In a much-used problem, a town’s taxis are 85% green and 15% blue; a witness who correctly identifies a cab’s colour 80% of the time reports that a cab in a night-time accident was blue. Combining the witness’s reliability with the base rate gives a probability of about 0.41 that the cab was blue; most people answer close to 0.80 — the witness’s reliability alone — neglecting the 15% base rate entirely. The failure is at the first of the four habits: the prior is thrown away.</p>
+<p>The second is <strong>insensitivity to sample size</strong>, the neglect of how much small samples vary. A larger and a smaller hospital each record the proportion of male births every day; over a year, which more often records days on which more than 60% of births are boys? The smaller, because small samples fluctuate more widely around the true rate — yet most people judge the two equally likely. The error misreads the weight of a piece of evidence, treating a small and noisy sample as though it carried the information of a large one.</p>
+<p>The third is the <strong>conjunction fallacy</strong>. Given a description of a woman built to fit the stereotype of a feminist, people judge “she is a bank teller and a feminist” more probable than “she is a bank teller” — though a conjunction can never be more probable than one of its parts.<a href="#fn51" class="footnote-ref" id="fnref51" role="doc-noteref"><sup>51</sup></a> Representativeness here overrides a rule of probability so basic that stating it feels pedantic.</p>
+<p><strong>Availability</strong> judges the probability of an event by how easily examples come to mind. Vivid, recent, and emotionally charged events are recalled more readily and so are overweighted: people overestimate deaths from plane crashes and murders, which are reported and dramatic, and underestimate deaths from commoner but mundane causes such as falls. The error substitutes retrievability for diagnosticity — it lets the ease of recalling an example stand in for the weight of evidence the example carries.</p>
+<p><strong>Anchoring and adjustment</strong> lets an initial number, even a plainly irrelevant one, pull an estimate towards it, with the subsequent adjustment typically too small. People who watch a wheel of fortune stop on an arbitrary number, and are then asked to estimate an unrelated quantity, give answers biased towards that number. Anchoring corrupts the updating step: belief is dragged from an arbitrary starting point and moves too little to escape it.</p>
+<p>A fourth pattern is not a heuristic but a consequence of how options are described. <strong>Framing</strong> effects arise when the same information, presented differently, reverses a choice.<a href="#fn52" class="footnote-ref" id="fnref52" role="doc-noteref"><sup>52</sup></a> The case closest to this book is medical: when patients, students, and physicians chose between surgery and radiotherapy for lung cancer, surgery was far more attractive when its outcome was framed as “90% survive” than as “10% die”, though the two statements carry identical information.<a href="#fn53" class="footnote-ref" id="fnref53" role="doc-noteref"><sup>53</sup></a> This is the same phenomenon as the relative-versus-absolute and survival-versus-mortality framings of the screening section, and it offends a principle from the section on probability as risk: a probability is the same probability however it is dressed.</p>
+<p>Last, <strong>overconfidence</strong>: stated certainty routinely outruns accuracy. Asked for a range they are 90% sure contains some true value, people give ranges that contain it far less often than nine times in ten; asked how sure they are, they claim more than the record warrants.<a href="#fn54" class="footnote-ref" id="fnref54" role="doc-noteref"><sup>54</sup></a> This is miscalibration, the opposite of the discipline that defines the superforecaster, and it is why calibration has to be learned and tracked rather than assumed.</p>
+<p>These errors are usually presented, as they have been here, as a list of named biases. The next section asks whether a list is the right way to organise them.</p>
+</section>
+<section id="a-critical-look-at-a-nomenclature-of-irrationality" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="a-critical-look-at-a-nomenclature-of-irrationality"><span class="header-section-number">2.9</span> A critical look at a nomenclature of irrationality</h2>
+<p>The biases of the previous section are usually met as a list — in textbooks, in the online “bias” catalogues, and in §2.8 above. A list invites the reader to memorise names; it does not show how the errors are related, and relatedness is what a scientist needs, because one underlying failure can appear under several names. It is worth saying first why the catalogue matters at all. These errors are not the preserve of the innumerate: they persist among people who have mastered probability and statistics, who reproduce them whenever they reason quickly rather than deliberately. Rational thinking is a competence partly separate from intelligence (the rationality-quotient callout earlier in the chapter gives the evidence), which is why it must be taught and why expertise does not confer exemption.<a href="#fn55" class="footnote-ref" id="fnref55" role="doc-noteref"><sup>55</sup></a></p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Glossary of the named biases
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The biases named in this chapter, defined for reference. The list is alphabetical — a place to look a term up; the organisation that makes the terms useful is supplied by the section, not by the list.</p>
+<ul>
+<li><strong>Ambiguity effect.</strong> Preferring a risk whose probability is known to one whose probability is unknown, even when the two offer the same prospects — an error on the value side, not in the belief.</li>
+<li><strong>Anchoring (and adjustment).</strong> Letting an initial number, even an irrelevant one, pull an estimate towards it, then adjusting too little to break free.</li>
+<li><strong>Availability.</strong> Judging how probable an event is by how easily examples come to mind, so that vivid, recent, or emotionally charged cases are overweighted.</li>
+<li><strong>Base-rate neglect.</strong> Estimating a probability from the specific evidence while ignoring how common the outcome is to begin with — discarding the prior.</li>
+<li><strong>Confirmation bias.</strong> Giving more weight to evidence that agrees with a held belief than to evidence that tells against it.</li>
+<li><strong>Conjunction fallacy.</strong> Judging a combination of two conditions more probable than one of them alone, which cannot be.</li>
+<li><strong>Conservatism (under-reaction).</strong> Revising a belief by too little when new evidence arrives.</li>
+<li><strong>Expected-value / expected-utility confusion.</strong> Treating money, or another raw outcome, as the quantity to maximise when what matters is its utility to the decision-maker.</li>
+<li><strong>Framing.</strong> Being moved by how identical information is described — “90% survive” versus “10% die”, or a gain versus an equivalent loss.</li>
+<li><strong>Gambler’s fallacy.</strong> Expecting independent chance outcomes to even out in the short run, so that a run of one result makes the other seem due.</li>
+<li><strong>Illusion of certainty (overconfidence).</strong> Stating more confidence than accuracy warrants; ranges meant to be 90% sure of containing a value contain it far less often.</li>
+<li><strong>Insensitivity to sample size.</strong> Treating a result from a small sample as if it were as reliable as one from a large sample, ignoring that small samples vary more.</li>
+<li><strong>Magical and conspiratorial thinking.</strong> Reading intention or hidden structure into events produced by chance.</li>
+<li><strong>Over-reaction (volatility).</strong> Revising a belief by too much with each new datum, lurching from one position to the next.</li>
+<li><strong>Reference-class error.</strong> Setting a prior from a comparison group that is too narrow, or chosen to flatter a desired conclusion.</li>
+<li><strong>Regression to the mean.</strong> The tendency of an extreme measurement to be followed by a less extreme one, often mistaken for a real effect.</li>
+<li><strong>Representativeness.</strong> Judging how probable something is by how closely it resembles a stereotype or typical case, while discarding other relevant information.</li>
+</ul>
+</div>
+</div>
+<p>The obvious step beyond a flat list is to group the biases by theme. One such grouping sorts them under three headings: belief-updating errors, the neglect of randomness, and the over-imposition of causal structure. It is the kind of scheme that suggests itself readily, and worth dissecting for that reason, because the organising principle of a catalogue determines what it can teach.</p>
+<p>Part of the scheme is sound. Filing the updating errors as two opposed kinds — underweighting new data (clinging to a first impression) and overweighting it (lurching with each new datum) — correctly identifies them as the two directions of a single fault, the misjudged size of an update. The difficulty is with almost everything filed around that core.</p>
+<ul>
+<li>It is <strong>not mutually exclusive</strong>: the same error appears in several places under different names. “Anchoring”, filed as the intake of irrelevant information, and “availability”, filed as the undervaluing of relevant information, are mirror images of one fault — assigning a datum the wrong evidential weight. “Overweighting emotionally charged information” is availability again, listed a second time under a different heading. Insensitivity to sample size is filed both under overweighting new data and under the neglect of randomness.</li>
+<li>It is <strong>not exhaustive in any principled way</strong>: framing and overconfidence are appended to the causal-structure heading, with which they have nothing to do, because there is nowhere else to put them.</li>
+<li>It <strong>files some errors in the wrong place entirely</strong>: the ambiguity effect — a preference for risks whose probabilities are known over risks whose probabilities are not — is listed as a belief-updating error, but it is not an error of belief at all. It is a feature of how options are <em>valued</em>, and belongs with decision-making.</li>
+<li>It <strong>mixes two organising principles</strong>: the first heading sorts by the stage of belief updating, the other two by the type of metaphysical mistake. A catalogue cannot be read consistently if its branches answer different questions.</li>
+</ul>
+<p>The root trouble is that the headings name the surface appearance of an error rather than the mechanism that produced it. The chapter has, by this point, built the mechanism: a reasoner sets a prior, weighs evidence, updates, checks calibration, and — when the belief is turned into a choice — attaches values. A more useful catalogue sorts each documented failure by the stage that broke.</p>
+<ul>
+<li><strong>Errors of the prior</strong> — reasoning from the wrong background knowledge, or from none: base-rate neglect, and the choice of a too-narrow or self-serving reference class.</li>
+<li><strong>Errors in the weight of evidence</strong> — giving a datum the wrong diagnostic weight: availability (over-weighting the vivid and the easily recalled), anchoring (over-weighting an irrelevant number), confirmation bias (over-weighting agreeable data), and insensitivity to sample size (treating weak evidence as strong).</li>
+<li><strong>Errors in the updating step</strong> — moving belief by the wrong amount: under-reaction and conservatism on one side, over-reaction and volatility on the other. This is the sound core of the thematic scheme, kept intact.</li>
+<li><strong>Errors of calibration</strong> — confidence not matched to accuracy: overconfidence and the illusion of certainty.</li>
+<li><strong>Misreadings of randomness</strong> — reading structure into noise, or noise into structure: the gambler’s fallacy, regression to the mean mistaken for an effect, conspiracy and magical thinking, and the conjunction fallacy. Formally these are one error — using the wrong likelihood, misjudging how probable the data are under chance — but they form a recognisable family worth naming together.</li>
+<li><strong>Errors on the value side</strong> — failures that arise only when a belief is turned into a decision, not in the belief itself: the ambiguity effect, the gain-versus-loss framing of outcomes, and the confusion of expected value with expected utility.</li>
+</ul>
+<p>Cutting across all six is <strong>framing</strong>, or more generally the representation of the problem: the same facts described differently change the answer, so a framing effect can corrupt the input to any stage. It is not a seventh category but a property of the channel through which information reaches every other one.</p>
+<p>No taxonomy of this kind is perfectly exclusive — confirmation bias, for instance, breaks both the weight-of-evidence stage and the updating stage at once. But sorting by mechanism has a payoff a list of names cannot offer: it tells the scientist <em>what to check</em>. An error in the prior is repaired by finding the right reference class; an error of calibration, by keeping score; a misreading of randomness, by asking what a chance process alone would produce. The name of a bias is a label; its location in the pipeline is a diagnosis.</p>
+<p>A deeper objection questions whether these patterns deserve the name “errors” at all — the reason “right” and “wrong” have carried quotation marks since the first page of the chapter. A heuristic that violates a rule of probability in a textbook problem may be the better policy in the environment it was acquired for, where information is scarce, costly, and quickly out of date. Simple rules that deliberately ignore information show “less-is-more” effects: a rule that bases a judgement on a single good cue can match or beat multiple regression when forecasts are tested out of sample, because it has less opportunity to overfit the noise in past data.<a href="#fn56" class="footnote-ref" id="fnref56" role="doc-noteref"><sup>56</sup></a> A mind that economises on information can handle an uncertain world more robustly than one that tries to weigh everything.<a href="#fn57" class="footnote-ref" id="fnref57" role="doc-noteref"><sup>57</sup></a> “Right” and “wrong” thinking are therefore relative to the task and its environment. The normative pipeline of this chapter is the correct standard when the question is a well-posed probability problem with the relevant information to hand — the situation of most scientific inference, and the reason the rest of the book adopts it — but it is not the only standard for a mind operating under real constraints. The scientist’s task is to recognise which of the two regimes she is in, and to reserve the machinery of formal probability for the problems that reward it.</p>
+<p>That machinery is what the next part of the book builds. The habits sketched here informally — prior, evidence, updating, calibration — are, formally, the rules of probability, and Part II derives them twice over: as the unique logic of consistent belief, and as the mathematics of counting. The remainder of the book is then concerned with the harder question these tools leave open: not how to update belief on evidence, but how to read a causal claim out of it.</p>
+</section>
+<section id="key-points" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="key-points"><span class="header-section-number">2.10</span> Key points</h2>
+<ul>
+<li>Good reasoning under uncertainty is a <strong>learnable disposition</strong>, not a calculation. The superforecaster exemplifies it; it persists despite, not because of, raw intelligence, and must be practised.</li>
+<li>That disposition is <strong>Bayesian inference without the arithmetic</strong>: start from base rates (the prior), weigh each datum by how diagnostic it is (the weight of evidence), update in small steps, and keep stated probabilities calibrated, aggregating diverse views where possible.</li>
+<li>A <strong>probability is a risk</strong>. The same risk stated in relative and in absolute terms invites opposite intuitions; a careful reasoner reads through to the absolute numbers.</li>
+<li><strong>Expected value</strong>, <span class="math inline">\(\sum_i p_i v_i\)</span>, is the one tool for turning probabilities into decisions — but the quantity to maximise is expected <em>utility</em>, not money (the lottery), and for some decisions the outcomes share no objective scale, so the utilities are personal and no single public expected value can settle the choice (screening).</li>
+<li><strong>Prediction markets</strong> aggregate dispersed information into a price that is a probability; they are powerful within limits set by thin trading, known pricing biases, and ethics.</li>
+<li>The documented <strong>biases</strong> are systematic departures from the four habits. They are most usefully organised not as a flat list but by the stage of reasoning that fails — prior, weight of evidence, updating, calibration, or the value side — with framing cutting across all of them.</li>
+<li><strong>“Right” and “wrong” are relative to the task.</strong> The formal pipeline is the right standard for well-posed scientific inference; simple heuristics can be the better policy under real constraints.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">2.11</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>The cab problem by Bayes.</strong> A town’s cabs are 85% green and 15% blue; a witness who is correct 80% of the time reports a blue cab. Confirm by hand, or in R, that the probability the cab was blue is about 0.41. Then recompute it with the base rate set to 50% green / 50% blue, and explain in one sentence what the base rate contributes.</p></li>
+<li><p><strong>When is the lottery worth it?</strong> Using the EuroJackpot figures in the lottery section (ticket €2, jackpot odds 1 in 139,838,160), find the jackpot at which the jackpot’s contribution alone equals the ticket price. Then add a hypothetical second tier — €1,000 at odds of 1 in 5,000 — and recompute the expected value. Does it change the conclusion?</p></li>
+<li><p><strong>Benefit against harm.</strong> From the UK Panel’s figures (43 deaths prevented and 129 cancers overdiagnosed per 10,000 women invited over 20 years), compute the number of women who must be invited to prevent one death, and the ratio of overdiagnoses to deaths prevented. Compare with the Cochrane review’s roughly 1-to-10 ratio and give two reasons the two reviews differ.</p></li>
+<li><p><strong>Keep score.</strong> Over one week, write down ten predictions about your own life or the news as probabilities (for example, “70% it rains tomorrow”). After the events resolve, compute your Brier score and group the forecasts by stated confidence. Were the events you called “90%” right about nine times in ten?</p></li>
+<li><p><strong>Place the bias.</strong> Take three biases not discussed in the chapter — say hindsight bias, the sunk-cost fallacy, and the planning fallacy — and assign each to a stage of the pipeline scheme in the critical-look section. For any that break more than one stage, say which and why.</p></li>
+<li><p><strong>Conceptual: the anecdote.</strong> Using the idea of the weight of evidence, explain why a single vivid anecdote should move a calibrated reasoner less than it moves most people, and connect your answer to the availability heuristic.</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Mellers B, Stone E, Murray T, Minster A, Rohrbaugh N, Bishop M, Chen E, Baker J, Hou Y, Horowitz M, Ungar L, Tetlock P, “Identifying and cultivating superforecasters as a method of improving probabilistic predictions,” <em>Perspect Psychol Sci</em> 2015;10:267-281 (<a href="https://doi.org/10.1177/1745691615577794">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Mellers B, Ungar L, Baron J, Ramos J, Gurçay B, Fincher K, Scott SE, Moore D, Atanasov P, Swift SA, Murray T, Stone E, Tetlock PE, “Psychological strategies for winning a geopolitical forecasting tournament,” <em>Psychol Sci</em> 2014;25:1106-1115 (<a href="https://doi.org/10.1177/0956797614524255">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Brier GW, “Verification of forecasts expressed in terms of probability,” <em>Mon Weather Rev</em> 1950;78:1-3 (<a href="https://doi.org/10.1175/1520-0493%281950%29078%3C0001%3AVOFEIT%3E2.0.CO%3B2">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Mellers B, Ungar L, Baron J, Ramos J, Gurçay B, Fincher K, Scott SE, Moore D, Atanasov P, Swift SA, Murray T, Stone E, Tetlock PE, “Psychological strategies for winning a geopolitical forecasting tournament,” <em>Psychol Sci</em> 2014;25:1106-1115 (<a href="https://doi.org/10.1177/0956797614524255">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Mellers B, Stone E, Murray T, Minster A, Rohrbaugh N, Bishop M, Chen E, Baker J, Hou Y, Horowitz M, Ungar L, Tetlock P, “Identifying and cultivating superforecasters as a method of improving probabilistic predictions,” <em>Perspect Psychol Sci</em> 2015;10:267-281 (<a href="https://doi.org/10.1177/1745691615577794">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Mellers B, Stone E, Murray T, Minster A, Rohrbaugh N, Bishop M, Chen E, Baker J, Hou Y, Horowitz M, Ungar L, Tetlock P, “Identifying and cultivating superforecasters as a method of improving probabilistic predictions,” <em>Perspect Psychol Sci</em> 2015;10:267-281 (<a href="https://doi.org/10.1177/1745691615577794">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Tetlock PE, Gardner D, <em>Superforecasting: The Art and Science of Prediction</em>, New York: Crown, 2015.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Tetlock PE, Gardner D, <em>Superforecasting: The Art and Science of Prediction</em>, New York: Crown, 2015.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Hauenstein CE, Thomas RP, Illingworth DA, Dougherty MR, “Rethinking the Role of Teams and Training in Geopolitical Forecasting: The Effect of Uncontrolled Method Variance on Statistical Conclusions,” <em>Psychol Sci</em> 2024;36:3-18 (<a href="https://doi.org/10.1177/09567976241266481">DOI</a>).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Tetlock PE, Gardner D, <em>Superforecasting: The Art and Science of Prediction</em>, New York: Crown, 2015.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Baron J, Mellers BA, Tetlock PE, Stone E, Ungar LH, “Two Reasons to Make Aggregated Probability Forecasts More Extreme,” <em>Decis Anal</em> 2014;11:133-145 (<a href="https://doi.org/10.1287/deca.2014.0293">DOI</a>).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Stanovich KE, West RF, Toplak ME, <em>The Rationality Quotient: Toward a Test of Rational Thinking</em>, Cambridge, MA: MIT Press, 2016.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Stanovich KE, West RF, “On the relative independence of thinking biases and cognitive ability,” <em>J Pers Soc Psychol</em> 2008;94:672-695 (<a href="https://doi.org/10.1037/0022-3514.94.4.672">DOI</a>).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>West RF, Meserve RJ, Stanovich KE, “Cognitive sophistication does not attenuate the bias blind spot,” <em>J Pers Soc Psychol</em> 2012;103:506-519 (<a href="https://doi.org/10.1037/a0028857">DOI</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Toplak ME, West RF, Stanovich KE, “The Cognitive Reflection Test as a predictor of performance on heuristics-and-biases tasks,” <em>Mem Cognit</em> 2011;39:1275-1289 (<a href="https://doi.org/10.3758/s13421-011-0104-1">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Toplak ME, West RF, Stanovich KE, “Rational thinking and cognitive sophistication: development, cognitive abilities, and thinking dispositions,” <em>Dev Psychol</em> 2014;50:1037-1048 (<a href="https://doi.org/10.1037/a0034910">DOI</a>).<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Leary MR, Diebels KJ, Davisson EK, Jongman-Sereno KP, Isherwood JC, Raimi KT, Deffler SA, Hoyle RH, “Cognitive and Interpersonal Features of Intellectual Humility,” <em>Pers Soc Psychol Bull</em> 2017;43:793-813 (<a href="https://doi.org/10.1177/0146167217697695">DOI</a>).<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>Atir S, Rosenzweig E, Dunning D, “When Knowledge Knows No Bounds: Self-Perceived Expertise Predicts Claims of Impossible Knowledge,” <em>Psychol Sci</em> 2015;26:1295-1303 (<a href="https://doi.org/10.1177/0956797615588195">DOI</a>).<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Gigerenzer G, Gaissmaier W, Kurz-Milcke E, Schwartz LM, Woloshin S, “Helping Doctors and Patients Make Sense of Health Statistics,” <em>Psychol Sci Public Interest</em> 2007;8:53-96 (<a href="https://doi.org/10.1111/j.1539-6053.2008.00033.x">DOI</a>).<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>Høye AK, Hesjevoll IS, “Alcohol and driving-How bad is the combination? A meta-analysis,” <em>Traffic Inj Prev</em> 2023;24:373-378 (<a href="https://doi.org/10.1080/15389588.2023.2204984">DOI</a>). Based on PubMed (PMID 37186642).<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>Brubacher JR, Chan H, Erdelyi S, Macdonald S, Asbridge M, Mann RE, et al., “Cannabis use as a risk factor for causing motor vehicle crashes: a prospective study,” <em>Addiction</em> 2019;114:1616-1626 (<a href="https://doi.org/10.1111/add.14663">DOI</a>). The OR of 6.0 for BAC ≥ 0.08 g/dL is reported alongside the cannabis findings; the study used a responsibility-analysis design in trauma-centre-admitted drivers in British Columbia. Based on PubMed (PMID 31106494).<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>Order-of-magnitude estimate based on Estonian and Nordic road safety statistics (approximately 50–70 road fatalities and 1,000–1,500 injury crashes per year in Estonia against an estimated 7–8 billion vehicle-km travelled annually). These figures are used as illustrative calculations; they are not direct study estimates.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>Self-reported figure from Estonian traffic safety surveys; used here as an illustrative estimate of the prevalence of occasional impaired driving.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24"><p>Høye AK, Hesjevoll IS, “Alcohol and driving-How bad is the combination? A meta-analysis,” <em>Traffic Inj Prev</em> 2023;24:373-378 (<a href="https://doi.org/10.1080/15389588.2023.2204984">DOI</a>). Based on PubMed (PMID 37186642).<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn25"><p>Driver fatal-crash involvements per 100 million miles travelled (US, 2022 data) were about 9.2 for men aged 16–19, 7.0 for men aged 20–29, 2.2 for men aged 30–59 and 3.0 for drivers aged 70 and over, against an all-driver average of about 2.5 — a risk difference of roughly +6.7 per 100 million miles for the youngest men relative to that average, and a risk ratio of about 3.7 (Insurance Institute for Highway Safety, “Fatality Facts: Males and females,” <a href="https://www.iihs.org/research-areas/fatality-statistics/detail/males-and-females" class="uri">https://www.iihs.org/research-areas/fatality-statistics/detail/males-and-females</a>). This is a web source, not peer-reviewed, and is quoted at lower confidence. The underlying U-shaped pattern — per-mile fatal-crash rates elevated among both the youngest and the oldest drivers and lowest in middle age — is documented in Massie DL, Campbell KL, Williams AF, “Traffic accident involvement rates by driver age and gender,” <em>Accid Anal Prev</em> 1995;27:73-87 (<a href="https://doi.org/10.1016/0001-4575(94)00050-v">DOI</a>); that study, using 1990 data, found the oldest drivers had the highest fatal per-mile rate, whereas more recent aggregates place young men higher, partly because the oldest are pooled into a single 70-plus band. Based on PubMed (PMID 7718080).<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn26"><p>Zador PL, Krawchuk SA, Voas RB, “Alcohol-related relative risk of driver fatalities and driver involvement in fatal crashes in relation to driver age and gender: an update using 1996 data,” <em>J Stud Alcohol</em> 2000;61:387-395 (<a href="https://doi.org/10.15288/jsa.2000.61.387">DOI</a>). At the midpoint of the 0.08–0.10 g/dL range the relative risk of a fatal single-vehicle crash injury, relative to a zero-BAC driver of the same age and sex, ranged from about 11 (drivers 35 and over) to about 52 (men 16–20), with each 0.02 g/dL increment roughly doubling the risk; an earlier analysis on second-national-survey data reached similar conclusions (Zador PL, “Alcohol-related relative risk of fatal driver injuries in relation to driver age and sex,” <em>J Stud Alcohol</em> 1991;52:302-310 (<a href="https://doi.org/10.15288/jsa.1991.52.302">DOI</a>)). Based on PubMed (PMID 10807209, 1875701).<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn27"><p>The betting-scale framing and the table of mortality risks are drawn from Spiegelhalter D, Blastland M, <em>The Norm Chronicles: Stories and Numbers about Danger and Death</em>, London: Profile Books, 2013; and Spiegelhalter D, <em>The Art of Statistics: Learning from Data</em>, London: Pelican, 2019. Spiegelhalter’s work on related risk-communication units (microlives) is published in <em>BMJ</em> (<a href="https://doi.org/10.1136/bmj.e8223">DOI</a>). The natural-frequencies approach is from Gigerenzer et al.&nbsp;(cited above as [^ref-risk-literacy]).<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn28"><p>The area under the curve comparing treated and control responses — equivalently, the probability that a randomly chosen treated participant has a better outcome than a randomly chosen control — is recommended as an effect size that conveys clinical significance in Kraemer HC, Kupfer DJ, “Size of treatment effects and their importance to clinical research and practice,” <em>Biol Psychiatry</em> 2006;59:990-996 (<a href="https://doi.org/10.1016/j.biopsych.2005.09.014">DOI</a>). The measure is also known as the common-language effect size. Based on PubMed (PMID 16368078).<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn29"><p>Hacking I, <em>The Emergence of Probability: A Philosophical Study of Early Ideas about Probability, Induction and Statistical Inference</em>, Cambridge: Cambridge University Press, 1975.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn30"><p>Eurojackpot prize tiers and odds of winning, <a href="https://www.euro-jackpot.net/odds-of-winning" class="uri">https://www.euro-jackpot.net/odds-of-winning</a> (jackpot odds 1 in 139,838,160; ticket €2; minimum jackpot €10 million, capped at €120 million).<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn31"><p>Bernoulli D, “Exposition of a New Theory on the Measurement of Risk,” trans. Louise Sommer, <em>Econometrica</em> 1954;22:23-36 (originally “Specimen theoriae novae de mensura sortis,” <em>Comment Acad Sci Imp Petrop</em> 1738;5:175-192).<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn32"><p>Gøtzsche PC, Jørgensen KJ, “Screening for breast cancer with mammography,” <em>Cochrane Database Syst Rev</em> 2013;(6):CD001877 (<a href="https://doi.org/10.1002/14651858.CD001877.pub5">DOI</a>).<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn33"><p>Independent UK Panel on Breast Cancer Screening, “The benefits and harms of breast cancer screening: an independent review,” <em>Lancet</em> 2012;380:1778-1786 (<a href="https://doi.org/10.1016/S0140-6736(12)61611-0">DOI</a>).<a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn34"><p>Gøtzsche PC, Jørgensen KJ, “Screening for breast cancer with mammography,” <em>Cochrane Database Syst Rev</em> 2013;(6):CD001877 (<a href="https://doi.org/10.1002/14651858.CD001877.pub5">DOI</a>).<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn35"><p>Independent UK Panel on Breast Cancer Screening, “The benefits and harms of breast cancer screening: an independent review,” <em>Lancet</em> 2012;380:1778-1786 (<a href="https://doi.org/10.1016/S0140-6736(12)61611-0">DOI</a>).<a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn36"><p>Gigerenzer G, Gaissmaier W, Kurz-Milcke E, Schwartz LM, Woloshin S, “Helping Doctors and Patients Make Sense of Health Statistics,” <em>Psychol Sci Public Interest</em> 2007;8:53-96 (<a href="https://doi.org/10.1111/j.1539-6053.2008.00033.x">DOI</a>).<a href="#fnref36" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn37"><p>Schelling TC, “The Life You Save May Be Your Own,” in Chase SB Jr (ed.), <em>Problems in Public Expenditure Analysis</em>, Washington, DC: Brookings Institution, 1968:127-176; Viscusi WK, Aldy JE, “The Value of a Statistical Life: A Critical Review of Market Estimates throughout the World,” <em>J Risk Uncertain</em> 2003;27:5-76 (<a href="https://doi.org/10.1023/A:1025598106257">DOI</a>).<a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn38"><p>US Department of Transportation, “Departmental Guidance on Valuation of a Statistical Life in Economic Analysis” (value approximately US$12 million, 2021-2022), <a href="https://www.transportation.gov/office-policy/transportation-policy/revised-departmental-guidance-on-valuation-of-a-statistical-life-in-economic-analysis" class="uri">https://www.transportation.gov/office-policy/transportation-policy/revised-departmental-guidance-on-valuation-of-a-statistical-life-in-economic-analysis</a>.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn39"><p>Torrance GW, “Measurement of health state utilities for economic appraisal,” <em>J Health Econ</em> 1986;5:1-30 (<a href="https://doi.org/10.1016/0167-6296(86)90020-2">DOI</a>).<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn40"><p>National Institute for Health and Care Excellence (NICE), cost-effectiveness threshold of £20,000-£30,000 per QALY (to rise to £25,000-£35,000 in 2026), <a href="https://www.nice.org.uk/news/articles/changes-to-nice-s-cost-effectiveness-thresholds-confirmed" class="uri">https://www.nice.org.uk/news/articles/changes-to-nice-s-cost-effectiveness-thresholds-confirmed</a>.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn41"><p>Surowiecki J, <em>The Wisdom of Crowds: Why the Many Are Smarter Than the Few</em>, New York: Doubleday, 2004.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn42"><p>Berg JE, Nelson FD, Rietz TA, “Prediction market accuracy in the long run,” <em>Int J Forecast</em> 2008;24:285-300.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn43"><p>Arrow KJ, Forsythe R, Gorham M, et al., “The Promise of Prediction Markets,” <em>Science</em> 2008;320:877-878 (<a href="https://doi.org/10.1126/science.1157679">DOI</a>).<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn44"><p>Wolfers J, Zitzewitz E, “Prediction Markets,” <em>J Econ Perspect</em> 2004;18:107-126 (<a href="https://doi.org/10.1257/0895330041371321">DOI</a>).<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn45"><p>Arrow KJ, Forsythe R, Gorham M, et al., “The Promise of Prediction Markets,” <em>Science</em> 2008;320:877-878 (<a href="https://doi.org/10.1126/science.1157679">DOI</a>).<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn46"><p>Metaculus, “Frequently Asked Questions,” <a href="https://www.metaculus.com/faq/" class="uri">https://www.metaculus.com/faq/</a> (reputation-based forecasting platform; community prediction by recency-weighted median; strictly proper log-based scoring; no real-money trading).<a href="#fnref46" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn47"><p>Servan-Schreiber E, Wolfers J, Pennock DM, Galebach B, “Prediction Markets: Does Money Matter?,” <em>Electron Mark</em> 2004;14:243-251 (<a href="https://doi.org/10.1080/1019678042000245254">DOI</a>); Rosenbloom ES, Notz W, “Statistical Tests of Real-Money versus Play-Money Prediction Markets,” <em>Electron Mark</em> 2006;16:63-69 (<a href="https://doi.org/10.1080/10196780500491303">DOI</a>).<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn48"><p>Atanasov P, Rescober P, Stone E, Swift SA, Servan-Schreiber E, Tetlock P, Ungar L, Mellers B, “Distilling the Wisdom of Crowds: Prediction Markets vs.&nbsp;Prediction Polls,” <em>Manag Sci</em> 2017;63:691-706 (<a href="https://doi.org/10.1287/mnsc.2015.2374">DOI</a>).<a href="#fnref48" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn49"><p>Kahneman D, <em>Thinking, Fast and Slow</em>, New York: Farrar, Straus and Giroux, 2011.<a href="#fnref49" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn50"><p>Tversky A, Kahneman D, “Judgment under Uncertainty: Heuristics and Biases,” <em>Science</em> 1974;185:1124-1131 (<a href="https://doi.org/10.1126/science.185.4157.1124">DOI</a>).<a href="#fnref50" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn51"><p>Tversky A, Kahneman D, “Extensional versus intuitive reasoning: the conjunction fallacy in probability judgment,” <em>Psychol Rev</em> 1983;90:293-315.<a href="#fnref51" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn52"><p>Tversky A, Kahneman D, “The framing of decisions and the psychology of choice,” <em>Science</em> 1981;211:453-458 (<a href="https://doi.org/10.1126/science.7455683">DOI</a>).<a href="#fnref52" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn53"><p>McNeil BJ, Pauker SG, Sox HC, Tversky A, “On the elicitation of preferences for alternative therapies,” <em>N Engl J Med</em> 1982;306:1259-1262 (<a href="https://doi.org/10.1056/NEJM198205273062103">DOI</a>).<a href="#fnref53" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn54"><p>Kahneman D, <em>Thinking, Fast and Slow</em>, New York: Farrar, Straus and Giroux, 2011.<a href="#fnref54" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn55"><p>Stanovich KE, West RF, Toplak ME, <em>The Rationality Quotient: Toward a Test of Rational Thinking</em>, Cambridge, MA: MIT Press, 2016.<a href="#fnref55" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn56"><p>Gigerenzer G, Goldstein DG, “Reasoning the fast and frugal way: models of bounded rationality,” <em>Psychol Rev</em> 1996;103:650-669 (<a href="https://doi.org/10.1037/0033-295X.103.4.650">DOI</a>).<a href="#fnref56" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn57"><p>Gigerenzer G, Brighton H, “Homo heuristicus: why biased minds make better inferences,” <em>Top Cogn Sci</em> 2009;1:107-143 (<a href="https://doi.org/10.1111/j.1756-8765.2008.01006.x">DOI</a>).<a href="#fnref57" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="A statement of purpose">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04-rational-certainty.html" class="pagination-link" aria-label="Rational thinking under certainty">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology - 6&nbsp; 4. The basics of Bayesian inference</title>
+<title>The Bayesian Way to Causal Epidemiology - 10&nbsp; Bayesian inference in practice</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./07-linear-regression.html" rel="next">
-<link href="./05-rational-uncertainty.html" rel="prev">
+<link href="./ch10-potential-outcomes.html" rel="next">
+<link href="./ch08-bayes-weight-of-evidence.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-bayesian-inference.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch05-probability-calculus.html">Part II. Probability is the logic of science</a></li><li class="breadcrumb-item"><a href="./06-bayesian-inference.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -159,7 +159,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Methodology</a> 
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -175,61 +175,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Part I. How to think</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -237,38 +189,273 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,25 +470,28 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#fitting-the-binomial-data-model" id="toc-fitting-the-binomial-data-model" class="nav-link active" data-scroll-target="#fitting-the-binomial-data-model"><span class="header-section-number">6.1</span> 4.1. Fitting the Binomial data model</a></li>
-  <li><a href="#normal-data-model" id="toc-normal-data-model" class="nav-link" data-scroll-target="#normal-data-model"><span class="header-section-number">6.2</span> 4.2. Normal data model</a>
+  <li><a href="#fitting-the-binomial-data-model" id="toc-fitting-the-binomial-data-model" class="nav-link active" data-scroll-target="#fitting-the-binomial-data-model"><span class="header-section-number">10.1</span> Fitting the binomial data model</a></li>
+  <li><a href="#the-normal-data-model" id="toc-the-normal-data-model" class="nav-link" data-scroll-target="#the-normal-data-model"><span class="header-section-number">10.2</span> The normal data model</a>
   <ul class="collapse">
-  <li><a href="#prior-predictive-simulation" id="toc-prior-predictive-simulation" class="nav-link" data-scroll-target="#prior-predictive-simulation"><span class="header-section-number">6.2.1</span> prior predictive simulation</a></li>
-  <li><a href="#calculating-the-2d-posterior" id="toc-calculating-the-2d-posterior" class="nav-link" data-scroll-target="#calculating-the-2d-posterior"><span class="header-section-number">6.2.2</span> Calculating the 2D posterior</a></li>
-  <li><a href="#sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." id="toc-sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." class="nav-link" data-scroll-target="#sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma."><span class="header-section-number">6.2.3</span> Sampling from the posterior – 1D posteriors for mu and sigma.</a></li>
-  <li><a href="#summarising-the-posterior-95-hdi" id="toc-summarising-the-posterior-95-hdi" class="nav-link" data-scroll-target="#summarising-the-posterior-95-hdi"><span class="header-section-number">6.2.4</span> summarising the posterior (95% HDI)</a></li>
-  <li><a href="#triplot-for-mu" id="toc-triplot-for-mu" class="nav-link" data-scroll-target="#triplot-for-mu"><span class="header-section-number">6.2.5</span> Triplot for mu</a></li>
-  <li><a href="#some-things-to-notice" id="toc-some-things-to-notice" class="nav-link" data-scroll-target="#some-things-to-notice"><span class="header-section-number">6.2.6</span> Some things to notice</a></li>
+  <li><a href="#prior-predictive-simulation" id="toc-prior-predictive-simulation" class="nav-link" data-scroll-target="#prior-predictive-simulation"><span class="header-section-number">10.2.1</span> prior predictive simulation</a></li>
+  <li><a href="#calculating-the-2d-posterior" id="toc-calculating-the-2d-posterior" class="nav-link" data-scroll-target="#calculating-the-2d-posterior"><span class="header-section-number">10.2.2</span> Calculating the 2D posterior</a></li>
+  <li><a href="#sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." id="toc-sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." class="nav-link" data-scroll-target="#sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma."><span class="header-section-number">10.2.3</span> Sampling from the posterior – 1D posteriors for mu and sigma.</a></li>
+  <li><a href="#summarising-the-posterior-95-hdi" id="toc-summarising-the-posterior-95-hdi" class="nav-link" data-scroll-target="#summarising-the-posterior-95-hdi"><span class="header-section-number">10.2.4</span> summarising the posterior (95% HDI)</a></li>
+  <li><a href="#triplot-for-mu" id="toc-triplot-for-mu" class="nav-link" data-scroll-target="#triplot-for-mu"><span class="header-section-number">10.2.5</span> Triplot for mu</a></li>
+  <li><a href="#some-things-to-notice" id="toc-some-things-to-notice" class="nav-link" data-scroll-target="#some-things-to-notice"><span class="header-section-number">10.2.6</span> Some things to notice</a></li>
   </ul></li>
+  <li><a href="#bridge-to-regression" id="toc-bridge-to-regression" class="nav-link" data-scroll-target="#bridge-to-regression"><span class="header-section-number">10.3</span> Bridge to regression</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">10.4</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.5</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch05-probability-calculus.html">Part II. Probability is the logic of science</a></li><li class="breadcrumb-item"><a href="./06-bayesian-inference.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></h1>
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></h1>
 </div>
 
 
@@ -318,17 +508,19 @@ window.Quarto = {
 </header>
 
 
+<p>Chapter 8 left the posterior defined but, beyond the conjugate case, uncomputed: “the posterior is obtained numerically.” This chapter is that computation, done by hand. The method is <strong>grid approximation</strong> — evaluate prior × likelihood at a grid of parameter values and normalise — which is Bayes’ theorem from Chapter 8 applied directly, with no new ideas, only arithmetic. We use it on two data models, the <strong>binomial</strong> (one parameter) and the <strong>normal</strong> (two parameters), and on the way meet the practical apparatus of Bayesian work: the <strong>datapoint-by-datapoint update</strong> (the iterative updating of Chapter 8 made visible), <strong>prior predictive simulation</strong> (checking what a prior implies before seeing data), <strong>sampling from the posterior</strong>, and summarising a posterior by its mean and a <strong>credible interval</strong> (the 95% highest-density interval, HDI — the interval Chapter 8 promised). Grid approximation does not scale beyond a few parameters; for that we need Markov chain Monte Carlo (the appendix on MCMC), and the regression models of Part V are fitted that way. The point of doing it on a grid first is that nothing is hidden.</p>
+<p>The chapter opens with a contrast between the frequentist and Bayesian workflows. The frequentist machinery itself — p-values, significance, error rates — is set out in the appendix on null hypothesis testing; here we use it only to motivate the difference in how the two traditions work.</p>
 <p>In frequentist statistics the main workflow is something like this:</p>
 <ol type="1">
 <li><p>Decide on the stopping rules and statistical tests that will be used, write a pre-registered analysis protocol.</p></li>
 <li><p>Do a power analysis to determine optimal sample size N for finding significant effects</p></li>
 <li><p>Collect the sample of size N (no more, no less). There can be no peeking at data, unless pre-specified in step 1, until the full sample is collected. The sample needs to be analysed together. Ideally the experiment is randomized and blinded, so the researcher does not know, which is the experimental group and which is the control group.</p></li>
-<li><p>Run the pre-specified statistical test on pre-specified variables, which have been normalized and transformed according to the pre-specified protocol.</p></li>
+<li><p>Run the pre-specified statistical test on pre-specified variables, which have been normalised and transformed according to the pre-specified protocol.</p></li>
 <li><p>Check the test assumptions (normality, linearity, constant variance, etc.) by running additional tests on your data and on the fitted model.</p></li>
 <li><p>If these assumptions are satisfied, interpret the p value as significant or not.</p></li>
 </ol>
-<p>In general, a frequentist analysis should be completely pre-registered to avoid multiple testing problems that arise largely (but not solely) because of dichotomizing continuous evidence by the statistical significance criterion.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This avoidance of “researcher degrees of freedom”, which can destroy the long-run quality control properties of frequentist tests, makes the analysis very rigid, and often equally frigid, or incapable of reacting to different-than-expected results. It is a serious mistake to suppose that frequentist requirements to statistical inference, which come from the need to fix the long-run frequency of type 1 errors, reflect how real scientists do real scientific inference.</p>
-<p>In Bayesian statistics we do not care about stopping rules and instead of a power analysis we might simulate realistic-looking data and try to analyse these, to see whether the models and algorithms to fit them work well enough for these kind of data. This will also double as a power analysis as one can find an optimal sample size that gives sensible estimates. Also, we do not pre-specify, which models we will use on our data, as we will build several bespoke models depending on the data that we eventually get, so we can compare the models and their fits, and try to learn from them as a group. Instead of formally checking model assumptions, we rather generate simulated data from the fitted models and compare with actual data, to see, which aspects of our data are well represented in the model structure, and which ones are not. This approach is a major benefit of the Bayesian approach. As a whole, Bayesian modeling is much more flexible, both in terms of model structures and in how we work with the models, in that it tries to mirror the scientific process, where we gradually learn from data, and from our mistakes, to build better experiments and better ways of analysing their results.</p>
+<p>In general, a frequentist analysis should be completely pre-registered to avoid multiple testing problems that arise largely (but not solely) because of dichotomising continuous evidence by the statistical significance criterion.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This avoidance of “researcher degrees of freedom”, which can destroy the long-run quality control properties of frequentist tests, makes the analysis very rigid, and often equally frigid, or incapable of reacting to different-than-expected results. It is a serious mistake to suppose that frequentist requirements to statistical inference, which come from the need to fix the long-run frequency of type 1 errors, reflect how real scientists do real scientific inference.</p>
+<p>In Bayesian statistics we do not care about stopping rules and instead of a power analysis we might simulate realistic-looking data and try to analyse these, to see whether the models and algorithms to fit them work well enough for these kind of data. This will also double as a power analysis as one can find an optimal sample size that gives sensible estimates. Also, we do not pre-specify, which models we will use on our data, as we will build several bespoke models depending on the data that we eventually get, so we can compare the models and their fits, and try to learn from them as a group. Instead of formally checking model assumptions, we rather generate simulated data from the fitted models and compare with actual data, to see, which aspects of our data are well represented in the model structure, and which ones are not. This approach is a major benefit of the Bayesian approach. As a whole, Bayesian modelling is much more flexible, both in terms of model structures and in how we work with the models, in that it tries to mirror the scientific process, where we gradually learn from data, and from our mistakes, to build better experiments and better ways of analysing their results.</p>
 <p>A simplified Bayesian procedure:</p>
 <ol type="1">
 <li><p>model data as likelihood, by using an appropriate probability distribution that reflects the data generating mechanism.</p></li>
@@ -340,8 +532,8 @@ window.Quarto = {
 </ol>
 <p>It should be noted that at the end of the day both Bayesian and frequentist statisticians want the same thing. They want to use the fits of statistical models in formulating scientific conclusions. The numerical outputs of statistical models themselves are not it. They have to be interpreted in non-mathematical and out-of-the-model contexts. However, by artifice and by tradition the two great traditions of statistics go about their business in quite different ways.</p>
 <p>In frequentist statistics it is usually the raw effect sizes and the p values that get interpreted. In Bayesian statistics, they are the shrunk effect sizes (we will learn soon, what this means) and the assorted credible intervals. In frequentist inference usually a single model is interpreted per effect, while in Bayesian inference often several models are interpreted together. In frequentist inference the statistically non-significant effects are often not interpreted at all (this is not what frequentist theory proposes, but rather an unfortunate historical accident), in Bayesian inference all effects are interpreted together (remember that the <em>law of total information</em> is a law of logic; you do not want to go around, breaking these!).</p>
-<section id="fitting-the-binomial-data-model" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="fitting-the-binomial-data-model"><span class="header-section-number">6.1</span> 4.1. Fitting the Binomial data model</h2>
+<section id="fitting-the-binomial-data-model" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="fitting-the-binomial-data-model"><span class="header-section-number">10.1</span> Fitting the binomial data model</h2>
 <p>Mortality of a disease is 50% and we have 3 patients. How many of them are likely to die? We have 2 pieces of data (mortality rate p = 0.5 and N = 3) and a 4-member sample space (0 dead, 1 dead, 2 dead, and 3 dead). We start by enumerating all logically possible scenarios (d - dead, a - alive)</p>
 <div class="line-block">d d d</div>
 <div class="line-block">d a d</div>
@@ -351,7 +543,7 @@ window.Quarto = {
 <div class="line-block">a a a</div>
 <div class="line-block">a d d</div>
 <div class="line-block">d a a</div>
-<p>Kui P(dead) = 0.5, then by simple counting we get that:</p>
+<p>If P(dead) = 0.5, then by simple counting we get that:</p>
 <ul>
 <li><p>0 dead - 1,</p></li>
 <li><p>1 dead - 3,</p></li>
@@ -388,7 +580,7 @@ window.Quarto = {
 </div>
 </div>
 <p>One death and two deaths are equilikely and one death is three times as likely as no deaths (or three deaths). Likelihood simply tells for each number of deaths, how likely is this outcome, given the mortality figure that we state.</p>
-<p>Now we demonstrate the same using the binomial distribution model. The only difference is that now we get on the y-axis normalized probabilities.</p>
+<p>Now we demonstrate the same using the binomial distribution model. The only difference is that now we get on the y-axis normalised probabilities.</p>
 <div class="cell" data-fig.margin="true">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -452,7 +644,7 @@ window.Quarto = {
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute product of likelihood and prior</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>unstd.posterior <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize the posterior, so that it sums to 1</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalise the posterior, so that it sums to 1</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> unstd.posterior <span class="sc">/</span> <span class="fu">sum</span>(unstd.posterior)</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="cn">NULL</span>, <span class="fu">aes</span>(x, posterior)) <span class="sc">+</span> </span>
@@ -531,7 +723,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="06-bayesian-inference_files/figure-html/esimene-patsient-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="06-bayesian-inference_files/figure-html/first-patient-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -555,7 +747,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="06-bayesian-inference_files/figure-html/teine-patsient-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="06-bayesian-inference_files/figure-html/second-patient-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -580,15 +772,15 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="06-bayesian-inference_files/figure-html/kolmas-patsient-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="06-bayesian-inference_files/figure-html/third-patient-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Now zero mortality and 100 percent mortality are both logically impossible. The most likely value for mortality is 2/3 or 75 percent.</p>
 </section>
-<section id="normal-data-model" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="normal-data-model"><span class="header-section-number">6.2</span> 4.2. Normal data model</h2>
+<section id="the-normal-data-model" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="the-normal-data-model"><span class="header-section-number">10.2</span> The normal data model</h2>
 <p>Richard McElreath:</p>
 <blockquote class="blockquote">
 <p>There are an infinite number of possible Gaussian distributions. Some have small means. Others have large means. Some are wide, with a large <span class="math inline">\(\sigma\)</span>. Others are narrow. We want our Bayesian machine to consider every possible distribution, each defined by a combination of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, and rank them by posterior plausibility. Posterior plausibility provides a measure of the logical compatibility of each possible distribution with the data and model. … The parameters to be estimated are both <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, so we need a prior <span class="math inline">\(Pr(\mu , \sigma)\)</span>, the joint prior probability for all parameters. In most cases, priors are specified independently for each parameter, which amounts to assuming <span class="math inline">\(Pr(\mu, \sigma) = Pr(\mu) Pr(\sigma)\)</span>.</p>
@@ -632,7 +824,7 @@ window.Quarto = {
 <pre><code>[1] 4.10711</code></pre>
 </div>
 </div>
-<p>This procedure is not ideal, though, as it does not take into account the fact that our estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, calculated from limited data, are not precisely true for the full population of US presidents, including the future ones. So on top of the randomness in predicting new presidents that comes from our imperfect knowledge of the mechanisms that generate human heights we must model the uncertainty that comes from imperfect data. How can we do this? When modelling this 2nd order epistemic uncertainty we will to end up not with point estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, but probability distributions for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> values. This way we are not predicting new heights from a single fixed normal distribution, but rather from many different distributions, where each is parametrized by a plausible combination of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> values (each of these combinations is supported by the data and by our prior knowledge of plausible presidential heights).</p>
+<p>This procedure is not ideal, though, as it does not take into account the fact that our estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, calculated from limited data, are not precisely true for the full population of US presidents, including the future ones. So on top of the randomness in predicting new presidents that comes from our imperfect knowledge of the mechanisms that generate human heights we must model the uncertainty that comes from imperfect data. How can we do this? When modelling this 2nd order epistemic uncertainty we will to end up not with point estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, but probability distributions for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> values. This way we are not predicting new heights from a single fixed normal distribution, but rather from many different distributions, where each is parametrised by a plausible combination of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> values (each of these combinations is supported by the data and by our prior knowledge of plausible presidential heights).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -650,7 +842,7 @@ window.Quarto = {
 <p>Basic Bayesian inference goes like this:</p>
 <ol type="1">
 <li><p>What is the sample space of true mean heights? From -Inf to Inf. Silly, but convenient, if we want to use the normal data model (likelihood).</p></li>
-<li><p>How likely it is for each possible height to be the true average? The answer to this question is the likelihood, which depends on our sample data and on the model we choose to represent this data with. Here we model the likelihood as a normal distribution, whose mean equals the sample mean and whose standard devation equals the sample sd/sqrt(N), or SEM (standard error of the mean).</p></li>
+<li><p>How likely it is for each possible height to be the true average? The answer to this question is the likelihood, which depends on our sample data and on the model we choose to represent this data with. Here we model the likelihood as a normal distribution, whose mean equals the sample mean and whose standard deviation equals the sample sd/sqrt(N), or SEM (standard error of the mean).</p></li>
 <li><p>Next step is quantifying prior beliefs, independent of sample data, about the mean height. Our prior for the mean is also normal distribution with <span class="math inline">\(\mu = 175.4\)</span> (the mean height of US males), sd = 3 (picked so, that a mean height of 181 cm for the presidents would still be fairly possible). And the prior for <span class="math inline">\(\sigma\)</span> is also normal with <span class="math inline">\(\mu = 5.2\)</span> (the SD for the heights of the general US male population) and sd=1 (so that true SD values between about 3 and 7 cm would be possible enough). This is a rather informative prior.</p></li>
 <li><p>Then we calculate the posterior.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
 </ol>
@@ -658,7 +850,7 @@ window.Quarto = {
 <ul>
 <li><p>Likelihood models data as a probability distribution.</p></li>
 <li><p>Likelihood does not have to be normal.</p></li>
-<li><p>Prior is your belief about the parameter value, modeled as a probability distribution.</p></li>
+<li><p>Prior is your belief about the parameter value, modelled as a probability distribution.</p></li>
 <li><p>Prior does not have to be normal.</p></li>
 <li><p>Likelihood and prior(s) do not have to be represented by the same distribution.</p></li>
 <li><p>Posterior is narrower than prior and likelihood. This reflects the combining of information in the likelihood and prior. Bayes theorem is provably the most efficient way of doing this.</p></li>
@@ -670,8 +862,8 @@ window.Quarto = {
 <p><span class="math display">\[\sigma \sim normal(5.2, 1)\]</span></p>
 <p>Where the 1. line is the likelihood, containing two parameters, and the next 2 lines are priors for each parameter.</p>
 <p>i is index for heights, which means that the model assumes that each individual height comes from the same normal distribution.</p>
-<section id="prior-predictive-simulation" class="level3" data-number="6.2.1">
-<h3 data-number="6.2.1" class="anchored" data-anchor-id="prior-predictive-simulation"><span class="header-section-number">6.2.1</span> prior predictive simulation</h3>
+<section id="prior-predictive-simulation" class="level3" data-number="10.2.1">
+<h3 data-number="10.2.1" class="anchored" data-anchor-id="prior-predictive-simulation"><span class="header-section-number">10.2.1</span> prior predictive simulation</h3>
 <p>Here we calculate the posterior solely on the prior. As we add no likelihood, the data has no influence on the posterior – only the prior does.</p>
 <div class="cell" data-fig.margin="true">
 <details class="code-fold">
@@ -701,10 +893,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We use two different prior combinations: one is informative (the black line in the figure) and another one is weakly informative (red), meaning that it carries no useful biological information, but nevertheless gives a lot more weight to postive values and values &lt; 4 meters (thats right - this prior assumes that 4-meter mean height is possible). Currently, weak priors are all the rage, because they make model fitting by MCMC methods easier, while requiring minimal scientific input. Lets hope that this situation is about to change in favour of strong scientifically informed priors!</p>
+<p>We use two different prior combinations: one is informative (the black line in the figure) and another one is weakly informative (red), meaning that it carries no useful biological information, but nevertheless gives a lot more weight to positive values and values &lt; 4 meters (that’s right - this prior assumes that 4-meter mean height is possible). Currently, weak priors are all the rage, because they make model fitting by MCMC methods easier, while requiring minimal scientific input. Lets hope that this situation is about to change in favour of strong scientifically informed priors!</p>
 </section>
-<section id="calculating-the-2d-posterior" class="level3" data-number="6.2.2">
-<h3 data-number="6.2.2" class="anchored" data-anchor-id="calculating-the-2d-posterior"><span class="header-section-number">6.2.2</span> Calculating the 2D posterior</h3>
+<section id="calculating-the-2d-posterior" class="level3" data-number="10.2.2">
+<h3 data-number="10.2.2" class="anchored" data-anchor-id="calculating-the-2d-posterior"><span class="header-section-number">10.2.2</span> Calculating the 2D posterior</h3>
 <p>The posterior is a joint distribution over all parameters in the model. If we have 2 parameters, then we have a 2D posterior. If we have 200 parameters, then we have 200D posterior. We can always collapse the posterior to a desired 1D view for inspection (see below).</p>
 <div class="cell" data-fig.margin="true">
 <details class="code-fold">
@@ -764,10 +956,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>This 2D posterior is drawn as a 3D surface, where the third dimension is posterior probability. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> In the center of the contour is the peak of the posterior distribution. This is, by the way, a bivariate normal distribution.</p>
+<p>This 2D posterior is drawn as a 3D surface, where the third dimension is posterior probability. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> In the centre of the contour is the peak of the posterior distribution. This is, by the way, a bivariate normal distribution.</p>
 </section>
-<section id="sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." class="level3" data-number="6.2.3">
-<h3 data-number="6.2.3" class="anchored" data-anchor-id="sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma."><span class="header-section-number">6.2.3</span> Sampling from the posterior – 1D posteriors for mu and sigma.</h3>
+<section id="sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma." class="level3" data-number="10.2.3">
+<h3 data-number="10.2.3" class="anchored" data-anchor-id="sampling-from-the-posterior-1d-posteriors-for-mu-and-sigma."><span class="header-section-number">10.2.3</span> Sampling from the posterior – 1D posteriors for mu and sigma.</h3>
 <p>I am sampling randomly while weighting on probability, so that mu values with higher posterior probability are more likely to end up in the sample. From such random samples of mu and sigma (the posterior samples) we can plot the posteriors:</p>
 <div class="cell" data-fig.margin="true">
 <details class="code-fold">
@@ -795,8 +987,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="summarising-the-posterior-95-hdi" class="level3" data-number="6.2.4">
-<h3 data-number="6.2.4" class="anchored" data-anchor-id="summarising-the-posterior-95-hdi"><span class="header-section-number">6.2.4</span> summarising the posterior (95% HDI)</h3>
+<section id="summarising-the-posterior-95-hdi" class="level3" data-number="10.2.4">
+<h3 data-number="10.2.4" class="anchored" data-anchor-id="summarising-the-posterior-95-hdi"><span class="header-section-number">10.2.4</span> summarising the posterior (95% HDI)</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -809,8 +1001,8 @@ sigma   4.755323 0.7611191   3.40404   6.373737</code></pre>
 </div>
 </div>
 </section>
-<section id="triplot-for-mu" class="level3" data-number="6.2.5">
-<h3 data-number="6.2.5" class="anchored" data-anchor-id="triplot-for-mu"><span class="header-section-number">6.2.5</span> Triplot for mu</h3>
+<section id="triplot-for-mu" class="level3" data-number="10.2.5">
+<h3 data-number="10.2.5" class="anchored" data-anchor-id="triplot-for-mu"><span class="header-section-number">10.2.5</span> Triplot for mu</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -841,25 +1033,53 @@ sigma   4.755323 0.7611191   3.40404   6.373737</code></pre>
 </div>
 </div>
 </div>
-<p>Even with only 11 datapoints the prior is so much wider than likelihood that it has minimal influence on the posterior.</p>
+<p>Even with only 12 datapoints the prior is so much wider than likelihood that it has minimal influence on the posterior.</p>
 </section>
-<section id="some-things-to-notice" class="level3" data-number="6.2.6">
-<h3 data-number="6.2.6" class="anchored" data-anchor-id="some-things-to-notice"><span class="header-section-number">6.2.6</span> Some things to notice</h3>
+<section id="some-things-to-notice" class="level3" data-number="10.2.6">
+<h3 data-number="10.2.6" class="anchored" data-anchor-id="some-things-to-notice"><span class="header-section-number">10.2.6</span> Some things to notice</h3>
 <ol type="1">
 <li><p>As the priors are true probabilities that sum to one, and the likelihoods are not, we can run our models on either priors and data, or on priors alone, but never on data alone. Running a model on priors alone can be a good idea, if you want to know, how much your data influences the model fit. When you have little data and strong priors, this is the thing to do.</p></li>
 <li><p>Each fitted model with k parameters gives you a k-dimensional posterior (this is slightly more complicated with multi-level models), which we flatten into k side-by-side variables in the posterior samples table. This means that we have to treat each row of this table as a single unit, when we use them in further calculations. In each row there is one plausible combination of k parameter values – if you mix the values between rows, this might no longer hold.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p></li>
-<li><p>As we fitted the full model (both mean and sd), we can generate <em>in silico</em> data from it, using the full posterior samples, and compare these generated data with the actual data that was used to fit the model. By this we mean that all Bayesian models are <em>generative</em>. This comparison is called a <em>posterior predictive check</em> and it is a very convenient method to get a first impression on how well your mathematical model recaptures the physical data generating mechanism in the nature. PP check is a major advantage of Bayesian modeling, as the usual frequentist models that estimate the mean, do not estimate the sd. Such frequentist models are not generative.</p></li>
+<li><p>As we fitted the full model (both mean and sd), we can generate <em>in silico</em> data from it, using the full posterior samples, and compare these generated data with the actual data that was used to fit the model. By this we mean that all Bayesian models are <em>generative</em>. This comparison is called a <em>posterior predictive check</em> and it is a very convenient method to get a first impression on how well your mathematical model recaptures the physical data generating mechanism in the nature. PP check is a major advantage of Bayesian modelling, as the usual frequentist models that estimate the mean, do not estimate the sd. Such frequentist models are not generative.</p></li>
 <li><p>The more data you have, the narrower the likelihood; the more scientific information you put into the prior, the narrower the prior (usually, but not always). Whichever of the two is narrower, will influence the posterior more. The posterior will always be narrower than likelihood and prior. A lot of data swamps the prior, making it unimportant in respect of the posterior. Conversely, with a small sample the prior can have a major influence on the posterior.</p></li>
-<li><p>In Bayesian estimation, posterior is everything. It contains all of the information about the estimates that is contained in the fitted model. There is nothing in the model about the parameter values that is not covered in the posterior. Every fitted model gives you a posterior for every parameter in the model. This is it. All you have to do, is to study those posteriors, and to make calculations with them to get new estimates. For example, we will soon learn, how to get the estimate for a group mean by adding another group mean and the effect size. These calculations are done at the level of posterior samples, the idea being that you do not want to lose information about estimation uncertainty. Also, with many likelihoods you can calculate straight from the posterior either the mean aor the median (and often the mode), all with appropriate credible intervals. This is not something you can easily do in frequentist statistics.</p></li>
+<li><p>In Bayesian estimation, posterior is everything. It contains all of the information about the estimates that is contained in the fitted model. There is nothing in the model about the parameter values that is not covered in the posterior. Every fitted model gives you a posterior for every parameter in the model. This is it. All you have to do, is to study those posteriors, and to make calculations with them to get new estimates. For example, we will soon learn, how to get the estimate for a group mean by adding another group mean and the effect size. These calculations are done at the level of posterior samples, the idea being that you do not want to lose information about estimation uncertainty. Also, with many likelihoods you can calculate straight from the posterior either the mean or the median (and often the mode), all with appropriate credible intervals. This is not something you can easily do in frequentist statistics.</p></li>
+</ol>
+</section>
+</section>
+<section id="bridge-to-regression" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="bridge-to-regression"><span class="header-section-number">10.3</span> Bridge to regression</h2>
+<p>Everything in this chapter generalises. A regression model is a data model whose parameter — the mean of the likelihood — is itself a function of predictors: <span class="math inline">\(\mu_i = \beta_0 + \beta_1 x_i\)</span> instead of a single <span class="math inline">\(\mu\)</span>. The president-height model above is already the simplest regression, an intercept-only normal model (<code>value ~ 1</code>); adding predictors on the right-hand side is the whole of Part V. The machinery does not change — prior × likelihood, normalised, summarised by samples and a credible interval — only the number of parameters grows, and with it the need to replace the grid with MCMC (the appendix on MCMC). Chapter 20 takes up linear regression, Chapter 24 the generalised linear models whose exponential-family likelihoods were previewed in Chapter 6, and Chapter 28 returns the posterior samples to causal use, turning a fitted model into a distribution of counterfactual contrasts.</p>
+</section>
+<section id="key-points" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="key-points"><span class="header-section-number">10.4</span> Key points</h2>
+<ul>
+<li><strong>Grid approximation</strong> is Bayes’ theorem applied directly: evaluate prior × likelihood over a grid of parameter values and normalise so the posterior sums to one. It makes every step of Chapter 8 visible.</li>
+<li>The <strong>likelihood</strong> models the data as a probability distribution and need not be normal; the <strong>prior</strong> models data-independent belief and need not match the likelihood’s form. The <strong>posterior</strong> is narrower than either, because it combines their information.</li>
+<li>Updating <strong>one datapoint at a time</strong> gives the same posterior as updating all at once (exchangeability, Chapter 8): yesterday’s posterior is today’s prior.</li>
+<li><strong>Prior predictive simulation</strong> draws parameters from the prior and then data from the model, revealing what a prior implies <em>before</em> the data — a weakly informative prior can imply absurd values (4-metre presidents).</li>
+<li>The posterior over <span class="math inline">\(k\)</span> parameters is <strong><span class="math inline">\(k\)</span>-dimensional</strong>; collapse it to one parameter by <strong>sampling</strong> and reading off a marginal. Treat each posterior sample (a full row of parameter values) as a unit when computing derived quantities.</li>
+<li>Summarise a posterior by a point (mean, median, or mode) and a <strong>credible interval</strong> — the 95% HDI is the narrowest interval holding 95% of the posterior mass, and unlike a confidence interval it means what students expect: the parameter lies in it with 95% probability.</li>
+<li>The <strong>posterior is everything</strong> the fitted model says about the parameters; further estimates are calculations on posterior samples. Because Bayesian models are <strong>generative</strong>, the same samples support posterior predictive checks.</li>
+<li>More data narrows the likelihood; more informative priors narrow the prior; the <strong>narrower one dominates</strong>, and a large sample swamps the prior.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.5</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Grid on the cohort.</strong> Source <code>R/simulate_cohort.R</code>, take the untreated patients, and estimate the stroke risk by grid approximation: a grid of 200 probabilities, a flat prior, and a binomial likelihood with the observed stroke count and number of patients. Plot the posterior, report its mean and 95% HDI, and compare the mean with the raw proportion. Then replace the flat prior with a <span class="math inline">\(\text{Beta}(2,2)\)</span>-shaped prior evaluated on the grid and describe how the posterior moves.</p></li>
+<li><p><strong>Order does not matter.</strong> Re-run the datapoint-by-datapoint update of the three patients (died, died, survived) in a different order (e.g. survived, died, died). Confirm the final posterior is identical, and explain which property from Chapter 8 guarantees this.</p></li>
+<li><p><strong>A reckless prior.</strong> In the prior predictive chunk, replace the informative height prior with <span class="math inline">\(\mu \sim \text{Normal}(180, 50)\)</span>, <span class="math inline">\(\sigma \sim \text{Uniform}(0,100)\)</span> and plot the implied heights. What fraction of simulated mean heights are negative or above 3 metres? Use this to argue, in two sentences, for scientifically informed priors.</p></li>
+<li><p><strong>HDI versus equal-tailed interval.</strong> From the posterior samples of <span class="math inline">\(\mu\)</span>, compute both the 95% HDI and the 2.5%–97.5% quantile interval. For this near-symmetric posterior they nearly coincide; sketch (in words) a skewed posterior for which they would differ, and say which interval you would report.</p></li>
+<li><p><strong>The posterior is everything.</strong> Using the posterior samples of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, estimate the probability that a newly drawn president exceeds 190 cm (draw one height per posterior sample with <code>rnorm</code> and take the proportion). Explain why this calculation must be done row-wise on the samples rather than by plugging in the posterior means.</p></li>
+<li><p><strong>Why the grid runs out.</strong> Re-run the binomial grid with 20, 200, and 2000 points and note when the posterior summaries stop changing. Then explain why the same brute-force grid is infeasible for a model with 30 parameters, and what replaces it (the appendix on MCMC).</p></li>
 </ol>
 
 
 </section>
-</section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>While multiple testing, narrowly understood, is not a problem for the Bayesian, false alarms are. The currently favored Bayesian mitigation of false alarms is multilevel modeling.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>While multiple testing, narrowly understood, is not a problem for the Bayesian, false alarms are. The currently favoured Bayesian mitigation of false alarms is multilevel modelling.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>This is Bayesian method in a nutshell: at each parameter value (x) we multiply the likelihood (y_lik) with the prior (y_pr), thus combining our prior knowledge with the data and the data model. Knowledge (prior and data) in – knowledge (posterior) out.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>geom_contour() visualizes 3D surfaces in 2D. To specify a valid surface, the data must contain x, y, and z coordinates, and each unique combination of x and y can appear once.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>With the normal likelihood it will actually hold, because the variation of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are independent of each other, but this is not so with most other likelihoods.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -1278,13 +1498,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./05-rational-uncertainty.html" class="pagination-link" aria-label="3. Rational thinking under uncertainty.">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span>
+      <a href="./ch08-bayes-weight-of-evidence.html" class="pagination-link" aria-label="Bayes' theorem and the weight of evidence">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./07-linear-regression.html" class="pagination-link" aria-label="5 Basic linear regression">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./ch10-potential-outcomes.html" class="pagination-link" aria-label="The potential-outcomes framework">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

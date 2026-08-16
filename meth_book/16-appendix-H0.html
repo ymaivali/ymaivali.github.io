@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 37&nbsp; Appendix: Null hypothesis testing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./15-appendix-git.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./16-appendix-H0.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#null-hypothesis-h0" id="toc-null-hypothesis-h0" class="nav-link active" data-scroll-target="#null-hypothesis-h0"><span class="header-section-number">37.1</span> Null hypothesis (H0)</a></li>
+  <li><a href="#p-values" id="toc-p-values" class="nav-link" data-scroll-target="#p-values"><span class="header-section-number">37.2</span> P values</a></li>
+  <li><a href="#statistical-significance" id="toc-statistical-significance" class="nav-link" data-scroll-target="#statistical-significance"><span class="header-section-number">37.3</span> Statistical significance</a></li>
+  <li><a href="#an-example-three-rct-s-of-bp-medicine" id="toc-an-example-three-rct-s-of-bp-medicine" class="nav-link" data-scroll-target="#an-example-three-rct-s-of-bp-medicine"><span class="header-section-number">37.4</span> An example: three RCT-s of BP medicine</a></li>
+  <li><a href="#absence-of-evidence-testing-for-equivalence" id="toc-absence-of-evidence-testing-for-equivalence" class="nav-link" data-scroll-target="#absence-of-evidence-testing-for-equivalence"><span class="header-section-number">37.5</span> Absence of evidence: testing for equivalence</a></li>
+  <li><a href="#p-values-have-problems" id="toc-p-values-have-problems" class="nav-link" data-scroll-target="#p-values-have-problems"><span class="header-section-number">37.6</span> P values have problems</a>
+  <ul class="collapse">
+  <li><a href="#the-problem-of-the-love-of-god." id="toc-the-problem-of-the-love-of-god." class="nav-link" data-scroll-target="#the-problem-of-the-love-of-god."><span class="header-section-number">37.6.1</span> The problem of the love of God.</a></li>
+  <li><a href="#the-problem-of-interpretation-of-a-series-of-tests." id="toc-the-problem-of-interpretation-of-a-series-of-tests." class="nav-link" data-scroll-target="#the-problem-of-interpretation-of-a-series-of-tests."><span class="header-section-number">37.6.2</span> The problem of interpretation of a series of tests.</a></li>
+  <li><a href="#the-problem-of-overblown-effects." id="toc-the-problem-of-overblown-effects." class="nav-link" data-scroll-target="#the-problem-of-overblown-effects."><span class="header-section-number">37.6.3</span> The problem of overblown effects.</a></li>
+  <li><a href="#the-problem-of-significance-chasing." id="toc-the-problem-of-significance-chasing." class="nav-link" data-scroll-target="#the-problem-of-significance-chasing."><span class="header-section-number">37.6.4</span> The problem of significance chasing.</a></li>
+  </ul></li>
+  <li><a href="#the-problem-of-multiple-testing" id="toc-the-problem-of-multiple-testing" class="nav-link" data-scroll-target="#the-problem-of-multiple-testing"><span class="header-section-number">37.7</span> The problem of multiple testing</a>
+  <ul class="collapse">
+  <li><a href="#multiple-testing-without-multiple-tests-welcome-to-the-garden-of-forking-paths" id="toc-multiple-testing-without-multiple-tests-welcome-to-the-garden-of-forking-paths" class="nav-link" data-scroll-target="#multiple-testing-without-multiple-tests-welcome-to-the-garden-of-forking-paths"><span class="header-section-number">37.7.1</span> Multiple testing without multiple tests: welcome to the Garden of Forking Paths</a></li>
+  <li><a href="#from-the-garden-of-forking-paths-to-multiverse-analysis" id="toc-from-the-garden-of-forking-paths-to-multiverse-analysis" class="nav-link" data-scroll-target="#from-the-garden-of-forking-paths-to-multiverse-analysis"><span class="header-section-number">37.7.2</span> From the garden of forking paths to multiverse analysis</a></li>
+  </ul></li>
+  <li><a href="#controlling-the-false-discovery-rate" id="toc-controlling-the-false-discovery-rate" class="nav-link" data-scroll-target="#controlling-the-false-discovery-rate"><span class="header-section-number">37.8</span> Controlling the false discovery rate</a></li>
+  <li><a href="#connecting-the-p-value-to-the-rest-of-statistics" id="toc-connecting-the-p-value-to-the-rest-of-statistics" class="nav-link" data-scroll-target="#connecting-the-p-value-to-the-rest-of-statistics"><span class="header-section-number">37.9</span> Connecting the p value to the rest of statistics</a>
+  <ul class="collapse">
+  <li><a href="#connecting-the-p-value-to-confidence-intervals" id="toc-connecting-the-p-value-to-confidence-intervals" class="nav-link" data-scroll-target="#connecting-the-p-value-to-confidence-intervals"><span class="header-section-number">37.9.1</span> Connecting the p value to confidence intervals</a></li>
+  <li><a href="#connecting-the-p-value-to-the-t-test-regression-and-the-glm" id="toc-connecting-the-p-value-to-the-t-test-regression-and-the-glm" class="nav-link" data-scroll-target="#connecting-the-p-value-to-the-t-test-regression-and-the-glm"><span class="header-section-number">37.9.2</span> Connecting the p value to the t-test, regression and the GLM</a></li>
+  <li><a href="#connecting-the-p-value-to-bayesian-statistics" id="toc-connecting-the-p-value-to-bayesian-statistics" class="nav-link" data-scroll-target="#connecting-the-p-value-to-bayesian-statistics"><span class="header-section-number">37.9.3</span> Connecting the p value to Bayesian statistics</a></li>
+  <li><a href="#connecting-the-p-value-to-the-weight-of-evidence" id="toc-connecting-the-p-value-to-the-weight-of-evidence" class="nav-link" data-scroll-target="#connecting-the-p-value-to-the-weight-of-evidence"><span class="header-section-number">37.9.4</span> Connecting the p value to the weight of evidence</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">38</span> Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics" id="toc-counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics" class="nav-link" data-scroll-target="#counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics"><span class="header-section-number">38.1</span> Counting the events in a series of experiments leads to frequentist statistics</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./16-appendix-H0.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>You are working in a drug company, which has just conducted a randomized controlled study (RCT) on a prospective blood pressure drug and found that it reduces mean systolic BP by 2 mm Hg, compared to placebo. Because these results come from a finite random sample, although they could point to a real effect, they could also result from sampling error, which simply means that due to pure chance the group of people on the drug and the group on placebo happen to be different in ways that lead to some non-zero difference (effect size) regardless of the causal action of the drug.</p>
+<p>There are two possibilities that could explain your result. (i) The drug group has lower BP, because the drug lowered it, (ii) It has lower BP completely randomly (for example if, accidentally, the people in the drug group were with lower BP to begin with, then it makes sense that they ended up with lower BP after taking the drug, even if the drug has no effect on BP).</p>
+<p>The next step is to state that in case our results can be readily explained by sampling error, we will not give credence to the hypothesis that it was the drug that caused the observed 2 mm effect. But how do we know, whether our results are consistent with the sampling effect hypothesis? For this we need to model effect sizes (i) under a specific hypothesis of no drug effect at all and (ii) have an idea of how such effect might be distributed.</p>
+<p>What comes out of this is a method called Null Hypothesis Testing, which compares your statistic with a whole distribution of model-generated statistics. If your effect, which was calculated in the clinical study, is similar enough to effects which are expected to occur even if the drug does not work, then you can conclude exactly nothing. On the other hand, if your effect is unlikely under the null hypothesis of no drug effect, then you have a choice of either being surprised, because you just saw something unlikely, or alternatively, you can conclude that there must be something other than the random sampling error that caused your 2 mm effect. So which road should you take, the road of surprise or the road of happiness? That depends on what you know of your drug candidate. If there is independent reason to believe that similar drugs might be reasonably effective, then acceptance that you have made a discovery, is a good choice. On the other hand, should you later learn that your compound was actually degraded and could not have the supposed biological effect, then you might as well go with the surprise.</p>
+<p>What happens, if your study is not an RCT, but based on observational data? Now, obviously, you do not have randomization and thus randomized data. And yet you will model your statistic under the null hypothesis, as if it came from randomized experiments. This is because you do not know, how to do it any differently! But do not lose hope (at least not yet), because there is a remedy. If you can perfectly match your groups so that the result is practically identical to randomization, then you are good to go. For this you need a full causal framework to decide on which variables to match your sample. If you cannot do this then you can still calculate null hypothesis tests, as many people do – only know that your results are essentially uninterpretable.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption><strong>From data to a sampling distribution, and where the p value lives.</strong> <strong>Panel A</strong> shows the <em>data distribution</em>: the blood-pressure change of each of the n = 100 individual patients in a single sample. The data are widely spread, and this spread is summarised by the standard deviation (SD = 10 mm). The red line marks the one number we actually care about, the <em>sample mean</em> effect of 2 mm. <strong>Panel B</strong> shows a different distribution entirely: the <em>sampling distribution of the mean</em> – the distribution of mean effects we would expect to see if we repeated the whole study many times <strong>and the point null hypothesis were true</strong> (H0: the drug’s true effect is exactly 0 mm, dashed line). This distribution is centred on the H0 value of 0, and its width is not the SD of the data but the <em>standard error of the mean</em>, SEM = SD/sqrt(n) = 10/sqrt(100) = 1 mm. Averaging over 100 patients makes the sampling distribution ten times narrower than the data distribution – this is why a 2 mm mean can sit far out in the tail even though individual patients vary by tens of mm. The <em>p value</em> is the red shaded area: the probability, if H0 were true, of getting a sample mean at least as extreme as the 2 mm we observed (both tails, +/- 2 mm). Here p = 0.046. A small p value does not say the drug works; it only says that a result like ours would be uncommon in a world where the drug does nothing.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="null-hypothesis-h0" class="level2" data-number="37.1">
+<h2 data-number="37.1" class="anchored" data-anchor-id="null-hypothesis-h0"><span class="header-section-number">37.1</span> Null hypothesis (H0)</h2>
+<p>The <strong>null hypothesis (H0)</strong> is a technical term that usually defines a treatment effect that is completely missing. For example, if the actual Risk Difference (RD) in the population, which is not the same RD that was estimated by the researcher, is exactly zero, and the corresponding Risk Ratio (RR) is exactly one, then we can say “the null hypothesis holds” or “the null is true”. As we can never prove on data that a given null hypothesis holds, we use the H0 as a conceptual aid in testing our data against a rather abstract hypothesis of exactly null effect.</p>
+<p>This is the point null hypothesis, so-called because it covers a point value in the continuous scale. However, the sampling distribution generated from this point null generally takes the form of a continuous distribution, like the normal distribution shown above. This creates some ambiguity, when people talk about their sample statistic “under” the null hypothesis.</p>
+<p>First, one could argue that the underlying point null is ill-defined, as in real life there are (practically) no true null effects. In biology, at least, meaningful experimental treatments tend to always lead to some non-null effect, however tiny. Seen like this, null hypothesis testing is an abstract mathematical invention looking for an adequate use case – despite being the most widely used statistical method in the 20th century!</p>
+<p>On the other hand, it could also be argued that as in testing the null we are actually testing our sample data-derived effect size against the sampling distribution of effect sizes under the null, this allows us to filter out effects that are large enough to come through the statistical significance filter. So we don’t have to worry about “true nulls” being exactly null, as long as the power of our study is just about right to find the scientifically interesting effects and filter out the ones that are too small to matter. However, which effects are large enough to pass the filter is largely determined by the sample size (the right N is estimated by power calculations). It then follows that should you accept this view of the null hypothesis, then you only want to use the method after a successful power analysis. No power calculation – no reason to think that statistical significance filters out the right effects – therefore no reason to do H0 testing.</p>
+</section>
+<section id="p-values" class="level2" data-number="37.2">
+<h2 data-number="37.2" class="anchored" data-anchor-id="p-values"><span class="header-section-number">37.2</span> P values</h2>
+<p>The main output of any null hypothesis test is the p value. This is the measure of how similar your data are to the data that might appear randomly if your experimental treatment actually has no effect on the outcome. A large p value is taken to mean good correspondence between your data and the null hypothesis. A good correspondence with the null does not mean that your data suggest no treatment effect. It merely tells you that a possible real effect was not identified by your data. It is possible that had you collected more data, or had your random sample been a little different, you might have well seen the true effect that for now eludes you.</p>
+<blockquote class="blockquote">
+<p>P value is the probability of encountering your sample data or more extreme data, if we suppose that there really is no effect.</p>
+</blockquote>
+<p>P value is in the probability scale (0…1) and it tries to answer the question of how likely it is to see data like yours, assuming that there is actually no true effect. A p value says nothing about the likelihood that the effect, which you see, might be biased (unless you have done a perfect RCT or perfect matching) and it says very little about the actual size of your effect. Most importantly, p value does not give the probability that there is no effect (that the null hypothesis is true), and neither gives it the probability that some scientifically interesting hypothesis is true or false. Thus the direct interpretative use of raw p value is quite limited.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</section>
+<section id="statistical-significance" class="level2" data-number="37.3">
+<h2 data-number="37.3" class="anchored" data-anchor-id="statistical-significance"><span class="header-section-number">37.3</span> Statistical significance</h2>
+<p>Statistical significance is a concept that uses p values as input and converts small p values into action.</p>
+<blockquote class="blockquote">
+<p>If your p value is less than some arbitrary value, like 0.05, and if you then always claim that your result is “statistically significant”, then in the long run 5% of experiments with zero true effects are classified as “significant”.</p>
+</blockquote>
+<p>The interpretation of “significance” is (i) over the long run, rather than about a specific experiment, and (ii) it depends on the fraction of true null experiments (the ones with zero effect) from all experiments that were done.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Why use significance level 0.05? Why not 0.01 or even lower? The answer lies in a trade-off, where the lower the probability of obtaining a statistically significant result under true null, the higher the probability of missing out on true effects by labelling them “non-significant”. So the trade-off lies in which kind of error scares you more, fear of missing out vs.&nbsp;fear of false discoveries. As there are no clear instructions on how to solve this, most people prefer to pretend that the historic significance level that worked so well for Ronald Fisher who studied the effects of fertilizer on crop yield in the 1920s, is still good enough for whatever they are studying in the 21st century. For example, which is worse, to label a non-working drug as having a “statistically significant” effect and send it to the next multimillion dollar cycle of clinical studies or burying a working drug forever, because it happened to be “statistically non-significant” in your first low-N study? Obviously, the answer to this one is highly context-dependent.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="1056"></p>
+<figcaption><strong>The Neyman-Pearson decision procedure.</strong> Neyman and Pearson turned the p value into an automatic accept/reject rule by pitting two hypotheses against each other. <strong>Panel A</strong> shows two sampling distributions of the mean effect (same SEM = 1 mm scale as the previous figure): the <strong>H0</strong> distribution, centred on no effect, and an <strong>H1</strong> distribution, centred on a specific effect we would like to be able to detect (here 2.5 mm). We pick a <em>decision threshold</em> (dashed line) and call any study landing to its right “statistically significant”. The threshold cuts each curve in two, producing four areas. Under H0 the area to the <em>left</em> of the threshold is the <strong>specificity</strong> (true-negative rate, 1 - alpha = 0.95): how often we correctly stay silent when the drug is inert; the small tail to the <em>right</em> is the type I error rate <strong>alpha</strong> (false positives, 0.05). Under H1 the area to the <em>right</em> of the threshold is the <strong>sensitivity</strong>, also called the <strong>power</strong> (true-positive rate, 0.80): how often we correctly flag a real effect; the area to the <em>left</em> is the type II error rate <strong>beta</strong> (false negatives, 0.20). <strong>Panel B</strong> lays the same four outcomes out as a 2x2 table. Note the built-in trade-off: sliding the threshold rightwards shrinks alpha (fewer false alarms, higher specificity) but enlarges beta (more misses, lower sensitivity). Choosing a significance level is therefore choosing where to sit on this trade-off, not discovering a fact about nature.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="an-example-three-rct-s-of-bp-medicine" class="level2" data-number="37.4">
+<h2 data-number="37.4" class="anchored" data-anchor-id="an-example-three-rct-s-of-bp-medicine"><span class="header-section-number">37.4</span> An example: three RCT-s of BP medicine</h2>
+<p>You are an executive of a drug company which has conducted RCT-s of three completely independent drug candidates for blood pressure reduction. The average systolic BP for study participants was 160 mm and the trials were drug vs.&nbsp;placebo. All three drugs result in lowering of BP and all give identically statistically significant results.</p>
+<ol type="1">
+<li><p>ES= 2 mm, p=0.045</p></li>
+<li><p>ES= 10 mm, p=0.045</p></li>
+<li><p>ES= 20 mm, p=0.045</p></li>
+</ol>
+<p>How do you proceed from here? Which drug(s) should be studied further, which axed, which drug candidate is the most promising of the three? To answer this question we need to use additional information that was not used in the calculation of p value and does not reside in the p value. But first, let’s see how the p value of 0.045 translates into 95% confidence intervals (CI). In the first case, the intervals are really narrow around the estimated effect size of 2 mm. In the second case the CI-s are rather wide and in the third case they are wider still. But what does it mean? To extract meaning from CI-s, we must decide a couple of things.</p>
+<ol type="1">
+<li><p>What is a clinically meaningful effects size? In other words, which effect would be too small to matter in clinical and/or drug development pipeline context? Because there are already many BP drugs on the market, one assumes that the minimal clinically useful value must be a bit lower than a minimally useful value for a drug company. But anyway, let’s define it arbitrarily as 5 mm. This means that our first drug with its 2 mm effect is as good as useless, and the CI-s indicate that we can state this with high confidence. I.e, we have plenty of evidence on which to base our decision to abandon drug no 1.</p></li>
+<li><p>What is the likely/possible range of drug effects, based on previous experience with similar drugs. Here the published literature is informative: a meta-analysis of 354 placebo-controlled trials put the standard-dose systolic reduction at about 9 mm Hg, rising slightly with baseline pressure to roughly 9.7 mm Hg for a cohort starting at 160 mm.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> We can encode this prior expectation as a normal distribution with a mean of about 10 and a standard deviation of 2.5 (so that effects much above 15 mm are treated as unlikely), or, if we do not want to discount effects over 15 mm too heavily, as a Student’s t distribution with somewhat fat tails (say, nu=3). According to this criterion, the second drug is right where we thought it most likely to see its effect prior to our study. But its CI go deep into clinically uninteresting territory, and on the other side, deep into experimentally unlikely territory. Thus we could conclude that drug 2 is a reasonable candidate for further study, but having said that, we have relatively light evidence of its effect being in the window we aimed for.</p></li>
+</ol>
+<p>How about the third drug? Its most likely estimated effect is way too big under our prior hypothesis of expected effect sizes. This raises suspicion about the design and conduct of the study which resulted in this effect. So any irregularities there should be sussed out. But then, it is also true that the CI-s here are extremely wide, going into territory where the reduction in BP could seriously harm patients. If uncertainty is that wide, given a half-reasonable sample size, this could well mean that actual patients were put to danger during this trial. One more reason to proceed with extreme caution!</p>
+<p>In conclusion, the first p=0.045 meant a very tight effect size estimate close to zero; the second p=0.045 meant a potentially interesting drug candidate that needs further study; and the third p=0.045 sent a clear message: Keep away! Danger! These separate meanings do not reside in the p values themselves, which are identical, but in the effect sizes combined with sample sizes, prior expectations and clinical/business windows. Note that any interpretation of an effect size presupposes prior knowledge of the possible, and impossible, effects.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption><strong>Same p value, three very different drugs.</strong> All three trials are ‘statistically significant’ at p = 0.045, yet putting their effect sizes and 95% confidence intervals on a common millimetre scale tells three different stories. Because the p value is identical, every interval just barely clears zero (left edge near 0 mm); the intervals simply fan out wider as the effect grows, so p alone hides both the size and the precision of the effect. Two reference structures help interpret the estimates. The blue band and top curve are the <strong>prior expectation</strong> for a standard-dose antihypertensive: a meta-analysis of 354 placebo-controlled trials (Law et al.&nbsp;2003, BMJ) gives a pooled SBP reduction of about 9 mm, shifted to 9.7 mm for these patients’ 160 mm baseline, with a spread realistic for a new trial (prior approximately Normal with mean 9.7 and SD 2.5 mm; 95% range 4.8-14.6 mm). The green shaded region is an illustrative <strong>clinical window</strong>: reductions below roughly 5 mm (the dotted MCID line) are too small to matter clinically. Reading the three drugs against these windows: <strong>Drug 1</strong> (ES = 2 mm) is significant but its entire interval lies below the clinical threshold and far below prior expectation – a real-looking but clinically trivial result. <strong>Drug 2</strong> (ES = 10 mm) sits right inside both the clinical window and the prior – the most credible and promising candidate. <strong>Drug 3</strong> (ES = 20 mm) has a point estimate twice the largest effect seen across 354 trials; such an estimate from a single significant study is more likely an over-estimate from a low-powered trial than a genuine super-drug, and its enormous interval reflects how little we really know. The 5 mm clinical threshold is illustrative and can be set to whatever the exercise requires.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="absence-of-evidence-testing-for-equivalence" class="level2" data-number="37.5">
+<h2 data-number="37.5" class="anchored" data-anchor-id="absence-of-evidence-testing-for-equivalence"><span class="header-section-number">37.5</span> Absence of evidence: testing for equivalence</h2>
+<p>A large p value is not evidence that the effect is zero – it is only a failure to rule zero out, and that failure can equally well mean the study was simply too small to see a real effect. So how could you ever provide <em>positive</em> evidence that a drug does <strong>not</strong> have a clinically meaningful effect: that two formulations are interchangeable, say, or that a cheaper generic is no worse than the original? Ordinary null hypothesis testing cannot do this, because you can never “accept H0”.</p>
+<p>The frequentist tool for the job is <strong>equivalence testing</strong>, most often the <strong>two one-sided tests (TOST)</strong> procedure.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> You begin by declaring an <em>equivalence margin</em> – the smallest effect that would still matter – which is exactly the clinical threshold (the MCID) we drew on the millimetre scale for the three drugs. Then, instead of testing against zero, you run two one-sided tests against the <em>edges</em> of that margin, and ask whether the effect is significantly <em>above the lower bound</em> AND significantly <em>below the upper bound</em>. If both tests pass, you have positively demonstrated that the effect, whatever its sign, is too small to care about. Equivalence and non-inferiority designs of just this kind are what regulators require before approving a generic drug.</p>
+<p>Notice that this is the same machinery as before – one-sided tail probabilities against a null – with the null simply moved off zero to the margin you actually care about. In the estimation framework the rest of this book prefers, you get the same conclusion more directly: compute the interval and check whether it lies entirely inside the equivalence margin. If the whole compatibility interval sits between, say, -5 and +5 mm, the data are telling you the effect is trivially small; if it pokes out past the margin, they are not. TOST is just this interval reading dressed up as two tests.</p>
+</section>
+<section id="p-values-have-problems" class="level2" data-number="37.6">
+<h2 data-number="37.6" class="anchored" data-anchor-id="p-values-have-problems"><span class="header-section-number">37.6</span> P values have problems</h2>
+<p>Suppose you draw a line by any method (incl.&nbsp;statistical significance) and treat any and all effects that cross it as discoveries, and ignore the effects which failed to cross into “significance”. It makes no difference where you put the line or which method you use to calculate statistical significance – what happens is that while the effect may be on a continuous scale (BP difference in mm, risk difference in percentage points, or whatever), your result will be either “a discovery” or “a non-discovery”. There are a few problems associated with this.</p>
+<section id="the-problem-of-the-love-of-god." class="level3" data-number="37.6.1">
+<h3 data-number="37.6.1" class="anchored" data-anchor-id="the-problem-of-the-love-of-god."><span class="header-section-number">37.6.1</span> The problem of the love of God.</h3>
+<p>The thing is that two extremely similar effects may happen to land on the opposite sides of the decision line. And yet, in God’s eyes, it is clear that they deserve equal love. Then why not in yours?<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="816"></p>
+<figcaption><strong>The difference between ‘significant’ and ‘not significant’ is not itself significant.</strong> <strong>Panel A</strong> shows two drug effects, each judged separately against the null of zero. Drug A (6 mm, SE 2) is comfortably ‘significant’ (p = 0.003, its interval excludes zero); Drug B (3 mm, SE 2) is ‘not significant’ (p = 0.13, its interval includes zero). It is tempting to conclude that the two drugs behave differently – one works, the other does not. <strong>Panel B</strong> tests that conclusion directly by estimating the <em>difference</em> between the two effects (6 - 3 = 3 mm, with SE = sqrt(2^2 + 2^2) = 2.8). That difference is not significant (p = 0.29): its interval comfortably includes zero. So the data do not actually show that Drug A and Drug B differ. The lesson (Gelman &amp; Stern 2006) is that you cannot compare two effects by checking whether each one separately crosses the significance line; whether two estimates differ is a separate question that requires its own test of their difference. Two effects can sit on opposite sides of the significance threshold and still be statistically indistinguishable from one another.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-problem-of-interpretation-of-a-series-of-tests." class="level3" data-number="37.6.2">
+<h3 data-number="37.6.2" class="anchored" data-anchor-id="the-problem-of-interpretation-of-a-series-of-tests."><span class="header-section-number">37.6.2</span> The problem of interpretation of a series of tests.</h3>
+<p>Let’s suppose you measure a bunch of different RNAs under some experimental condition and get an effect estimate for each one of them. Now, some of them will be over the line and some will be under it and some of the ones under the line are actually relevant effects, whose size may actually be quite similar to those over the line. Naturally, people focus in their interpretation in those effects that they label as “discoveries”, and ignore the rest. And that means that they blithely ignore co-occurrence patterns, for example between genes in the same regulon, that are actually present in their data and can actually be seen in their analysis! Such missed opportunities are solely caused by a bad choice of the analytic method.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="816"></p>
+<figcaption><strong>A whole regulon, half of it thrown away.</strong> We simulate an experiment measuring ~2500 genes, of which 14 belong to a single regulon and are genuinely co-regulated (all truly up-regulated). <strong>Panel A</strong> is the usual volcano plot: log2 fold change against -log10(p), with the dashed p = 0.05 line. Genes scatter because each has its own measurement precision. Of the 14 regulon genes, 7 happen to cross the line (filled red, ‘discovered’) and 7 fall just below it (hollow orange) – and in standard practice everything below the line is ignored as a ‘non-discovery’. The split is essentially luck: the lost genes are not different in kind, they were just measured a little less precisely. <strong>Panel B</strong> reads the regulon as a unit instead of one gene at a time. Every one of the 14 genes is shifted to the right of the genome-wide null (grey density centred on zero) – the whole set moved together. Combining their evidence (Stouffer’s method) gives a set-level p around 2e-11, overwhelmingly more convincing than any single gene’s p value and far beyond the 7 that reached individual significance. The coordinated shift of the regulon is real evidence that sits in the data the whole time; dichotomising gene-by-gene at p = 0.05 simply discards it. This is why pathway- and gene-set-level analyses can see structure that gene-by-gene significance testing misses.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-problem-of-overblown-effects." class="level3" data-number="37.6.3">
+<h3 data-number="37.6.3" class="anchored" data-anchor-id="the-problem-of-overblown-effects."><span class="header-section-number">37.6.3</span> The problem of overblown effects.</h3>
+<p>This is the most troubling of the three, because it leads to the negation of the very principle that gave birth to null hypothesis testing. The idea behind H0 testing is that when a researcher sees an effect, she naturally wants to believe in the reality of this effect and may ignore the more likely explanation of sampling error. Thus, running a test and looking at a non-significant p value will cool her head, curb her enthusiasm, and lead to a more honest science in the long run. And this is exactly what should happen, as long as the power of the test to find true effects is high. The power of 0.9, for instance, simply means that out of every 100 true effects (a.k.a. false H0-s), 90 effects on average will come out as “statistically significant”. When the power is &gt;0.9 (&gt;90%), then the magnitude of those sample-based discoveries will on average be very nearly the same as that of the underlying true population effects (a small upward bias remains even at high power, as the simulation below shows). Unfortunately, the true power of the experiment is quite hard to ascertain and a typical power of a biological experiment (especially in animals) tends to be very much lower than 0.9, often residing in the 0.1-0.3 region.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> This leads to overestimated effect sizes of the statistically significant discoveries, because many true effects with correct effect sizes in the sample data will fail to achieve significance; and with a truly low power the <em>ONLY</em> realistic way to achieve statistical significance is to present an overblown effect size and/or deceivingly low variation (the simulation below).</p>
+<p>As making discoveries by statistical significance is a long-term commitment, we must admit as a logical fact that the published effect sizes of animal and human studies at least tend to be seriously over-estimated, solely due to the analytic method that was supposed to curb our enthusiasm about the very same effects. The only realistic solution to this that does not entail using more sensible methods is to dramatically increase the sample sizes of what are already some of the most expensive experiments in biomedicine.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption><strong>Low power inflates the effects you are allowed to publish (the ‘winner’s curse’).</strong> A single true effect (a 5 mm BP reduction, dashed red line) is studied by experiments of differing statistical power; lower power simply means a noisier study (larger standard error). For each power we simulate many studies and then keep only those that reach statistical significance – the ones that would actually be reported as discoveries. <strong>Panel A</strong> shows the distribution of those significant effect estimates. At full power the significant effects are centred on the true 5 mm. But as power drops, the distribution slides to the right: with low power, the <em>only</em> way for a study to clear the significance threshold is to have drawn, by chance, a large over-estimate (and/or a deceptively small standard error), so every published ‘discovery’ is exaggerated. <strong>Panel B</strong> summarises this as the average fold-overestimation (the Type M, or magnitude, error): about 1.1x at 90% power but roughly 3.6x at 10% power. Because typical power in much of biomedicine sits in the 0.1-0.3 range, the published effect sizes of significant findings are, on average, systematically too big – exactly the mechanism that makes a single significant study like Drug 3 in the earlier figure (ES = 20 mm) untrustworthy. The procedure meant to curb our enthusiasm instead guarantees inflated effects whenever power is low.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-problem-of-significance-chasing." class="level3" data-number="37.6.4">
+<h3 data-number="37.6.4" class="anchored" data-anchor-id="the-problem-of-significance-chasing."><span class="header-section-number">37.6.4</span> The problem of significance chasing.</h3>
+<p>Suppose a court of law is hearing the evidence and the judge decides to send the case back to gather more of the stuff, because the weight of evidence presented is insufficient to convict. After gathering more evidence, a verdict is reached. If we assume that exculpatory evidence is not buried and all evidence is weighted impartially, then most people would agree, that everything is fine in this simple story. How about when we gather N observations and calculate a p value that lies on the wrong side of significance? It should then be equally all right to collect more data (N+1, N+2, and so on) and recalculate the p value, until significance is reached. Or is it? As it happens, if you do this long enough, then you are virtually certain to get a significant p value sooner or later, even if you are testing a true null. This sad fact means that generations of scientists have been taught that collecting more evidence is a sin. Moreover, those that commit it and chase significance until they find it, will not only have committed a fraud-like infraction, but can also publish their finding as a real thing and get away with it, as it is very hard to prove that someone has calculated many p values and deleted all but one. The apparent paradox around collecting evidence dissolves as soon as we understand that a p value is not a measure of evidence. It measures the concordance of sample data and simulated data under true null, nothing more.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption><strong>The dance of the p values, and why chasing significance works.</strong> Here there is <em>no effect at all</em>: every data point is drawn from the same null distribution. <strong>Panel A</strong> follows 12 such studies as they collect subjects one at a time, recomputing the p value after each new subject. The p value does not settle down – it dances all over the range between 0 and 1, wandering below the 0.05 line and back up again purely by chance. A researcher who keeps collecting data and stops the moment the p value dips below 0.05 (black dots) will declare a ‘significant’ discovery even though nothing is there. <strong>Panel B</strong> runs 1000 such true-null studies and tracks the fraction that have crossed 0.05 at least once by a given sample size. A single, honest test has a 5% false-positive rate (dotted line); but peeking after every subject and stopping at the first ‘significant’ result pushes the false-positive rate to about 35% by n = 150, and it keeps climbing – collect long enough and significance becomes essentially guaranteed. The resolution of the apparent paradox (why is gathering more evidence a sin?) is that a p value is not a measure of accumulating evidence; it measures the agreement between one fixed dataset and the null, so recomputing it as the data grow and stopping on a whim breaks the very long-run guarantee that gives ‘significance’ its meaning.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>None of this makes collecting more data a sin in itself – it makes <em>unplanned, peek-until-significant</em> collection a sin. The legitimate way to watch your data accumulate is to plan for it in advance. <strong>Group-sequential designs</strong> spread the error budget across a set of pre-specified interim analyses (the O’Brien-Fleming and Pocock boundaries are the classic recipes), and <strong>alpha-spending functions</strong> generalise this to flexible monitoring; either way the overall type I error stays at the nominal level no matter how many planned looks you take, and stopping early for success or futility becomes good practice rather than cheating. It is standard in well-run clinical trials. In the estimation framework the tension largely dissolves: a posterior is simply updated as data arrive, and – provided the decision of when to stop does not itself depend on unmodelled features of the data – the posterior at any moment remains a valid summary of the evidence so far. The sin was never looking at the data; it was looking without accounting for the looking.</p>
+</section>
+</section>
+<section id="the-problem-of-multiple-testing" class="level2" data-number="37.7">
+<h2 data-number="37.7" class="anchored" data-anchor-id="the-problem-of-multiple-testing"><span class="header-section-number">37.7</span> The problem of multiple testing</h2>
+<p>If you do over some time or experimental system or field of study k independent tests of k independent samples, and call all tests, whose p&lt;0.05 “significant”, then <span class="math inline">\(p_{corrected} = p \cdot k\)</span>. This is the Bonferroni correction, which fixes the family-wise type I error rate at the level <span class="math inline">\(\alpha\)</span> (here 0.05). Presenting any results whose <span class="math inline">\(p \cdot k &lt; 0.05\)</span> (equivalently <span class="math inline">\(p &lt; 0.05/k\)</span>) as “significant” has the same meaning as presenting a p value from a single test, whose p &lt; 0.05 as “significant”. Thus we fix the family-wise type I error rate at the level <span class="math inline">\(\alpha\)</span>. Alas, this correction leads to a loss of sensitivity (it increases the frequency of type II errors). To mitigate this problem, a host of compromise procedures, like sequential Bonferroni, has been developed. These corrections result in a higher corrected p value, which no longer fixes the type I error level at 0.05, but lead to a smaller drop in sensitivity. Arguably the most serious aspect of the multiple testing problem is that there is no consensus about what constitutes a family of tests. It could be multiple tests done within a single experiment (like measuring the level of 20 000 mRNAs from a sample of 3 biological samples), or all experiment done by you over your lifetime, or all experiments done by various groups within the confines of a single well-defined experimental system, or whatever. Perhaps the best recommendation that can be given is to record and publish all calculated p values. But even this is far from enough, as it has been successfully argued that not only the tests that were done, but also those that would have been done, had data been different, count in the family k.</p>
+<p>Multiple testing problem presents a strong reason for abandoning the very concept of “statistical significance” as unworkable in scientific practice. The alternative approach entails Bayesian estimation of sample means and effect sizes, accompanied by measures of estimation uncertainty, which are often presented in the form of 95% credible intervals. Within this approach false alarms are dealt by the prior structures and by using multi-level modeling.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<section id="multiple-testing-without-multiple-tests-welcome-to-the-garden-of-forking-paths" class="level3" data-number="37.7.1">
+<h3 data-number="37.7.1" class="anchored" data-anchor-id="multiple-testing-without-multiple-tests-welcome-to-the-garden-of-forking-paths"><span class="header-section-number">37.7.1</span> Multiple testing without multiple tests: welcome to the Garden of Forking Paths</h3>
+<p>To conclude, we introduce <strong>the garden of forking paths</strong>, which is a simile to illustrate that a multiple comparisons problem can persist, even where people perform only a single analysis on a single comparison.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> There can be a large number of potential comparisons when the analyst chooses analytic methods based on the data he sees. This means that had the data been different, he would have used a different approach to its analysis, and as the data was what it was, there is really no way of knowing, how many different analyses were possible to the researches (obviously, this also depends on the size of his analytic repertoire). This presents a kind of multiple testing problem without multiple testing.</p>
+</section>
+<section id="from-the-garden-of-forking-paths-to-multiverse-analysis" class="level3" data-number="37.7.2">
+<h3 data-number="37.7.2" class="anchored" data-anchor-id="from-the-garden-of-forking-paths-to-multiverse-analysis"><span class="header-section-number">37.7.2</span> From the garden of forking paths to multiverse analysis</h3>
+<p>However, there is another view to the path-ridden garden that tries to turn it from a problem to an asset. This is the <strong>multiverse approach</strong> to p values, where the researcher calculates a large number of p values for a single comparison, using a host of small variations in tests and in analytical choices (like data transformations) and then publishes the distribution of all the p values. From this distribution, he then tries to asses if his scientific conclusion stands on firmer ground than would be possible to determine from a single test.</p>
+<p>Does this approach lead to reduced sensitivity of analysis? Does it actually work?</p>
+<p>In Steegen, Tuerlinckx, Gelman &amp; Vanpaemel (2016), the multiverse is proposed as a <em>transparency</em> device, not a method to estimate the strength of evidence for an effect. It produces no single summary value and implies no threshold for an effect to be declared robustly significant (Perspectives on Psychological Science, <a href="https://doi.org/10.1177/1745691616658637">10.1177/1745691616658637</a>). So strictly speaking, the descriptive multiverse has no “sensitivity” — it isn’t a test. Sensitivity only becomes a meaningful question once you impose a <em>decision rule</em> on the distribution, and whether or not it reduces sensitivity depends entirely on the rule. Taking sensitivity as power to detect a true effect, there are three regimes:</p>
+<p><strong>1. The consensus / vote-counting rule (“if most agree…”).</strong> This rule is the worst of the three. Demanding that most or all specifications clear p &lt; 0.05 is an intersection rule: you are held hostage by your least powerful, most adversarial specification. Worse, it is statistically the discredited <em>vote-counting</em> aggregation — counting significant results rather than pooling evidence. Vote counting is not just conservative; its power can <em>decrease</em> as you add specifications for a moderate true effect, because each added underpowered or noisy specification dilutes the apparent consensus. So the more thoroughly you populate the multiverse, the <em>less</em> robust a genuine effect can look.</p>
+<p><strong>2. A proper joint inference test.</strong> Simonsohn, Simmons &amp; Nelson (2020, Nature Human Behaviour, <a href="https://doi.org/10.1038/s41562-020-0912-z">10.1038/s41562-020-0912-z</a>) provides a specification-curve test that constructs a null distribution by resampling under the enforced null and asks whether the <em>whole curve</em> is more extreme than chance. Because it borrows strength across specifications rather than requiring each to clear a bar, it can retain reasonable power.</p>
+<p><strong>3. The descriptive multiverse (Steegen’s original).</strong> No rule, no power, by design.</p>
+<p>There is hidden in the garden the hidden dependence problem. The specifications are not independent draws. They share the same data and overlap heavily in construction, so the “distribution of p-values” is not a sampling distribution in any replication sense. Tight clustering means <em>the conclusion is insensitive to analytical choices</em> — not that it would replicate. This is why the joint test uses bootstrap-under-the-null rather than treating the specs as independent tests, and it’s why naive eyeballing (“90% are significant”) is misleading: 90% of a thousand near-collinear specifications can be one lucky draw. How well does it work in practice? It turns out to be demonstrably good at exposing fragility, but is much weaker as a confirmatory tool. Patel, Burford &amp; Ioannidis (2015) computed 8192 Cox models for each of 417 NHANES exposures and found a “Janus effect” — the association reversed direction between the 1st and 99th percentile of specifications — for 31% of variables (<a href="https://doi.org/10.1016/j.jclinepi.2015.05.029">10.1016/j.jclinepi.2015.05.029</a>). Chu et al.&nbsp;(2020) applied the same logic to 97 alcohol–breast-cancer studies and found a median ratio-of-odds-ratios of 3.0 across model specifications, with some exceeding 100 (<a href="https://doi.org/10.1093/ije/dyz271">10.1093/ije/dyz271</a>); Guloksuz et al.&nbsp;(2018) showed the same instability for the psychiatric exposome (<a href="https://doi.org/10.1093/schbul/sby118">10.1093/schbul/sby118</a>). In each case the multiverse worked: it cleanly distinguished a brittle claim from a stable one. Applied neuroimaging multiverses behave the same way — Bloom et al.&nbsp;(2022) found amygdala reactivity estimates robust to analytic choices while amygdala–mPFC connectivity was not, with one preprocessing step (deconvolution) driving the whole connectivity result (<a href="https://doi.org/10.1002/hbm.25847">10.1002/hbm.25847</a>).</p>
+<p>The limitation is that the multiverse is only as good as the universe you define, and that choice is itself an unconstrained researcher degree of freedom. Del Giudice &amp; Gangestad (2021, “A Traveler’s Guide to the Multiverse,” AMPPS, <a href="https://doi.org/10.1177/2515245920954925">10.1177/2515245920954925</a>) make the decisive point — specifications are not exchangeable. Some are simply worse (dichotomizing a continuous variable, dropping a necessary confounder, a mis-transformed outcome), and averaging over them mixes principled and unprincipled analyses as if they carried equal weight. A real effect can be buried under defensible-looking-but-inferior specifications, and conversely a motivated author can pack the universe with specifications that flatter the desired conclusion. The degrees of freedom don’t vanish; they move from “which analysis do I report” to “which analyses do I admit into the multiverse.”</p>
+<p>The cleanest practical success stories are therefore the <em>deflationary</em> ones — Orben &amp; Przybylski’s (2019) digital-technology-and-well-being specification curve over tens of thousands of analyses, which showed the association is real but trivially small, is the canonical case.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> It is much harder to point to instances where a multiverse <em>established</em> a contested effect, partly because of the dependence and specification-selection issues above.</p>
+</section>
+</section>
+<section id="controlling-the-false-discovery-rate" class="level2" data-number="37.8">
+<h2 data-number="37.8" class="anchored" data-anchor-id="controlling-the-false-discovery-rate"><span class="header-section-number">37.8</span> Controlling the false discovery rate</h2>
+<p>The previous section ended by recommending we abandon “significance” for Bayesian estimation. Before leaving the frequentist framework behind, though, it is worth seeing the most successful repair it offers to the multiple-testing problem – one that is now the default in genomics and many other large-screen settings.</p>
+<p>Bonferroni and the other family-wise procedures of the previous section all try to make the probability of <em>even a single</em> false positive small. When you run a handful of tests that is sensible. But when you test 20 000 genes at once, demanding near-certainty that not one of your discoveries is a false alarm is far too strict: you will protect yourself from false positives so zealously that you throw away almost every real effect along with them. The false discovery rate (FDR) takes a different and more forgiving stance. Instead of policing the chance of any error at all, it controls the <em>proportion</em> of your discoveries that are false. You accept in advance that, say, 1 in 10 of the genes you flag will be a mistake, in exchange for flagging many more of the real ones.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<p>To state the definitions cleanly, imagine we run <span class="math inline">\(m\)</span> tests, of which an unknown <span class="math inline">\(m_0\)</span> are true nulls (no real effect). We declare some number <span class="math inline">\(R\)</span> of them “significant” – these are our <strong>discoveries</strong>. Of those discoveries, <span class="math inline">\(V\)</span> are in fact true nulls (<strong>false discoveries</strong>) and the remaining <span class="math inline">\(S = R - V\)</span> are real. We never observe <span class="math inline">\(V\)</span> and <span class="math inline">\(R\)</span> separately in real data, but we can reason about their expected behaviour.</p>
+<p>The <strong>false discovery rate</strong> of Benjamini and Hochberg (1995) is the expected fraction of false discoveries among all discoveries,</p>
+<p><span class="math display">\[\text{FDR} = \mathbb{E}\!\left[\frac{V}{R}\,\mathbf{1}\{R&gt;0\}\right],\]</span></p>
+<p>where the indicator <span class="math inline">\(\mathbf{1}\{R&gt;0\}\)</span> encodes the convention that the false-discovery <em>proportion</em> <span class="math inline">\(V/R\)</span> is defined to be <span class="math inline">\(0\)</span> when we make no discoveries at all (<span class="math inline">\(R = 0\)</span>). The Benjamini–Hochberg procedure – order the p values <span class="math inline">\(p_{(1)} \le p_{(2)} \le \dots \le p_{(m)}\)</span>, find the largest <span class="math inline">\(k\)</span> with <span class="math inline">\(p_{(k)} \le \tfrac{k}{m}\alpha\)</span>, and reject everything up to it – guarantees that this FDR stays at or below the chosen level <span class="math inline">\(\alpha\)</span>.</p>
+<p>That convention “<span class="math inline">\(V/R := 0\)</span> when <span class="math inline">\(R = 0\)</span>” is a little awkward: it folds together two quite different situations (making no discoveries, and making only correct ones) and it drags the whole quantity down by the probability of getting no discoveries. Storey’s <strong>positive false discovery rate</strong> (pFDR) removes the awkwardness by <em>conditioning</em> on having made at least one discovery rather than assigning a value of zero:</p>
+<p><span class="math display">\[\text{pFDR} = \mathbb{E}\!\left[\frac{V}{R}\,\middle|\,R&gt;0\right].\]</span></p>
+<p>In words: <em>given that you have made some discoveries, what fraction of them are false?</em> – which is arguably the question a working scientist actually asks. The two quantities are linked by <span class="math inline">\(\text{FDR} = \text{pFDR}\cdot\Pr(R&gt;0)\)</span>, so pFDR is always at least as large as FDR; but when <span class="math inline">\(m\)</span> is large at least one rejection is virtually guaranteed, <span class="math inline">\(\Pr(R&gt;0)\approx 1\)</span>, and the two essentially coincide.</p>
+<p>The <strong>q value</strong> is to the FDR what the p value is to the type I error rate: a per-feature significance score. The q value of a particular feature is the smallest pFDR at which that feature is still called significant,</p>
+<p><span class="math display">\[q(p_i) = \min_{t\,\ge\, p_i}\ \text{pFDR}(t).\]</span></p>
+<p>Operationally, if you slide your significance cut-off down to a feature’s own p value, that feature’s q value is the expected proportion of false discoveries among everything you have called significant at that cut-off. The contrast with the p value is the whole point: a p value of <span class="math inline">\(0.01\)</span> says “a result this extreme would arise 1% of the time for <em>this one test</em> if its null were true”; a q value of <span class="math inline">\(0.01\)</span> says “1% of <em>all the features I am calling significant</em> at this threshold are expected to be false discoveries”. The q value is therefore the natural currency for large screens, because it is interpreted relative to your list of discoveries rather than relative to one isolated test.</p>
+<p>One practical lever separates the two traditions. The Benjamini–Hochberg procedure implicitly assumes that every null might be true, i.e.&nbsp;that the proportion of true nulls is <span class="math inline">\(\pi_0 = 1\)</span>; this makes it safe but conservative. Storey’s q values instead <em>estimate</em> <span class="math inline">\(\pi_0\)</span> – read off as the flat right-hand level of the p value histogram, where only nulls contribute – and scale the FDR by it. Because <span class="math inline">\(\pi_0 &lt; 1\)</span> whenever real effects are present, Storey’s thresholds are less conservative and yield more discoveries at the same FDR.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="1008"></p>
+<figcaption><strong>Where false discoveries come from, and what a q value buys you.</strong> We simulate 1000 tests, of which 800 are true nulls and 200 are real effects. <strong>Panel A</strong> is the histogram of all 1000 p values. True nulls produce p values spread flatly across the whole 0-1 range, so the flat right-hand part of the histogram reveals the null level (its height estimates the true-null fraction pi0 = 0.81, dashed blue line). Real effects pile up near zero, producing the tall left-hand spike. If we naively call every test with p &lt;= 0.05 significant (red region) we make 223 discoveries (R), but about 40 of them are nulls that drifted below 0.05 by chance (V), so the false discovery rate is already about 18% – far worse than the 5% the p value seems to promise. <strong>Panel B</strong> shows how the FDR is controlled instead of ignored: as we admit features one at a time in order of their p value, the q value (the estimated FDR of the resulting list) climbs. Reading off a target FDR of 10% (dotted line) tells us how many discoveries we are entitled to. The Benjamini-Hochberg curve (red) assumes pi0 = 1 and is the more conservative; Storey’s q value (blue) uses the estimated pi0 = 0.81 and so lets through a few more genuine discoveries at the same false discovery rate (here 179 versus 172). The gap between the two widens as the fraction of real effects grows.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A few more things about FDR to keep in mind. First, it is a property of the whole family of tests, so the unresolved question – what counts as the family? – is still with us. Second, the standard procedures assume the tests are independent or only mildly dependent; strong correlation between features (common in genomics) needs more careful variants. Third, and most importantly, controlling the FDR still tells you nothing about whether any <em>particular</em> hypothesis is true; it bounds an average over your list of discoveries, not the status of the gene you happen to care about.</p>
+</section>
+<section id="connecting-the-p-value-to-the-rest-of-statistics" class="level2" data-number="37.9">
+<h2 data-number="37.9" class="anchored" data-anchor-id="connecting-the-p-value-to-the-rest-of-statistics"><span class="header-section-number">37.9</span> Connecting the p value to the rest of statistics</h2>
+<p>The p value is wired into the rest of statistics at three points. It carries the same information as a confidence interval, read off at a single spot. It contains the same machinery as regression and the generalized linear model. And, under one very specific assumption, it is a probability statement straight out of Bayes’ theorem. Seeing these wires does two useful things. It demystifies the p value – once you know what it is connected to, its odd behaviour stops being mysterious. And it shows why the estimation-based, Bayesian approach that the rest of this book is built on does not so much <em>reject</em> the p value as <em>contain</em> it: almost every legitimate thing a p value tells you can be recovered from a posterior, usually carrying the interpretation you wanted in the first place.</p>
+<section id="connecting-the-p-value-to-confidence-intervals" class="level3" data-number="37.9.1">
+<h3 data-number="37.9.1" class="anchored" data-anchor-id="connecting-the-p-value-to-confidence-intervals"><span class="header-section-number">37.9.1</span> Connecting the p value to confidence intervals</h3>
+<p>If your p value is 0.05, a frequentist 95% CI just touches zero. If the p value is 0.1, a 90% CI touches zero; if it is 0.25, a 75% CI touches zero. This is not a coincidence but an identity: <strong>the confidence interval and the p value are the same calculation run in two directions.</strong></p>
+<p>The p value fixes the null at zero and asks how compatible the data are with it. The confidence interval turns the question around: it slides the null across every possible value and keeps all the null values that the data would <em>not</em> reject. Formally, the X% confidence interval is exactly the set of hypothesised values <span class="math inline">\(\theta_0\)</span> for which a test of <span class="math inline">\(H_0:\text{effect}=\theta_0\)</span> gives <span class="math inline">\(p &gt; 1-X\)</span>. Zero is inside the 95% CI precisely when the test of <span class="math inline">\(H_0:\text{effect}=0\)</span> is non-significant at 0.05 – which is just another way of saying <span class="math inline">\(p&gt;0.05\)</span>. (Note that this is the reverse of a common misstatement: the interval is built by moving the <em>null</em> across the axis, not by centring a null on the sample mean.)</p>
+<p>So the two carry the same information at the one point they share, the null of zero. But the interval carries that information at <em>every</em> value at once, and that is strictly more useful. The p value collapses the whole picture to a single tail probability at zero; the interval shows the entire range of effect sizes the data are compatible with. This is exactly why the three-drug figure above could tell three different stories from one identical p value: the p was silent about size and precision, but the intervals were not. It also pays to drop the word <em>confidence</em>, which invites the misreading that the interval has a 95% chance of containing the true effect (it does not – see the discussion in the uncertainty chapter). A cleaner reading is a <strong>compatibility interval</strong>: the range of effect sizes reasonably compatible with the data, given the model.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> The curve in the figure below makes this literal – it is a <em>p-value function</em> that reports, for every candidate effect, how compatible it is with the data; cutting it at any height gives the corresponding interval.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="816"></p>
+<figcaption><strong>A confidence interval is a p value run backwards.</strong> The curve is the <em>p-value function</em>: for every hypothesised effect size on the horizontal axis it gives the p value you would get from testing that value as the null. It peaks at p = 1 over the point estimate (6 mm) – the data are perfectly compatible with the truth being exactly the estimate – and falls away on both sides. Cutting the curve at a height of alpha and reading off the span underneath gives the (1 - alpha) confidence interval: the 0.05 cut spans the 95% CI [2.1, 9.9], the 0.10 cut the narrower 90% CI, the 0.25 cut the narrower-still 75% CI. The interval is thus nothing more than the set of null values the data would not reject. The single ordinary p value – testing the null of zero effect – is just the height of this whole curve at one point (here p = 0.003, red). The p value throws away the rest of the curve; the interval keeps it, which is why the interval, and not the lone p value, tells you about the size and precision of the effect.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="connecting-the-p-value-to-the-t-test-regression-and-the-glm" class="level3" data-number="37.9.2">
+<h3 data-number="37.9.2" class="anchored" data-anchor-id="connecting-the-p-value-to-the-t-test-regression-and-the-glm"><span class="header-section-number">37.9.2</span> Connecting the p value to the t-test, regression and the GLM</h3>
+<p>Students often learn the t-test, ANOVA, correlation and regression as separate techniques, each with its own p value. They are one technique. A two-group comparison is identical to a linear regression with a single 0/1 predictor coding the group:</p>
+<p><span class="math display">\[\text{effect}_i = \beta_0 + \beta_1\,\text{group}_i + \varepsilon_i .\]</span></p>
+<p>Here <span class="math inline">\(\beta_1\)</span> is the difference in group means, its standard error is the t-test’s standard error, and the p value printed next to it is the t-test’s p value, to the last decimal. One-way ANOVA is the same model with a categorical predictor with 2+ levels; Pearson correlation is the same model on standardised variables; the generalized linear model extends it to non-normal outcomes. “The p value of a t-test” and “the p value of a regression coefficient” are not an analogy – they are the same number.</p>
+<p>What does the Bayesian version look like? Take the same model, but instead of one best-fitting line and a tail probability, put a prior on the coefficients and report the whole posterior of <span class="math inline">\(\beta_1\)</span>. With a flat prior and the normal likelihood, the posterior of the effect is essentially a t-distribution centred on the estimate with the same standard error – so the frequentist interval and the Bayesian posterior land on top of each other (Panel A below). The arithmetic is shared; only the <em>interpretation</em> differs, and the Bayesian one is the one you wanted: a distribution of credible effect sizes, from which <span class="math inline">\(P(\text{effect}&gt;0)\)</span>, or <span class="math inline">\(P(\text{effect}&gt;5\text{ mm})\)</span>, can be read off directly.</p>
+<p>The payoff of doing it the Bayesian way is that you are no longer locked into the normal error model. Kruschke’s “Bayesian estimation supersedes the t test” (BEST) swaps the normal likelihood for a <strong>Student-t likelihood</strong> and estimates the mean and the spread (<span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>) jointly, letting the data’s own scatter – including its fat tails – decide how much an extreme point should count.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> The effect is dramatic. In Panel B we add a single aberrant patient to the same trial. The ordinary t-test (= the Gaussian regression) is dragged from a near-significant p = 0.07 to a thoroughly null p = 0.31, its estimate almost halved by one data point. The robust Student-t model shrugs: its posterior stays put at about 5.9 mm, almost exactly where it sat before the outlier arrived. The robust likelihood is not a trick; it is an honest statement that real measurements occasionally misbehave, and a model that expects this is not held hostage by one of them.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption><strong>The t-test is a regression, and its Bayesian upgrade is robust.</strong> A one-sample (paired) trial of 15 patients; the effect is the BP reduction on drug versus placebo (positive = good). <strong>Panel A:</strong> the frequentist 95% confidence interval from the t-test (red, identical to an intercept-only linear regression) and the Bayesian posterior for the mean effect under a flat prior with a normal likelihood (blue) sit on top of each other – same arithmetic, different words. The posterior mean is 5.1 mm and the interval just includes zero (one-sided p = 0.034; posterior P(effect &lt; 0) = 0.039 – nearly the same number, a point we return to next). <strong>Panel B:</strong> we now add a single aberrant patient (a 25 mm <em>rise</em> in BP). The normal-likelihood model – i.e.&nbsp;the ordinary t-test – is dragged from 5.1 down to about 3.3 mm and from a near-significant p = 0.07 to a firmly null p = 0.31: one patient flips the conclusion. The robust BEST model, which replaces the normal likelihood with a Student-t likelihood and estimates the mean and spread together, stays at about 5.9 mm – essentially unmoved. Same data, same flat prior; the only change is a likelihood that expects the occasional wild point.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="connecting-the-p-value-to-bayesian-statistics" class="level3" data-number="37.9.3">
+<h3 data-number="37.9.3" class="anchored" data-anchor-id="connecting-the-p-value-to-bayesian-statistics"><span class="header-section-number">37.9.3</span> Connecting the p value to Bayesian statistics</h3>
+<p>Earlier in this chapter we insisted that a p value is <em>not</em> the probability that there is no effect, nor the probability that any hypothesis is true. That is correct. But there is one specific construction under which a p value does turn into an honest probability about the parameter – and seeing exactly what that construction requires is the most illuminating connection of all.</p>
+<p>Take a one-sided p value: you observed a positive effect and you ask how often the null would produce something this positive or more. Now put a <strong>flat prior</strong> on the effect (every value equally likely beforehand) and run Bayes’ theorem with the usual normal likelihood. The posterior is a normal distribution centered on your estimate. And the posterior probability that the true effect is actually <em>negative</em> – that you have the <strong>sign wrong</strong> – comes out exactly equal to the one-sided p value. In the figure below, the same 2 mm estimate with SEM 1 mm from the opening figure of this chapter has a one-sided p of 0.023; under a flat prior, the posterior probability that the drug truly <em>raises</em> blood pressure is also 0.023.</p>
+<p>That number is Gelman and Carlin’s <strong>Type S (sign) error</strong> probability: the probability that a result points the wrong way.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> It is the natural partner of the <strong>Type M (magnitude) error</strong> we met in the winner’s-curse figure – Type M asks <em>how exaggerated</em> a significant effect is, Type S asks <em>how often it points the wrong way</em> – and together they are the estimation-minded replacement for the old type I / type II bookkeeping.</p>
+<p>The crucial word in all this is <em>flat</em>. The clean identity “one-sided p value = posterior probability of the wrong sign” holds only when the prior is flat. A flat prior says you genuinely knew nothing beforehand – not the magnitude, not even the sign. That is almost never true; recall the three-drug example, where a literature of 354 trials told us a great deal about plausible effects. With any realistic prior the two numbers part ways, the posterior usually being more sceptical than the p value. So the reinterpretation does not rescue the p value – it exposes the hidden assumption underneath it. A p value behaves like a Bayesian sign-error probability computed by someone who swore they knew nothing, which is precisely the assumption the rest of this book tries to avoid.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption><strong>A one-sided p value is a Type S error probability wearing a flat prior.</strong> Both panels use the chapter’s opening result: an observed effect of 2 mm with a standard error of 1 mm. <strong>Panel A</strong> is the frequentist picture – the H0 sampling distribution centred on zero, with the tail beyond the observed 2 mm shaded; that tail is the one-sided p value, 0.023. <strong>Panel B</strong> is the Bayesian picture under a <em>flat</em> prior – the posterior is centred on the estimate (2 mm), and the shaded mass to the left of zero is the posterior probability that the true effect is actually negative, i.e.&nbsp;that the drug raises blood pressure. The two shaded areas are mirror images and numerically identical (0.023): the one-sided p value <em>is</em> the flat-prior posterior probability of getting the sign wrong – Gelman and Carlin’s Type S error. The identity holds only for a flat prior; with any realistic prior the two diverge, which is precisely why the choice of prior matters.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="connecting-the-p-value-to-the-weight-of-evidence" class="level3" data-number="37.9.4">
+<h3 data-number="37.9.4" class="anchored" data-anchor-id="connecting-the-p-value-to-the-weight-of-evidence"><span class="header-section-number">37.9.4</span> Connecting the p value to the weight of evidence</h3>
+<p>A small p value <em>feels</em> like strong evidence against the null. How much evidence is it really? To answer that we have to compare the null against an alternative – which a p value, computed from the null alone, never does. When the comparison is forced, the verdict is sobering: p values systematically overstate the evidence against the null.</p>
+<p>The cleanest way to see this is a calibration that holds across a wide class of reasonable alternatives.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> Translate a p value into the most favourable Bayes factor it could possibly justify – the strongest the evidence against the null could be for <em>any</em> sensible alternative. A Bayes factor never weighs the null on its own; it weighs it against a <em>specific</em> alternative, and its value depends on which alternative you name. The <em>most favourable</em> one is the alternative the most consistent with the data – in effect, the hypothesis, chosen with hindsight, that the true effect is exactly the size you happened to estimate (an alternative whose prior is piled up right where the data landed). No alternative you could have named in advance fits the data better than this best-case-after-the-fact one, so the Bayes factor it yields is an upper bound: it is the strongest the evidence against the null could possibly be, and the evidence for any pre-specified alternative is weaker still. A p of 0.05 results in a maximal Bayes factor of about 2.5 to 1 in favour of an effect, and – if the null and the alternative started out equally likely – leaves the null with at least a 29% posterior probability of being true. Not “5% chance the null is true”, as the number is so often misread, but <em>at best</em> 29%. You have to push to p = 0.005 before the null’s posterior probability drops below 7%.</p>
+<p>A second, lighter device makes the same point about a <em>single</em> p value. This is the <strong>surprisal</strong>, or S-value: <span class="math inline">\(s = -\log_2(p)\)</span>. S value measures the number of consecutive “heads” in fair coin tosses that would be exactly as surprising as the p value. A p of 0.05 gives s = 4.3 bits – about as surprising as four or five heads in a row, which nobody would call extraordinary evidence of a loaded coin. A p of 0.005 is 7.6 bits, a p of 0.001 about 10 bits. Recasting the p value as coin tosses cures the temptation to read “p = 0.05” as near-certainty: it is a mild surprise, no more.</p>
+<p>Both devices say what the rest of this section has been saying from different angles. The p value is a tail area – not a measure of evidence and not a probability about a hypothesis. The moment you ask the questions scientists actually care about – how big is the effect, how sure am I of its sign, how strong is the evidence, how probable is the hypothesis – you have left the p value behind and re-entered the world of estimation, intervals, priors and posteriors that the rest of this book is about.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption><strong>How much evidence is a small p value, really?</strong> A p value is computed from the null alone, so by itself it cannot weigh the null against an alternative. When the comparison is forced, p values turn out to overstate the evidence. <strong>Panel A</strong> shows the <em>smallest</em> posterior probability the null can have, across a wide class of reasonable alternatives and assuming the null and the alternative were equally likely beforehand (the Sellke-Bayarri-Berger calibration). A p of 0.05 leaves the null with at least a 29% chance of being true – nowhere near the 5% it is so often confused with (dotted line: the misreading ‘P(H0) = p’). You must reach p = 0.005 before the null falls below 7%. <strong>Panel B</strong> restates a single p value as its surprisal, s = -log2(p): the number of heads in a row in fair coin tossing that would be equally surprising. p = 0.05 is only 4.3 bits – four or five heads, a mild surprise – whereas p = 0.001 is about 10 bits. Both calibrations deliver the same warning: a result that merely clears the 0.05 line is weak evidence, not strong, and is certainly not the probability that the hypothesis is true or false.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level1" data-number="38">
+<h1 data-number="38"><span class="header-section-number">38</span> Conclusion</h1>
+<p>None of this means the p value is worthless. Computed honestly, reported in full – every test, not only the winners – and read as exactly what it is (a statement about the compatibility between one dataset and one null, on the assumptions of the model), it is a legitimate, if narrow, summary. The trouble was never the arithmetic. It is that the questions we care about in science – how large, how certain, how credible – are questions about parameters and hypotheses, while the p value answers a question about data. The remedy is not a better threshold or a cleverer correction; it is to model the effect you care about and report its posterior.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a></p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Draft note.</strong> The section below is carried over from the old probability chapter (§3.2.1.1), as planned in <code>BOOK_PLAN.md</code>. It overlaps with the sections above (p values, significance, type I errors) and is to be merged with them in this appendix’s rework.</p>
+</div>
+</div>
+</div>
+<section id="counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics" class="level2" data-number="38.1">
+<h2 data-number="38.1" class="anchored" data-anchor-id="counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics"><span class="header-section-number">38.1</span> Counting the events in a series of experiments leads to frequentist statistics</h2>
+<p>Counting over imagined repetitions of an experiment can be developed into a complete system of inference — null hypothesis testing, in which datasets, rather than hypotheses, carry the frequencies. The ambition behind it is old: Jacob Bernoulli’s <em>Ars Conjectandi</em> (1713) already aimed to read the unknown composition of an urn from the frequencies observed in a sample, using the sampling probabilities alone. Clayton has argued that this is a fallacy — the probability of the data under a hypothesis cannot, by itself, deliver the probability of the hypothesis — and traces its descent from Bernoulli through Quetelet, Galton, Pearson and Fisher into null hypothesis testing.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> The rest of this appendix sets out that development and its problems; Chapter 9 returns to the contrast with the Bayesian approach.</p>
+<p>Interestingly, the people who think they cannot ask the question about probability of a hypothesis, nevertheless try to answer it. For this they use something called null hypothesis testing. This is a statistical paradigm created by R.A. Fisher, Jerzy Neyman and Egon Pearson in 1920-1930-ies. The crux of frequentist statistics is that while hypotheses have no frequency, datasets do (albeit, only under certain precisely defined conditions). Imagine an infinite population of measurement values, from which you randomly and independently draw a sample of N values, then calculate a statistic, for example the mean. This sample mean reflects the population mean, but because of sampling error it does not do so precisely.</p>
+<blockquote class="blockquote">
+<p>The sampling error tends to be smaller, when N is larger – and it gets smaller proportionally to the square root of N. As N grows, it gets progressively harder to push the sampling error downwards.</p>
+</blockquote>
+<p>Now, imagine that we draw k such samples (each with size N) and calculate k means. The central limit theorem of statistics tells us that no matter what the sample data distribution, those means are approximately normally distributed. Note that for the central limit theorem to work, N must be at least 30, dependent on the data distribution. The overall mean of the k means is then the most likely estimate for the population mean, which in turn is the value most likely to be encountered in the population. We illustrate this by first simulating 1000 random samples, each with N=3, from standard log-normal distribution, and then calculating 1000 means. Not surprisingly, plotting the raw data leads to a nice lognormal distribution (dashed black curve), and plotting of the means (continuous black curve) leads to a fairly similar curve. However, when the 1000 samples get bigger (N=20, red curve; N=60, blue curve), the distribution of their means gets closer to normal.</p>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Density plot of distribution of 1000 means each of 1000 log-normally distributed samples. Black curve, N=3; red curve, N=10; blue curve, N=30, green curve, N=100. Raw data is shown as dotted curve.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Moreover, from the normal distribution it is easy to find the region that contains <span class="math inline">\(X\%\)</span> of the area under the curve, or <span class="math inline">\(X\%\)</span> of the probability density. The parameter values that delineate this area define <span class="math inline">\(X\%\)</span> confidence interval (CI).</p>
+<p>The interpretation of <span class="math inline">\(X\%~ CI\)</span> is that if we draw many samples and calculate as many means, then the true population mean falls inside <span class="math inline">\(X\%\)</span> of them. <a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> Formally, the CI makes a frequency statement about the error properties of the algorithm that calculates the CI, rather than about your sample mean. Nevertheless, if we have no background information to take into account and if the aforementioned assumptions (especially those of normality, and random and independent sampling) hold, then a confidence interval is numerically equivalent to Bayesian credible interval (also abbreviated as CI), whose interpretation is simply that <span class="math inline">\(X\% ~CI\)</span> means that the true expected value lies within this interval with X/100 probability. So you could view your confidence interval as a quick and dirty approximation to the credible interval, which you really want to have; but only if some strong assumptions hold.</p>
+<p>The confidence interval is not the only, or even the most popular, tool of frequentist statistics. This distinction belongs to the p value.</p>
+<p><strong>The logic of p value goes like this.</strong></p>
+<ol type="1">
+<li><p>As hypotheses do not have probabilities, but datasets do, we can speak of probability of data under some hypothesis – <span class="math inline">\(P(d \vert h)\)</span> or “probability of data given the hypothesis is true” – in the hope that this says something about the probability of that hypothesis, or <span class="math inline">\(P(h \vert d)\)</span>.<br>
+For a two-group comparison (experimental values versus control values, say) the easiest way to do that is to define a null hypothesis, or <span class="math inline">\(H_0\)</span>, whereby the means of the two groups are identical <a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a>.</p></li>
+<li><p>Now, if there really is no effect, then by virtue of the sampling error we expect to see an effect anyway (this is called sampling effect or sampling error). And any true effect will be on top of the random sampling effect, which is equally likely to increase or decrease our estimate of the true effect. Therefore it is important to be able to distinguish between sampling effects and possible true effects. There are two possibilities. (<em>i</em>) If the true effect is not much larger than the sampling effect, they cannot be disentangled (at least not without collecting new samples). We must then say that the observed effect is consistent with the sampling effect and declare that we could not find evidence for any true non-random effect. (<em>ii</em>) If the observed effect is much larger than estimated sampling effect, then we can declare with confidence that the effect is non-random. Alas, non-randomness in no way guarantees that the effect was actually caused by the experimental treatment.</p></li>
+<li><p>We model the sampling error of the <span class="math inline">\(H_0\)</span> as a normal distribution, whose mean equals zero (the zero effect) and whose standard deviation equals the sample standard deviation divided by the square root of N.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> The standard deviation of the means (as opposed to original data points) is called the standard error of the mean or SEM. If N is large enough (at least 30), then <span class="math inline">\(mean +/- SEM = 68\%~ CI\)</span>, <span class="math inline">\(mean +/- 1.96SEM = 95\% ~CI\)</span> and <span class="math inline">\(mean +/-3SEM = 99 \% ~CI\)</span>.</p></li>
+</ol>
+<div class="cell" data-fig.margin="true">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-appendix-H0_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>A null hypothesis with SEM, 1.96SEM, and 3SEM shown as black, red and blue dashed lines, respectively.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We use the sample data in estimating SEM of the <span class="math inline">\(H_0\)</span> because statistical software assumes that the scientific hardware (your brain) has no independent knowledge of the true population variation, and thus the sample values is used in lieu of population values. However, sample estimates of SEM can be highly misleading when N is small. Also, when the data is non-randomly drawn from the population, then even a very large sample is likely to be a poor representation of the population. As in many lab experiments N tends to be very small and it is often hard to even say, what a random sample means, <span class="math inline">\(H_0\)</span> testing tends not to work well in many branches of biology.</p>
+<p>We now calculate the mean of our sample and superimpose it on the normal distribution of <span class="math inline">\(H_0\)</span>. If our sample mean is situated where the <span class="math inline">\(H_0\)</span> distribution is still high, then it is consistent with the sample effect. On the other hand, if the height of the null distribution is very low, then the sample mean is inconsistent with the sample effect. Quantitatively, the fraction of the <span class="math inline">\(H_0\)</span> density that is cut of by our sample mean is the one-sided p value.</p>
+<blockquote class="blockquote">
+<p>p value is the long run relative frequency of obtaining data that is as far or further away from <span class="math inline">\(H_0\)</span> than your sample data, if the <span class="math inline">\(H_0\)</span> holds.</p>
+</blockquote>
+<p>The p value was introduced by Roland Fisher in 1923 for use as an informal measure of strength of evidence. If p is small, 0.001, say, we might be tempted to claim that we have strong evidence that the <span class="math inline">\(H_0\)</span> is false.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a></p>
+<p>A decade or so later Neyman and Pearson added to it something called significance level, often denoted by <span class="math inline">\(\alpha\)</span>, and derived a quite different use for the p value in the long-term quality control of the experimental setup. In their scheme, which is mathematically impeccable, p value is not a direct comment on the experiment at hand, but rather on the experimental system that generated this experiment.</p>
+<p>The goal of employing <span class="math inline">\(\alpha\)</span> is to provide an automatic procedure that makes discoveries, and does so with fixed error rates. By discovery we mean that “an effect is real”, or something like it. A discovery dichotomizes our contiuous measurements into statistically not significant non-discoveries and statistically significant discoveries, which can be either true discoveries or false discoveries (false-positives).</p>
+<p>If <span class="math inline">\(p &lt; \alpha\)</span>, then we can call the p value statistically significant. By convention, <span class="math inline">\(\alpha\)</span> is set either as 0.01, 0.05 (the most often used value), or 0.1. By setting <span class="math inline">\(\alpha\)</span> we keep the long run relative frequency of type I errors at <span class="math inline">\(\alpha\)</span> level.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> This dichotomization, which comes at a cost of information loss, allows to define the frequency of <strong>type I errors</strong> as the relative frequency by which true <span class="math inline">\(H_0\)</span> are falsely classified as “statistically significant. Thereby we have a formal procedure that allows us to make discoveries without any more scientific input as data. If this actually worked, being a scientists would be a low-education job.</p>
+<p>The Neyman-Pearson procedure is fine, statistically speaking. But its use in science carries great dangers. When scientists employ it with <span class="math inline">\(\alpha\)</span> set to 0.05, they implicitly agree to publish on average every 20th true <span class="math inline">\(H_0\)</span> as a statistically significant false-positive finding. The level of harm that ensues depends on the true frequency of true effects. This is quantified as the False Discovery Rate (FDR), where FDR = false significant effects / all significant effects. If scientists test predominantly true effects (most experiments end up in showing a true effect of experimental treatment), then FDR is low and the use of statistical significance is not an obvious folly. On the other hand, if scientists are taking risks and testing hypotheses, most of which are false (most <span class="math inline">\(H_0\)</span>s are true), then the Neyman-Pearson procedure leads to a terribly misleading picture of science as a whole. As philosophers seem to agree that testing risky hypotheses is what good scientists should be doing, therein obviously lies a problem.</p>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>A small (statistically significant) p value can be produced by any of several quite different reasons – a large sample size, a low variation, a large true effect, or a large bias – which is one reason it is so hard to interpret on its own.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Point (ii) needs care, because it is easy to merge two different things. The 5% type I error rate does <em>not</em> depend on the base rate of true nulls – it is fixed by the threshold alone. What depends on the base rate is the <em>fraction of your “significant” claims that are actually false</em> (one minus the positive predictive value). If almost every hypothesis you test is in fact a true null, then even a correct 5% type I error rate will leave most of your “discoveries” being false positives. This base-rate argument is the engine of Ioannidis JPA, “Why most published research findings are false,” <em>PLoS Med</em> 2005;2:e124 (<a href="https://doi.org/10.1371/journal.pmed.0020124">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Law MR, Wald NJ, Morris JK, Jordan RE, “Value of low dose combination treatment with blood pressure lowering drugs: analysis of 354 randomised trials,” <em>BMJ</em> 2003;326:1427 (<a href="https://doi.org/10.1136/bmj.326.7404.1427">DOI</a>), pooled 354 placebo-controlled trials and found a standard-dose systolic reduction of 9.1 mm Hg, rising by about 1 mm Hg for every 10 mm Hg of higher pre-treatment pressure – which is what shifts the prior to roughly 9.7 mm at this cohort’s 160 mm baseline. The same paper explains why Drug 3 is suspect: reaching a 20 mm reduction required <em>three</em> drugs at half standard dose, so 20 mm from a single agent is far outside the plausible range.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Schuirmann DJ, “A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability,” <em>J Pharmacokinet Biopharm</em> 1987;15:657-680 (<a href="https://doi.org/10.1007/BF01068419">DOI</a>). A modern, accessible primer across common designs is Lakens D, “Equivalence tests: a practical primer for t tests, correlations, and meta-analyses,” <em>Soc Psychol Personal Sci</em> 2017;8:355-362 (<a href="https://doi.org/10.1177/1948550617697177">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The formal statement is Gelman A, Stern H, “The difference between ‘significant’ and ‘not significant’ is not itself significant,” <em>Am Stat</em> 2006;60:328-331 (<a href="https://doi.org/10.1198/000313006X152649">DOI</a>). To claim that two effects differ you must test their <em>difference</em> directly; the fact that one estimate cleared the 0.05 line while the other did not is not such a test.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Button KS, Ioannidis JPA, Mokrysz C, Nosek BA, Flint J, Robinson ESJ, Munafò MR. Power failure: why small sample size undermines the reliability of neuroscience. <em>Nat Rev Neurosci</em> 2013;14:365-376 (<a href="https://doi.org/10.1038/nrn3475">DOI</a>). A later review by the same group extends the finding from neuroscience to biomedical science generally: Dumas-Mallet E, Button KS, Boraud T, Gonon F, Munafò MR. Low statistical power in biomedical science: a review of three human research domains. <em>R Soc Open Sci</em> 2017;4:160254 (<a href="https://doi.org/10.1098/rsos.160254">DOI</a>) – across neurology, psychiatry and somatic disease they found roughly half of studies had statistical power below 20%.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>There are also the frequentist confidence intervals, which are mathematically consistent with p values (a 95% CI can be defined as a range of non-significant p values, which treat the sample mean as the null hypothesis). These intervals should also be corrected for multiple testing, so in this respect they have no advantage over the p value.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Gelman A, Loken E, “The garden of forking paths: why multiple comparisons can be a problem, even when there is no ‘fishing expedition’ or ‘p-hacking’ and the research hypothesis was posited ahead of time,” 2013, unpublished manuscript (<a href="https://sites.stat.columbia.edu/gelman/research/unpublished/p_hacking.pdf">PDF</a>). A condensed published version is Gelman A, Loken E, “The statistical crisis in science,” <em>Am Sci</em> 2014;102:460-465.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Orben A, Przybylski AK, “The association between adolescent well-being and digital technology use,” <em>Nat Hum Behav</em> 2019;3:173-182 (<a href="https://doi.org/10.1038/s41562-018-0506-1">DOI</a>) – a specification-curve analysis across three large datasets (combined n = 355,358) finding the association negative but tiny, explaining at most 0.4% of the variance in well-being.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The q-value and positive false discovery rate are due to Storey JD, Tibshirani R. Statistical significance for genomewide studies. <em>Proc Natl Acad Sci USA</em> 2003;100:9440-9445 (<a href="https://doi.org/10.1073/pnas.1530509100">DOI</a>), building on Storey JD, “A direct approach to false discovery rates” (<em>J R Stat Soc Ser B</em> 2002;64:479-498). The original false discovery rate and its controlling procedure are from Benjamini Y, Hochberg Y, “Controlling the false discovery rate: a practical and powerful approach to multiple testing” (<em>J R Stat Soc Ser B</em> 1995;57:289-300).<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>The compatibility-interval framing, and the surprisal (S-value) used later in this section, are from Rafi Z, Greenland S, “Semantic and cognitive tools to aid statistical science: replace confidence and significance by compatibility and surprise,” <em>BMC Med Res Methodol</em> 2020;20:244 (<a href="https://doi.org/10.1186/s12874-020-01105-9">DOI</a>).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Kruschke JK, “Bayesian estimation supersedes the t test,” <em>J Exp Psychol Gen</em> 2013;142:573-603 (<a href="https://doi.org/10.1037/a0029146">DOI</a>). The posteriors in the figure are computed by the same two-dimensional grid over <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> used in the Bayesian-inference chapter, with a flat prior. This is a simplified version of BEST: like BEST it estimates location and spread together, but it fixes the Student-t normality parameter at <span class="math inline">\(\nu = 3\)</span> rather than estimating it, and uses a flat prior in place of Kruschke’s weakly-informative ones.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Gelman A, Carlin J, “Beyond power calculations: assessing Type S (sign) and Type M (magnitude) errors,” <em>Perspect Psychol Sci</em> 2014;9:641-651 (<a href="https://doi.org/10.1177/1745691614551642">DOI</a>).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>The lower bound on the Bayes factor and on the posterior probability of the null are from Sellke T, Bayarri MJ, Berger JO, “Calibration of p values for testing precise null hypotheses,” <em>Am Stat</em> 2001;55:62-71 (<a href="https://doi.org/10.1198/000313001300339950">DOI</a>); the underlying argument that a small p value can overstate the evidence by an order of magnitude is Berger JO, Sellke T, “Testing a point null hypothesis: the irreconcilability of P values and evidence,” <em>J Am Stat Assoc</em> 1987;82:112-122 (<a href="https://doi.org/10.1080/01621459.1987.10478397">DOI</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>For accessible, authoritative treatments of the arguments in this chapter, see the American Statistical Association’s statement – Wasserstein RL, Lazar NA, “The ASA statement on p-values: context, process, and purpose,” <em>Am Stat</em> 2016;70:129-133 (<a href="https://doi.org/10.1080/00031305.2016.1154108">DOI</a>, <a href="https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf">PDF</a>); the catalogue of specific errors in Greenland S, Senn SJ, Rothman KJ, Carlin JB, Poole C, Goodman SN, Altman DG, “Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations,” <em>Eur J Epidemiol</em> 2016;31:337-350 (<a href="https://doi.org/10.1007/s10654-016-0149-3">DOI</a>); and the call to drop significance thresholds, Amrhein V, Greenland S, McShane B, “Scientists rise up against statistical significance,” <em>Nature</em> 2019;567:305-307 (<a href="https://doi.org/10.1038/d41586-019-00857-9">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Clayton A, <em>Bernoulli’s Fallacy: Statistical Illogic and the Crisis of Modern Science</em>, New York: Columbia University Press, 2021.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>This does not mean that your particular sample mean lies within the <span class="math inline">\(X\%~ CI\)</span> with <span class="math inline">\(X\%\)</span> probability.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>that is, on average the experimental treatment has no effect at all or mean(treatment value) – mean(control value) = 0<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>The null hypothesis does not have to be normal, but historically they usually are.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>This intuition can be very wrong.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>Thanks to <span class="math inline">\(\alpha\)</span>, we can define the confidence interval through the p value: <span class="math inline">\(X\%~ CI\)</span> covers a range of parameter values, whose p values are not statistically significant at significance level <span class="math inline">\(\alpha = 1 – X\)</span>. Thus, the CI and the p value carry redundant information.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./15-appendix-git.html" class="pagination-link" aria-label="Appendix: Git">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

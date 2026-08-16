@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 12&nbsp; Causal diagrams (DAGs)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./12-stratification.html" rel="next">
+<link href="./ch10-potential-outcomes.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch11-dags.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a-graph-of-causal-assumptions" id="toc-a-graph-of-causal-assumptions" class="nav-link active" data-scroll-target="#a-graph-of-causal-assumptions"><span class="header-section-number">12.1</span> A graph of causal assumptions</a></li>
+  <li><a href="#the-three-elementary-structures" id="toc-the-three-elementary-structures" class="nav-link" data-scroll-target="#the-three-elementary-structures"><span class="header-section-number">12.2</span> The three elementary structures</a></li>
+  <li><a href="#what-adjustment-does-three-simulations" id="toc-what-adjustment-does-three-simulations" class="nav-link" data-scroll-target="#what-adjustment-does-three-simulations"><span class="header-section-number">12.3</span> What adjustment does: three simulations</a></li>
+  <li><a href="#one-rule-underneath-d-separation" id="toc-one-rule-underneath-d-separation" class="nav-link" data-scroll-target="#one-rule-underneath-d-separation"><span class="header-section-number">12.4</span> One rule underneath: d-separation</a></li>
+  <li><a href="#the-backdoor-criterion" id="toc-the-backdoor-criterion" class="nav-link" data-scroll-target="#the-backdoor-criterion"><span class="header-section-number">12.5</span> The backdoor criterion</a></li>
+  <li><a href="#the-master-cohort-as-a-graph" id="toc-the-master-cohort-as-a-graph" class="nav-link" data-scroll-target="#the-master-cohort-as-a-graph"><span class="header-section-number">12.6</span> The master cohort, as a graph</a></li>
+  <li><a href="#selection-bias-is-collider-bias" id="toc-selection-bias-is-collider-bias" class="nav-link" data-scroll-target="#selection-bias-is-collider-bias"><span class="header-section-number">12.7</span> Selection bias is collider bias</a></li>
+  <li><a href="#the-fine-print" id="toc-the-fine-print" class="nav-link" data-scroll-target="#the-fine-print"><span class="header-section-number">12.8</span> The fine print</a></li>
+  <li><a href="#what-a-dag-cannot-show-interaction-and-mechanism" id="toc-what-a-dag-cannot-show-interaction-and-mechanism" class="nav-link" data-scroll-target="#what-a-dag-cannot-show-interaction-and-mechanism"><span class="header-section-number">12.9</span> What a DAG cannot show: interaction and mechanism</a></li>
+  <li><a href="#drawing-a-dag-a-step-by-step" id="toc-drawing-a-dag-a-step-by-step" class="nav-link" data-scroll-target="#drawing-a-dag-a-step-by-step"><span class="header-section-number">12.10</span> Drawing a DAG: a step-by-step</a></li>
+  <li><a href="#structural-equations-the-model-behind-the-graph" id="toc-structural-equations-the-model-behind-the-graph" class="nav-link" data-scroll-target="#structural-equations-the-model-behind-the-graph"><span class="header-section-number">12.11</span> Structural equations: the model behind the graph</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">12.12</span> Key points</a></li>
+  <li><a href="#notes-and-references" id="toc-notes-and-references" class="nav-link" data-scroll-target="#notes-and-references"><span class="header-section-number">12.13</span> Notes and references</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">12.14</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch11-dags.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Chapter 10 gave us a question with a precise shape: the effect of a drug is a contrast of potential outcomes, <span class="math inline">\(E[Y(1)] - E[Y(0)]\)</span>, and the crude comparison estimates it only when the treated are exchangeable with the untreated. It also told us the cure — <em>condition on enough of the right variables</em> — but not which variables those are. “Enough of the right ones” is not a statistical fact you can read off the data; it is a claim about how the world produced the data. This chapter is about writing that claim down as a picture, and reading off the picture exactly which variables to adjust for — and, just as important, which to leave alone.</p>
+<p>The picture is a <strong>directed acyclic graph</strong> (DAG). Causal diagrams were given their modern form for epidemiology by Greenland, Pearl and Robins (1999); the remarkable result is that a few simple rules about arrows decide every adjustment question, and that the rules sometimes contradict the reflex — drilled into every analyst — to “control for everything you can”.</p>
+<section id="a-graph-of-causal-assumptions" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="a-graph-of-causal-assumptions"><span class="header-section-number">12.1</span> A graph of causal assumptions</h2>
+<p>A DAG has three ingredients and no more.</p>
+<ul>
+<li><strong>Nodes</strong> are variables — <code>severity</code>, <code>drug</code>, <code>stroke</code>.</li>
+<li>A <strong>directed edge</strong> <span class="math inline">\(A \rightarrow B\)</span> says <span class="math inline">\(A\)</span> may exert a <em>direct</em> causal effect on <span class="math inline">\(B\)</span>: intervene on <span class="math inline">\(A\)</span>, holding the rest of the graph’s logic fixed, and <span class="math inline">\(B\)</span> can change. “Direct” means <em>not routed through another node already drawn</em>.</li>
+<li><strong>Acyclic</strong> means you cannot follow the arrows and return to where you started. Nothing is its own ancestor; causes precede effects.</li>
+</ul>
+<p>A <strong>path</strong> is any route between two nodes along the edges, <em>ignoring their direction</em>. A <strong>directed path</strong> follows the arrows head-to-tail. <span class="math inline">\(B\)</span> is a <strong>descendant</strong> of <span class="math inline">\(A\)</span> if a directed path runs from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span>.</p>
+<p>The single most important thing about a DAG is what it does <em>not</em> contain. Drawing <span class="math inline">\(A \rightarrow B\)</span> is a weak claim: there <em>might</em> be an effect. <strong>Omitting</strong> the arrow is a strong one: there is <em>no</em> direct effect, in any individual, of any size. A DAG is therefore a compact statement of causal assumptions, brought to the data from subject knowledge — physiology, study design, common sense — and <em>not</em> learned from the data themselves. The data can occasionally embarrass a DAG (see the fine print at the end), but they can never hand you one.</p>
+</section>
+<section id="the-three-elementary-structures" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="the-three-elementary-structures"><span class="header-section-number">12.2</span> The three elementary structures</h2>
+<p>Every path, however long, is assembled from three elementary three-node pieces. Learn how each one transmits or stops association and you can read any graph.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>co <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="at">X =</span> <span class="dv">0</span>, <span class="at">Z =</span> <span class="dv">1</span>, <span class="at">Y =</span> <span class="dv">2</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="at">X =</span> <span class="dv">0</span>, <span class="at">Z =</span> <span class="dv">0</span>, <span class="at">Y =</span> <span class="dv">0</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>chain <span class="ot">&lt;-</span> <span class="fu">dagify</span>(Z <span class="sc">~</span> X, Y <span class="sc">~</span> Z, <span class="at">coords =</span> co)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fork  <span class="ot">&lt;-</span> <span class="fu">dagify</span>(X <span class="sc">~</span> Z, Y <span class="sc">~</span> Z, <span class="at">coords =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="at">X =</span> <span class="dv">0</span>, <span class="at">Z =</span> <span class="dv">1</span>, <span class="at">Y =</span> <span class="dv">2</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">y =</span> <span class="fu">c</span>(<span class="at">X =</span> <span class="dv">0</span>, <span class="at">Z =</span> <span class="dv">1</span>, <span class="at">Y =</span> <span class="dv">0</span>)))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>coll  <span class="ot">&lt;-</span> <span class="fu">dagify</span>(Z <span class="sc">~</span> X, Z <span class="sc">~</span> Y, <span class="at">coords =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="at">X =</span> <span class="dv">0</span>, <span class="at">Z =</span> <span class="dv">1</span>, <span class="at">Y =</span> <span class="dv">2</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">y =</span> <span class="fu">c</span>(<span class="at">X =</span> <span class="dv">0</span>, <span class="at">Z =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">Y =</span> <span class="dv">0</span>)))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mk <span class="ot">&lt;-</span> <span class="cf">function</span>(d, ttl) <span class="fu">ggdag</span>(d, <span class="at">node_size =</span> <span class="dv">16</span>, <span class="at">text_size =</span> <span class="fl">3.2</span>, <span class="at">edge_type =</span> <span class="st">"link"</span>) <span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(ttl) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mk</span>(chain, <span class="st">"Chain:  X -&gt; Z -&gt; Y"</span>) <span class="sc">|</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mk</span>(fork, <span class="st">"Fork:  X &lt;- Z -&gt; Y"</span>) <span class="sc">|</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mk</span>(coll, <span class="st">"Collider:  X -&gt; Z &lt;- Y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ch11-dags_files/figure-html/structures-fig-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption>The three elementary structures. A chain and a fork both transmit association along the path; a collider does not. The grey node is the one a path runs <em>through</em>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>A <strong>chain</strong>, <span class="math inline">\(X \rightarrow Z \rightarrow Y\)</span>, is mediation. <span class="math inline">\(Z\)</span> is a <strong>mediator</strong>: the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> runs <em>through</em> it. <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are associated; condition on <span class="math inline">\(Z\)</span> and the association is <strong>blocked</strong>, because once you fix the middle of the relay there is nothing left for <span class="math inline">\(X\)</span> to tell you about <span class="math inline">\(Y\)</span>.</li>
+<li>A <strong>fork</strong>, <span class="math inline">\(X \leftarrow Z \rightarrow Y\)</span>, is confounding. <span class="math inline">\(Z\)</span> is a <strong>common cause</strong>. <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are associated even though neither causes the other — a purely spurious correlation. Condition on <span class="math inline">\(Z\)</span> and it <strong>blocks</strong>: within a level of <span class="math inline">\(Z\)</span> the spurious channel is shut.</li>
+<li>A <strong>collider</strong>, <span class="math inline">\(X \rightarrow Z \leftarrow Y\)</span>, is the mirror image and the one that trips people. <span class="math inline">\(Z\)</span> is a <strong>common effect</strong>. Here <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <em>not</em> associated through <span class="math inline">\(Z\)</span> — the path is <strong>blocked by default</strong>. Conditioning on <span class="math inline">\(Z\)</span> does the opposite of what it does in the other two structures: it <strong>opens</strong> the path and manufactures an association out of nothing.</li>
+</ul>
+<p>The collider’s reversal is worth a sentence of intuition. If <span class="math inline">\(Z\)</span> is high and depends on both <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, then learning <span class="math inline">\(X\)</span> was low tells you <span class="math inline">\(Y\)</span> was probably high — <em>because something had to push <span class="math inline">\(Z\)</span> up</em>. Two independent causes of a shared effect become dependent once you hold the effect fixed. We will see this is the engine of selection bias.</p>
+</section>
+<section id="what-adjustment-does-three-simulations" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="what-adjustment-does-three-simulations"><span class="header-section-number">12.3</span> What adjustment does: three simulations</h2>
+<p>The claims above are not stylistic preferences; they are arithmetic, and on data whose truth we control we can watch each one happen. In every panel below “adjustment” is just adding the middle node to a linear regression of <span class="math inline">\(Y\)</span> on <span class="math inline">\(X\)</span>, and there is <strong>no direct <span class="math inline">\(X \rightarrow Y\)</span> effect anywhere</strong> — every <span class="math inline">\(X\)</span>–<span class="math inline">\(Y\)</span> association we see is structural.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## FORK:  X &lt;- Z -&gt; Y   (Z is a confounder; no X -&gt; Y)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n); X <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="sc">*</span> Z <span class="sc">+</span> <span class="fu">rnorm</span>(n); Y <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="sc">*</span> Z <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>fork_crude <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> X))[<span class="st">"X"</span>]          <span class="co"># spurious association</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>fork_adj   <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">+</span> Z))[<span class="st">"X"</span>]      <span class="co"># adjust the confounder</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">crude =</span> fork_crude, <span class="at">adjusted_for_Z =</span> fork_adj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         crude.X adjusted_for_Z.X 
+      0.41929838      -0.00800076 </code></pre>
+</div>
+</div>
+<p>In the <strong>fork</strong>, the crude slope is a clear 0.42 — a confound posing as an effect — and conditioning on <span class="math inline">\(Z\)</span> collapses it to -0.01. This is the case the reflex gets right: <em>adjust for the common cause</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## CHAIN:  X -&gt; M -&gt; Y   (M is a mediator; no direct X -&gt; Y)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n); M <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="sc">*</span> X <span class="sc">+</span> <span class="fu">rnorm</span>(n); Y <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="sc">*</span> M <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>chain_total <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> X))[<span class="st">"X"</span>]         <span class="co"># the total effect of X</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>chain_adj   <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">+</span> M))[<span class="st">"X"</span>]     <span class="co"># adjust the mediator</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">total =</span> chain_total, <span class="at">adjusted_for_M =</span> chain_adj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         total.X adjusted_for_M.X 
+     0.816156525      0.005980602 </code></pre>
+</div>
+</div>
+<p>In the <strong>chain</strong>, the crude slope 0.82 <em>is</em> the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> — the thing we want. Conditioning on the mediator <span class="math inline">\(M\)</span> destroys it, leaving 0.01. Here the reflex is wrong: control for <span class="math inline">\(M\)</span> and you have adjusted away the very effect you set out to measure. The same drug, the same data, the wrong number.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## COLLIDER:  X -&gt; C &lt;- Y   (C is a common effect; X and Y are independent)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n); Y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n); C <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="sc">*</span> X <span class="sc">+</span> <span class="fl">0.9</span> <span class="sc">*</span> Y <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>coll_crude <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> X))[<span class="st">"X"</span>]          <span class="co"># truly independent</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>coll_adj   <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">+</span> C))[<span class="st">"X"</span>]      <span class="co"># condition on the collider</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">crude =</span> coll_crude, <span class="at">adjusted_for_C =</span> coll_adj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         crude.X adjusted_for_C.X 
+     -0.01024442      -0.45277671 </code></pre>
+</div>
+</div>
+<p>In the <strong>collider</strong>, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent by construction, and the crude slope duly sits at -0.01. Condition on <span class="math inline">\(C\)</span> and a association of -0.45 appears from nowhere. <em>Adjusting created the bias.</em> No amount of data fixes this; more rows estimate the spurious slope more precisely.</p>
+<p>Three structures, three different right answers, one wrong reflex. “Control for everything you can measure” silently treats every variable as a fork. It is correct for confounders, ruinous for mediators, and actively bias-inducing for colliders. The graph is what tells them apart.</p>
+</section>
+<section id="one-rule-underneath-d-separation" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="one-rule-underneath-d-separation"><span class="header-section-number">12.4</span> One rule underneath: d-separation</h2>
+<p>The three cases are special instances of a single criterion. Take any path between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, and a set of variables <span class="math inline">\(Z\)</span> you have conditioned on. The path is <strong>blocked</strong> if <em>either</em>:</p>
+<ol type="1">
+<li>it contains a non-collider (a chain link or a fork centre) that is <strong>in</strong> <span class="math inline">\(Z\)</span>; or</li>
+<li>it contains a collider that is <strong>not</strong> in <span class="math inline">\(Z\)</span> — <em>and</em> none of that collider’s descendants is in <span class="math inline">\(Z\)</span> either.</li>
+</ol>
+<p>If <em>every</em> path between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is blocked, they are <strong>d-separated</strong> given <span class="math inline">\(Z\)</span>, and the graph guarantees they are statistically independent given <span class="math inline">\(Z\)</span>. If even one path is open, they are <strong>d-connected</strong> and we expect an association.</p>
+<p>Two corollaries are the whole game. Conditioning on a non-collider (rule 1) <em>helps</em> — it shuts a path. Conditioning on a collider, <em>or on anything downstream of one</em> (rule 2), <em>hurts</em> — it opens a path that was closed. That parenthetical about descendants is the subtle part: you need not put the collider itself in <span class="math inline">\(Z\)</span> to do the damage; a proxy for it — a variable it causes — is enough. Selection into a sample is exactly such a proxy.</p>
+</section>
+<section id="the-backdoor-criterion" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="the-backdoor-criterion"><span class="header-section-number">12.5</span> The backdoor criterion</h2>
+<p>Now the payoff. We want the causal effect of an exposure <span class="math inline">\(A\)</span> on an outcome <span class="math inline">\(Y\)</span>. The paths from <span class="math inline">\(A\)</span> to <span class="math inline">\(Y\)</span> come in two kinds:</p>
+<ul>
+<li><strong>Causal (directed) paths</strong>, <span class="math inline">\(A \rightarrow \dots \rightarrow Y\)</span>, which start with an arrow <em>out of</em> <span class="math inline">\(A\)</span>. These carry the effect; we must <strong>leave them open</strong>.</li>
+<li><strong>Backdoor paths</strong>, which start with an arrow <em>into</em> <span class="math inline">\(A\)</span> (e.g. <span class="math inline">\(A \leftarrow Z \rightarrow Y\)</span>). These carry confounding; we must <strong>close them all</strong>.</li>
+</ul>
+<p>A set <span class="math inline">\(Z\)</span> satisfies the <strong>backdoor criterion</strong> for the effect of <span class="math inline">\(A\)</span> on <span class="math inline">\(Y\)</span> when</p>
+<ol type="1">
+<li>no node in <span class="math inline">\(Z\)</span> is a descendant of <span class="math inline">\(A\)</span> (so we touch neither mediators nor colliders on the causal side), and</li>
+<li><span class="math inline">\(Z\)</span> blocks every backdoor path from <span class="math inline">\(A\)</span> to <span class="math inline">\(Y\)</span>.</li>
+</ol>
+<p>When such a <span class="math inline">\(Z\)</span> exists, conditioning on it makes the treated and untreated exchangeable <em>within levels of</em> <span class="math inline">\(Z\)</span> — exactly the conditional exchangeability of Chapter 10 — and the effect is <strong>identified</strong>: we may estimate it by standardising or weighting over <span class="math inline">\(Z\)</span> (Chapter 12). The three structures reappear as a vocabulary: an open backdoor path is <strong>confounding</strong>; a directed path is <strong>mediation</strong> (block it and you lose part of the effect); a path opened by conditioning on a common effect is <strong>selection bias</strong>.</p>
+<p>Crucially, the criterion can <em>forbid</em> adjustment. A mediator is a descendant of <span class="math inline">\(A\)</span>, so rule 1 keeps it out of <span class="math inline">\(Z\)</span> for the total effect. A collider, if not conditioned on, already blocks its path, so adding it can only do harm. The graph turns “what should I adjust for?” from a matter of taste into a matter of reading.</p>
+</section>
+<section id="the-master-cohort-as-a-graph" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="the-master-cohort-as-a-graph"><span class="header-section-number">12.6</span> The master cohort, as a graph</h2>
+<p>Our running cohort — does a blood-pressure drug prevent stroke? — is built from a known data-generating process (<code>R/simulate_cohort.R</code>). Every structural equation is one or more arrows, and together they make the DAG below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mc <span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  diabetes     <span class="sc">~</span> age,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  severity     <span class="sc">~</span> age <span class="sc">+</span> diabetes,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  drug         <span class="sc">~</span> severity <span class="sc">+</span> diabetes <span class="sc">+</span> pref,        <span class="co"># confounding-by-indication + instrument</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  sbp          <span class="sc">~</span> age <span class="sc">+</span> severity <span class="sc">+</span> drug,             <span class="co"># the drug lowers blood pressure</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  stroke       <span class="sc">~</span> severity <span class="sc">+</span> age <span class="sc">+</span> diabetes <span class="sc">+</span> sbp <span class="sc">+</span> drug,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  hospitalised <span class="sc">~</span> drug <span class="sc">+</span> stroke,                     <span class="co"># a common effect</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"drug"</span>, <span class="at">outcome =</span> <span class="st">"stroke"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">coords =</span> <span class="fu">list</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">c</span>(<span class="at">age =</span> <span class="dv">0</span>, <span class="at">diabetes =</span> <span class="dv">0</span>, <span class="at">severity =</span> <span class="fl">1.1</span>, <span class="at">pref =</span> <span class="fl">1.5</span>, <span class="at">drug =</span> <span class="fl">2.5</span>, <span class="at">sbp =</span> <span class="fl">3.6</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">stroke =</span> <span class="fl">4.8</span>, <span class="at">hospitalised =</span> <span class="fl">3.6</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="at">age =</span> <span class="fl">2.6</span>, <span class="at">diabetes =</span> <span class="fl">0.6</span>, <span class="at">severity =</span> <span class="fl">1.6</span>, <span class="at">pref =</span> <span class="fl">3.5</span>, <span class="at">drug =</span> <span class="fl">2.5</span>, <span class="at">sbp =</span> <span class="fl">3.4</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">stroke =</span> <span class="fl">1.7</span>, <span class="at">hospitalised =</span> <span class="sc">-</span><span class="fl">0.2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_status</span>(mc, <span class="at">text =</span> <span class="cn">FALSE</span>, <span class="at">use_labels =</span> <span class="st">"name"</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">node_size =</span> <span class="dv">9</span>, <span class="at">text_size =</span> <span class="fl">3.2</span>, <span class="at">edge_type =</span> <span class="st">"link"</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>() <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>, <span class="at">fill =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.4</span>, <span class="fl">5.4</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.6</span>, <span class="fl">3.9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ch11-dags_files/figure-html/master-dag-fig-1.png" class="img-fluid figure-img" width="816"></p>
+<figcaption>The master-cohort DAG. <code>drug</code> (exposure) and <code>stroke</code> (outcome) in blue; <code>severity</code> and <code>diabetes</code> are common causes (confounders); <code>sbp</code> is a mediator on the causal path <code>drug -&gt; sbp -&gt; stroke</code>; <code>pref</code> is an instrument; <code>hospitalised</code> is a collider (a common effect of <code>drug</code> and <code>stroke</code>).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Reading it off: <code>severity</code> and <code>diabetes</code> sit on forks into both <code>drug</code> and <code>stroke</code> — they are the confounders. <code>sbp</code> is the mediator, lying on the causal path <code>drug → sbp → stroke</code> (the drug works largely <em>by</em> lowering blood pressure). <code>pref</code>, the prescribing preference, points only into <code>drug</code>: it is an <strong>instrument</strong> (Chapter 17), not a confounder. And <code>hospitalised</code> is a <strong>collider</strong> — a common effect of treatment and stroke — sitting off to the side.</p>
+<p>We need not eyeball which adjustments are valid; the graph computes them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(mc, <span class="at">exposure =</span> <span class="st">"drug"</span>, <span class="at">outcome =</span> <span class="st">"stroke"</span>, <span class="at">effect =</span> <span class="st">"total"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{ diabetes, severity }</code></pre>
+</div>
+</div>
+<p><code>dagitty</code> returns <code>{ diabetes, severity }</code>: blocking the two forks suffices for the <strong>total</strong> effect, and <code>age</code> and <code>pref</code> are optional (adjusting <code>age</code> is harmless; adjusting the instrument <code>pref</code> is allowed but pointless and, in general, can hurt precision). Notice what is <em>absent</em>: <code>sbp</code> is never in an adjustment set for the total effect, because it is a mediator; <code>hospitalised</code> never appears, because it is a collider.</p>
+<p>The cohort was engineered so the crude analysis reverses the truth. The graph predicts exactly that — there is a wide-open backdoor <code>drug ← severity → stroke</code> — and predicts the cure.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>age_c <span class="ot">&lt;-</span> (df<span class="sc">$</span>age <span class="sc">-</span> <span class="dv">62</span>) <span class="sc">/</span> <span class="dv">10</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">cohort_truth</span>(df)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>crude_RR <span class="ot">&lt;-</span> <span class="fu">with</span>(df, <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">0</span>]))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>g_RR <span class="ot">&lt;-</span> <span class="cf">function</span>(rhs) {                          <span class="co"># standardise (a peek at Ch. 12)</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  m  <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">"stroke ~"</span>, rhs)), binomial, df)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  r1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">predict</span>(m, <span class="fu">transform</span>(df, <span class="at">drug =</span> <span class="dv">1</span>), <span class="at">type =</span> <span class="st">"response"</span>))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  r0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">predict</span>(m, <span class="fu">transform</span>(df, <span class="at">drug =</span> <span class="dv">0</span>), <span class="at">type =</span> <span class="st">"response"</span>))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  r1 <span class="sc">/</span> r0</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">crude             =</span> crude_RR,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">backdoor_set      =</span> <span class="fu">g_RR</span>(<span class="st">"drug + severity + age_c + diabetes"</span>),</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">plus_mediator_sbp =</span> <span class="fu">g_RR</span>(<span class="st">"drug + severity + age_c + diabetes + sbp"</span>),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">TRUTH             =</span> truth<span class="sc">$</span>ATE_RR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            crude      backdoor_set plus_mediator_sbp             TRUTH 
+        1.5665432         0.6103411         0.7216460         0.6012111 </code></pre>
+</div>
+</div>
+<p>The crude risk ratio is 1.57 — the drug looks <em>harmful</em>. Adjust the backdoor set the graph prescribed and it flips to 0.61, essentially the true 0.6: protective. Now obey the reflex and “adjust for blood pressure too”: the estimate drifts back to 0.72, because <code>sbp</code> is a mediator and conditioning on it blocks the very pathway the drug acts through. The graph said all of this in advance. (The estimation machinery — standardisation — is Chapter 12’s subject; here it is only a witness.)</p>
+<p>What if we wanted the drug’s <strong>direct</strong> effect, the part <em>not</em> mediated by blood pressure? The reflex — “add the mediator” — is again not the whole story:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(mc, <span class="at">exposure =</span> <span class="st">"drug"</span>, <span class="at">outcome =</span> <span class="st">"stroke"</span>, <span class="at">effect =</span> <span class="st">"direct"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{ age, diabetes, sbp, severity }</code></pre>
+</div>
+</div>
+<p>To block the mediated path we must condition on <code>sbp</code> — but doing so opens the collider <code>drug → sbp ← age → stroke</code> (blood pressure is a common effect of the drug and of age), which must then be re-closed by adding <code>age</code>. The valid set is <code>{ age, diabetes, severity, sbp }</code>, not <code>sbp</code> alone. Direct effects are graphically treacherous in exactly this way; Chapter 15 takes up mediation properly.</p>
+</section>
+<section id="selection-bias-is-collider-bias" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="selection-bias-is-collider-bias"><span class="header-section-number">12.7</span> Selection bias is collider bias</h2>
+<p>The collider sat quietly to one side above. It earns a section because conditioning on a collider is not an exotic mistake — it is what <strong>sampling</strong> does. When a study includes only hospitalised patients, only volunteers, only survivors, or only the non-lost-to-follow-up, it has conditioned on a variable that those things depend on. If that variable is a common effect of the exposure and the outcome (or of their causes), the selection opens a backdoor path and biases the estimate, even with no confounding at all. Hernán, Hernández-Díaz and Robins (2004) showed that the textbook menagerie of “selection biases” — Berkson’s bias, informative censoring, inappropriate control selection — is one structure wearing many hats: <strong>conditioning on a common effect</strong>.</p>
+<p>Our <code>hospitalised</code> node is the canonical case. Both the drug (<code>drug → hospitalised</code>) and a stroke (<code>stroke → hospitalised</code>) raise the chance of admission. Restrict the analysis to inpatients and watch:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>RR_in_hospital <span class="ot">&lt;-</span> <span class="fu">with</span>(<span class="fu">subset</span>(df, hospitalised <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">mean</span>(stroke[drug <span class="sc">==</span> <span class="dv">0</span>]))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">among_hospitalised =</span> RR_in_hospital, <span class="at">true_ATE_RR =</span> truth<span class="sc">$</span>ATE_RR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>among_hospitalised        true_ATE_RR 
+         0.8542160          0.6012111 </code></pre>
+</div>
+</div>
+<p>Among the hospitalised the crude risk ratio is 0.85 — pulled away from the truth purely by the act of selection, with no confounder touched. (Within a ward, treated patients are over-represented among the <em>not</em>-very-sick admissions, so the treated and untreated are no longer comparable.)</p>
+<p>The pattern recurs across epidemiology, and it really does reverse conclusions:</p>
+<ul>
+<li><strong>Berkson’s bias.</strong> Two independent diseases appear correlated in a hospital sample, because having either raises the chance of admission — the admission is the collider.</li>
+<li><strong>The “birth-weight paradox”.</strong> Among low-birth-weight infants, maternal smoking appears <em>protective</em> against infant mortality. Hernández-Díaz, Schisterman and Hernán (<a href="https://doi.org/10.1093/aje/kwj275">2006</a>) used a DAG to show this is collider bias: birth weight is a common effect of smoking and of unmeasured causes of mortality, so stratifying on it manufactures the inverse association. The drug-<code>sbp</code> collider we just met for the direct effect is the same structure.</li>
+<li><strong>COVID-19 risk factors.</strong> Griffith and colleagues (<a href="https://doi.org/10.1038/s41467-020-19478-2">2020</a>) showed that analysing only people <em>tested</em> for SARS-CoV-2 (a sample selected on health-care contact, symptoms and behaviour) induces collider associations strong enough to distort estimated risk factors for infection and severity.</li>
+</ul>
+<p>This is also the formal resolution of the intuition-trap flagged back in Chapter 3: the mind, which is good at imagining how two things might share a cause, is bad at noticing when it has accidentally selected on a shared effect.</p>
+</section>
+<section id="the-fine-print" class="level2" data-number="12.8">
+<h2 data-number="12.8" class="anchored" data-anchor-id="the-fine-print"><span class="header-section-number">12.8</span> The fine print</h2>
+<p>A DAG is a powerful instrument with sharp edges, and honesty about its limits is part of using it.</p>
+<ul>
+<li><strong>It encodes assumptions, not findings.</strong> The arrows come from substantive knowledge. A wrong graph gives confident, wrong advice. Two analysts with different DAGs can both adjust “correctly” and disagree — the disagreement is about the science, which is where it belongs, now made explicit.</li>
+<li><strong>It is mostly untestable — but not entirely.</strong> A DAG implies a list of conditional independencies that the data <em>can</em> contradict. Our graph implies, for instance, that the instrument is independent of the confounder, <code>pref ⊥ severity</code>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(df<span class="sc">$</span>pref, df<span class="sc">$</span>severity), <span class="dv">3</span>)     <span class="co"># the DAG implies ~ 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.005</code></pre>
+</div>
+</div>
+<p>The observed correlation is -0.005. A gross violation would falsify the graph; agreement is reassuring but never proves it, since many different DAGs can share the same independencies. - <strong>It is nonparametric.</strong> A DAG says <em>whether</em> a path transmits association, never <em>how much</em>. It cannot tell you the magnitude or even the direction of a bias — only that one is present. Quantifying “how bad could an unmeasured confounder be?” is the job of sensitivity analysis (Chapter 19), which leans on the fact that our <code>severity</code> is only <em>partly</em> measured. - <strong>It assumes the standard background conditions</strong> — the causal Markov condition (a variable is independent of its non-descendants given its parents), no hidden cycles, and a coherent time order. Feedback over time, where <code>sbp</code> is a confounder of later treatment <em>and</em> a mediator of earlier treatment, breaks the single static picture and needs the time-indexed graphs of Chapter 14.</p>
+<p>What the DAG buys, in return, is the thing Chapter 10 could not give: a procedure, checkable by anyone, for turning a causal story into a list of variables to adjust for — and a list to leave alone.</p>
+</section>
+<section id="what-a-dag-cannot-show-interaction-and-mechanism" class="level2" data-number="12.9">
+<h2 data-number="12.9" class="anchored" data-anchor-id="what-a-dag-cannot-show-interaction-and-mechanism"><span class="header-section-number">12.9</span> What a DAG cannot show: interaction and mechanism</h2>
+<p>Even a correct DAG, used for a question it answers well, is silent about the thing students most often want to read off it: <em>how</em> causes combine. An arrow records that a cause acts; it says nothing about the shape of that action. This deserves more than the one-line “it is nonparametric” of the fine print, because it is the limit most often forgotten in practice.</p>
+<p>Take the simplest case — an exposure <code>A</code> and a second cause <code>V</code> of the outcome <code>Y</code>, both randomised so there is no confounding at all. The DAG is <code>A → Y ← V</code>, full stop. Now build two different worlds on that one diagram: in the first, <code>A</code> lowers risk by the same amount whatever <code>V</code>; in the second, <code>A</code> helps only when <code>V = 0</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>); n <span class="ot">&lt;-</span> <span class="dv">40000</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.5</span>); A <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.5</span>)          <span class="co"># A -&gt; Y &lt;- V, with A independent of V</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>base    <span class="ot">&lt;-</span> <span class="fl">0.30</span> <span class="sc">+</span> <span class="fl">0.20</span> <span class="sc">*</span> V                              <span class="co"># outcome risk with no treatment</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Y_const <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, base <span class="sc">-</span> <span class="fl">0.10</span> <span class="sc">*</span> A)                <span class="co"># A helps everyone equally</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Y_modif <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, base <span class="sc">-</span> <span class="fl">0.20</span> <span class="sc">*</span> A <span class="sc">*</span> (V <span class="sc">==</span> <span class="dv">0</span>))     <span class="co"># A helps only when V = 0</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>rd <span class="ot">&lt;-</span> <span class="cf">function</span>(Y, v) <span class="fu">mean</span>(Y[A <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> V <span class="sc">==</span> v]) <span class="sc">-</span> <span class="fu">mean</span>(Y[A <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> V <span class="sc">==</span> v])</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">const_V0 =</span> <span class="fu">rd</span>(Y_const, <span class="dv">0</span>), <span class="at">const_V1 =</span> <span class="fu">rd</span>(Y_const, <span class="dv">1</span>),</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">modif_V0 =</span> <span class="fu">rd</span>(Y_modif, <span class="dv">0</span>), <span class="at">modif_V1 =</span> <span class="fu">rd</span>(Y_modif, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   const_V0    const_V1    modif_V0    modif_V1 
+-0.09116449 -0.10143784 -0.19510318 -0.00381562 </code></pre>
+</div>
+</div>
+<p>Both columns of data come from the <strong>same graph</strong> and license the <strong>same adjustment set</strong> (here, none). Yet in the first world the risk difference is about -0.09 whether or not <code>V</code> is present; in the second it is -0.2 when <code>V = 0</code> and essentially 0 when <code>V = 1</code>. The drug is worth giving to everyone, or only to half the patients — and the DAG cannot tell you which, because <strong>effect modification lives in the functional form of the structural equation, not in the topology of the arrows.</strong></p>
+<p>This is a limitation and a feature at once.</p>
+<ul>
+<li><em>As a limitation</em>, you cannot read effect modification, dose–response, thresholds, or synergy off a DAG. Two analysts who agree on every arrow may still disagree about whether the effect is uniform, and they must settle it with a model — an interaction term, a stratified estimate — not with the picture. Worse, whether interaction is even <em>present</em> can flip with the scale you measure it on (additive versus multiplicative), and the graph is mute on scale entirely. That is the whole subject of Chapter 16, where the master cohort’s <code>diabetes</code> is engineered so additive interaction is present while the multiplicative interaction vanishes — a distinction no DAG could record.</li>
+<li><em>As a feature</em>, because the graph commits to no functional form, its verdicts about <strong>confounding and adjustment are robust to whatever that form turns out to be</strong>. d-separation holds no matter how <code>A</code> and <code>V</code> combine to make <code>Y</code>. The DAG answers “which variables?” precisely <em>because</em> it refuses to answer “how much, and in what shape?”</li>
+</ul>
+<p>A few specialised diagrams reach past these limits when you need them. <strong>Single-world intervention graphs (SWIGs)</strong> splice the intervention into the graph to make counterfactual independencies explicit; <strong>sufficient-component-cause</strong> diagrams (the “causal pies” of Chapter 16) represent <em>mechanistic</em> interaction — two factors co-participating in one sufficient cause — a different idea from statistical interaction that a DAG was never built to carry. The working rule: use the DAG to decide <em>what to condition on</em>, and a model (Chapters 16, 20–21) to describe <em>how the effect behaves</em> once you have.</p>
+</section>
+<section id="drawing-a-dag-a-step-by-step" class="level2" data-number="12.10">
+<h2 data-number="12.10" class="anchored" data-anchor-id="drawing-a-dag-a-step-by-step"><span class="header-section-number">12.10</span> Drawing a DAG: a step-by-step</h2>
+<p>A DAG is only as good as the thinking behind it, and that thinking has a workable routine. The order matters: most mistakes come from drawing arrows before fixing the question and the time line.</p>
+<ol type="1">
+<li><strong>State the question first.</strong> Name the exposure <code>A</code>, the outcome <code>Y</code>, the <em>estimand</em> (total effect? direct effect? — they need different graphs and different adjustment sets, as we saw above), the target population, and <strong>time zero</strong>. A DAG is built for a question; you cannot draw one in the abstract.</li>
+<li><strong>List the variables, generously.</strong> Write down <code>A</code>, <code>Y</code>, and every plausible common cause of them you can think of — measured <em>and</em> unmeasured. Do not filter yet: a variable left off the page is a <em>stronger</em> assumption than one drawn on it.</li>
+<li><strong>Put them in time order.</strong> Lay the nodes out left to right by when each is determined; arrows may only point forward in time. This one discipline prevents cycles and exposes the commonest blunder — treating a post-exposure variable as a baseline confounder.</li>
+<li><strong>Draw the direct effects.</strong> For each ordered pair ask: <em>would intervening on the earlier variable change the later one, by a route not already drawn through another node?</em> If yes, draw the arrow. “Direct” is always relative to the variables on the page.</li>
+<li><strong>Add unmeasured common causes explicitly.</strong> If two nodes share a cause you did not measure, draw it as a latent node <code>U</code>. This is where most confounding hides, and an honest <code>U</code> is worth more than a tidy graph that pretends it away.</li>
+<li><strong>Be conservative with arrows, not with nodes.</strong> When unsure whether a confounding arrow belongs, <em>include</em> it — omission is the strong claim. But do not invent implausible arrows just to look safe; every arrow is a claim you must be able to defend.</li>
+<li><strong>Read the missing arrows back.</strong> For each <em>absent</em> edge, say it aloud: “I am asserting no direct effect here, in any patient, of any size — am I comfortable with that?” If not, add it. Then confirm the graph is acyclic.</li>
+<li><strong>Label the roles.</strong> Mark <code>A</code> and <code>Y</code>, and classify every other node — confounder (fork), mediator (on a causal path), collider (common effect), instrument, competing exposure. The role dictates the treatment, not the variable’s name or how “important” it feels.</li>
+<li><strong>Find the adjustment set, then sanity-check it.</strong> Derive it by hand (block every backdoor path; touch no descendant of <code>A</code>) or with software, then ask whether <strong>positivity</strong> is plausible for it: are there treated and untreated patients at every combination of its values (Chapter 10)?</li>
+<li><strong>Test what is testable.</strong> The graph implies conditional independencies; check a few against the data. A gross violation means the graph — not the data — is wrong.</li>
+<li><strong>Show it, and draw the rivals.</strong> Hand the DAG to a colleague who knows the substance, then draw the alternative DAGs you cannot rule out and see whether the adjustment set survives them. Where it does not, that is the target for sensitivity analysis (Chapter 19).</li>
+</ol>
+<p>The <code>dagitty</code>/<code>ggdag</code> workflow makes steps 7–10 mechanical:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty); <span class="fu">library</span>(ggdag)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">dagify</span>(Y <span class="sc">~</span> A <span class="sc">+</span> L <span class="sc">+</span> U,            <span class="co"># the outcome's direct causes</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>            A <span class="sc">~</span> L <span class="sc">+</span> U,                <span class="co"># the exposure's direct causes (L measured, U not)</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">exposure =</span> <span class="st">"A"</span>, <span class="at">outcome =</span> <span class="st">"Y"</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">latent   =</span> <span class="st">"U"</span>)           <span class="co"># mark the unmeasured node</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag</span>(g)                              <span class="co"># step 7: eyeball the structure</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(g)                     <span class="co"># step 9: a valid set, if one exists</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">impliedConditionalIndependencies</span>(g)   <span class="co"># step 10: what the data can falsify</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If <code>adjustmentSets()</code> comes back empty, no <em>measured</em> set identifies the effect — the honest signal to reach for an instrument (Chapter 17), a quasi-experiment (Chapter 18), or a sensitivity analysis (Chapter 19), rather than to keep piling on covariates.</p>
+<p><strong>Five mistakes the routine is built to prevent.</strong></p>
+<ul>
+<li><em>Adjusting for a mediator</em> — or any descendant of the exposure — which blocks part of the very effect you want (the drug → <code>sbp</code> lesson, and the “Table 2 fallacy” of Chapter 26).</li>
+<li><em>Conditioning on a collider</em>, most insidiously through <strong>sample selection</strong>.</li>
+<li><em>Reversed or muddled time order</em>, which lets a consequence masquerade as a cause.</li>
+<li><em>Forgetting unmeasured common causes</em> — the tidy-graph trap of step 5.</li>
+<li><em>Choosing variables by what moves the estimate</em> — a stepwise habit that will happily add colliders and drop confounders, because “it changed the coefficient” is not evidence that adjustment was warranted.</li>
+</ul>
+</section>
+<section id="structural-equations-the-model-behind-the-graph" class="level2" data-number="12.11">
+<h2 data-number="12.11" class="anchored" data-anchor-id="structural-equations-the-model-behind-the-graph"><span class="header-section-number">12.11</span> Structural equations: the model behind the graph</h2>
+<p>A DAG, we keep saying, throws away the functional form and keeps only the arrows. It is worth seeing exactly <em>what</em> it throws away, because that fuller object — a <strong>structural causal model (SCM)</strong> — is something this book has been using all along.</p>
+<p>An SCM writes one equation per variable, expressing it as a function of its direct causes (its <em>parents</em> on the graph) and an independent disturbance <span class="math inline">\(U\)</span>: <span class="math display">\[ V_i \;=\; f_i(\text{parents}_i,\; U_i). \]</span> The arrows of the DAG are read straight off these equations: draw an edge from every argument of <span class="math inline">\(f_i\)</span> into <span class="math inline">\(V_i\)</span>. The graph is the <strong>skeleton</strong> of the SCM — what is left when you forget each <span class="math inline">\(f_i\)</span> and the distribution of each <span class="math inline">\(U_i\)</span>: <span class="math display">\[ \text{SCM} \;=\; \text{DAG} \;+\; \text{functional forms} \;+\; \text{noise distributions}. \]</span> This is precisely why the interaction limitation above holds — modification, dose–response and scale all live inside the <span class="math inline">\(f_i\)</span>, which the DAG has discarded.</p>
+<p>The master cohort makes it concrete, because <code>R/simulate_cohort.R</code> <em>is</em> an SCM: a system of structural equations, read top to bottom in causal order. A few of them, schematically:</p>
+<pre><code>severity = 0.40·age_c + 0.50·diabetes + U_sev          →  age, diabetes  →  severity
+drug     ~ Bernoulli(logit⁻¹(−0.6 + 1.4·severity
+                     + 0.3·diabetes + 1.3·pref))        →  severity, diabetes, pref  →  drug
+sbp      = 145 + 7·severity + 1.5·age_c − 12·drug + U_sbp  →  severity, age, drug  →  sbp
+stroke   ~ Bernoulli(exp(… + 0.20·sbp − 0.25·drug + …))    →  severity, age, diabetes, sbp, drug  →  stroke</code></pre>
+<p>The DAG drawn earlier in this chapter is exactly the skeleton of this code: every coefficient is an arrow, every <code>rnorm</code>/<code>rbinom</code> an independent <span class="math inline">\(U\)</span>. We have been reasoning about the <em>shadow</em> of a model whose every detail we happen to know — which is what lets it serve as an answer key.</p>
+<p><strong>Intervention is surgery on the equations.</strong> To ask “what if everyone took the drug?”, the SCM does not nudge a coefficient; it <em>deletes</em> the equation for <code>drug</code> and replaces it with the constant 1, leaving every other equation untouched. On the graph this is <strong>graph surgery</strong> — erase the arrows <em>into</em> <code>drug</code>, keep the arrows <em>out</em> — and it is Pearl’s <span class="math inline">\(do(\text{drug}=1)\)</span> operator. It is identical to the potential outcome <span class="math inline">\(Y(1)\)</span> of Chapter 10, and it is exactly how the cohort’s oracle was built: evaluate the outcome equation under <code>drug = 1</code> and again under <code>drug = 0</code>, on the same draws of the noise.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>truth<span class="sc">$</span>ATE_RD     <span class="co"># E[Y(1)] - E[Y(0)]: the outcome equation under do(drug=1) vs do(drug=0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.02682689</code></pre>
+</div>
+</div>
+<p>The backdoor criterion is, underneath, a claim about this surgery: a set blocks the backdoor paths exactly when adjusting for it makes the <em>observed</em> association equal to the association in the <strong>mutilated</strong> graph — the world in which the arrows into <code>drug</code> have been cut.</p>
+<p><strong>Where classical SEM fits.</strong> The structural-equation models of the path-analysis tradition — linear equations, standardised “path coefficients”, often with latent factors — are the <strong>linear-Gaussian special case</strong> of an SCM: assume every <span class="math inline">\(f_i\)</span> is linear and every <span class="math inline">\(U_i\)</span> Gaussian, and d-separation collapses to Wright’s old rules for tracing paths. The modern advance was not the equations, which are a century old, but the <em>separation of concerns</em>: the DAG carries the <strong>causal</strong> assumptions (qualitative, arguable from knowledge) while the equations carry the <strong>estimation</strong> assumptions (functional form, distributions). Classical SEM tended to fuse the two, and so could not say which of its conclusions rested on causal belief and which on convenient linearity.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Wright’s path-tracing rules
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sewall Wright invented <strong>path analysis</strong> in the 1920s — the direct ancestor of structural equation modelling, and decades ahead of formal DAGs. In a <em>standardised</em> linear model (every variable scaled to unit variance), Wright showed that the correlation between two variables is the <strong>sum, over every open path joining them, of the product of the path coefficients along that path</strong>.</p>
+<p>A path counts as <em>open</em> (traceable) when</p>
+<ul>
+<li>it never passes through a <strong>collider</strong> — a variable entered by two arrowheads, <span class="math inline">\(\rightarrow \bullet \leftarrow\)</span>;</li>
+<li>it changes direction <strong>at most once</strong>, and only at a <strong>common cause</strong> (you may trace backwards against the arrows and then forwards, never forwards and then backwards); and</li>
+<li>no variable appears on it twice.</li>
+</ul>
+<p>So for a fork <span class="math inline">\(X \leftarrow Z \rightarrow Y\)</span> with coefficients <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, the implied correlation is <span class="math inline">\(r_{XY} = ab\)</span>; for a chain <span class="math inline">\(X \rightarrow Z \rightarrow Y\)</span> it is likewise <span class="math inline">\(ab\)</span>; for a collider <span class="math inline">\(X \rightarrow Z \leftarrow Y\)</span> there is <strong>no</strong> open path, so <span class="math inline">\(r_{XY} = 0\)</span>. Add a direct edge <span class="math inline">\(X \rightarrow Y\)</span> with coefficient <span class="math inline">\(c\)</span> to the fork and the two open paths simply add: <span class="math inline">\(r_{XY} = c + ab\)</span>.</p>
+<p>These are the three elementary structures of this chapter, and “open path” is exactly an unconditioned path with no collider. Wright’s rules are therefore the <strong>linear, unconditioned special case of d-separation</strong>: because his model was linear he could keep the <em>magnitudes</em> — the products and sums of coefficients — whereas d-separation discards the magnitudes and keeps only the qualitative <em>open-or-blocked</em> verdict. That is precisely what lets d-separation survive when the functions are nonlinear and the question is “adjust or not?” rather than “what is the correlation?”.</p>
+</div>
+</div>
+<p>That separation is the division of labour the rest of the book runs on:</p>
+<ul>
+<li>The <strong>DAG settles identification</strong> — <em>can</em> the effect be recovered from the data at hand, and <em>what must be adjusted</em>? This needs only qualitative knowledge and is robust to the functional form.</li>
+<li>A <strong>fitted structural model settles estimation</strong> — <em>what is the number, with what uncertainty</em>? This is regression read as a counterfactual machine (Chapters 20–22) and, in full, Bayesian g-computation (Chapter 28), where the outcome equation is fit and then <em>operated on</em> — <code>do(drug = 1)</code> versus <code>do(drug = 0)</code> — to read off the contrast.</li>
+</ul>
+<p>The two are not interchangeable, and the order is not negotiable. A richer functional form cannot rescue a wrong DAG: if the graph omits a confounding arrow, no regression, however flexible, recovers the effect. Identification first, estimation second — the graph tells you whether there is a number worth estimating; the equations tell you what it is.</p>
+</section>
+<section id="key-points" class="level2" data-number="12.12">
+<h2 data-number="12.12" class="anchored" data-anchor-id="key-points"><span class="header-section-number">12.12</span> Key points</h2>
+<ul>
+<li>A <strong>DAG</strong> is a statement of causal assumptions: nodes are variables, an arrow is a possible direct effect, and a <strong>missing</strong> arrow is the strong claim of <em>no</em> direct effect.</li>
+<li>Every path is built from three structures. A <strong>chain</strong> (mediator) and a <strong>fork</strong> (confounder) transmit association and are blocked by conditioning; a <strong>collider</strong> (common effect) blocks by default and is <em>opened</em> by conditioning on it or its descendants.</li>
+<li><strong>“Control for everything” is wrong.</strong> It is right only for confounders; it adjusts away effects when applied to mediators and manufactures bias when applied to colliders.</li>
+<li><strong>d-separation</strong> is the single rule that decides independence; the <strong>backdoor criterion</strong> applies it to pick a valid adjustment set — block every backdoor path, touch no descendant of the exposure.</li>
+<li>A valid backdoor set delivers the <strong>conditional exchangeability</strong> of Chapter 10, so the effect can be <strong>standardised</strong> or <strong>weighted</strong> (Chapter 12). For the master cohort the total-effect set is <code>{ severity, diabetes }</code>; <code>sbp</code> (mediator) and <code>hospitalised</code> (collider) must be excluded.</li>
+<li><strong>Selection bias is collider bias</strong>: sampling on a common effect of exposure and outcome opens a path and biases the estimate with no confounding present.</li>
+<li>A DAG is <strong>nonparametric</strong>: it shows <em>whether</em> causes act, never <em>how they combine</em>. <strong>Effect modification and interaction are invisible</strong> on it, and the very presence of interaction can depend on scale (Chapter 16). Use the graph to choose what to adjust for; use a model to describe how the effect behaves.</li>
+<li>A DAG is the <strong>skeleton of a structural causal model</strong> — one equation per variable, <span class="math inline">\(V = f(\text{parents}, U)\)</span>, with the functions and noise forgotten. The DAG <strong>identifies</strong> the effect (what to adjust); the fitted equations <strong>estimate</strong> it (Chapters 20–22, 25). Intervention is <em>surgery</em> on the equations (<span class="math inline">\(do(\cdot)\)</span>), and a wrong graph cannot be fixed by better equations.</li>
+</ul>
+</section>
+<section id="notes-and-references" class="level2" data-number="12.13">
+<h2 data-number="12.13" class="anchored" data-anchor-id="notes-and-references"><span class="header-section-number">12.13</span> Notes and references</h2>
+<p>References were retrieved and verified via PubMed.</p>
+<ul>
+<li>Greenland S, Pearl J, Robins JM. <em>Causal diagrams for epidemiologic research.</em> Epidemiology. 1999;10(1):37–48. <a href="https://pubmed.ncbi.nlm.nih.gov/9888278/">PubMed 9888278</a>.</li>
+<li>Hernán MA, Hernández-Díaz S, Robins JM. <em>A structural approach to selection bias.</em> Epidemiology. 2004;15(5):615–25. <a href="https://doi.org/10.1097/01.ede.0000135174.63482.43">doi:10.1097/01.ede.0000135174.63482.43</a>.</li>
+<li>Hernández-Díaz S, Schisterman EF, Hernán MA. <em>The birth weight “paradox” uncovered?</em> Am J Epidemiol. 2006;164(11):1115–20. <a href="https://doi.org/10.1093/aje/kwj275">doi:10.1093/aje/kwj275</a>.</li>
+<li>Griffith GJ, Morris TT, Tudball MJ, et al.&nbsp;<em>Collider bias undermines our understanding of COVID-19 disease risk and severity.</em> Nat Commun. 2020;11:5749. <a href="https://doi.org/10.1038/s41467-020-19478-2">doi:10.1038/s41467-020-19478-2</a>.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="12.14">
+<h2 data-number="12.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">12.14</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Read a graph by hand.</strong> In the master-cohort DAG, list every backdoor path from <code>drug</code> to <code>stroke</code>. Confirm that <code>{ severity, diabetes }</code> blocks all of them and that none of those paths is opened by the adjustment. Check your answer with <code>paths(mc, "drug", "stroke")</code> and <code>adjustmentSets(mc)</code>.</p></li>
+<li><p><strong>The collider, by simulation.</strong> Re-run the collider mini-simulation, but vary the strength of <code>X -&gt; C</code> and <code>Y -&gt; C</code> from 0 to 1.5. Plot the induced (conditioned-on-<code>C</code>) association against the edge strength. When is collider bias negligible, and when is it larger than a typical confounding bias?</p></li>
+<li><p><strong>Adjust away an effect.</strong> Using the master cohort, estimate the drug–stroke risk ratio adjusting for the backdoor set, then again adding <code>sbp</code>. Reproduce the drift towards the null and explain, in terms of the graph, exactly which path the second model blocks.</p></li>
+<li><p><strong>Selection on a descendant.</strong> Add a node <code>discharged_well</code> that is caused by <code>hospitalised</code> (a <em>descendant</em> of the collider). Show — by simulation or by d-separation — that conditioning on <code>discharged_well</code> also biases the drug–stroke association, even though it is not the collider itself.</p></li>
+<li><p><strong>Draw before you adjust.</strong> Pick a published observational study you know. Draw its DAG, mark exposure and outcome, and use <code>adjustmentSets()</code> to find a valid set. Did the study adjust for a mediator or a collider? Would the graph have warned them?</p></li>
+<li><p><strong>Conceptual.</strong> A colleague proposes choosing adjustment variables by stepwise selection: keep whatever changes the exposure coefficient by more than 10%. Using the three elementary structures, explain why this rule will sometimes include a collider and sometimes drop a confounder — and why “it changed the estimate” is not evidence that adjustment was warranted.</p></li>
+<li><p><strong>Same graph, different effect.</strong> Modify the interaction demonstration so that <code>A</code> is <em>harmful</em> when <code>V = 1</code> and <em>protective</em> when <code>V = 0</code> (qualitative modification). Confirm that the DAG <code>A → Y ← V</code> and its adjustment set are unchanged, and that no feature of the graph distinguishes this world from the uniform-effect one. What does this imply for reporting a single number as “the effect of <code>A</code>”? Relate your answer to the additive-versus-multiplicative distinction of Chapter 16.</p></li>
+<li><p><strong>Draw your own, by the routine.</strong> Take a causal question from your own field and work the eleven-step routine end to end: state the estimand, list and time-order the variables (including at least one unmeasured <code>U</code>), draw the arrows, and use <code>adjustmentSets()</code> and <code>impliedConditionalIndependencies()</code>. If no adjustment set exists, say what you would do instead.</p></li>
+<li><p><strong>Surgery, not selection.</strong> Using <code>R/simulate_cohort.R</code>, contrast two operations on the cohort: (a) <em>selecting</em> the subgroup with <code>drug == 1</code> and averaging their observed stroke risk; and (b) <em>intervening</em> with <code>do(drug = 1)</code> — the oracle’s <code>risk1</code>, the outcome equation recomputed with <code>drug</code> set to 1 for everyone. Why do the two averages differ, and which one equals <span class="math inline">\(E[Y(1)]\)</span>? Explain, in terms of the structural equations, what selecting does that surgery does not. ```</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch10-potential-outcomes.html" class="pagination-link" aria-label="The potential-outcomes framework">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./12-stratification.html" class="pagination-link" aria-label="Causal analysis without regression: stratification and standardisation">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 14&nbsp; Target trial emulation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch14-time-varying-confounding.html" rel="next">
+<link href="./12-stratification.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch13-target-trial-emulation.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-biases-that-target-trial-emulation-prevents" id="toc-the-biases-that-target-trial-emulation-prevents" class="nav-link active" data-scroll-target="#the-biases-that-target-trial-emulation-prevents"><span class="header-section-number">14.1</span> The biases that target trial emulation prevents</a>
+  <ul class="collapse">
+  <li><a href="#confounding-by-indication" id="toc-confounding-by-indication" class="nav-link" data-scroll-target="#confounding-by-indication"><span class="header-section-number">14.1.1</span> Confounding by indication</a></li>
+  <li><a href="#immortal-time-bias" id="toc-immortal-time-bias" class="nav-link" data-scroll-target="#immortal-time-bias"><span class="header-section-number">14.1.2</span> Immortal time bias</a></li>
+  <li><a href="#prevalent-user-bias" id="toc-prevalent-user-bias" class="nav-link" data-scroll-target="#prevalent-user-bias"><span class="header-section-number">14.1.3</span> Prevalent-user bias</a></li>
+  <li><a href="#selection-bias-from-a-misaligned-start" id="toc-selection-bias-from-a-misaligned-start" class="nav-link" data-scroll-target="#selection-bias-from-a-misaligned-start"><span class="header-section-number">14.1.4</span> Selection bias from a misaligned start</a></li>
+  </ul></li>
+  <li><a href="#how-emulation-removes-them" id="toc-how-emulation-removes-them" class="nav-link" data-scroll-target="#how-emulation-removes-them"><span class="header-section-number">14.2</span> How emulation removes them</a>
+  <ul class="collapse">
+  <li><a href="#immortal-time-bias-demonstrated-on-the-cohort" id="toc-immortal-time-bias-demonstrated-on-the-cohort" class="nav-link" data-scroll-target="#immortal-time-bias-demonstrated-on-the-cohort"><span class="header-section-number">14.2.1</span> Immortal time bias, demonstrated on the cohort</a></li>
+  </ul></li>
+  <li><a href="#the-protocol-of-the-target-trial" id="toc-the-protocol-of-the-target-trial" class="nav-link" data-scroll-target="#the-protocol-of-the-target-trial"><span class="header-section-number">14.3</span> The protocol of the target trial</a></li>
+  <li><a href="#the-choices-that-matter-most" id="toc-the-choices-that-matter-most" class="nav-link" data-scroll-target="#the-choices-that-matter-most"><span class="header-section-number">14.4</span> The choices that matter most</a></li>
+  <li><a href="#specifying-a-target-trial-a-step-by-step" id="toc-specifying-a-target-trial-a-step-by-step" class="nav-link" data-scroll-target="#specifying-a-target-trial-a-step-by-step"><span class="header-section-number">14.5</span> Specifying a target trial: a step-by-step</a></li>
+  <li><a href="#emulating-trials-of-time-varying-treatments" id="toc-emulating-trials-of-time-varying-treatments" class="nav-link" data-scroll-target="#emulating-trials-of-time-varying-treatments"><span class="header-section-number">14.6</span> Emulating trials of time-varying treatments</a></li>
+  <li><a href="#target-trials-and-pragmatic-trials" id="toc-target-trials-and-pragmatic-trials" class="nav-link" data-scroll-target="#target-trials-and-pragmatic-trials"><span class="header-section-number">14.7</span> Target trials and pragmatic trials</a></li>
+  <li><a href="#emulation-reconciling-observational-studies-with-trials" id="toc-emulation-reconciling-observational-studies-with-trials" class="nav-link" data-scroll-target="#emulation-reconciling-observational-studies-with-trials"><span class="header-section-number">14.8</span> Emulation reconciling observational studies with trials</a></li>
+  <li><a href="#the-limits-of-the-target-trial-framing" id="toc-the-limits-of-the-target-trial-framing" class="nav-link" data-scroll-target="#the-limits-of-the-target-trial-framing"><span class="header-section-number">14.9</span> The limits of the target-trial framing</a></li>
+  <li><a href="#corroboration-without-a-randomised-trial" id="toc-corroboration-without-a-randomised-trial" class="nav-link" data-scroll-target="#corroboration-without-a-randomised-trial"><span class="header-section-number">14.10</span> Corroboration without a randomised trial</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">14.11</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">14.12</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch13-target-trial-emulation.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Every comparative question we ask of observational data has a randomised trial hiding inside it. “Does Drug A prevent stroke?” is shorthand for “what would a trial that randomised patients to take Drug A, or not, have found?” The data we have were not generated by such a trial, but the trial is still the standard against which any answer is judged. Target trial emulation makes that standard explicit: we write down the protocol of the trial we would run if we could, and then ask, component by component, how each part of that protocol can be enacted with the data we actually have.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The value of the exercise is not rhetorical. The errors that have repeatedly produced wrong answers in observational drug research — a treatment that looks protective because of how follow-up time was counted, a comparison that selects out the patients most likely to do badly — are, in this framing, failures to emulate a particular element of a trial protocol. Writing the protocol first turns those errors from subtle statistical accidents into visible design decisions, each of which a trialist would never get wrong because the mechanics of a randomised experiment rule them out.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> This chapter is about the design layer: the biases the framing is meant to prevent, the protocol it asks us to specify, and the choices inside that protocol that matter most. The estimation of effects that change over time — the machinery of inverse-probability weighting and the g-formula — is the subject of Chapter 14; here we set those problems up rather than solve them.</p>
+<p>We use the longitudinal version of the master cohort throughout. Each of about 50 000 hypertensive patients is seen at five visits; at each visit we record blood pressure, the treatment decision for that interval, and whether a stroke occurred. Because the cohort was simulated from a known data-generating process, we can read off the answer any emulation is trying to recover.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>obs   <span class="ot">&lt;-</span> <span class="fu">simulate_cohort_longitudinal</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">attr</span>(obs, <span class="st">"truth"</span>)           <span class="co"># the oracle, available because we built the cohort</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>K     <span class="ot">&lt;-</span> <span class="fu">attr</span>(obs, <span class="st">"params"</span>)<span class="sc">$</span>K</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>obs   <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span> <span class="fu">arrange</span>(id, k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="the-biases-that-target-trial-emulation-prevents" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="the-biases-that-target-trial-emulation-prevents"><span class="header-section-number">14.1</span> The biases that target trial emulation prevents</h2>
+<p>Four biases recur in observational comparisons of treated and untreated patients. The first is a fact of nature that no design erases on its own; the other three are introduced by the analyst, and are the ones the discipline of emulation is built to remove.</p>
+<section id="confounding-by-indication" class="level3" data-number="14.1.1">
+<h3 data-number="14.1.1" class="anchored" data-anchor-id="confounding-by-indication"><span class="header-section-number">14.1.1</span> Confounding by indication</h3>
+<p>The reason a patient is treated is usually a reason they were at risk to begin with. Sicker patients are more likely to be given Drug A and more likely to have a stroke whether or not they take it, so the treated and untreated are not comparable. This is the bias the whole causal part of the book turns on: in the cohort it is severe enough to reverse the sign of the crude association, making a protective drug look harmful (Chapter 12). Emulation does not by itself remove confounding — only randomisation does that — but it disciplines the comparison so that the <em>measured</em> confounders can be adjusted for, and it isolates the part of the problem that adjustment cannot reach.</p>
+</section>
+<section id="immortal-time-bias" class="level3" data-number="14.1.2">
+<h3 data-number="14.1.2" class="anchored" data-anchor-id="immortal-time-bias"><span class="header-section-number">14.1.2</span> Immortal time bias</h3>
+<p>Immortal time is a stretch of follow-up during which, because of the way exposure is defined, the outcome cannot occur.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> It arises when a patient’s treatment group is decided using information from after follow-up begins. The classic construction classifies a patient as “treated” if they ever receive the drug during the study, and counts their follow-up from an earlier landmark, such as diagnosis or cohort entry. To be classified treated, a patient must survive event-free long enough to receive the first dose; that waiting time is “immortal” — no event can fall in it without moving the patient to the other group — yet it is counted as treated person-time. The treated group is thereby credited with a stretch of guaranteed event-free time that has nothing to do with the drug, and any patient who has the event early is sorted into the comparator. Both effects make the treatment look protective regardless of whether it is.</p>
+</section>
+<section id="prevalent-user-bias" class="level3" data-number="14.1.3">
+<h3 data-number="14.1.3" class="anchored" data-anchor-id="prevalent-user-bias"><span class="header-section-number">14.1.3</span> Prevalent-user bias</h3>
+<p>Enrolling patients who are already taking the drug at the start of follow-up conditions the comparison on having survived and tolerated treatment up to that point. Patients who had an early event, or who stopped because of side effects, are not in the prevalent-user pool — they have been selected out before observation begins. The surviving users are a depleted, favourable subset (depletion of susceptibles), and their start of follow-up does not correspond to any well-defined moment in the course of treatment.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The comparison inherits a head start that, again, has nothing to do with the drug’s effect.</p>
+</section>
+<section id="selection-bias-from-a-misaligned-start" class="level3" data-number="14.1.4">
+<h3 data-number="14.1.4" class="anchored" data-anchor-id="selection-bias-from-a-misaligned-start"><span class="header-section-number">14.1.4</span> Selection bias from a misaligned start</h3>
+<p>The previous two biases are instances of a more general one: defining eligibility, or the treatment group, using information that postdates the start of follow-up. Whenever the moment a patient becomes eligible, the moment their strategy is decided, and the moment their follow-up clock starts are allowed to differ, the gap between them is person-time that has been classified with knowledge of the future, and selection bias follows.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>The common thread is alignment. Confounding aside, the analyst-introduced biases all come from a failure to align three events that, in a randomised trial, occur together by construction: the assessment of <strong>eligibility</strong>, the <strong>assignment</strong> of a treatment strategy, and the <strong>start of follow-up</strong>. In a trial these coincide at randomisation, which is why a trialist cannot accidentally count immortal time or enrol prevalent users. The single discipline that prevents the whole family of biases is to reproduce that coincidence.</p>
+</section>
+</section>
+<section id="how-emulation-removes-them" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="how-emulation-removes-them"><span class="header-section-number">14.2</span> How emulation removes them</h2>
+<p>Target trial emulation removes the analyst-introduced biases by fixing a <strong>time zero</strong> for each patient at which eligibility is assessed, a treatment strategy is assigned, and follow-up begins — all using only information available at or before that instant. With that one rule in place:</p>
+<ul>
+<li><strong>Immortal time bias cannot arise</strong>, because no patient is classified by treatment received after time zero, and no person-time precedes assignment. Group membership is decided from baseline information alone.</li>
+<li><strong>Prevalent-user bias is removed</strong> by an eligibility criterion that admits only <em>new users</em> — patients not already on the drug at time zero. Everyone’s follow-up then starts at the same well-defined point in the course of treatment, and the susceptible patients are not pre-selected away.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></li>
+<li><strong>Confounding by indication is narrowed and then addressed.</strong> Comparing initiators of Drug A with initiators of another drug for the same indication (an <em>active comparator</em>) narrows the prognostic gap between the groups; whatever confounding remains is handled by adjusting for the baseline covariates measured at time zero, through standardisation or weighting (Chapter 12). The cohort here uses a non-user comparator (“never treat”), which is more exposed to confounding by indication than an active comparator would be — a limitation worth naming.</li>
+<li><strong>Selection bias from a misaligned start is removed</strong> because eligibility and assignment use only pre-time-zero information; nothing measured during follow-up is allowed to define who is in the analysis or which group they belong to.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-immortal-time" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Two stacked panels. The top panel, aligned emulation, shows one time-zero box (eligible, assigned, follow-up starts) leading to outcomes counted from time zero. The bottom panel, the misaligned ever-treated label, shows follow-up starting, then an immortal waiting time to the first dose during which no event can occur, then the first dose at which the patient is labelled treated, then the rest of follow-up.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-immortal-time-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch13-target-trial-emulation_files/figure-html/fig-immortal-time-1.png" class="img-fluid figure-img" alt="Two stacked panels. The top panel, aligned emulation, shows one time-zero box (eligible, assigned, follow-up starts) leading to outcomes counted from time zero. The bottom panel, the misaligned ever-treated label, shows follow-up starting, then an immortal waiting time to the first dose during which no event can occur, then the first dose at which the patient is labelled treated, then the rest of follow-up." width="574">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-immortal-time-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.1: Why misalignment manufactures immortal time. Top: in the emulated trial, eligibility, strategy assignment, and the start of follow-up coincide at one time zero, so no person-time is classified using the future. Bottom: when a patient is labelled ‘treated’ for being ever treated but is followed from an earlier start, the waiting time until the first dose is event-free by construction yet counted as treated person-time.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="immortal-time-bias-demonstrated-on-the-cohort" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="immortal-time-bias-demonstrated-on-the-cohort"><span class="header-section-number">14.2.1</span> Immortal time bias, demonstrated on the cohort</h3>
+<p>The cohort lets us see the bias appear and then disappear, because we can analyse the same patients two ways that differ only in how treatment time is classified. The first respects time: at each visit a patient is treated or not, and we compare the stroke rate in treated intervals with the rate in untreated intervals. The second commits the immortal-time error: we label each patient by whether they are <em>ever</em> treated during the five visits and count all of their intervals — including those before they first received the drug — in that group.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exposure defined two ways on the same person-period data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>person <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">ever        =</span> <span class="fu">max</span>(A),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">first_treat =</span> <span class="cf">if</span> (<span class="fu">any</span>(A <span class="sc">==</span> <span class="dv">1</span>)) <span class="fu">min</span>(k[A <span class="sc">==</span> <span class="dv">1</span>]) <span class="cf">else</span> <span class="cn">Inf</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>obs2 <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span> <span class="fu">left_join</span>(person, <span class="at">by =</span> <span class="st">"id"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># (1) time-respecting: an interval is "treated" iff the drug is taken that interval</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>rate_tv <span class="ot">&lt;-</span> obs2 <span class="sc">|&gt;</span> <span class="fu">group_by</span>(<span class="at">current =</span> A) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">rate =</span> <span class="fu">mean</span>(Y), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>rr_tv   <span class="ot">&lt;-</span> <span class="fu">with</span>(rate_tv, rate[current <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">/</span> rate[current <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># (2) immortal-time: classify the whole person by EVER being treated,</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     counting every interval (including pre-initiation) in that group</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>rate_ever <span class="ot">&lt;-</span> obs2 <span class="sc">|&gt;</span> <span class="fu">group_by</span>(<span class="at">group =</span> ever) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">rate =</span> <span class="fu">mean</span>(Y), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>rr_ever   <span class="ot">&lt;-</span> <span class="fu">with</span>(rate_ever, rate[group <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">/</span> rate[group <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># the immortal stretch: pre-initiation intervals of ever-treated patients,</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># which are labelled "treated" but in which (by construction) no event can occur</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>immortal      <span class="ot">&lt;-</span> obs2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(ever <span class="sc">==</span> <span class="dv">1</span>, k <span class="sc">&lt;</span> first_treat)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>share_immortal <span class="ot">&lt;-</span> <span class="fu">nrow</span>(immortal) <span class="sc">/</span> <span class="fu">sum</span>(obs2<span class="sc">$</span>ever <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">truth_RR        =</span> <span class="fu">round</span>(truth<span class="sc">$</span>RR, <span class="dv">3</span>),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_aligned_RR =</span> <span class="fu">round</span>(rr_tv, <span class="dv">3</span>),</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">immortal_RR     =</span> <span class="fu">round</span>(rr_ever, <span class="dv">3</span>),</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">immortal_share  =</span> <span class="fu">round</span>(share_immortal, <span class="dv">3</span>),</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">events_in_immortal_time =</span> <span class="fu">sum</span>(immortal<span class="sc">$</span>Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>               truth_RR         time_aligned_RR             immortal_RR 
+                  0.546                   1.304                   0.536 
+         immortal_share events_in_immortal_time 
+                  0.135                   0.000 </code></pre>
+</div>
+</div>
+<p>The true effect of taking the drug at every visit versus never is a risk ratio of 0.55 — protective. The time-respecting comparison returns a risk ratio of 1.3: the drug looks <em>harmful</em>, because treated intervals are the high-blood-pressure intervals in which strokes are more likely. That number is confounded by indication, and recovering the truth from it is the work of Chapters 12 and 14 — but it does not invent any person-time. The immortal-time analysis returns a risk ratio of 0.54: the drug now looks strongly protective. The mechanism is laid bare by the diagnostics: 13% of the person-time credited to the treated group is pre-initiation waiting time, and it contains 0 events — none, by construction.</p>
+<p>The instructive part is that the immortal-time estimate, 0.54, lands close to the true 0.55. An analyst who ran only that analysis would report the right answer for entirely the wrong reason, and would have no warning. Had the drug been useless or harmful, the same machinery would have manufactured an apparent benefit out of the same event-free waiting time. The emulation forbids the construction at the design stage: classify each patient by the strategy assigned at time zero, not by what they go on to receive.</p>
+</section>
+</section>
+<section id="the-protocol-of-the-target-trial" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="the-protocol-of-the-target-trial"><span class="header-section-number">14.3</span> The protocol of the target trial</h2>
+<p>The protocol is specified as a table with one row per component of the trial. The left column states what the ideal randomised trial would do; the right column states how each component is enacted with the observational cohort. Writing the table is the core of the method: a component that cannot be filled in, or that can only be filled in by using post-baseline information, is precisely where a bias would enter.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Component =</span> <span class="fu">c</span>(<span class="st">"Eligibility"</span>, <span class="st">"Time zero (start of follow-up)"</span>, <span class="st">"Treatment strategies"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Assignment"</span>, <span class="st">"Outcome"</span>, <span class="st">"Follow-up"</span>, <span class="st">"Causal contrast"</span>, <span class="st">"Analysis plan"</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Target trial</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Hypertensive adults, no prior stroke, not currently taking Drug A (new users)."</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The moment of randomisation: eligibility is met, a strategy is assigned, and follow-up begins together, so no person-time precedes assignment."</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"(a) Initiate Drug A and take it at every visit ('always treat'); (b) never take it ('never treat'). A dynamic option: take it whenever SBP exceeds a threshold."</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Randomise eligible patients to a strategy at time zero; ideally with blinding."</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Incident stroke during follow-up."</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"From time zero until stroke, loss to follow-up, or the administrative end of the study."</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Intention-to-treat effect (of being assigned a strategy) and/or per-protocol effect (of adhering to it), on the risk-difference or risk-ratio scale."</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ITT: compare the assigned groups. Per-protocol: adjust for adherence and post-baseline confounders."</span>),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Emulation with the cohort</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Patients untreated at their first recorded visit — in this cohort everyone enters untreated, so each is a new user. Baseline age, diabetes, severity and SBP are recorded at entry."</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The first visit (k = 1), fixed using only information available at or before it. Aligning eligibility, assignment, and the start of follow-up at this one instant is what closes off immortal time and prevalent-user bias. It is also the most delicate choice: a start defined with any post-baseline information reintroduces them, and when eligibility is met at several visits each may serve as a separate time zero (a sequence of trials)."</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The same rules applied to the per-visit treatment A at visits k = 1..5. Each strategy is a well-defined intervention (consistency, Chapter 10)."</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"No randomisation. Assume the measured baseline covariates are a sufficient adjustment set (conditional exchangeability, Chapter 11); emulate random assignment by standardisation or inverse-probability weighting on those covariates (Chapter 12)."</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"The per-visit indicator Y; the first stroke ends follow-up."</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"From time zero (visit 1) to the event or the fifth visit, in person-period rows; a patient leaves the risk set at the event."</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ITT analogue: initiators (treated at k = 1) versus non-initiators. Per-protocol: the sustained-strategy contrast 'always' versus 'never' — the estimand of Chapter 14."</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ITT analogue: standardise or weight on baseline covariates (Chapter 12). Per-protocol: IP-weighted marginal structural model or the g-formula (Chapter 14); Bayesian g-computation (Chapter 28)."</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">caption =</span> <span class="st">"The target trial and its emulation with the longitudinal cohort."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">width =</span> <span class="st">"16em"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The target trial and its emulation with the longitudinal cohort.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Component</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Target trial</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Emulation with the cohort</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Eligibility</td>
+<td style="text-align: left; width: 16em;">Hypertensive adults, no prior stroke, not currently taking Drug A (new users).</td>
+<td style="text-align: left; width: 16em;">Patients untreated at their first recorded visit &lt;U+2014&gt; in this cohort everyone enters untreated, so each is a new user. Baseline age, diabetes, severity and SBP are recorded at entry.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Time zero (start of follow-up)</td>
+<td style="text-align: left; width: 16em;">The moment of randomisation: eligibility is met, a strategy is assigned, and follow-up begins together, so no person-time precedes assignment.</td>
+<td style="text-align: left; width: 16em;">The first visit (k = 1), fixed using only information available at or before it. Aligning eligibility, assignment, and the start of follow-up at this one instant is what closes off immortal time and prevalent-user bias. It is also the most delicate choice: a start defined with any post-baseline information reintroduces them, and when eligibility is met at several visits each may serve as a separate time zero (a sequence of trials).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Treatment strategies</td>
+<td style="text-align: left; width: 16em;">(a) Initiate Drug A and take it at every visit ('always treat'); (b) never take it ('never treat'). A dynamic option: take it whenever SBP exceeds a threshold.</td>
+<td style="text-align: left; width: 16em;">The same rules applied to the per-visit treatment A at visits k = 1..5. Each strategy is a well-defined intervention (consistency, Chapter 10).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Assignment</td>
+<td style="text-align: left; width: 16em;">Randomise eligible patients to a strategy at time zero; ideally with blinding.</td>
+<td style="text-align: left; width: 16em;">No randomisation. Assume the measured baseline covariates are a sufficient adjustment set (conditional exchangeability, Chapter 11); emulate random assignment by standardisation or inverse-probability weighting on those covariates (Chapter 12).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Outcome</td>
+<td style="text-align: left; width: 16em;">Incident stroke during follow-up.</td>
+<td style="text-align: left; width: 16em;">The per-visit indicator Y; the first stroke ends follow-up.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Follow-up</td>
+<td style="text-align: left; width: 16em;">From time zero until stroke, loss to follow-up, or the administrative end of the study.</td>
+<td style="text-align: left; width: 16em;">From time zero (visit 1) to the event or the fifth visit, in person-period rows; a patient leaves the risk set at the event.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Causal contrast</td>
+<td style="text-align: left; width: 16em;">Intention-to-treat effect (of being assigned a strategy) and/or per-protocol effect (of adhering to it), on the risk-difference or risk-ratio scale.</td>
+<td style="text-align: left; width: 16em;">ITT analogue: initiators (treated at k = 1) versus non-initiators. Per-protocol: the sustained-strategy contrast 'always' versus 'never' &lt;U+2014&gt; the estimand of Chapter 14.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Analysis plan</td>
+<td style="text-align: left; width: 16em;">ITT: compare the assigned groups. Per-protocol: adjust for adherence and post-baseline confounders.</td>
+<td style="text-align: left; width: 16em;">ITT analogue: standardise or weight on baseline covariates (Chapter 12). Per-protocol: IP-weighted marginal structural model or the g-formula (Chapter 14); Bayesian g-computation (Chapter 28).</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The single most consequential row is <strong>time zero</strong>. Once it is fixed at the first visit — with eligibility assessed and the strategy assigned at that same instant — the misalignment biases are closed off. It is also the row that is hardest to get right: a start time defined with any information from after it reintroduces the very biases the framing is meant to prevent, which is why it is set out on its own rather than folded into eligibility. With time zero fixed, we can construct the emulated trial’s baseline directly and look at what randomisation would have given us and the emulation has to recover.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(k <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span>                                   <span class="co"># time zero = first visit</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(id,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">assignment =</span> <span class="fu">if_else</span>(A <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"initiate"</span>, <span class="st">"withhold"</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sbp0 =</span> sbp_lag, severity, age, diabetes)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>trial <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(assignment) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">mean SBP at t0</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">mean</span>(sbp0),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">mean severity</span><span class="st">`</span>  <span class="ot">=</span> <span class="fu">mean</span>(severity),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">mean age</span><span class="st">`</span>       <span class="ot">=</span> <span class="fu">mean</span>(age),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">prop. diabetic</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">mean</span>(diabetes),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">1</span>, <span class="at">caption =</span> <span class="st">"Baseline of the emulated trial, by assigned strategy at time zero."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Baseline of the emulated trial, by assigned strategy at time zero.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">assignment</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mean SBP at t0</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mean severity</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mean age</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop. diabetic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">initiate</td>
+<td style="text-align: right;">28587</td>
+<td style="text-align: right;">156.1</td>
+<td style="text-align: right;">0.6</td>
+<td style="text-align: right;">64.5</td>
+<td style="text-align: right;">0.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">withhold</td>
+<td style="text-align: right;">21413</td>
+<td style="text-align: right;">143.6</td>
+<td style="text-align: right;">-0.5</td>
+<td style="text-align: right;">58.9</td>
+<td style="text-align: right;">0.2</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The two groups are not exchangeable: the patients who initiate the drug start with higher blood pressure, higher severity, older age, and more diabetes. That is confounding by indication, made visible at time zero. A randomised trial would have balanced these covariates by design; the emulation must instead assume they are a sufficient adjustment set and standardise or weight on them (Chapter 12). The point of building the table is that this imbalance is now a stated assumption attached to the <em>assignment</em> row, not a hidden defect.</p>
+</section>
+<section id="the-choices-that-matter-most" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="the-choices-that-matter-most"><span class="header-section-number">14.4</span> The choices that matter most</h2>
+<p>Filling in the protocol forces several decisions. A handful of them determine whether the emulation is sound, and they are worth singling out.</p>
+<ol type="1">
+<li><p><strong>Time zero, and the alignment of the three events.</strong> This is the choice that prevents immortal time and the misaligned-start selection biases. Eligibility, assignment, and the start of follow-up must refer to the same instant, and that instant must be definable from information available then. Every other choice is downstream of this one.</p></li>
+<li><p><strong>One time zero or many.</strong> A patient may be eligible at more than one moment — at several visits, say. One can pick a single qualifying time per patient, or emulate a <em>sequence of trials</em>, one with time zero at each eligible visit, and pool across them. The sequential design uses the data more fully and is how the framework was first applied to reconcile an observational cohort with a randomised trial it had appeared to contradict.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p></li>
+<li><p><strong>New users versus prevalent users; active versus non-user comparator.</strong> Requiring that patients be new users at time zero removes prevalent-user bias; comparing two treatments for the same indication, rather than treatment against nothing, narrows confounding by indication. The new-user, active-comparator design is the pharmacoepidemiological default for exactly these reasons.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p></li>
+<li><p><strong>The treatment strategies, and whether they are well defined.</strong> Static strategies (“always”, “never”) and dynamic strategies (“treat when SBP is high”) are both admissible, but each must name a concrete intervention so that consistency holds (Chapter 10). Dynamic, treat-when-indicated strategies are often the policy question of real interest, and a strength of the framework is that it can target them at all.</p></li>
+<li><p><strong>The causal contrast: intention-to-treat or per-protocol.</strong> In a randomised trial the ITT effect — the effect of being <em>assigned</em> a strategy — is estimated by simply comparing the assigned groups, and it is robust because assignment was random. In an emulation, “assignment” is only baseline initiation, and patients deviate from it afterwards, so the ITT analogue measures the effect of a strategy that nobody actually followed past time zero. The per-protocol effect — the effect of <em>adhering</em> to the strategy — is usually the question for a drug taken over time, but estimating it requires adjusting for the post-baseline variables that drive adherence, which is the time-varying confounding problem of the next section.</p></li>
+<li><p><strong>The adjustment set, read off the baseline DAG.</strong> Which variables are baseline confounders to be adjusted for, and which are post-baseline consequences of treatment that must not be conditioned on, is a graphical question settled before any model is fitted (Chapter 11). The protocol table is where that distinction is recorded.</p></li>
+</ol>
+</section>
+<section id="specifying-a-target-trial-a-step-by-step" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="specifying-a-target-trial-a-step-by-step"><span class="header-section-number">14.5</span> Specifying a target trial: a step-by-step</h2>
+<p>The protocol table of the previous sections is the object to be produced; this section gives the order in which to produce it. The order matters: most emulation failures come from settling the analysis before the estimand and time zero are fixed, or from defining time zero with information that is not available at it. The considerations of the previous section are the decisions this routine makes, taken in sequence and each with a check that must pass before the next.</p>
+<ol type="1">
+<li><strong>State the question and the estimand first.</strong> Name the exposure as a <em>strategy</em> — a rule that could be assigned, not a variable that is merely observed — together with the outcome, the target population, and the contrast wanted: the intention-to-treat analogue or the per-protocol effect. <em>Check:</em> the exposure names an intervention that could in principle be assigned. An exposure that does not — a body-mass index, a socioeconomic position — has no trial to emulate, and the routine stops here (the limits of the target-trial framing, below).</li>
+<li><strong>Fix eligibility from information available at or before time zero.</strong> State the inclusion and exclusion criteria, and require that each be decidable from data dated no later than the start of follow-up. <em>Check:</em> no criterion uses a measurement, an event, or a treatment response recorded after the start.</li>
+<li><strong>Define the treatment strategies as concrete, assignable rules.</strong> Each strategy — static (initiate and continue) or dynamic (initiate once SBP exceeds a threshold) — must specify what is done at every decision point, so that the consistency assumption (Chapter 10) holds. <em>Check:</em> the rule could be handed to a clinician who would know what to do at each visit without further interpretation.</li>
+<li><strong>Set time zero by aligning eligibility, assignment, and the start of follow-up at one instant.</strong> Decide whether each patient contributes a single time zero or, when eligible at several visits, a sequence of trials. <em>Check:</em> the three events coincide, and the instant is definable from information available then. The remaining steps depend on this one: a time zero defined with any later information reintroduces immortal-time and prevalent-user bias.</li>
+<li><strong>Specify the outcome and the follow-up window.</strong> State the outcome definition, the start of follow-up (time zero) and its end, and the censoring and competing-event rules. <em>Check:</em> follow-up begins at time zero and not before; person-time that precedes assignment is the signature of immortal time.</li>
+<li><strong>Choose the causal contrast, consistent with step 1.</strong> The intention-to-treat analogue compares the strategies as assigned at time zero; the per-protocol contrast compares sustained adherence to them. <em>Check:</em> a per-protocol contrast commits you to adjusting for the post-baseline variables that drive adherence (Chapter 14); an intention-to-treat analogue commits you to reporting the effect of an assignment that holds only at baseline.</li>
+<li><strong>Read the adjustment set off the baseline DAG.</strong> The covariates to adjust for are the baseline confounders that block the back-door paths from assignment to outcome (Chapter 11); none may be a consequence of treatment. <em>Check:</em> the set contains only pre-time-zero variables, contains no descendant of the exposure, and leaves positivity plausible — treated and untreated patients exist at every combination of its values (Chapter 10).</li>
+<li><strong>State the analysis plan to match the contrast and the adjustment set.</strong> For the intention-to-treat analogue, standardise or inverse-probability weight on the baseline covariates (Chapter 12); for the per-protocol contrast, a marginal structural model or the g-formula (Chapter 14), or Bayesian g-computation (Chapter 28).</li>
+<li><strong>Build the emulated baseline, then read the table back.</strong> Construct the time-zero baseline by assigned strategy and inspect the covariate balance; any imbalance is the confounding the adjustment set must remove, now stated rather than hidden. Then read each row back, asking whether any entry uses information from after time zero and whether a reader who knew the subject matter would accept that the row is what the trial would have done. Draw the rival designs you cannot dismiss — a single versus a sequential time zero, an active-comparator versus a non-user contrast — and check whether the conclusion survives them.</li>
+</ol>
+<p>The construction of steps 4, 5, and 9 is mechanical once the cohort is in person-period form:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(k <span class="sc">==</span> <span class="dv">1</span>, A_lag <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|&gt;</span>            <span class="co"># steps 2 &amp; 4: eligible new users; time zero = first visit</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(id,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">assign =</span> A,                     <span class="co"># step 4: assignment uses only the time-zero value of A</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sbp0 =</span> sbp_lag, severity, age, diabetes)  <span class="co"># step 7: baseline confounders, measured at or before t0</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># step 5: follow-up and the outcome are read from k &gt;= 1 only, never from before time zero</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># step 9: confirm no column of `trial` was derived from a visit after k = 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here <code>A_lag == 0</code> selects patients untreated at the previous visit; in this cohort that holds for everyone at <code>k = 1</code>, so each patient is a new user (the eligibility row of the protocol).</p>
+<p><strong>Five mistakes the routine is built to prevent.</strong></p>
+<ul>
+<li><em>Defining time zero with post-baseline information</em> — the source of immortal-time bias and the misaligned-start selection biases (the demonstration above).</li>
+<li><em>Counting prevalent users as if they were new users</em>, which conditions follow-up on having already survived and tolerated the drug.</li>
+<li><em>Adjusting for a post-baseline consequence of treatment</em> — a mediator or a collider — which blocks part of the effect or opens a biasing path (Chapter 11).</li>
+<li><em>Conflating the intention-to-treat analogue with the per-protocol effect</em>, and reporting one while interpreting the other.</li>
+<li><em>Attempting an exposure that names no intervention</em>, for which there is no well-defined estimand to emulate (the limits of the target-trial framing, below).</li>
+</ul>
+</section>
+<section id="emulating-trials-of-time-varying-treatments" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="emulating-trials-of-time-varying-treatments"><span class="header-section-number">14.6</span> Emulating trials of time-varying treatments</h2>
+<p>For a one-shot treatment, the emulation is essentially complete once the baseline confounders are adjusted for: there is a single decision at time zero, and the methods of Chapter 12 recover the effect. A drug taken over months is different. The protocol’s “treatment strategy” is a rule applied at every visit, and whether a patient adheres to it is shaped by post-baseline variables — here, blood pressure — that are themselves changed by earlier treatment. This is treatment–confounder feedback, and it is why the intention-to-treat and per-protocol contrasts come apart.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Intention-to-treat versus per-protocol effects
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Two causal questions hide inside “does the treatment work”, and they have different answers whenever patients do not perfectly follow the strategy they began with.</p>
+<ul>
+<li>The <strong>intention-to-treat (ITT) effect</strong> is the effect of <em>being assigned</em> a strategy at time zero, whatever the patient does afterwards. A randomised trial estimates it by comparing the assigned arms as randomised; the emulation’s analogue compares initiators with non-initiators, adjusting for baseline confounders (Chapter 12). It needs no model for what happens after baseline.</li>
+<li>The <strong>per-protocol effect</strong> is the effect of <em>adhering to</em> the strategy throughout — taking the drug at every visit versus never. Estimating it requires adjusting for the post-baseline variables that drive adherence and are themselves affected by earlier treatment, which is the time-varying confounding problem and needs the g-methods of Chapter 14.</li>
+</ul>
+<p><strong>Which to prefer depends on the question.</strong> The ITT effect answers a pragmatic question — what happens if a strategy is <em>offered</em> or started, given that real patients adhere imperfectly — and it makes the fewest assumptions. The per-protocol effect answers the biological question — what happens if the drug is actually <em>taken as specified</em> — and is usually the one of interest for a sustained therapy or a safety signal, but it rests on the stronger assumption of no unmeasured time-varying confounding of adherence. One caution is specific to observational data: a randomised trial’s ITT analysis is protected by randomisation, whereas the emulated ITT analogue is not — “assignment” there is only baseline initiation, and the immediate drift of patients out of their starting strategy (shown below) pulls the analogue towards the null, so a small ITT-analogue effect need not mean a small effect of the treatment.</p>
+<p><strong>The direction of that bias decides when an ITT analysis is safe to rely on.</strong> Pulling the contrast towards the null is conservative when the outcome is a <em>benefit</em> — it can only understate how well the treatment works, so a benefit that survives an ITT analysis is unlikely to be an artefact. The same pull is <em>anti</em>-conservative when the outcome is a <em>harm</em>: it understates the harm and makes the treatment look safer than it is. Non-adherence dilutes a harm and a benefit alike, so an ITT or ITT-analogue estimate near the null is weak evidence of safety, not reassurance. When the question is an adverse effect, the estimand to report is the per-protocol effect — the harm under the treatment as actually taken — and an ITT result should not be read as evidence that the treatment is safe.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+</div>
+</div>
+<p>Two features of the emulated trial make the divergence concrete. First, the assigned groups do not stay put. Patients assigned to initiate do not all keep taking the drug, and patients assigned to withhold start it later, so by the final visit the two baseline groups have drifted toward each other.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>assigned <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span> <span class="fu">filter</span>(k <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">transmute</span>(id, <span class="at">assigned =</span> A)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>obs <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(assigned, <span class="at">by =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(assigned, k) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">`</span><span class="at">prop. treated this visit</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">mean</span>(A), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> assigned, <span class="at">values_from =</span> <span class="st">`</span><span class="at">prop. treated this visit</span><span class="st">`</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_glue =</span> <span class="st">"assigned {ifelse(assigned == 1, 'initiate', 'withhold')}"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Adherence drift: proportion treated at each visit, by the strategy assigned at time zero."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Adherence drift: proportion treated at each visit, by the strategy assigned at time zero.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">k</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">assigned withhold</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">assigned initiate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">0.81</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.67</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: right;">0.60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">0.57</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>By the fifth visit the initiate group is far from fully treated and the withhold group is far from untreated. An intention-to-treat analogue, which holds patients in their baseline group regardless of this drift, therefore compares two strategies that were abandoned almost immediately, and it understates the effect of actually taking or not taking the drug throughout. Its crude form shows this together with the baseline confounding:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>itt <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(assigned, <span class="at">by =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id, assigned) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">stroke =</span> <span class="fu">max</span>(Y), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(assigned) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">risk =</span> <span class="fu">mean</span>(stroke), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>itt_rr <span class="ot">&lt;-</span> <span class="fu">with</span>(itt, risk[assigned <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">/</span> risk[assigned <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">ITT_analogue_RR =</span> <span class="fu">round</span>(itt_rr, <span class="dv">3</span>), <span class="at">per_protocol_truth_RR =</span> <span class="fu">round</span>(truth<span class="sc">$</span>RR, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ITT_analogue_RR per_protocol_truth_RR 
+                1.554                 0.546 </code></pre>
+</div>
+</div>
+<p>The crude intention-to-treat analogue gives a risk ratio of 1.55 — the drug again looks harmful, partly from the baseline confounding seen above and partly because the assigned strategies were not sustained. The per-protocol estimand, the effect of the sustained strategy that the protocol actually named, is the protective 0.55.</p>
+<p>Second, recovering that per-protocol effect cannot be done by ordinary adjustment. Blood pressure during follow-up is a confounder of the later treatment decisions and, at the same time, a consequence of the earlier ones. Leaving it out of an outcome model leaves the time-varying confounding in place; putting it in blocks the pathway through which the drug works. Neither choice recovers the sustained-strategy effect. The resolution — inverse-probability weighting to build a pseudo-population in which treatment is detached from blood pressure, or the g-formula to simulate the strategy forward — accounts for the time-varying confounder without conditioning on it in an outcome model. That is the content of Chapter 14, and its Bayesian form, with full posterior uncertainty on the strategy contrast, is the capstone of Chapter 28.</p>
+<p>The division of labour is the point of this chapter. The emulation specifies <em>what</em> is being estimated: a time zero, eligibility, a set of well-defined strategies, and a per-protocol contrast between them. The g-methods of the next chapter supply the <em>estimator</em> that the per-protocol contrast requires once treatment and its confounders evolve together. A clear protocol is what makes it possible to say which estimator is needed, and what it must assume.</p>
+</section>
+<section id="target-trials-and-pragmatic-trials" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="target-trials-and-pragmatic-trials"><span class="header-section-number">14.7</span> Target trials and pragmatic trials</h2>
+<p>The trial named by a protocol like the one above is rarely the tightly controlled trial of a licensing programme. It admits patients on routine eligibility, assigns strategies that clinicians and patients would plausibly follow, lets adherence vary, and counts outcomes as they are recorded in ordinary care. That is the description of a <em>pragmatic</em> trial — one designed to measure how a treatment performs under usual conditions — rather than an <em>explanatory</em> trial, which isolates the biological effect under ideal conditions.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> The two differ along several axes — eligibility, setting, flexibility of delivery and adherence, intensity of follow-up, and choice of outcome — which the PRECIS-2 tool sets out for trialists deciding where on the explanatory–pragmatic continuum a trial should fall.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> An emulation is pushed towards the pragmatic end of every one of those axes by the nature of its data: the population is whoever appears in the records, the comparator is whatever was prescribed, adherence is whatever happened, and the outcome is whatever was coded.</p>
+<p>This affinity is mostly an advantage.</p>
+<ul>
+<li>The estimand matches the question usually asked of observational data — how a treatment performs in routine use, the effectiveness question a health system or guideline must answer, rather than the efficacy question of whether the drug can work under ideal adherence.</li>
+<li>Generalisability is built in rather than argued for: the emulated population is the target population, so there is no gap between a selected trial sample and the patients to whom the result will be applied.</li>
+<li>The discipline runs in both directions. The target-trial table is a checklist for <em>designing</em> a pragmatic trial as much as for emulating one, because it forces the same decisions the PRECIS-2 axes name.</li>
+<li>When a pragmatic trial is itself infeasible — too rare an exposure, too long a latency, too little equipoise, or simply too expensive — a faithful emulation targets the same estimand at a fraction of the cost.</li>
+</ul>
+<p>The affinity also carries the framework’s main weaknesses, and they should be stated plainly. First, a pragmatic <em>trial</em> still randomises: confounding is removed by design, and only the pragmatic features are relaxed. An emulation keeps the pragmatic features but loses the randomisation, so the resemblance is in the estimand, not in the strength of the evidence — everything still rests on the assumption that the measured baseline covariates are a sufficient adjustment set. Second, the estimand a pragmatic design most naturally reports is the intention-to-treat (as-assigned) effect, and that is the contrast which, in observational data, is unprotected by randomisation and drifts towards the null (above); the question the framework handles most naturally is also the one whose emulated version is most fragile. Third, neither pragmatic trials nor emulations are usually blinded, so differential ascertainment of outcomes and informative censoring threaten both — but the emulation has no randomisation to fall back on when they do. Fourth, “pragmatic” describes the conditions of use, not a licence for vague interventions: a pragmatic trial still assigns a concrete strategy, and an emulation that targets an ill-defined exposure inherits the vagueness rather than excusing it — a limitation the closing section returns to.</p>
+</section>
+<section id="emulation-reconciling-observational-studies-with-trials" class="level2" data-number="14.8">
+<h2 data-number="14.8" class="anchored" data-anchor-id="emulation-reconciling-observational-studies-with-trials"><span class="header-section-number">14.8</span> Emulation reconciling observational studies with trials</h2>
+<p>The framing earns its keep when an observational analysis has disagreed with a randomised trial. In several well-documented cases the disagreement was traced not to irreducible confounding but to a specific protocol element the observational analysis had handled wrongly — time zero, prevalent users, or the choice of contrast — and repairing that element brought the estimates into line with the trial.</p>
+<p>The clearest case is postmenopausal hormone therapy and coronary heart disease. Observational cohorts, including the Nurses’ Health Study, had reported that oestrogen–progestin therapy <em>lowered</em> coronary risk, while the Women’s Health Initiative randomised trial found an <em>increased</em> risk, concentrated in the first years of use. When the Nurses’ Health Study data were re-analysed as a target trial — aligning time zero at initiation, comparing initiators with non-initiators, and analysing by intention to treat over a sequence of trials — the observational estimates reproduced the trial: an early increase in risk and an overall hazard ratio near one. The earlier discrepancy was largely explained by differences in the time since menopause of the women analysed and by how person-time near initiation had been counted, not by confounding that adjustment could not reach.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
+<p>Statins for primary prevention show the same point in the opposite direction. A conventional comparison of current users with never-users returned a hazard ratio for coronary heart disease of about 1.3 — statins appearing to <em>raise</em> risk, the familiar confounding-by-indication artefact. Emulating a target trial of initiators versus non-initiators, analysed by intention to treat, returned a hazard ratio near 0.9, and the per-protocol contrast was lower still, consistent with the protective effect established by the statin trials.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<p>How reliably does emulation reproduce trials in general? The RCT-DUPLICATE programme prospectively emulated the designs of completed randomised trials in healthcare-claims data: across 32 trials the emulated and trial estimates correlated at about 0.8, rising above 0.9 in the subset where the trial’s eligibility, comparator, and outcome could be closely reproduced, and falling where key design elements could not.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> A 2026 systematic review and meta-analysis of 107 emulation–trial pairs reached the same conclusion: agreement was moderate overall and substantially higher among emulations that reproduced the trial design closely, with the largest discrepancies traceable to imbalanced baseline characteristics, treatments started in hospital, and poor emulation of the outcome.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> The lesson is the one this chapter has pressed throughout: an emulation reproduces a trial to the extent that the protocol — above all eligibility and time zero, the comparator, and the outcome — can be reproduced faithfully; the residual gaps come from design elements the data cannot capture, together with chance and any confounding that adjustment misses. The convergence is evidence that the framework works when it can be applied well, not a guarantee that any single emulation is unbiased.</p>
+</section>
+<section id="the-limits-of-the-target-trial-framing" class="level2" data-number="14.9">
+<h2 data-number="14.9" class="anchored" data-anchor-id="the-limits-of-the-target-trial-framing"><span class="header-section-number">14.9</span> The limits of the target-trial framing</h2>
+<p>The chapter has assumed throughout that every comparative question conceals a trial. That assumption is itself a position on what a cause is: the interventionist view, on which a cause is something that could in principle be assigned, and a causal effect is the contrast between assigning it and not. It is the view behind the consistency assumption of Chapter 10 and behind the claim that there is no causation without manipulation. Target trial emulation is its operational form — it asks of any claimed effect what intervention would have produced it.</p>
+<p>For the questions the framework was built on, this is the right demand. A drug, a dose, a screening interval, a treat-when-indicated rule — each is a well-defined, assignable intervention, and for each the question “what trial?” has an answer whose emulation pays off in the ways the rest of the chapter has shown. The difficulty is that much of epidemiology asks questions of a different kind.</p>
+<p>Consider the effect of obesity on mortality, of socioeconomic position on disease, of race on health, or of a lifetime dietary pattern on cancer. None of these names a single, well-defined intervention. “The effect of obesity” is not one effect: lowering body weight by diet, by exercise, by bariatric surgery, or by illness need not have the same consequence, so the potential outcome under “obese” is not uniquely defined and consistency fails. Hernán states the point as a deliberate restriction — an ill-defined exposure yields an ill-defined effect, and the framework declines to estimate an effect it cannot first make precise.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> Sometimes a manipulable interpretation can be recovered: VanderWeele and Robinson show that “the effect of race” can be read as the inequality that would remain if some socioeconomic distribution were equalised, or as the effect of a hypothetically manipulable phenotype — but only under assumptions that narrow the estimand into something other than the question originally asked.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></p>
+<p>These are not fringe cases. They are the working questions of social epidemiology, life-course epidemiology, and much of nutritional and environmental epidemiology — fields in which the exposure is not assigned at a moment (so there is no clean time zero), is shared by almost everyone to some degree (so positivity fails), and admits many versions (so consistency fails). For such questions there is no trial to emulate, even hypothetically, and the framework of this chapter does not apply.</p>
+<p>Two responses are on offer. The first, associated with the proponents of the framework, is to reformulate the question until it names an intervention: replace “the effect of obesity” with “the effect of a specified weight-loss programme”, and a well-defined estimand and a hypothetical target trial reappear. The gain is precision; the cost is that the reformulated question is not the starting question, and many traditional aetiological questions are thereby reclassified as “not yet well posed”. The second is that the potential-outcomes approach is one tool among several rather than the definition of causal inference. On this view, discovery, mechanism, dose-response, coherence across study designs, and inference to the best explanation are legitimate routes to causal knowledge for questions no trial can address.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> <a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a></p>
+<p>This bears directly on the standing of the randomised trial as the thing an observational study is verified against. For the interventional questions target trial emulation was built for, the benchmarking evidence above supports that standing. However, this does not generalise into a criterion for causal knowledge. It is also easy to overstate what the observational alternatives offer. The instrumental-variable and quasi-experimental designs of Chapters 17 and 18 — including Mendelian randomisation, named for the randomisation it imitates — are not alternatives to the experimental ideal but its observational extensions: each works by finding a source of as-if-random variation in the exposure, and so <em>inherits</em> rather than relaxes the requirement of a well-defined, manipulable intervention. An instrument for body weight estimates the effect of the weight the instrument shifts, one more well-defined-intervention reformulation rather than an escape from it.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> Negative controls are, in the same way, a device for detecting confounding <em>within</em> an exposure-outcome study; they presuppose the very effect whose existence is in question. None of these reaches the questions that lie outside the interventionist programme.</p>
+<p>The best solution we have here is old-fashioned <strong>triangulation</strong>: the convergence of several approaches whose sources of bias are different and unrelated, so that agreement between them is hard to explain by bias alone.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a> The experimentalist designs above are among the inputs to triangulation, not a replacement for it; they sit alongside non-experimental evidence — mechanism, dose-response, replication across populations, and coherence with what else is known — weighed together as an inference to the best explanation. The branches of epidemiology that cannot be cast as a target trial work under this broader standard, in which no single design is the sole arbiter.</p>
+</section>
+<section id="corroboration-without-a-randomised-trial" class="level2" data-number="14.10">
+<h2 data-number="14.10" class="anchored" data-anchor-id="corroboration-without-a-randomised-trial"><span class="header-section-number">14.10</span> Corroboration without a randomised trial</h2>
+<p>The previous section left a question open. If the target trial is the standard against which an emulation is judged, then what corroborates a causal claim when no trial can be run, not even in principle? The reconciliation evidence works because a real trial was available to check the emulation against. Where the exposure admits no trial, that check is gone. This section sets out what takes its place, how far it reaches, and where it stops.</p>
+<p><strong>Two senses of “no trial”.</strong> Firstly, a trial could be well defined but cannot be run for ethical or practical reasons (one cannot randomise to drink at a fixed level for forty years), but the exposure is concrete and manipulable, so that the trial is technically conceivable and consistency (Chapter 10) holds. Secondly, the exposure might not be manipulable even in principle — e.g.&nbsp;socioeconomic position or race as a state of a person rather than an intervention on it — so there is no well-defined trial to imagine and consistency fails. The prospects for corroboration differ sharply between them, and almost all the convincing cases belong to the first.</p>
+<p><strong>The strongest corroboration is usually a randomisation found rather than abandoned.</strong> The most productive tool of the past two decades for these questions has been Mendelian randomisation, which uses the random assortment of alleles at conception as an instrument for a modifiable exposure.<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a> As the previous section noted, this is a natural experiment which it does not escape the interventionist programme. It locates an as-if randomisation inside observational data and earns its credibility in the same way the emulation does — by anticipating trial results where an RCT could later be run. Plasma HDL cholesterol is the cleanest case. Observational cohorts had found high HDL strongly associated with lower risk of myocardial infarction; a Mendelian randomisation analysis found that a genetic variant raising HDL did not lower infarction risk at all, while a genetic score for LDL — included as a positive control — predicted risk in the same direction the observational data did.<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a> The prediction was that raising HDL would not help, and subsequent trials of HDL-raising therapies indeed found no reduction in vascular events.<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a> The non-experimental method had predicted the trial result before the trial was run. That calibration is what licenses its use where no trial will follow: when Mendelian randomisation, with the <em>ADH1B</em> alcohol-metabolism variant as instrument, indicated that a genetic tendency to drink less was associated with a better cardiovascular profile and lower coronary risk even among light and moderate drinkers, it undercut the long-standing observational claim that moderate drinking protects the heart — a claim no feasible trial of lifelong drinking could settle.<a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a></p>
+<p><strong>Where no genetic instrument exists, a policy or exposure shock can serve the same role.</strong> Quasi-experimental designs (Chapter 18) exploit an abrupt, externally imposed change in exposure that is plausibly unrelated to the outcome’s other determinants. The effect of particulate air pollution on mortality cannot be put to a trial that assigns people to dirty air, but when Dublin banned the sale of coal in 1990, black-smoke concentrations fell by about 70%, and an interrupted time-series analysis — adjusting for weather, respiratory epidemics, and death rates in the rest of Ireland — found respiratory deaths down about 15% and cardiovascular deaths about 10% in the years after the ban.<a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a> No single such study is decisive, and the confidence in air pollution as a cause of death rests on a combination: consistent associations across many cohorts, a dose-response relationship, a toxicological mechanism, and natural experiments of this kind. Even here the claim of “no trial” is not absolute — cluster-randomised trials of cleaner cookstoves test household air pollution, and short-term controlled human exposures test physiological intermediates; what cannot be trialled is long-term ambient exposure against hard endpoints.</p>
+<p><strong>A few questions have reached near-certainty from observation and mechanism alone.</strong> Smoking and lung cancer is the standard case. There has never been a randomised trial, nor a genetic instrument of the modern kind, yet the causal conclusion is as secure as almost any in medicine. The confidence comes from the size of the association, its consistency across populations and study designs, the dose-response gradient, the correct temporal order, known carcinogenic mechanisms, and a formal argument that an unmeasured confounder would have to be implausibly strongly associated with both smoking and cancer to account for an effect of that magnitude.<a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a> Asbestos effect on mesothelioma is a similar case, with the added force of near-specificity: the cancer is rare without the exposure. These cases work because the effects are large and specific. The argument does not transfer to the small relative risks that occupy most of observational epidemiology.</p>
+<p><strong>What a corroboration looks like.</strong> The common structure is triangulation: the convergence of approaches whose sources of bias are different and, where possible, point in opposite directions, so that agreement cannot be explained by a bias they share.<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a> A persuasive package typically combines several of the following, chosen so their weaknesses do not overlap:</p>
+<ul>
+<li>the association replicates across populations, periods, and study designs (consistency);</li>
+<li>it follows a dose-response gradient;</li>
+<li>at least one strand carries an as-if randomisation whose bias is unrelated to the cohorts’ confounding — a Mendelian randomisation, a within-sibship comparison, or a natural experiment (Chapters 17 and 18);</li>
+<li>negative-control analyses, in which the exposure should have no effect, return the null, showing the confounding structure behaves as assumed (Chapter 18);</li>
+<li>a mechanism connects exposure to outcome;</li>
+<li>the effect is specific to the outcomes the mechanism predicts and absent for others.</li>
+</ul>
+<p>The corroboration is the failure of these strands to disagree when no shared bias was available to make them agree. Trust then has two layers: an internal one, the triangulation within the question, and an external one, the record of the strongest strand — Mendelian randomisation above all — reproducing trial results in the cases where a trial could be run. The relationship is the one the reconciliation section drew for emulation: as target trial emulation is to the RCT-DUPLICATE benchmark, Mendelian randomisation is to the lipid trials. Each method is calibrated against real trials where both are possible, then extended to where only the method can go.</p>
+<p>For the second sense of “no trial” — exposures that are not well-defined interventions — this route largely fails. The as-if-randomisation strands that are most informative elsewhere themselves require a manipulable exposure: a genetic instrument estimates the effect of the specific thing the variant shifts, and a policy shock estimates the effect of the specific change it imposed, so each, applied to “socioeconomic position” or “race”, silently substitutes a narrower, well-defined quantity for the original. What remains is robust association and partial mechanistic understanding, which is the appropriate ceiling for such questions rather than a deficiency to be corrected. The position is the one the chapter has held throughout: for a well-defined intervention, an actual or natural experiment is the standard, and triangulation around it can reach trial-grade confidence; for an exposure that is not an intervention at all, there is no experiment to approximate, and the confidence available is more limited — strong enough to act on, often, but not the same thing as a trial.</p>
+</section>
+<section id="key-points" class="level2" data-number="14.11">
+<h2 data-number="14.11" class="anchored" data-anchor-id="key-points"><span class="header-section-number">14.11</span> Key points</h2>
+<ul>
+<li>An observational comparison is an attempt to emulate a <strong>target trial</strong>. Stating that trial’s protocol explicitly, component by component, turns subtle biases into visible design choices.<a href="#fn30" class="footnote-ref" id="fnref30" role="doc-noteref"><sup>30</sup></a></li>
+<li>Three of the biases that wreck observational drug studies — <strong>immortal time bias</strong>, <strong>prevalent-user bias</strong>, and selection from a <strong>misaligned start</strong> — are introduced by the analyst and all stem from failing to align <strong>eligibility, assignment, and the start of follow-up</strong> at a single <strong>time zero</strong>.<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a></li>
+<li>Fixing time zero closes off the misalignment biases by construction; a <strong>new-user, active-comparator</strong> design additionally removes prevalent-user bias and narrows <strong>confounding by indication</strong>, which is then adjusted for using baseline covariates.<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a></li>
+<li><strong>Immortal time bias</strong> can manufacture an apparent benefit out of event-free waiting time, and may do so in the same direction as a true effect — so a single biased analysis gives no warning. The fix is to classify patients by the strategy assigned at time zero, never by treatment received afterwards.<a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a></li>
+<li>The <strong>intention-to-treat</strong> analogue and the <strong>per-protocol</strong> effect diverge in observational data because patients drift from their baseline assignment. The per-protocol effect is usually the question of interest for a sustained treatment, and estimating it requires the <strong>g-methods</strong> of Chapter 14, because adherence is driven by time-varying confounders affected by past treatment.</li>
+<li>Because non-adherence pulls the ITT contrast <strong>towards the null</strong>, an ITT analysis is conservative for a <em>benefit</em> but <strong>anti-conservative for a harm</strong> — it understates the harm and makes the treatment look safer than it is. An ITT result near the null is weak evidence of <strong>safety</strong>; for an adverse effect the <strong>per-protocol</strong> effect is the estimand to report.<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a></li>
+<li>The trial an emulation targets is, by the nature of the data, a <strong>pragmatic</strong> rather than an explanatory one, so the framework inherits a pragmatic trial’s strengths (a real-world effectiveness estimand, built-in generalisability) and its weaknesses (an ITT-leaning estimand, usually no blinding) — but without the protection of randomisation.<a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a></li>
+<li>The framing applies only where the exposure is a <strong>well-defined, assignable intervention</strong>. For non-manipulable or ill-defined exposures (obesity, race, socioeconomic position, lifetime diet) consistency and positivity fail and there is no trial to emulate. The instrumental-variable and quasi-experimental methods of Chapters 17–18 are not an escape: they <em>find</em> an as-if randomisation and so still require a manipulable exposure. Such questions rest instead on <strong>triangulation</strong> — convergence of evidence with unrelated biases — together with mechanism.<a href="#fn36" class="footnote-ref" id="fnref36" role="doc-noteref"><sup>36</sup></a> <a href="#fn37" class="footnote-ref" id="fnref37" role="doc-noteref"><sup>37</sup></a></li>
+<li>When no trial is possible, a non-experimental claim earns <strong>trial-grade trust</strong> only when a strand carrying an <strong>as-if randomisation</strong> (Mendelian randomisation, a natural experiment) is calibrated against real trials elsewhere — as Mendelian randomisation was for the lipid hypotheses, correctly predicting that raising HDL would not help.<a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a> <a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a> For exposures that are not interventions at all, that route is unavailable and the available confidence is more limited.</li>
+<li>When observational results have <strong>disagreed with randomised trials</strong>, emulating the target trial has often reconciled them by repairing a design flaw (hormone therapy, statins). Benchmarking programmes and a systematic review find that emulations <strong>reproduce trials to the degree the protocol can be reproduced</strong> — closely emulated designs agree well, loosely emulated ones less so.<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a> <a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a></li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="14.12">
+<h2 data-number="14.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">14.12</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Reverse the immortal-time direction.</strong> The demonstration used the cohort’s protective drug. Re-simulate with the drug’s direct and mediated effects set to zero (a null drug; edit the generator’s outcome and SBP coefficients), and repeat the “ever treated” analysis. Show that immortal time bias now produces an apparent benefit where there is none, and relate the size of the spurious effect to the amount of pre-initiation person-time.</p></li>
+<li><p><strong>A sequence of trials.</strong> The emulation here used a single time zero at the first visit. Treat each visit at which a patient is untreated and at risk as a possible time zero, build one emulated trial per such visit, and pool the initiators and non-initiators across trials. How many more eligible person-trials does this yield, and why might it estimate the effect more precisely?</p></li>
+<li><p><strong>New user versus prevalent user.</strong> Construct a prevalent-user comparison by taking, at visit 3, the patients already treated versus those not, and comparing their subsequent stroke risk. Contrast it with the new-user emulation from time zero. Which patients are missing from the prevalent-user treated group, and in which direction does their absence bias the estimate?</p></li>
+<li><p><strong>Why ITT understates the effect.</strong> Using the adherence-drift table, explain in words why the intention-to-treat analogue moves toward the null as follow-up lengthens. Under what (unrealistic) pattern of adherence would the ITT analogue and the per-protocol effect coincide?</p></li>
+<li><p><strong>Conceptual.</strong> A colleague proposes to estimate the per-protocol effect by simply restricting the analysis to patients who adhered perfectly to their assigned strategy throughout. Explain, using the idea of treatment–confounder feedback, why this restriction is itself a form of conditioning on a consequence of treatment, and what it would bias.</p></li>
+<li><p><strong>The limits of the framing.</strong> Take a question that resists target trial emulation — say, the effect of childhood socioeconomic position on adult cardiovascular disease. State which of the three identification assumptions (consistency, positivity, exchangeability) fails and why, and explain why there is no time zero to fix. Then give one reformulation that <em>does</em> name an assignable intervention, and say precisely how the estimand of the reformulated question differs from the one originally asked.</p></li>
+<li><p><strong>Corroboration without a trial.</strong> The HDL example shows a non-experimental method (Mendelian randomisation) predicting a trial result before the trial was run, which is what licensed trusting it where no trial followed (alcohol). Pick a current causal claim that no trial can settle and sketch a triangulation package for it: name three strands whose sources of bias are unrelated, state for each the direction in which its bias would push the estimate if it were wrong, and explain why their agreement would be hard to attribute to bias. Which single strand, if any, carries an as-if randomisation, and has the method behind it been calibrated against trials elsewhere?</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Hernán MA, Robins JM, “Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available,” <em>Am J Epidemiol</em> 2016;183:758-764 (<a href="https://doi.org/10.1093/aje/kwv254">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Hernán MA, Wang W, Leaf DE, “Target Trial Emulation: A Framework for Causal Inference From Observational Data,” <em>JAMA</em> 2022;328:2446-2447 (<a href="https://doi.org/10.1001/jama.2022.21383">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Suissa S, “Immortal time bias in pharmaco-epidemiology,” <em>Am J Epidemiol</em> 2008;167:492-499 (<a href="https://doi.org/10.1093/aje/kwm324">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Lund JL, Richardson DB, Stürmer T, “The active comparator, new user study design in pharmacoepidemiology: historical foundations and contemporary application,” <em>Curr Epidemiol Rep</em> 2015;2:221-228 (<a href="https://doi.org/10.1007/s40471-015-0053-5">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Hernán MA, Sauer BC, Hernández-Díaz S, Platt R, Shrier I, “Specifying a target trial prevents immortal time bias and other self-inflicted injuries in observational analyses,” <em>J Clin Epidemiol</em> 2016;79:70-75 (<a href="https://doi.org/10.1016/j.jclinepi.2016.04.014">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Lund JL, Richardson DB, Stürmer T, “The active comparator, new user study design in pharmacoepidemiology: historical foundations and contemporary application,” <em>Curr Epidemiol Rep</em> 2015;2:221-228 (<a href="https://doi.org/10.1007/s40471-015-0053-5">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Hernán MA, Alonso A, Logan R, Grodstein F, Michels KB, Willett WC, Manson JE, Robins JM, “Observational studies analyzed like randomized experiments: an application to postmenopausal hormone therapy and coronary heart disease,” <em>Epidemiology</em> 2008;19:766-779 (<a href="https://doi.org/10.1097/EDE.0b013e3181875e61">DOI</a>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Danaei G, García Rodríguez LA, Cantero OF, Logan R, Hernán MA, “Observational data for comparative effectiveness research: an emulation of randomised trials of statins and primary prevention of coronary heart disease,” <em>Stat Methods Med Res</em> 2013;22:70-96 (<a href="https://doi.org/10.1177/0962280211403603">DOI</a>).<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Lund JL, Richardson DB, Stürmer T, “The active comparator, new user study design in pharmacoepidemiology: historical foundations and contemporary application,” <em>Curr Epidemiol Rep</em> 2015;2:221-228 (<a href="https://doi.org/10.1007/s40471-015-0053-5">DOI</a>).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Hernán MA, Hernández-Díaz S, “Beyond the intention-to-treat in comparative effectiveness research,” <em>Clin Trials</em> 2012;9:48-55 (<a href="https://doi.org/10.1177/1740774511420743">DOI</a>).<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Ford I, Norrie J, “Pragmatic Trials,” <em>N Engl J Med</em> 2016;375:454-463 (<a href="https://doi.org/10.1056/NEJMra1510059">DOI</a>).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Loudon K, Treweek S, Sullivan F, Donnan P, Thorpe KE, Zwarenstein M, “The PRECIS-2 tool: designing trials that are fit for purpose,” <em>BMJ</em> 2015;350:h2147 (<a href="https://doi.org/10.1136/bmj.h2147">DOI</a>).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Hernán MA, Alonso A, Logan R, Grodstein F, Michels KB, Willett WC, Manson JE, Robins JM, “Observational studies analyzed like randomized experiments: an application to postmenopausal hormone therapy and coronary heart disease,” <em>Epidemiology</em> 2008;19:766-779 (<a href="https://doi.org/10.1097/EDE.0b013e3181875e61">DOI</a>).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Danaei G, García Rodríguez LA, Cantero OF, Logan R, Hernán MA, “Observational data for comparative effectiveness research: an emulation of randomised trials of statins and primary prevention of coronary heart disease,” <em>Stat Methods Med Res</em> 2013;22:70-96 (<a href="https://doi.org/10.1177/0962280211403603">DOI</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Wang SV, Schneeweiss S, Franklin JM, et al., “Emulation of Randomized Clinical Trials With Nonrandomized Database Analyses: Results of 32 Clinical Trials,” <em>JAMA</em> 2023;329:1376-1385 (<a href="https://doi.org/10.1001/jama.2023.4221">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Wang C, Tang D, von Dadelszen P, Ju C, Liu L, Wang Y, Magee LA, “Concordance between target trial emulation and randomised controlled trials: systematic review and meta-analysis,” <em>BMJ</em> 2026;393:e086810 (<a href="https://doi.org/10.1136/bmj-2025-086810">DOI</a>).<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Hernán MA, “Does water kill? A call for less casual causal inferences,” <em>Ann Epidemiol</em> 2016;26:674-680 (<a href="https://doi.org/10.1016/j.annepidem.2016.08.016">DOI</a>).<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>VanderWeele TJ, Robinson WR, “On the causal interpretation of race in regressions adjusting for confounding and mediating variables,” <em>Epidemiology</em> 2014;25:473-484 (<a href="https://doi.org/10.1097/EDE.0000000000000105">DOI</a>).<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Vandenbroucke JP, Broadbent A, Pearce N, “Causality and causal inference in epidemiology: the need for a pluralistic approach,” <em>Int J Epidemiol</em> 2016;45:1776-1786 (<a href="https://doi.org/10.1093/ije/dyv341">DOI</a>).<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>Krieger N, Davey Smith G, “The tale wagged by the DAG: broadening the scope of causal inference and explanation for epidemiology,” <em>Int J Epidemiol</em> 2016;45:1787-1808 (<a href="https://doi.org/10.1093/ije/dyw114">DOI</a>).<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>Davey Smith G, Ebrahim S, “‘Mendelian randomization’: can genetic epidemiology contribute to understanding environmental determinants of disease?,” <em>Int J Epidemiol</em> 2003;32:1-22 (<a href="https://doi.org/10.1093/ije/dyg070">DOI</a>).<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>Lawlor DA, Tilling K, Davey Smith G, “Triangulation in aetiological epidemiology,” <em>Int J Epidemiol</em> 2016;45:1866-1886 (<a href="https://doi.org/10.1093/ije/dyw314">DOI</a>).<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>Davey Smith G, Ebrahim S, “‘Mendelian randomization’: can genetic epidemiology contribute to understanding environmental determinants of disease?,” <em>Int J Epidemiol</em> 2003;32:1-22 (<a href="https://doi.org/10.1093/ije/dyg070">DOI</a>).<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24"><p>Voight BF, Peloso GM, Orho-Melander M, et al., “Plasma HDL cholesterol and risk of myocardial infarction: a mendelian randomisation study,” <em>Lancet</em> 2012;380:572-580 (<a href="https://doi.org/10.1016/S0140-6736(12)60312-2">DOI</a>).<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn25"><p>HPS2-THRIVE Collaborative Group, “Effects of extended-release niacin with laropiprant in high-risk patients,” <em>N Engl J Med</em> 2014;371:203-212 (<a href="https://doi.org/10.1056/NEJMoa1300955">DOI</a>).<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn26"><p>Holmes MV, Dale CE, Zuccolo L, et al., “Association between alcohol and cardiovascular disease: Mendelian randomisation analysis based on individual participant data,” <em>BMJ</em> 2014;349:g4164 (<a href="https://doi.org/10.1136/bmj.g4164">DOI</a>).<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn27"><p>Clancy L, Goodman P, Sinclair H, Dockery DW, “Effect of air-pollution control on death rates in Dublin, Ireland: an intervention study,” <em>Lancet</em> 2002;360:1210-1214 (<a href="https://doi.org/10.1016/S0140-6736(02)11281-5">DOI</a>).<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn28"><p>Cornfield J, Haenszel W, Hammond EC, Lilienfeld AM, Shimkin MB, Wynder EL, “Smoking and lung cancer: recent evidence and a discussion of some questions,” <em>J Natl Cancer Inst</em> 1959;22:173-203 (reprinted <em>Int J Epidemiol</em> 2009;38:1175-1191, <a href="https://doi.org/10.1093/ije/dyp289">DOI</a>).<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn29"><p>Lawlor DA, Tilling K, Davey Smith G, “Triangulation in aetiological epidemiology,” <em>Int J Epidemiol</em> 2016;45:1866-1886 (<a href="https://doi.org/10.1093/ije/dyw314">DOI</a>).<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn30"><p>Hernán MA, Robins JM, “Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available,” <em>Am J Epidemiol</em> 2016;183:758-764 (<a href="https://doi.org/10.1093/aje/kwv254">DOI</a>).<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn31"><p>Hernán MA, Sauer BC, Hernández-Díaz S, Platt R, Shrier I, “Specifying a target trial prevents immortal time bias and other self-inflicted injuries in observational analyses,” <em>J Clin Epidemiol</em> 2016;79:70-75 (<a href="https://doi.org/10.1016/j.jclinepi.2016.04.014">DOI</a>).<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn32"><p>Lund JL, Richardson DB, Stürmer T, “The active comparator, new user study design in pharmacoepidemiology: historical foundations and contemporary application,” <em>Curr Epidemiol Rep</em> 2015;2:221-228 (<a href="https://doi.org/10.1007/s40471-015-0053-5">DOI</a>).<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn33"><p>Suissa S, “Immortal time bias in pharmaco-epidemiology,” <em>Am J Epidemiol</em> 2008;167:492-499 (<a href="https://doi.org/10.1093/aje/kwm324">DOI</a>).<a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn34"><p>Hernán MA, Hernández-Díaz S, “Beyond the intention-to-treat in comparative effectiveness research,” <em>Clin Trials</em> 2012;9:48-55 (<a href="https://doi.org/10.1177/1740774511420743">DOI</a>).<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn35"><p>Ford I, Norrie J, “Pragmatic Trials,” <em>N Engl J Med</em> 2016;375:454-463 (<a href="https://doi.org/10.1056/NEJMra1510059">DOI</a>).<a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn36"><p>Hernán MA, “Does water kill? A call for less casual causal inferences,” <em>Ann Epidemiol</em> 2016;26:674-680 (<a href="https://doi.org/10.1016/j.annepidem.2016.08.016">DOI</a>).<a href="#fnref36" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn37"><p>Lawlor DA, Tilling K, Davey Smith G, “Triangulation in aetiological epidemiology,” <em>Int J Epidemiol</em> 2016;45:1866-1886 (<a href="https://doi.org/10.1093/ije/dyw314">DOI</a>).<a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn38"><p>Voight BF, Peloso GM, Orho-Melander M, et al., “Plasma HDL cholesterol and risk of myocardial infarction: a mendelian randomisation study,” <em>Lancet</em> 2012;380:572-580 (<a href="https://doi.org/10.1016/S0140-6736(12)60312-2">DOI</a>).<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn39"><p>HPS2-THRIVE Collaborative Group, “Effects of extended-release niacin with laropiprant in high-risk patients,” <em>N Engl J Med</em> 2014;371:203-212 (<a href="https://doi.org/10.1056/NEJMoa1300955">DOI</a>).<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn40"><p>Wang SV, Schneeweiss S, Franklin JM, et al., “Emulation of Randomized Clinical Trials With Nonrandomized Database Analyses: Results of 32 Clinical Trials,” <em>JAMA</em> 2023;329:1376-1385 (<a href="https://doi.org/10.1001/jama.2023.4221">DOI</a>).<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn41"><p>Wang C, Tang D, von Dadelszen P, Ju C, Liu L, Wang Y, Magee LA, “Concordance between target trial emulation and randomised controlled trials: systematic review and meta-analysis,” <em>BMJ</em> 2026;393:e086810 (<a href="https://doi.org/10.1136/bmj-2025-086810">DOI</a>).<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./12-stratification.html" class="pagination-link" aria-label="Causal analysis without regression: stratification and standardisation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch14-time-varying-confounding.html" class="pagination-link" aria-label="Time-varying confounding and g-methods">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

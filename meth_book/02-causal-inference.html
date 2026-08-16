@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology - 2&nbsp; Causal inference and Experiment</title>
+<title>The Bayesian Way to Causal Epidemiology - 4&nbsp; Causal inference and Experiment</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./03-irrational-thinking.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./ch04b-theories-of-causation.html" rel="next">
+<link href="./04-rational-certainty.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-causal-inference.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./02-causal-inference.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -96,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Methodology</a> 
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -112,61 +112,13 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Part I. How to think</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -174,38 +126,273 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -220,19 +407,28 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#ancient-theories-of-causality" id="toc-ancient-theories-of-causality" class="nav-link active" data-scroll-target="#ancient-theories-of-causality"><span class="header-section-number">2.1</span> Ancient theories of causality</a></li>
-  <li><a href="#early-mordern-experiment" id="toc-early-mordern-experiment" class="nav-link" data-scroll-target="#early-mordern-experiment"><span class="header-section-number">2.2</span> Early mordern experiment</a></li>
-  <li><a href="#modern-experiment" id="toc-modern-experiment" class="nav-link" data-scroll-target="#modern-experiment"><span class="header-section-number">2.3</span> Modern experiment</a></li>
-  <li><a href="#useful-concepts-for-understanding-controlled-experiments" id="toc-useful-concepts-for-understanding-controlled-experiments" class="nav-link" data-scroll-target="#useful-concepts-for-understanding-controlled-experiments"><span class="header-section-number">2.4</span> Useful concepts for understanding controlled experiments</a></li>
+  <li><a href="#ancient-theories-of-causality" id="toc-ancient-theories-of-causality" class="nav-link active" data-scroll-target="#ancient-theories-of-causality"><span class="header-section-number">4.1</span> Ancient theories of causality</a></li>
+  <li><a href="#hume" id="toc-hume" class="nav-link" data-scroll-target="#hume"><span class="header-section-number">4.2</span> Hume</a></li>
+  <li><a href="#kant" id="toc-kant" class="nav-link" data-scroll-target="#kant"><span class="header-section-number">4.3</span> Kant</a>
+  <ul class="collapse">
+  <li><a href="#analytic-and-synthetic-a-priori-and-a-posteriori" id="toc-analytic-and-synthetic-a-priori-and-a-posteriori" class="nav-link" data-scroll-target="#analytic-and-synthetic-a-priori-and-a-posteriori"><span class="header-section-number">4.3.1</span> Analytic and synthetic, a priori and a posteriori</a></li>
+  <li><a href="#the-answer-the-mind-supplies-the-form-of-experience" id="toc-the-answer-the-mind-supplies-the-form-of-experience" class="nav-link" data-scroll-target="#the-answer-the-mind-supplies-the-form-of-experience"><span class="header-section-number">4.3.2</span> The answer: the mind supplies the form of experience</a></li>
+  <li><a href="#newtonian-physics-as-exactly-true" id="toc-newtonian-physics-as-exactly-true" class="nav-link" data-scroll-target="#newtonian-physics-as-exactly-true"><span class="header-section-number">4.3.3</span> Newtonian physics as exactly true</a></li>
+  <li><a href="#one-story-and-where-this-book-stands-in-it" id="toc-one-story-and-where-this-book-stands-in-it" class="nav-link" data-scroll-target="#one-story-and-where-this-book-stands-in-it"><span class="header-section-number">4.3.4</span> One story, and where this book stands in it</a></li>
+  </ul></li>
+  <li><a href="#early-modern-experiment" id="toc-early-modern-experiment" class="nav-link" data-scroll-target="#early-modern-experiment"><span class="header-section-number">4.4</span> Early modern experiment</a></li>
+  <li><a href="#modern-experiment-randomized-and-controlled" id="toc-modern-experiment-randomized-and-controlled" class="nav-link" data-scroll-target="#modern-experiment-randomized-and-controlled"><span class="header-section-number">4.5</span> Modern experiment: randomized and controlled</a></li>
+  <li><a href="#useful-concepts-for-understanding-controlled-experiments" id="toc-useful-concepts-for-understanding-controlled-experiments" class="nav-link" data-scroll-target="#useful-concepts-for-understanding-controlled-experiments"><span class="header-section-number">4.6</span> Useful concepts for understanding controlled experiments</a></li>
+  <li><a href="#modern-models-causality-bind-randomized-experiment-with-observational-studies" id="toc-modern-models-causality-bind-randomized-experiment-with-observational-studies" class="nav-link" data-scroll-target="#modern-models-causality-bind-randomized-experiment-with-observational-studies"><span class="header-section-number">4.7</span> Modern models causality bind randomized experiment with observational studies</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./02-causal-inference.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></h1>
 </div>
 
 
@@ -249,8 +445,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="ancient-theories-of-causality" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="ancient-theories-of-causality"><span class="header-section-number">2.1</span> Ancient theories of causality</h2>
+<section id="ancient-theories-of-causality" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="ancient-theories-of-causality"><span class="header-section-number">4.1</span> Ancient theories of causality</h2>
 <p>Aristotle (384-322) offers 4 types of answers to the question “why?”</p>
 <ol type="1">
 <li><p>the <strong>material cause</strong> – this what things are made of.</p></li>
@@ -258,7 +454,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>the <strong>efficient cause</strong> – this the orgin of a change or state of rest. A person reaching a decision, a father who begets a child, a sculptor carving a statue, a doctor curing a patient.</p></li>
 <li><p>the <strong>final cause</strong> is the end goal why something is done (doctor works to make the patient healthy, a lung works to oxygenate the body, etc.). For living things the formal and final causes coincide (the realization of a mature organism is the goal towards which the an organism strives).</p></li>
 </ol>
-<p>Aritotles causes and effects are usually not single events, like causation is commonly seen in modern philosophy, but more complex entities, like human beings or proportions or the skill of the sculptor. Effects can also be states, actions, substances, events.</p>
+<p>Aristotles causes and effects are usually not single events, like causation is commonly seen in modern philosophy, but more complex entities, like human beings or proportions or the skill of the sculptor. Effects can also be states, actions, substances, events. According to Aristotle, following the four causes will result in an natural science kind of explanation of things. So, we can think of these as explanatory tools, especially in the context of biology (but note that for Aristotle, physics explanations were not that different – <strong>to AI: I need an expansion here, with ref</strong>)</p>
 <p><strong>Stoics</strong> saw causation differently.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> They disregard material, formal and final causes, but espouse several different forms of efficient causes. They also offer a <strong>universal law of causation</strong>: <em>A</em> causes that <em>B</em> is <em>F</em>, where <em>A</em> and <em>B</em> are bodies, and <em>F</em> is an abstract non-bodily entity, a <em>lekton</em>. For example, A - scalpel, B- flesh, F - predicate “being cut”. <em>A</em> is the active element, while <em>B</em> is the passive element (also called <em>matter</em>).</p>
 <ul>
 <li><p>Joint causes (<em>sunaita</em>) – two oxen in fromt of a cart, if neither alone can move it</p></li>
@@ -272,15 +468,141 @@ ul.task-list li input[type="checkbox"] {
 <li><p>other antecedent (<em>prokatrktikai</em>) causes retain their effects after ceasing to operate. Like a house that remains after the builders leave. An antecedent cause leaves something material to the matter that is itself a sustaining cause – this makes it possible for its effects to linger. When a patient catches a cold, the coldness of air is the antecedent cause and the subsequent fever is the sustaining cause of symptoms.</p></li>
 </ul>
 <p>The stoics accepted a strong causal determinism: (i) everything is caused by something, and (ii) every effect is fully determined by its cause(s). So, nothing happens without a cause and every cause is a necessitating cause (the effect cannot not happen, when there is cause). This unified series of causes and effects is the doctrine of fate. This, of course, brings on the question about free will. One way to get to free will is to posit with Epicurus (341-270) that the world is made of tiny atoms, which in addition to causal interactions have some amount of random unpredictable swerves. Or, alternatively, maybe the mind somehow has freedom of tought, although it is influenced by external causes (Chrysippus; b. 279 B.C.), or maybe there actually are no external antecedent causes for our will (Carneades; 214-129).</p>
-<p>A modern framework for causal analysis, the counterfactual model, also known as the potential outcomes model, was proposed by Donald Rubin ca. 1980. According to this, each individual has a potential outcome under each treatment state, even though each individual can be observed in only one treatment state at any point in time. Because it is impossible to observe both outcomes at the same time for any individual, causal effects cannot be observed at the individual level. Thus, we need to estimate average causal effects for groups of individuals, defined by specific characteristics. To do so effectively, the process by which individuals of different types are exposed to the cause of interest must be modeled. If the modelling assumptions are defendable, and a suitable method for constructing an average contrast from the data is chosen, then an average difference can be given a causal interpretation. Experiment is an investigation where the system under study is under the control of the investigator. The individuals or material investigated, the nature of the treatments or manipulations under study and the measurement procedures are all selected by the investigator, whereas in an observational study some of these features, and in particular the allocation of individuals to treatment groups, are outside the investigator’s control. This brings us to the <strong>fundamental problem of causation</strong>: as comparison with control is necessary, how can we both do and not do the treatment? We could do treatment first and then the control (or <em>vice versa</em>), but this assumes temporal stability, causal transience (system response is not influenced by its history), and unit homogeneity. Or then, there is the statistical solution where we assume that there are many different units of observation (a population) which are not identical, but as a whole they still represent the population. We also assume that the variable that we manipulate (the cause) is independent of the variables that we measure. Only then can we measure experimental values in some units and control values in others to calculate the average causal effect.</p>
-<p>This is a lot of assumptions. Remember that experimental results do not speak for themselves. All experimental systems are simplifications of reality: they involve physical models and often statistical models as well. All experimental results are relative to control. This means that experimental results must be put into wider context and they need interpretation.</p>
-<p>The randomization to groups to balance them means that increasing the sample size reduces the probability of it not being representative of the population. The goal is that any confounding factor besides the experimental manipulation, which could influence the result of your experiment, would be present in equal “concentration” in the study group and control group. If this is the case, their influences on experimental results will cancel out. For this to work, we need (1) not too many confounding factors to partition and (2) not too small a sample. If the sample size is comparable with the number of confounding factors, some imbalance will likely be present and randomization cannot remove bias. Usually we have no idea about how many nuisance variables there might be in our experiment. As a rule of thumb, for RCTs with a sample size of at least 200, randomization should be “an insurance in the long run against substantial accidental bias between treatment groups”. The ´long run´ means that even with large samples randomization will not guarantee elimination of bias from a particular sample, it will only make it more likely.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p>Biological experiments are usually not randomized and the independence of repeat experiments is achieved by varying as many components of the experimental system (buffer batches and enzyme preps) as possible and by trying to keep the compositions and treatments of the experimental and control groups as similar as possible. This leads naturally to paired designs where experimental and control groups are treated together as much as possible, and in parallel. The idea behind a paired design is that substantial fraction of random variation resides within the pairs, and we can take this into account in our analysis model structures.</p>
-<p>So how do we know that by treatment we treated the variable that we wanted treated, rather than something else? We simply need a simple enough experimental system, which means that we cannot study the world directly – need a simplified system that we can consistently disrupt with treatment. As every simplification constitutes an extra hypothesis, this makes it correspondingly harder to generalize back to the world.</p>
-<p>An experimental system consists of the biological object of measurement, reagents, machines, the experimenters, and the act of measurement. Experimental system has long-run quality properties: it has sensitivity and specificity. It has a measure of complexity and a measure of relevance to the real world. There is trade-off, by which a simple system is easy to interpret, but at the expense of external validity (genralizability). For instance, simplified <em>in vitro</em> systems presuppose that we understand <em>in vivo</em> conditions, less there be serious problems with external validity. And the in vivo sytems, which tend to have better external validity, are often harder to interpret (theres a bigger chance of confounding).</p>
 </section>
-<section id="early-mordern-experiment" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="early-mordern-experiment"><span class="header-section-number">2.2</span> Early mordern experiment</h2>
+<section id="hume" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="hume"><span class="header-section-number">4.2</span> Hume</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="David Hume (1711--1776)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+David Hume (1711–1776)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A Scottish philosopher and historian, born in Edinburgh. His main philosophical works are <em>A Treatise of Human Nature</em> (1739–1740), written before he turned thirty, and the shorter, more accessible <em>An Enquiry Concerning Human Understanding</em> (1748). Hume was an <strong>empiricist</strong>: he held that all knowledge of the world derives from sense experience, and that every genuine idea can be traced back to some sensory impression. He twice applied for a university chair and was twice rejected, largely on suspicion of irreligion; he earned his living as a librarian, essayist, and author of a best-selling history of England. His sceptical analyses of causation and of inductive inference are his most influential legacy, and they are the starting point of the story this section and the next one tell.</p>
+</div>
+</div>
+<p>It was David Hume who gave causality its modern (sceptical) philosophical form. For him, to speak of a causal connection, four conditions must hold: 1) a cause must directly interact with the effect in the physical world; 2) a cause always precedes the effect in time; 3) a cause leads to the effect without exception (there cannot be a cause without the effect, although there can be effects with more than one causes); 4) there is a necessary connection between cause and effect (this is power, force, or glue that makes the effect have to follow the cause, and it may or may not be “physical”). To complicate things further, he mentions a counterfactual view of causality: “if the first object had not been, the second never had existed”. So there is a “thing A”, which is cause, a “thing B” which is effect, a mysterious physical(?) connection between them, which grants them perfect co-existence over time: every time that A occurs, B must by necessity follow. Things are further muddied if one considers that day always follows night, without night causing the day; and that smoking sometimes, but not even in most cases, causes cancer. For Hume the difficulty was that it is impossible to verify empirically, or to deduce logically, that B always follows A. In addition, he shows that the necessary connection between cause and effect is nowhere to be found in the objects or their interaction, physical or otherwise, and that the only genuine impression of necessity is the one arising in the observing mind after repeated experience. This makes causality part of human psychology, rather than an empirically verifiable feature of the physical world.</p>
+<blockquote class="blockquote">
+<p>an object may be contiguous and prior to another, without being consider’d as its cause. There is a NECESSARY CONNEXION to be taken into consideration; and that relation is of much greater importance than any of the other two above-mention’d (Hume, Treatise)</p>
+</blockquote>
+<p>According to Hume, since all our ideas ultimately derive from sense experience, and there is no sense impression of necessity in any single instance, the puzzle is where the idea of necessary connection comes from at all. Hume’s answer is that the idea originates not in the objects but in the mind. After repeatedly experiencing A followed by B, the mind forms a habit, so that upon seeing A it expects B. So necessity “is nothing but an internal impression of the mind, a determination to carry our thoughts from one object to another.” This is a relocation, not an elimination. Causation as it exists “in the objects” reduces to regular succession—constant conjunction—with no discoverable necessity. The necessity we feel is projected onto the world by our own habituated minds. This is why Hume concludes that causal reasoning rests on custom rather than reason: we cannot rationally justify the inference from past to future, yet nature compels us to make it anyway. Scholars disagree about how far Hume goes. On the traditional reading he denies real necessity in the world outright; on the “New Hume” or sceptical-realist reading, he only denies that we can know such necessity, while remaining agnostic about whether it exists. The two definitions of cause he gives (one in terms of constant conjunction, one in terms of the mind’s determination) are the main textual battleground for that debate.</p>
+<p>Either way, Hume leaves empirical science in a difficult position. Its two core operations — inferring causes from observations, and generalising from observed cases to unobserved ones — turn out to have no rational justification, only a psychological one. The first systematic attempt to answer him came from Immanuel Kant, and the answer required rebuilding the theory of knowledge from the ground up.</p>
+</section>
+<section id="kant" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="kant"><span class="header-section-number">4.3</span> Kant</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Immanuel Kant (1724--1804)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Immanuel Kant (1724–1804)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A Prussian philosopher who spent his entire life in and around Königsberg (now Kaliningrad, Russia), where he was professor of logic and metaphysics. Before turning to philosophy proper he worked on natural science: his 1755 cosmology proposed that the solar system condensed from a rotating cloud of matter (the nebular hypothesis), and Newtonian physics remained for him the model of what secure knowledge of nature looks like. His central work is the <em>Critique of Pure Reason</em> (1781, substantially revised 1787), which asks what the mind itself contributes to knowledge. Kant credited Hume with provoking the project: the recollection of Hume, he wrote, was what “first interrupted my dogmatic slumber” (<em>Prolegomena to Any Future Metaphysics</em>, 1783).</p>
+</div>
+</div>
+<p>Kant accepted Hume’s negative result as far as it goes. If all our knowledge of the world came from sense data alone, then Hume’s sceptical conclusion would stand: no amount of observation can deliver necessity. Kant’s response was to deny the premise. Some knowledge, he argued, comes not from the sense data but from the structure of the mind that receives them — and that structure can be known in advance of any particular experience.</p>
+<section id="analytic-and-synthetic-a-priori-and-a-posteriori" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="analytic-and-synthetic-a-priori-and-a-posteriori"><span class="header-section-number">4.3.1</span> Analytic and synthetic, a priori and a posteriori</h3>
+<p>To state his claim precisely, Kant introduced two distinctions between kinds of judgment.</p>
+<ul>
+<li>A judgment is <strong><em>a priori</em></strong> if it can be known independently of experience, and <strong><em>a posteriori</em></strong> if knowing it requires experience.</li>
+<li>A judgment is <strong>analytic</strong> if the predicate is already contained in the concept of the subject: “all bachelors are unmarried” is true by the meaning of the word <em>bachelor</em>, and denying it is self-contradictory. A judgment is <strong>synthetic</strong> if the predicate adds something not contained in the subject: “this bachelor smokes” reports a fact about the world, not about the meanings of words.</li>
+</ul>
+<p>Crossing the two distinctions gives four cells:</p>
+<table class="table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 41%">
+<col style="width: 43%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Analytic</th>
+<th>Synthetic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong><em>A priori</em></strong></td>
+<td>“All bachelors are unmarried” — true by meaning; the territory of classical logic (Chapter 3)</td>
+<td>“7 + 5 = 12”; “every event has a cause” — <strong>Kant’s battleground</strong></td>
+</tr>
+<tr class="even">
+<td><strong><em>A posteriori</em></strong></td>
+<td>(empty — if a judgment is true by meaning, no experience is needed)</td>
+<td>“Smoking increases the risk of lung cancer” — ordinary empirical knowledge</td>
+</tr>
+</tbody>
+</table>
+<p>Three of the cells are unproblematic. Analytic a priori judgments are certain but uninformative: they unpack meanings without saying anything new about the world. Synthetic a posteriori judgments are the ordinary business of empirical science, and they inherit all of Hume’s problems. The interesting cell is the <strong>synthetic a priori</strong>: judgments that genuinely say something about the world, yet can be known with necessity, in advance of experience. Kant claimed this cell is occupied. His examples: arithmetic (“7 + 5 = 12” — the concept <em>12</em>, he argued, is not contained in the concepts <em>7</em>, <em>5</em>, and <em>addition</em>); geometry (“the straight line between two points is the shortest”); the causal principle itself (“every alteration must have a cause”); and the fundamental principles of Newtonian physics — in the <em>Critique</em> he cites the conservation of the quantity of matter and the equality of action and reaction as examples. The central question of the <em>Critique of Pure Reason</em> is then: how are synthetic a priori judgments possible?</p>
+</section>
+<section id="the-answer-the-mind-supplies-the-form-of-experience" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="the-answer-the-mind-supplies-the-form-of-experience"><span class="header-section-number">4.3.2</span> The answer: the mind supplies the form of experience</h3>
+<p>Kant’s answer is a model of cognition. Real-world things-in-themselves (strictly unknowable) affect our senses and produce raw sensory material. Before that material can become experience, the mind processes it through two layers.</p>
+<p>The first layer is <strong>sensibility</strong>, whose forms are <strong>space and time</strong>. For Kant, space and time are not features of things-in-themselves, and not concepts abstracted from experience; they are <em>forms of intuition</em> — the mind’s own ordering framework, into which all sensory material must be fitted before it can be perceived at all. Whatever we experience, we necessarily experience as spatially and temporally ordered, because that ordering is what our receptive faculty does. This, for Kant, is why geometry is synthetic a priori: Euclidean geometry describes the form of space, and since space is the mind’s contribution, no possible experience could ever violate it.</p>
+<p>The second layer is the <strong>understanding</strong>, which organises the spatially and temporally ordered material under 12 a priori <strong>categories</strong>, the “pure concepts of the understanding.” Kant arranges them in four groups of three:</p>
+<ul>
+<li><p><strong>Quantity</strong> — Unity, Plurality, Totality</p></li>
+<li><p><strong>Quality</strong> — Reality, Negation, Limitation</p></li>
+<li><p><strong>Relation</strong> — Substance and accident (inherence/subsistence), Causality and dependence (cause and effect), Community a.k.a. Interaction.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
+<li><p><strong>Modality</strong> — Possibility/impossibility, Existence/non-existence, Necessity/contingency.</p></li>
+</ul>
+<p>Causality is on the list. It is not read off the world; it is one of the rules by which the mind turns a mere sequence of sensations into an objective, law-governed world of events. So the necessity Hume could not find in the objects becomes a condition the mind imposes as a precondition of any objective experience. That is why “every event has a cause” is, for Kant, necessarily true of everything we can ever experience — and why it says nothing at all about things-in-themselves.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-kant-cognition" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kant-cognition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-causal-inference_files/figure-html/fig-kant-cognition-1.png" class="img-fluid figure-img" width="823">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kant-cognition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: Kant’s model of cognition. Things-in-themselves are unknowable; they supply raw sensory material, which the mind orders through the forms of intuition (space and time) and the categories of the understanding (including causality). Nature as we know it — including its causal structure — is the output of this processing, which is why its most general laws hold with necessity for us while saying nothing about things-in-themselves.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="newtonian-physics-as-exactly-true" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="newtonian-physics-as-exactly-true"><span class="header-section-number">4.3.3</span> Newtonian physics as exactly true</h3>
+<p>For Kant this construction was not an abstract exercise; its payoff was a guarantee for the best science of his day. He took Euclidean geometry and the core of Newtonian physics to be bodies of synthetic a priori knowledge: not extremely well-confirmed hypotheses, but propositions <strong>exactly true</strong> (holding without approximation) and <strong>necessarily true</strong> (holding for any possible experience), certified in advance because they articulate the very framework the mind uses to construct the empirical world. In the <em>Metaphysical Foundations of Natural Science</em> (1786) he attempted to derive the fundamental laws of Newtonian mechanics — a law of inertia, the equality of action and reaction, the conservation of the quantity of matter — from the categories applied to the concept of matter in motion. Where Hume had left induction without rational support, Kant appeared to have secured physics against any conceivable revision.</p>
+<p>The subsequent history is instructive. In the nineteenth century Lobachevsky, Bolyai, and Riemann constructed consistent non-Euclidean geometries, showing that Euclid’s is not the only thinkable structure for space; which geometry physical space has thereby became an empirical question. In 1915 Einstein’s general theory of relativity answered it: the geometry of spacetime is non-Euclidean, depends on the distribution of matter, and Newtonian mechanics is an approximation, accurate at low velocities and in weak gravitational fields. The propositions Kant had certified as necessarily true of all possible experience turned out to be false of actual experience. One influential response (Reichenbach’s <em>relativised a priori</em>) kept Kant’s insight that every physical theory rests on framework assumptions that are not tested by data in the ordinary way, while giving up the claim that those assumptions are fixed and necessary: they are constitutive of a given theory, and they get revised when the theory is replaced.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Criticism of Kant's Synthetic A Priori">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Criticism of Kant’s Synthetic A Priori
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Kant claimed there’s a special kind of knowledge: statements that are informative about the world (synthetic) yet knowable without experience (a priori). His prime examples were mathematics (“7 + 5 = 12”), geometry (space is Euclidean), and basic physics (every event has a cause). This idea is the foundation of his whole philosophy — and it has been attacked from several directions.</p>
+<ol type="1">
+<li><p>Science undermined his examples. Kant treated Euclidean geometry and Newtonian causality as necessary truths built into how any mind must experience the world. But in the 19th century, mathematicians developed consistent non-Euclidean geometries, and Einstein’s general relativity later showed that physical space is actually not Euclidean. Quantum mechanics similarly challenged strict causality. If our supposedly unshakeable a priori knowledge turned out to be wrong, it was never a priori knowledge at all — just a very entrenched assumption.</p></li>
+<li><p>The empiricist attack: the category is empty. Logical positivists like A. J. Ayer and the Vienna Circle argued in the early 20th century that all meaningful statements are either analytic (true by definition, like “all bachelors are unmarried”) or synthetic and known through experience. On this view, mathematics is really analytic — it follows from definitions and logical rules and tells us nothing about the world itself. So the “synthetic a priori” is a confusion: Kant mistook complicated definitional truths for substantive knowledge.</p></li>
+<li><p>Quine: the whole distinction collapses. W. V. O. Quine went further in “Two Dogmas of Empiricism” (1951), arguing that the analytic/synthetic distinction itself cannot be drawn sharply. Every attempt to define “analytic” ends up circular. And if there’s no clean line between the two, Kant’s question — “how are synthetic a priori judgments possible?” — is badly posed. For Quine, no belief is immune to revision by experience, not even logic or math; some beliefs are just harder to give up than others.</p></li>
+<li><p>The psychology objection. Kant argued that space, time, and causality are structures the mind imposes on experience. But how could he possibly know this? He can’t step outside human cognition to check. His claims about the mind’s necessary structure look like empirical psychology dressed up as certainty.</p></li>
+<li><p>The “neglected alternative.” A classic objection (raised by Trendelenburg) points out a gap in Kant’s argument: even if space and time are forms our mind imposes, that doesn’t rule out that things in themselves are also spatial and temporal. Kant never justified excluding this possibility.</p></li>
+</ol>
+<p>Where things stand. Few philosophers today accept Kant’s specific examples of synthetic a priori knowledge. However, the underlying idea — that the mind actively structures experience rather than passively recording it — remains enormously influential in philosophy and cognitive science. And some philosophers (notably Saul Kripke) later argued for related categories like “necessary a posteriori” truths, showing that Kant’s way of carving up knowledge, though flawed, opened questions that are still alive.</p>
+</div>
+</div>
+</section>
+<section id="one-story-and-where-this-book-stands-in-it" class="level3" data-number="4.3.4">
+<h3 data-number="4.3.4" class="anchored" data-anchor-id="one-story-and-where-this-book-stands-in-it"><span class="header-section-number">4.3.4</span> One story, and where this book stands in it</h3>
+<p>The Hume–Kant episode sets the agenda for the rest of this book. Hume showed that causal necessity cannot be observed: what the data contain is association (constant conjunction), and the step from association to causation must be supplied from outside the data. Kant agreed, and located the supply in the fixed structure of the mind; the fate of his Newtonian guarantee shows the cost of taking that structure to be certain. The modern position, developed in Part III, accepts Hume’s point and drops Kant’s guarantee. The causal structure we impose on data is made explicit as assumptions — a counterfactual contrast we define (Chapter 10), a causal diagram we draw (Chapter 11) — and those assumptions are defended, probed, and revised rather than certified. And where Kant sought necessity, we settle for quantified uncertainty: probability theory as the logic of science (Part II).</p>
+</section>
+</section>
+<section id="early-modern-experiment" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="early-modern-experiment"><span class="header-section-number">4.4</span> Early modern experiment</h2>
 <p>Experiment has meant different things to different people. Sometimes it is used to test a theory, sometimes it is used to help formulate theories, and sometimes it is done just to get new experiences, or just for fun. It is also done to figure out why something does not work (testing new enzymes to figure out, why my PCR reaction doesnt work), or how to improve some process (component titration to improve some reaction). There is not a single reason for experimentation.</p>
 <p>For different takes on experiments compare two great chemists, Davy and Leibig:</p>
 <blockquote class="blockquote">
@@ -334,18 +656,18 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>Torricelli further documented that the height of the mercury in a barometer changed slightly each day and concluded that this was due to the changing pressure in the atmosphere. He wrote: “We live submerged at the bottom of an ocean of elementary air, which is known by incontestable experiments to have weight”.</p>
 <p>By 1646, Blaise Pascal had learned of Torricelli’s experiment. A confirmations of the influence of atmospheric pressure was given by the so-called “void within a void” experiment, successively performed in 1648 in several variants by Pascal, Robert Boyle, and others. If Torricelli’s experiment was performed inside a vacuum pump, the mercury would not remain in the vertical tube, but would descend completely into the basin. They also observed that when, in a control experiment, air was allowed back in, the mercury rose back up the tube.</p>
-<p>To decisevely check Torricelli’s conclusions, in 1648 Pascal had a barometer carried up the mountain of Puy de Dome, where his brother-in-law made several measurements at different altitudes (Pascal himself was too sickly to clibm any mountains). Importantly, control measurements were done at appointed hours at the foot of the mountain by a local clergiman. Indeed, as the elevation increased the level of the mercury column gradually fell below that at normal ground level, while the control measurements were very stable, despite rapidly changing weather.</p>
+<p>To decisevely check Torricelli’s conclusions, in 1648 Pascal had a barometer carried up the mountain of Puy de Dome, where his brother-in-law made several measurements at different altitudes (Pascal himself was too sickly to climb any mountains). Importantly, control measurements were done at appointed hours at the foot of the mountain by a local clergiman. Indeed, as the elevation increased the level of the mercury column gradually fell below that at normal ground level, while the control measurements were very stable, despite rapidly changing weather.</p>
 </section>
-<section id="modern-experiment" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="modern-experiment"><span class="header-section-number">2.3</span> Modern experiment</h2>
-<p>Modern clinical trials got their first theoretical exposition in 1921 when Austin Bradford Hill proposed that otherwise identical patients put into two groups, which would then be treated differently. If outcomes differed, then, he argued, we would know that the difference would be caused by the difference in treatment. As identical people are hard to find, the additional ingredient was to randomly assign subjects to the groups, hoping that their natural differences would balance out on average. The first such trials were conducted only after World War II (1946, the effect of streptomycin on treatment of tuberculosis, where randomization was partially caused by extreme shortage of the antibiotic) and the movement for evidence based medicine started in earnest only in 1990-ies, when the efficiency of drug discovery was already falling (the heyday of drug discovery was from 1950-ies to 1970-ies when most drugs now in oral use were discovered).</p>
-<p>Modern experiments in biomedicine are nearly always of the controlled kind (although uncontrolled clinical studies do still happen, and should generally be ignored). The important parts of an experiment is that it should be 1) controlled, 2) randomized, 3) blinded.</p>
+<section id="modern-experiment-randomized-and-controlled" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="modern-experiment-randomized-and-controlled"><span class="header-section-number">4.5</span> Modern experiment: randomized and controlled</h2>
+<p>Modern clinical trials got their first theoretical exposition in 1921 when Austin Bradford Hill proposed that otherwise identical patients put into two groups, which would then be treated differently. If outcomes differed, then, he argued, we would know that the difference would be caused by the difference in treatment. As identical people are hard to come by, the additional ingredient was to randomly assign subjects into the groups, hoping that their natural differences would balance out on average. The first such trials were conducted only after World War II (1946, the effect of streptomycin on treatment of tuberculosis, where randomization was partially caused by extreme shortage of the antibiotic) and the movement for evidence based medicine started in earnest only in the 1990-ies, when the efficiency of drug discovery was already falling (the heyday of drug discovery was from 1950-ies to 1970-ies, when most oral drugs now in use were discovered).</p>
+<p>Modern experiments in biomedicine are nearly always of the controlled kind – although uncontrolled clinical studies do still happen, and should generally be ignored. The important parts of a clinical experiment is that it should be 1) controlled, 2) randomized, 3) blinded.</p>
 <p>All true experiments have this in common:</p>
 <ul>
-<li><p>They try to answer a causal question</p></li>
-<li><p>They contain an experimental treatment that modifies a cause, while not directly affecting the effect (or any other building block of the system)</p></li>
-<li><p>They give results that are relative to control.</p></li>
-<li><p>They should be randomized and/or matched, so that the treatment is the only causal factor that varies between the experimental and control arms.</p></li>
+<li><p>They try to answer a <em>causal</em> question about the effect of treatment on an outcome.</p></li>
+<li><p>They contain an experimental treatment that modifies a cause, while not directly affecting the effect</p></li>
+<li><p>Their results are relative to control.</p></li>
+<li><p>They are randomized, so that the treatment is the only causal factor that varies between the experimental and control arms.</p></li>
 </ul>
 <p>A good experiment requires both appropriate design and data analysis. Specifically, the structure of data analysis models depends on the experimental design, but also on the known pre-treatment variables, on the quality of the actual experiment &amp; measuring apparatus (including study dropouts and missing data), on blocks and clusters in the data, and on the size of the dataset.</p>
 <div class="cell">
@@ -360,8 +682,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>Every experiment entails a clearly defined <strong>experimental treatment</strong>, which is done to the <strong>experimental system</strong>. The experimental system consists of the experimental protocol plus materials that go into the experiment, plus the measuring apparatus and the people who do the actual experiment. The reason behind this is to see, whether the treatment changes the behaviour of the system. The application of treatment is random, so we can believe that in a large enough sample all other properties of the system that might affect the outcome of the experiment are equally proportioned between the treatment and control groups. From the comparison of the treatment arm of the experiment and the non-treatment (control) arm, an <strong>experimental effect</strong> is derived as the mean value of some repeated measurements in experimental arm minus the same in the control arm. Usually by “treatment” we try to very specifically disrupt a specific component of the system, and nothing else, and if we are successful, then by observing a strong experimental effect, we can conclude that whatever it was that</p>
 </section>
-<section id="useful-concepts-for-understanding-controlled-experiments" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="useful-concepts-for-understanding-controlled-experiments"><span class="header-section-number">2.4</span> Useful concepts for understanding controlled experiments</h2>
+<section id="useful-concepts-for-understanding-controlled-experiments" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="useful-concepts-for-understanding-controlled-experiments"><span class="header-section-number">4.6</span> Useful concepts for understanding controlled experiments</h2>
 <ul>
 <li><p>Experimental system - everything that is needed to produce the data that you got. The experimenters job is to infer from data and her knowldge about the experimental system, the data generating mechanism. For this, she uses statistical modeling. Experimental system includes study subjects (cell lines, mice, patients), chemicals, measuring apparatus, and experimenters. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p></li>
 <li><p>Experimental treatment - some action that disrupts the experimental system according to a scientific causal hypothesis. By disrupting/modifying a hypothetical cause we aim to change an hypothetical effect/outcome. Experimental treatment should not affect the outcome directly, or by any other way than through the specified cause. Also, there should be no hidden versions of treatments. That is, for treatment effects to be analyzable, all units must receive the same well-defined treatment(s). Also, there should be no interference, of the type of treatment of unit A affecting the treatment of unit B.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> For a study that is likely to have interference, one option is to assign the treatment at the level of a group beyond which interference is not likely, and then randomize at this level. Thus the subjects who are likely to transfer knowledge or behaviors among themselves, all get the same treatment. Then one should conservatively interpret results only at the group level.</p></li>
@@ -404,6 +726,16 @@ ul.task-list li input[type="checkbox"] {
 <li><p>How have you ensured replicability of the experiment? (publication and sharing arrangements of materials and methods)</p></li>
 <li><p>Have you pre-specified any aspects of data collection and/or analysis?</p></li>
 </ol>
+</section>
+<section id="modern-models-causality-bind-randomized-experiment-with-observational-studies" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="modern-models-causality-bind-randomized-experiment-with-observational-studies"><span class="header-section-number">4.7</span> Modern models causality bind randomized experiment with observational studies</h2>
+<p>A more modern version on causal analysis, which binds experiental scinece and epidemiology into a single coherent framework, is the counterfactual, a.k.a. potential outcomes approach. According to this model, each individual has a potential outcome under each treatment state, even though she can be observed in only one treatment state at any point in time. Because it is impossible to observe both outcomes at the same time for any individual, causal effects cannot be observed at the individual level. Thus, we need to estimate average causal effects for groups of individuals, defined by specific characteristics. To do so effectively, the process by which individuals of different types are exposed to the cause of interest must be modeled. If the modelling assumptions are defendable, and a suitable method for constructing an average contrast from the data is chosen, then an average difference can be given a causal interpretation. Experiment is an investigation where the system under study is under the control of the investigator. The individuals or material investigated, the nature of the treatments or manipulations under study and the measurement procedures are all selected by the investigator, whereas in an observational study some of these features, and in particular the allocation of individuals to treatment groups, are outside the investigator’s control. This brings us to the <strong>fundamental problem of causation</strong>: as comparison with control is necessary, how can we both do and not do the treatment? We could do treatment first and then the control (or <em>vice versa</em>), but this assumes temporal stability, causal transience (system response is not influenced by its history), and unit homogeneity. Or then, there is the statistical solution where we assume that there are many units of observation which, while not identical, taken together represent the population. We also assume that the exposure/treatment variable we manipulate (the cause) is independent of the variables that we measure. Only then can we measure experimental values in some people and control values in others to calculate the average causal effect.</p>
+<p>That is a lot of assumptions. Clearly, experimental results do not speak for themselves. Experimental systems are simplifications of reality involving physical models, and often statistical models as well. As experimental results are relative to control, they must be put into wider context and need interpretation.</p>
+<p>The randomization into groups with the intention to balance them means that increasing the sample size increases the probability of it being representative of the population. The goal is that any confounding factor besides the experimental manipulation, which could influence the result of the experiment, would be present in equal “concentration” in the study group and control group. <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<p>If this is the case, their influences on experimental results will cancel out. For this to work, we need (1) not too many confounding factors to partition and (2) not too small a sample. If the sample size is comparable with the number of confounding factors, some imbalance will likely be present and randomization cannot remove bias. Usually we have no idea about how many nuisance variables there might be in our experiment. As a rule of thumb, for RCTs with a sample size of at least 200, randomization should be “an insurance in the long run against substantial accidental bias between treatment groups”. The ´long run´ means that even with large samples randomization will not guarantee elimination of bias from a particular sample, it will only make it more likely.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<p>Biological experiments are usually not randomized and the independence of repeat experiments is achieved by varying as many components of the experimental system (buffer batches and enzyme preps) as possible and by trying to keep the compositions and treatments of the experimental and control groups as similar as possible. This leads naturally to paired designs where experimental and control groups are treated together as much as possible, and in parallel. The idea behind a paired design is that substantial fraction of random variation resides within the pairs, and we can take this into account in our analysis model structures.</p>
+<p>So how do we know that by treatment we treated the variable that we wanted treated, rather than something else? We simply need a simple enough experimental system, which means that we cannot study the world directly – need a simplified system that we can consistently disrupt with treatment. As every simplification constitutes an extra hypothesis, this makes it correspondingly harder to generalize back to the world.</p>
+<p>An experimental system consists of the biological object of measurement, reagents, machines, the experimenters, and the act of measurement. Experimental system has long-run quality properties: it has sensitivity and specificity. It has a measure of complexity and a measure of relevance to the real world. There is trade-off, by which a simple system is easy to interpret, but at the expense of external validity (genralizability). For instance, simplified <em>in vitro</em> systems presuppose that we understand <em>in vivo</em> conditions, less there be serious problems with external validity. And the in vivo sytems, which tend to have better external validity, are often harder to interpret (theres a bigger chance of confounding).</p>
 
 
 </section>
@@ -411,7 +743,7 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 <ol>
 <li id="fn1"><p>Stoicism is a school of Hellenistic philosophy founded by Zeno of Citium in Athens in the early 3rd century BC. It lasted for 500 years.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>In most biochemical experimentation it is unclear what “random sample” even means, because the underlying population is imaginary.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Community is the category for mutual causal interaction — things acting on each other simultaneously and reciprocally. (Think of mutual gravitational attraction.) If things merely sat side by side with no reciprocal influence, we’d have no basis for regarding them as parts of a single, simultaneous whole. Community is the concept that binds coexisting substances into one interacting system.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Sometimes the term is used instead to denote a commonly used study organism, for which exist worked-out experimental systems in the previous sense. Examples include <em>E. coli</em> (genetical and biochemical methods), Mouse (genetical methods), and rat (physiological methods), <em>X. laevis</em> (cell biology methods), and dalmatian dog as a narcolepsia model.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Testing the effect of a fertilizer by randomly assigning adjacent plots to treatment or control is a classic example of interference. Vaccines that reduce the probability of a disease within a community could easily lead to violation. Note that an epidemiologist might well hope for interference to increase the impact of an intervention.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>A PCR reaction with a standard template/primers combo<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -419,6 +751,8 @@ ul.task-list li input[type="checkbox"] {
 <li id="fn7"><p>Blocking and pairing are effective to the extent that units within the same block or pair are similar to each other in their pre-treatment characteristics, so that splitting each block or pair ensures some level of pre-treatment balance between treatment and control groups. In contrast, clustered designs are typically less efficient than complete randomization. NB! Blocking, pairing and clustering are welcome additions to randomized experiments in the analysis stage where they help to improve the overall accuracy of the results. In general, adding pre-treatment variables to regression models often helps to reduce uncertainty around the estimates in randomized experiments.The exceptions are when a pre-treatment variable is causally irrelevant, or when DAG-based formal causal analysis indicates its omission.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>This is the reason why in clinical studies many patient groups that will eventually get the treatment are excluded from the trials that test the efficacy and safety of said treatment. As we are talking about patients, who are older and with more comorbidities, this is a serious problem.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>Conceptual replication means that it is not exatly the original experiment, but something conceptually similar, that is done. The usefulness of conceptual replication in verfying original results is uncertain.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Actually, we want all possible <em>combinations</em> of confounder levels be present with equal frequencies in study vs.&nbsp;control groups.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>In most biochemical experimentation it is unclear what “random sample” even means, because the underlying population is imaginary.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -834,13 +1168,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Introduction">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      <a href="./04-rational-certainty.html" class="pagination-link" aria-label="Rational thinking under certainty">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./03-irrational-thinking.html" class="pagination-link" aria-label="1. Irrational thinking">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./ch04b-theories-of-causation.html" class="pagination-link" aria-label="Theories of causation: the counterfactual among rivals">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

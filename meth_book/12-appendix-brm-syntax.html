@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology - 12&nbsp; Appendix 3: brm model syntax</title>
+<title>The Bayesian Way to Causal Epidemiology - 33&nbsp; Appendix: brm model syntax</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./12-appendix-brm-syntax.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./12-appendix-brm-syntax.html"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -159,7 +159,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Methodology</a> 
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -175,61 +175,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Part I. How to think</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -237,38 +189,273 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,34 +470,34 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#nested-crossed-random-effects" id="toc-nested-crossed-random-effects" class="nav-link active" data-scroll-target="#nested-crossed-random-effects"><span class="header-section-number">12.1</span> Nested &amp; crossed random effects</a></li>
-  <li><a href="#time-courses" id="toc-time-courses" class="nav-link" data-scroll-target="#time-courses"><span class="header-section-number">12.2</span> Time courses</a></li>
-  <li><a href="#details-for-brms" id="toc-details-for-brms" class="nav-link" data-scroll-target="#details-for-brms"><span class="header-section-number">12.3</span> Details for brms()</a>
+  <li><a href="#nested-crossed-random-effects" id="toc-nested-crossed-random-effects" class="nav-link active" data-scroll-target="#nested-crossed-random-effects"><span class="header-section-number">33.1</span> Nested &amp; crossed random effects</a></li>
+  <li><a href="#time-courses" id="toc-time-courses" class="nav-link" data-scroll-target="#time-courses"><span class="header-section-number">33.2</span> Time courses</a></li>
+  <li><a href="#details-for-brms" id="toc-details-for-brms" class="nav-link" data-scroll-target="#details-for-brms"><span class="header-section-number">33.3</span> Details for brms()</a>
   <ul class="collapse">
-  <li><a href="#multilevel-model-with-smoothing-terms" id="toc-multilevel-model-with-smoothing-terms" class="nav-link" data-scroll-target="#multilevel-model-with-smoothing-terms"><span class="header-section-number">12.3.1</span> multilevel model with smoothing terms</a></li>
-  <li><a href="#additionally-predict-sigma" id="toc-additionally-predict-sigma" class="nav-link" data-scroll-target="#additionally-predict-sigma"><span class="header-section-number">12.3.2</span> additionally predict ‘sigma’</a></li>
-  <li><a href="#incorporate-censoring" id="toc-incorporate-censoring" class="nav-link" data-scroll-target="#incorporate-censoring"><span class="header-section-number">12.3.3</span> incorporate censoring</a></li>
-  <li><a href="#define-a-simple-non-linear-model" id="toc-define-a-simple-non-linear-model" class="nav-link" data-scroll-target="#define-a-simple-non-linear-model"><span class="header-section-number">12.3.4</span> define a simple non-linear model</a></li>
-  <li><a href="#define-a-multivariate-model" id="toc-define-a-multivariate-model" class="nav-link" data-scroll-target="#define-a-multivariate-model"><span class="header-section-number">12.3.5</span> define a multivariate model</a></li>
-  <li><a href="#define-a-zero-inflated-model" id="toc-define-a-zero-inflated-model" class="nav-link" data-scroll-target="#define-a-zero-inflated-model"><span class="header-section-number">12.3.6</span> define a zero-inflated model</a></li>
-  <li><a href="#specify-a-predictor-as-monotonic" id="toc-specify-a-predictor-as-monotonic" class="nav-link" data-scroll-target="#specify-a-predictor-as-monotonic"><span class="header-section-number">12.3.7</span> specify a predictor as monotonic</a></li>
-  <li><a href="#for-ordinal-models-only-specify-a-predictor-as-category-specific" id="toc-for-ordinal-models-only-specify-a-predictor-as-category-specific" class="nav-link" data-scroll-target="#for-ordinal-models-only-specify-a-predictor-as-category-specific"><span class="header-section-number">12.3.8</span> for ordinal models only: specify a predictor as category specific</a></li>
-  <li><a href="#specify-different-predictors-for-different-mixture-components" id="toc-specify-different-predictors-for-different-mixture-components" class="nav-link" data-scroll-target="#specify-different-predictors-for-different-mixture-components"><span class="header-section-number">12.3.9</span> specify different predictors for different mixture components</a></li>
-  <li><a href="#use-the-operator-to-specify-models" id="toc-use-the-operator-to-specify-models" class="nav-link" data-scroll-target="#use-the-operator-to-specify-models"><span class="header-section-number">12.3.10</span> use the ‘+’ operator to specify models</a></li>
-  <li><a href="#specify-a-multivariate-model-using-the-operator" id="toc-specify-a-multivariate-model-using-the-operator" class="nav-link" data-scroll-target="#specify-a-multivariate-model-using-the-operator"><span class="header-section-number">12.3.11</span> specify a multivariate model using the ‘+’ operator</a></li>
-  <li><a href="#specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" id="toc-specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" class="nav-link" data-scroll-target="#specify-correlated-residuals-of-a-gaussian-and-a-poisson-model"><span class="header-section-number">12.3.12</span> specify correlated residuals of a gaussian and a poisson model</a></li>
+  <li><a href="#multilevel-model-with-smoothing-terms" id="toc-multilevel-model-with-smoothing-terms" class="nav-link" data-scroll-target="#multilevel-model-with-smoothing-terms"><span class="header-section-number">33.3.1</span> multilevel model with smoothing terms</a></li>
+  <li><a href="#additionally-predict-sigma" id="toc-additionally-predict-sigma" class="nav-link" data-scroll-target="#additionally-predict-sigma"><span class="header-section-number">33.3.2</span> additionally predict ‘sigma’</a></li>
+  <li><a href="#incorporate-censoring" id="toc-incorporate-censoring" class="nav-link" data-scroll-target="#incorporate-censoring"><span class="header-section-number">33.3.3</span> incorporate censoring</a></li>
+  <li><a href="#define-a-simple-non-linear-model" id="toc-define-a-simple-non-linear-model" class="nav-link" data-scroll-target="#define-a-simple-non-linear-model"><span class="header-section-number">33.3.4</span> define a simple non-linear model</a></li>
+  <li><a href="#define-a-multivariate-model" id="toc-define-a-multivariate-model" class="nav-link" data-scroll-target="#define-a-multivariate-model"><span class="header-section-number">33.3.5</span> define a multivariate model</a></li>
+  <li><a href="#define-a-zero-inflated-model" id="toc-define-a-zero-inflated-model" class="nav-link" data-scroll-target="#define-a-zero-inflated-model"><span class="header-section-number">33.3.6</span> define a zero-inflated model</a></li>
+  <li><a href="#specify-a-predictor-as-monotonic" id="toc-specify-a-predictor-as-monotonic" class="nav-link" data-scroll-target="#specify-a-predictor-as-monotonic"><span class="header-section-number">33.3.7</span> specify a predictor as monotonic</a></li>
+  <li><a href="#for-ordinal-models-only-specify-a-predictor-as-category-specific" id="toc-for-ordinal-models-only-specify-a-predictor-as-category-specific" class="nav-link" data-scroll-target="#for-ordinal-models-only-specify-a-predictor-as-category-specific"><span class="header-section-number">33.3.8</span> for ordinal models only: specify a predictor as category specific</a></li>
+  <li><a href="#specify-different-predictors-for-different-mixture-components" id="toc-specify-different-predictors-for-different-mixture-components" class="nav-link" data-scroll-target="#specify-different-predictors-for-different-mixture-components"><span class="header-section-number">33.3.9</span> specify different predictors for different mixture components</a></li>
+  <li><a href="#use-the-operator-to-specify-models" id="toc-use-the-operator-to-specify-models" class="nav-link" data-scroll-target="#use-the-operator-to-specify-models"><span class="header-section-number">33.3.10</span> use the ‘+’ operator to specify models</a></li>
+  <li><a href="#specify-a-multivariate-model-using-the-operator" id="toc-specify-a-multivariate-model-using-the-operator" class="nav-link" data-scroll-target="#specify-a-multivariate-model-using-the-operator"><span class="header-section-number">33.3.11</span> specify a multivariate model using the ‘+’ operator</a></li>
+  <li><a href="#specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" id="toc-specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" class="nav-link" data-scroll-target="#specify-correlated-residuals-of-a-gaussian-and-a-poisson-model"><span class="header-section-number">33.3.12</span> specify correlated residuals of a gaussian and a poisson model</a></li>
   </ul></li>
-  <li><a href="#model-missing-values-in-predictors" id="toc-model-missing-values-in-predictors" class="nav-link" data-scroll-target="#model-missing-values-in-predictors"><span class="header-section-number">12.4</span> model missing values in predictors</a></li>
-  <li><a href="#model-sigma-as-a-function-of-the-mean" id="toc-model-sigma-as-a-function-of-the-mean" class="nav-link" data-scroll-target="#model-sigma-as-a-function-of-the-mean"><span class="header-section-number">12.5</span> model sigma as a function of the mean</a></li>
+  <li><a href="#model-missing-values-in-predictors" id="toc-model-missing-values-in-predictors" class="nav-link" data-scroll-target="#model-missing-values-in-predictors"><span class="header-section-number">33.4</span> model missing values in predictors</a></li>
+  <li><a href="#model-sigma-as-a-function-of-the-mean" id="toc-model-sigma-as-a-function-of-the-mean" class="nav-link" data-scroll-target="#model-sigma-as-a-function-of-the-mean"><span class="header-section-number">33.5</span> model sigma as a function of the mean</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./12-appendix-brm-syntax.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./12-appendix-brm-syntax.html"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></h1>
+<h1 class="title"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></h1>
 </div>
 
 
@@ -535,8 +722,8 @@ window.Quarto = {
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_rescor</span>(<span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="nested-crossed-random-effects" class="level2" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="nested-crossed-random-effects"><span class="header-section-number">12.1</span> Nested &amp; crossed random effects</h2>
+<section id="nested-crossed-random-effects" class="level2" data-number="33.1">
+<h2 data-number="33.1" class="anchored" data-anchor-id="nested-crossed-random-effects"><span class="header-section-number">33.1</span> Nested &amp; crossed random effects</h2>
 <p>Random effects (factors) can be crossed or nested - it depends on the relationship between random-effect variables and your research question. Think of the hierarchy within a company on different management levels. Every worker belongs to a department and has only one boss. All the department bosses also have one boss. Random effect is nested if it appears in only one of the higher hierarchy levels. If you think about the data, then level simply means category or group of a categorical variable. Thus, one observation (data row) can only be part of one particular category of a variable (data column), and be part of several columns.</p>
 <p><strong>Nested Mixed Effect Model</strong> will look like:</p>
 <p><code>y ~ predictor + (1|doctor/patient)</code></p>
@@ -552,8 +739,8 @@ window.Quarto = {
 <p>The golden rule: if random effects aren’t nested, they are crossed!</p>
 <p>Important to know, that without knowledge about the experimental design, it might be impossible to figure out whether the effects are nested or crossed from the data alone (the data could have been recorded wrongly).</p>
 </section>
-<section id="time-courses" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="time-courses"><span class="header-section-number">12.2</span> Time courses</h2>
+<section id="time-courses" class="level2" data-number="33.2">
+<h2 data-number="33.2" class="anchored" data-anchor-id="time-courses"><span class="header-section-number">33.2</span> Time courses</h2>
 <p>This part is modified from: <a href="https://rpsychologist.com/r-guide-longitudinal-lme-lmer" class="uri">https://rpsychologist.com/r-guide-longitudinal-lme-lmer</a> Look up the more mathy model descriptions from there.</p>
 <ul>
 <li><p>class (3d level)</p></li>
@@ -597,8 +784,8 @@ window.Quarto = {
 </ol>
 <p>We could extend the two-part piecewise growth model to allow for non-linear change during one or both of the pieces. Here we allow for quadratic change during piece 1.</p>
 </section>
-<section id="details-for-brms" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="details-for-brms"><span class="header-section-number">12.3</span> Details for brms()</h2>
+<section id="details-for-brms" class="level2" data-number="33.3">
+<h2 data-number="33.3" class="anchored" data-anchor-id="details-for-brms"><span class="header-section-number">33.3</span> Details for brms()</h2>
 <p>The formula argument accepts formulas of the following syntax:</p>
 <div class="cell">
 <details class="code-fold">
@@ -666,45 +853,45 @@ window.Quarto = {
 <p><strong>Formula syntax for multivariate models</strong></p>
 <p>Multivariate models may be specified using <code>mvbind</code> notation or with help of the mvbf function. Suppose that y1 and y2 are response variables and x is a predictor. Then <code>mvbind(y1, y2) ~ x</code> specifies a multivariate model. The effects of all terms specified at the RHS of the formula are assumed to vary across response variables. For instance, two parameters will be estimated for x, one for the effect on y1 and another for the effect on y2. This is also true for group-level effects. When writing, for instance, <code>mvbind(y1, y2) ~ x + (1+x|g)</code>, group-level effects will be estimated separately for each response. To model these effects as correlated across responses, use the ID syntax (see above). For the present example, this would look as follows: <code>mvbind(y1, y2) ~ x + (1+x|id|g)</code>.</p>
 <p>It is also possible to specify different formulas for different responses. If, for instance, y1 should be predicted by x and y2 should be predicted by z, we could write <code>mvbf(y1 ~ x, y2 ~ z)</code>. Alternatively, multiple brmsformula objects can be added to specify a joint multivariate model.</p>
-<section id="multilevel-model-with-smoothing-terms" class="level3" data-number="12.3.1">
-<h3 data-number="12.3.1" class="anchored" data-anchor-id="multilevel-model-with-smoothing-terms"><span class="header-section-number">12.3.1</span> multilevel model with smoothing terms</h3>
+<section id="multilevel-model-with-smoothing-terms" class="level3" data-number="33.3.1">
+<h3 data-number="33.3.1" class="anchored" data-anchor-id="multilevel-model-with-smoothing-terms"><span class="header-section-number">33.3.1</span> multilevel model with smoothing terms</h3>
 <p><code>y ~ x1*x2 + s(z) + (1+x1|1) + (1|g2)</code></p>
 </section>
-<section id="additionally-predict-sigma" class="level3" data-number="12.3.2">
-<h3 data-number="12.3.2" class="anchored" data-anchor-id="additionally-predict-sigma"><span class="header-section-number">12.3.2</span> additionally predict ‘sigma’</h3>
+<section id="additionally-predict-sigma" class="level3" data-number="33.3.2">
+<h3 data-number="33.3.2" class="anchored" data-anchor-id="additionally-predict-sigma"><span class="header-section-number">33.3.2</span> additionally predict ‘sigma’</h3>
 <p><code>y ~ x1*x2 + s(z) + (1+x1|1) + (1|g2), sigma ~ x1 + (1|g2)</code></p>
 <p>use the shorter alias ‘bf’ <code>formula1 &lt;- brmsformula(y ~ x + (x|g))</code> <code>formula2 &lt;- bf(y ~ x + (x|g))</code> will be TRUE <code>identical(formula1, formula2)</code></p>
 </section>
-<section id="incorporate-censoring" class="level3" data-number="12.3.3">
-<h3 data-number="12.3.3" class="anchored" data-anchor-id="incorporate-censoring"><span class="header-section-number">12.3.3</span> incorporate censoring</h3>
+<section id="incorporate-censoring" class="level3" data-number="33.3.3">
+<h3 data-number="33.3.3" class="anchored" data-anchor-id="incorporate-censoring"><span class="header-section-number">33.3.3</span> incorporate censoring</h3>
 <p><code>bf(y | cens(censor_variable) ~ predictors)</code></p>
 </section>
-<section id="define-a-simple-non-linear-model" class="level3" data-number="12.3.4">
-<h3 data-number="12.3.4" class="anchored" data-anchor-id="define-a-simple-non-linear-model"><span class="header-section-number">12.3.4</span> define a simple non-linear model</h3>
+<section id="define-a-simple-non-linear-model" class="level3" data-number="33.3.4">
+<h3 data-number="33.3.4" class="anchored" data-anchor-id="define-a-simple-non-linear-model"><span class="header-section-number">33.3.4</span> define a simple non-linear model</h3>
 <p><code>bf(y ~ a1 - a2^x, a1 + a2 ~ 1, nl = TRUE)</code> predict a1 and a2 differently <code>bf(y ~ a1 - a2^x, a1 ~ 1, a2 ~ x + (x|g), nl = TRUE)</code> correlated group-level effects across parameters <code>bf(y ~ a1 - a2^x, a1 ~ 1 + (1 |2| g), a2 ~ x + (x |2| g), nl = TRUE)</code> alternative but equivalent way to specify the above model <code>bf(y ~ a1 - a2^x, a1 ~ 1 + (1 | gr(g, id = 2)), a2 ~ x + (x | gr(g, id = 2)), nl = TRUE)</code></p>
 </section>
-<section id="define-a-multivariate-model" class="level3" data-number="12.3.5">
-<h3 data-number="12.3.5" class="anchored" data-anchor-id="define-a-multivariate-model"><span class="header-section-number">12.3.5</span> define a multivariate model</h3>
+<section id="define-a-multivariate-model" class="level3" data-number="33.3.5">
+<h3 data-number="33.3.5" class="anchored" data-anchor-id="define-a-multivariate-model"><span class="header-section-number">33.3.5</span> define a multivariate model</h3>
 <p><code>bf(mvbind(y1, y2) ~ x * z + (1|g))</code></p>
 </section>
-<section id="define-a-zero-inflated-model" class="level3" data-number="12.3.6">
-<h3 data-number="12.3.6" class="anchored" data-anchor-id="define-a-zero-inflated-model"><span class="header-section-number">12.3.6</span> define a zero-inflated model</h3>
+<section id="define-a-zero-inflated-model" class="level3" data-number="33.3.6">
+<h3 data-number="33.3.6" class="anchored" data-anchor-id="define-a-zero-inflated-model"><span class="header-section-number">33.3.6</span> define a zero-inflated model</h3>
 <p>also predicting the zero-inflation part <code>bf(y ~ x * z + (1+x|ID1|g), zi ~ x + (1|ID1|g))</code></p>
 </section>
-<section id="specify-a-predictor-as-monotonic" class="level3" data-number="12.3.7">
-<h3 data-number="12.3.7" class="anchored" data-anchor-id="specify-a-predictor-as-monotonic"><span class="header-section-number">12.3.7</span> specify a predictor as monotonic</h3>
+<section id="specify-a-predictor-as-monotonic" class="level3" data-number="33.3.7">
+<h3 data-number="33.3.7" class="anchored" data-anchor-id="specify-a-predictor-as-monotonic"><span class="header-section-number">33.3.7</span> specify a predictor as monotonic</h3>
 <p><code>bf(y ~ mo(x) + more_predictors)</code></p>
 </section>
-<section id="for-ordinal-models-only-specify-a-predictor-as-category-specific" class="level3" data-number="12.3.8">
-<h3 data-number="12.3.8" class="anchored" data-anchor-id="for-ordinal-models-only-specify-a-predictor-as-category-specific"><span class="header-section-number">12.3.8</span> for ordinal models only: specify a predictor as category specific</h3>
+<section id="for-ordinal-models-only-specify-a-predictor-as-category-specific" class="level3" data-number="33.3.8">
+<h3 data-number="33.3.8" class="anchored" data-anchor-id="for-ordinal-models-only-specify-a-predictor-as-category-specific"><span class="header-section-number">33.3.8</span> for ordinal models only: specify a predictor as category specific</h3>
 <p><code>bf(y ~ cs(x) + more_predictors)</code> add a category specific group-level intercept <code>bf(y ~ cs(x) + (cs(1)|g))</code> specify parameter ‘disc’ <code>bf(y ~ person + item, disc ~ item)</code></p>
 </section>
-<section id="specify-different-predictors-for-different-mixture-components" class="level3" data-number="12.3.9">
-<h3 data-number="12.3.9" class="anchored" data-anchor-id="specify-different-predictors-for-different-mixture-components"><span class="header-section-number">12.3.9</span> specify different predictors for different mixture components</h3>
+<section id="specify-different-predictors-for-different-mixture-components" class="level3" data-number="33.3.9">
+<h3 data-number="33.3.9" class="anchored" data-anchor-id="specify-different-predictors-for-different-mixture-components"><span class="header-section-number">33.3.9</span> specify different predictors for different mixture components</h3>
 <p><code>mix &lt;- mixture(gaussian, gaussian)</code> <code>bf(y ~ 1, mu1 ~ x, mu2 ~ z, family = mix)</code> fix both residual standard deviations to the same value <code>bf(y ~ x, sigma2 = "sigma1", family = mix)</code></p>
 </section>
-<section id="use-the-operator-to-specify-models" class="level3" data-number="12.3.10">
-<h3 data-number="12.3.10" class="anchored" data-anchor-id="use-the-operator-to-specify-models"><span class="header-section-number">12.3.10</span> use the ‘+’ operator to specify models</h3>
+<section id="use-the-operator-to-specify-models" class="level3" data-number="33.3.10">
+<h3 data-number="33.3.10" class="anchored" data-anchor-id="use-the-operator-to-specify-models"><span class="header-section-number">33.3.10</span> use the ‘+’ operator to specify models</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -715,8 +902,8 @@ window.Quarto = {
 </details>
 </div>
 </section>
-<section id="specify-a-multivariate-model-using-the-operator" class="level3" data-number="12.3.11">
-<h3 data-number="12.3.11" class="anchored" data-anchor-id="specify-a-multivariate-model-using-the-operator"><span class="header-section-number">12.3.11</span> specify a multivariate model using the ‘+’ operator</h3>
+<section id="specify-a-multivariate-model-using-the-operator" class="level3" data-number="33.3.11">
+<h3 data-number="33.3.11" class="anchored" data-anchor-id="specify-a-multivariate-model-using-the-operator"><span class="header-section-number">33.3.11</span> specify a multivariate model using the ‘+’ operator</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -726,8 +913,8 @@ window.Quarto = {
 </details>
 </div>
 </section>
-<section id="specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" class="level3" data-number="12.3.12">
-<h3 data-number="12.3.12" class="anchored" data-anchor-id="specify-correlated-residuals-of-a-gaussian-and-a-poisson-model"><span class="header-section-number">12.3.12</span> specify correlated residuals of a gaussian and a poisson model</h3>
+<section id="specify-correlated-residuals-of-a-gaussian-and-a-poisson-model" class="level3" data-number="33.3.12">
+<h3 data-number="33.3.12" class="anchored" data-anchor-id="specify-correlated-residuals-of-a-gaussian-and-a-poisson-model"><span class="header-section-number">33.3.12</span> specify correlated residuals of a gaussian and a poisson model</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -737,8 +924,8 @@ window.Quarto = {
 </div>
 </section>
 </section>
-<section id="model-missing-values-in-predictors" class="level2" data-number="12.4">
-<h2 data-number="12.4" class="anchored" data-anchor-id="model-missing-values-in-predictors"><span class="header-section-number">12.4</span> model missing values in predictors</h2>
+<section id="model-missing-values-in-predictors" class="level2" data-number="33.4">
+<h2 data-number="33.4" class="anchored" data-anchor-id="model-missing-values-in-predictors"><span class="header-section-number">33.4</span> model missing values in predictors</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -748,8 +935,8 @@ window.Quarto = {
 </details>
 </div>
 </section>
-<section id="model-sigma-as-a-function-of-the-mean" class="level2" data-number="12.5">
-<h2 data-number="12.5" class="anchored" data-anchor-id="model-sigma-as-a-function-of-the-mean"><span class="header-section-number">12.5</span> model sigma as a function of the mean</h2>
+<section id="model-sigma-as-a-function-of-the-mean" class="level2" data-number="33.5">
+<h2 data-number="33.5" class="anchored" data-anchor-id="model-sigma-as-a-function-of-the-mean"><span class="header-section-number">33.5</span> model sigma as a function of the mean</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -1175,13 +1362,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./11-appendix-brms.html" class="pagination-link" aria-label="Appendix 2: brms code">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span>
+      <a href="./11-appendix-brms.html" class="pagination-link" aria-label="Appendix: brms code">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./13-appendix-mcmc.html" class="pagination-link" aria-label="Appendix 4. MCMC">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./13-appendix-mcmc.html" class="pagination-link" aria-label="Appendix: MCMC">
+        <span class="nav-page-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

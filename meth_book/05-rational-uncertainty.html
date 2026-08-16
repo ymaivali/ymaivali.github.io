@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology - 5&nbsp; 3. Rational thinking under uncertainty.</title>
+<title>Methodology - 6&nbsp; Probability as counting</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./06-bayesian-inference.html" rel="next">
-<link href="./04-rational-certainty.html" rel="prev">
+<link href="./ch07-distributions.html" rel="next">
+<link href="./ch05-two-roads-probability.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-rational-uncertainty.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch05-two-roads-probability.html">Part II. Probability as the logic of science</a></li><li class="breadcrumb-item"><a href="./05-rational-uncertainty.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as counting</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -175,61 +175,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Part I. How to think</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -237,38 +189,243 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability as the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-two-roads-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Two roads to probability: Jaynes and Kolmogorov</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as counting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Basic linear regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Generalized linear models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Multilevel models.</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,43 +440,28 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#understanding-uncertainty" id="toc-understanding-uncertainty" class="nav-link active" data-scroll-target="#understanding-uncertainty"><span class="header-section-number">5.1</span> 3.1. understanding uncertainty</a></li>
-  <li><a href="#numerical-measures-of-uncertainty" id="toc-numerical-measures-of-uncertainty" class="nav-link" data-scroll-target="#numerical-measures-of-uncertainty"><span class="header-section-number">5.2</span> Numerical measures of uncertainty</a></li>
-  <li><a href="#probability-as-counting" id="toc-probability-as-counting" class="nav-link" data-scroll-target="#probability-as-counting"><span class="header-section-number">5.3</span> 3.2. Probability as counting</a></li>
-  <li><a href="#counting-from-a-series-of-events" id="toc-counting-from-a-series-of-events" class="nav-link" data-scroll-target="#counting-from-a-series-of-events"><span class="header-section-number">5.4</span> 3.2.1. Counting from a series of events</a></li>
-  <li><a href="#counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics" id="toc-counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics" class="nav-link" data-scroll-target="#counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics"><span class="header-section-number">5.5</span> 3.2.1.1. Counting the events in a series of experiments leads to frequentist statistics</a></li>
-  <li><a href="#counting-in-the-multiverse" id="toc-counting-in-the-multiverse" class="nav-link" data-scroll-target="#counting-in-the-multiverse"><span class="header-section-number">5.6</span> 3.2.2. Counting in the multiverse</a></li>
-  <li><a href="#from-rules-of-combinatorics-to-probability-distribution" id="toc-from-rules-of-combinatorics-to-probability-distribution" class="nav-link" data-scroll-target="#from-rules-of-combinatorics-to-probability-distribution"><span class="header-section-number">5.7</span> 3.3. From rules of combinatorics to probability distribution</a></li>
-  <li><a href="#the-addition-rule" id="toc-the-addition-rule" class="nav-link" data-scroll-target="#the-addition-rule"><span class="header-section-number">5.8</span> 3.3.1. The Addition Rule</a></li>
-  <li><a href="#the-multiplication-rule" id="toc-the-multiplication-rule" class="nav-link" data-scroll-target="#the-multiplication-rule"><span class="header-section-number">5.9</span> 3.3.2. The Multiplication Rule</a></li>
-  <li><a href="#permutations" id="toc-permutations" class="nav-link" data-scroll-target="#permutations"><span class="header-section-number">5.10</span> 3.3.3. Permutations</a></li>
-  <li><a href="#variations-the-order-matters-and-repetitions-are-not-allowed" id="toc-variations-the-order-matters-and-repetitions-are-not-allowed" class="nav-link" data-scroll-target="#variations-the-order-matters-and-repetitions-are-not-allowed"><span class="header-section-number">5.11</span> 3.3.4. Variations (the order matters and repetitions are not allowed)</a>
+  <li><a href="#counting-from-a-series-of-events" id="toc-counting-from-a-series-of-events" class="nav-link active" data-scroll-target="#counting-from-a-series-of-events"><span class="header-section-number">6.1</span> Counting from a series of events</a></li>
+  <li><a href="#counting-in-the-multiverse" id="toc-counting-in-the-multiverse" class="nav-link" data-scroll-target="#counting-in-the-multiverse"><span class="header-section-number">6.2</span> Counting in the multiverse</a></li>
+  <li><a href="#the-rules-of-combinatorics" id="toc-the-rules-of-combinatorics" class="nav-link" data-scroll-target="#the-rules-of-combinatorics"><span class="header-section-number">6.3</span> The rules of combinatorics</a>
   <ul class="collapse">
-  <li><a href="#combinations-the-order-is-not-important" id="toc-combinations-the-order-is-not-important" class="nav-link" data-scroll-target="#combinations-the-order-is-not-important"><span class="header-section-number">5.11.1</span> 3.3.5. Combinations (the order is not important)</a></li>
+  <li><a href="#the-addition-rule" id="toc-the-addition-rule" class="nav-link" data-scroll-target="#the-addition-rule"><span class="header-section-number">6.3.1</span> The addition rule</a></li>
+  <li><a href="#the-multiplication-rule" id="toc-the-multiplication-rule" class="nav-link" data-scroll-target="#the-multiplication-rule"><span class="header-section-number">6.3.2</span> The multiplication rule</a></li>
+  <li><a href="#permutations" id="toc-permutations" class="nav-link" data-scroll-target="#permutations"><span class="header-section-number">6.3.3</span> Permutations</a></li>
+  <li><a href="#variations-the-order-matters-and-repetitions-are-not-allowed" id="toc-variations-the-order-matters-and-repetitions-are-not-allowed" class="nav-link" data-scroll-target="#variations-the-order-matters-and-repetitions-are-not-allowed"><span class="header-section-number">6.3.4</span> Variations (the order matters and repetitions are not allowed)</a></li>
+  <li><a href="#combinations-the-order-is-not-important" id="toc-combinations-the-order-is-not-important" class="nav-link" data-scroll-target="#combinations-the-order-is-not-important"><span class="header-section-number">6.3.5</span> Combinations (the order is not important)</a></li>
   </ul></li>
-  <li><a href="#from-counting-to-binomial-probability-distribution" id="toc-from-counting-to-binomial-probability-distribution" class="nav-link" data-scroll-target="#from-counting-to-binomial-probability-distribution"><span class="header-section-number">5.12</span> 3.3.6. From counting to binomial probability distribution</a></li>
-  <li><a href="#probability-distribution" id="toc-probability-distribution" class="nav-link" data-scroll-target="#probability-distribution"><span class="header-section-number">5.13</span> 3.4. Probability distribution</a></li>
-  <li><a href="#binomial-disrtibution" id="toc-binomial-disrtibution" class="nav-link" data-scroll-target="#binomial-disrtibution"><span class="header-section-number">5.14</span> 3.4.1. Binomial disrtibution</a>
-  <ul class="collapse">
-  <li><a href="#poisson-distribution" id="toc-poisson-distribution" class="nav-link" data-scroll-target="#poisson-distribution"><span class="header-section-number">5.14.1</span> 3.4.2 Poisson distribution</a></li>
-  <li><a href="#normal-and-log-normal-distributions" id="toc-normal-and-log-normal-distributions" class="nav-link" data-scroll-target="#normal-and-log-normal-distributions"><span class="header-section-number">5.14.2</span> 3.4.3. Normal and log-normal distributions</a></li>
-  </ul></li>
-  <li><a href="#a-philosophical-aside" id="toc-a-philosophical-aside" class="nav-link" data-scroll-target="#a-philosophical-aside"><span class="header-section-number">5.15</span> 3.5. A philosophical aside</a></li>
-  <li><a href="#probability-theory-and-the-bayes-theorem" id="toc-probability-theory-and-the-bayes-theorem" class="nav-link" data-scroll-target="#probability-theory-and-the-bayes-theorem"><span class="header-section-number">5.16</span> 3.6. Probability theory and the Bayes theorem</a>
-  <ul class="collapse">
-  <li><a href="#the-kolmogorov-axioms" id="toc-the-kolmogorov-axioms" class="nav-link" data-scroll-target="#the-kolmogorov-axioms"><span class="header-section-number">5.16.1</span> 3.6.1. The Kolmogorov axioms</a></li>
-  <li><a href="#some-derivations" id="toc-some-derivations" class="nav-link" data-scroll-target="#some-derivations"><span class="header-section-number">5.16.2</span> 3.6.2. Some derivations</a></li>
-  <li><a href="#the-bayes-theorem" id="toc-the-bayes-theorem" class="nav-link" data-scroll-target="#the-bayes-theorem"><span class="header-section-number">5.16.3</span> 3.6.3. The Bayes theorem</a></li>
-  </ul></li>
+  <li><a href="#from-counting-to-the-binomial-distribution" id="toc-from-counting-to-the-binomial-distribution" class="nav-link" data-scroll-target="#from-counting-to-the-binomial-distribution"><span class="header-section-number">6.4</span> From counting to the binomial distribution</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">6.5</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.6</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch05-two-roads-probability.html">Part II. Probability as the logic of science</a></li><li class="breadcrumb-item"><a href="./05-rational-uncertainty.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as counting</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as counting</span></h1>
 </div>
 
 
@@ -336,117 +478,28 @@ window.Quarto = {
 </header>
 
 
-<section id="understanding-uncertainty" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="understanding-uncertainty"><span class="header-section-number">5.1</span> 3.1. understanding uncertainty</h2>
-<p>There is a pandemic coming our way, like a lurching sea monster from the deep pit, and we need to model its course. To do this we need, among other things, to fix the model input that is called the R0 (the number of people infected on average by a single infected person). Initially, we will have little data to estimate the R0 on, which makes R0 a <em>known unknown</em>. So we estimate it on the data that we have, only to end up with wide error margins, which will be carried over into our prediction of the course of the epidemic. This way we transfer uncertainty from data to model to prediction to interpretation to policy. Surely the policy makers deserve to know that there is a large but quantified level of uncertainty about how many hospital beds are needed within a month or so, as this would allow them to implement policies that err on the safe side. Or, alternatively, we could just pick a couple of point values for the R0 from thin air and run a couple of models that result in predictions with much narrower error margins. Of course, everybody loves certainty. Indeed, this is pretty much what happened in March-April 2020 with a dozen or so covid models in the UK, US, and Estonia, which gave wildly different predictions with non-overlapping quite narrow errors. In some cases these models resulted in policy decisions that clearly failed. This way we have manufactured model-based certainty, by incurring the cost of banishing the residual uncertainty into the murky realm of <em>unknown unknowns</em>. We only become aware of the presence of unknown unknowns from absence of success, and as we cannot really understand, much less quantify them, they are really scary.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The moral of our story is that the aim of the scientist should be to tame as much of the wild uncertainty that she can, by turning it into quantifiable known unknowns. It is not to convert uncertainty into certainty, which is logically impossible, as much as building a <em>perpetum mobile</em> is physically impossible, and often leads to grief.</p>
-<p>In any decent model of a biological process there are different types of uncertainty that include</p>
-<ol type="i">
-<li><p>the uncertainty arising from biological variation</p></li>
-<li><p>the uncertainty arising from sampling error</p></li>
-<li><p>the uncertainty arising from the model fitting algorithm</p></li>
-<li><p>the uncertainty arising from the model structure (linearity, normality, and whatnot)</p></li>
-<li><p>the uncertainty arising from what is actualy modeled vs.&nbsp;what we want to know based on this modeling.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
-</ol>
-<p>Taken together, these motley sources of uncertainty pretty much guarantee that our predictions of complex phenomena are over-confident. This holds for both formal and informal predictions. For example, In April 2020, David Spiegelhalter and his colleagues asked 140 UK experts and &gt;2,000 non-experts for prediction on the number of Covid-19 deaths by the end of the year. Experts median estimate was 30 000, whereas the non-experts was 20 000. The true number was 75 000, being inside only a third of the experts’ prediction intervals and in only a tenth of the non-experts’. If people estimate a 95% prediction interval for something and reality falls into this interval in only 30% of the cases, then on average they underestimated uncertainty very greatly; while not only realizing it, but rejecting even the possibility of values similar to the true value as very unlikely. A major problem with formal modeling of uncertainty is that it gives false confidence about uncertainty!</p>
-<hr>
-<p>Let’s assume, for the sake of argument, that we live in a fully deterministic world where there is no uncertainty concerning the past, present, or future. In this world it is possible, in principle, to predict exactly when a butterfly flips its wings a thousand years from now. The deterministic world is fully described by a set of rigid cause-effect relations, and there is no stochasticity in it. Objectively, in there nothing is uncertain. But still, there are humans in the ointment, and humans tend to be fallible. Even when they measure a quantity with a perfectly calibrated instrument, there is always some measurement error. And that error is enough to introduce uncertainty into our deterministic world. This uncertainty is subjective, or epistemic – it belongs to us, not to the thing that was measured – and it propagates to any conclusions based on these measurements. In such a world, even if in principle we could say that patient X dies within a week, because of this kind of propagated error we can only say that it is plausible that patient A dies within a week, or that there is a risk that patient X dies within a week.</p>
-<p>Of course, things can be more or less plausible and the risk can be higher or lower, which means that we need a language that allows numerically quantification of these things. This language is the probability theory. We define probabilities mathematically in chapter …, but here suffice it to say that probabilities are real numbers between 0 and 1 (although not every scale 0…1 is probability scale). If we denote the hypothesis “patient X dies within a week” with “A”, then P(A) is the probability of the hypothesis A being true (patient X really dying).</p>
-<ul>
-<li><p>P(A) = 0 means that we are absolutely sure that X stays with the living (but can we ever be sure of such a thing?),</p></li>
-<li><p>P(A) = 0.1 means that we are pretty sure that X lives,</p></li>
-<li><p>P(A) = 0.5 means that we think that both outcomes are equally likely.</p></li>
-<li><p>P(A) = 0.9 means that we are as sure that X dies as we were sure that X lives, when P(A) was 0.1,</p></li>
-<li><p>P(A) =1 means that we believe that it is a sure thing that X is dead within the week.</p></li>
-</ul>
-<p>Now, after the week is up the P(A) can only be 0 or 1 (unless we lost track of X), but until that time, or until X dies, the P(A) will move between these extremes, subject to X’s condition and our knowledge of it.</p>
-<p>Why we need numerical probabilities? The answer is twofold: (i) we can do formal calculations with numerical probabilities, which is basically what statistics is, and (ii) it has proved patently impossible to make different people understand the non-numerical representations like very likely, extremely likely, somewhat likely, the same way. This holds even for professionals.</p>
-<p>Now, suppose that we live in a world, where truly stochastic stuff happens (be it in a quantum level or in weather prediction, or wherever). This world is only partially causal, meaning that (i) cause-effect relations can come with built-in randomness (sometimes they work, sometimes they don’t, like smoking causing cancer), or (ii) some relations are inherently acausal (completely unpredictable, like radioactive decay) Does the meaning of P(A) change? The answer is, no. In this world we still have measurement uncertainty, which we try to reduce as much we can, and on top of this is the real, irreducible uncertainty, which comes from how the world itself works. They converge, and can never be disentangled, in our final probability P(A), which is still epistemic.</p>
-<p>Another example: the weather report says that P(rain) is 60%. What does it mean? It either rains or it doesn’t, so P(rain) cannot describe a physical feature of the world. “60% rain” cannot be objective in the sense of “being really there”. Usually P(rain) is calculated by running a weather model many times with slightly differing input data and counting the relative fraction of runs where the model predicts rain. If 6 models out of 10 predict rain, then the weatherman says that “P(rain) = 0.6, or there’s a 60% chance of rain”. Although the 60% was derived from a relative frequency, this does not matter for the interpretation – the probability is still epistemic.</p>
-<p>I’m writing this because traditionally it is taught to students that probability is a long-run relative frequency of events that really happen, or at least could happen in principle, and that therefore P(A) is “objective” and “a real thing”. It has been understood for a century that this thinking is fundamentally flawed, as it ascribes reality to fictional objects. So probability is a bit like a unicorn: a beautiful fiction. Likewise, there is no shame in interpreting P(A) as a frequency, but this does not make it “objective” in any meaningful sense.</p>
-</section>
-<section id="numerical-measures-of-uncertainty" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="numerical-measures-of-uncertainty"><span class="header-section-number">5.2</span> Numerical measures of uncertainty</h2>
-<ul>
-<li><p>Risk, probability - nr_events/(nr_non_events + nr_of_events) a.k.a succeses/tries</p></li>
-<li><p>Relative risk or risk ratio (RR) - <span class="math inline">\(\frac {P(A\vert B=0)}{P(A\vert B=1)}\)</span>. Probability of cancer for smokers divided by probability of cancer for non-smokers.</p></li>
-<li><p>Relative risk reduction is how much risk is reduced in an experimental group compared to a control group. (CER – EER)/CER, where CER is control group event rate and EER is experimental group event rate. If 70% of the control group died and 35% of the experimental group died, the relative risk reduction for the new drug would be (0.70 - 0.35)/0.70 = 0.5 or 50%. In other words, the death rate in the experimental group is half that in the control group.</p></li>
-<li><p>Absolute risk reduction (risk difference, AAR) is the absolute difference in outcomes between 2 groups. It tells how much the risk (Pr) of something happening decreases if a certain intervention happens. AAR = CER (Control Event Rate) – EER (Experimental Event Rate). 25% of people on medication A have poor outcomes, but 8% of people who receive medication B report bad outcomes. The absolute risk reduction is 25% – 8% = 13 percentage points.</p></li>
-<li><p>The hazard ratio (HR) is a comparison between the Pr of events in a&nbsp;treatment group, compared to the Pr of events in a control group. It’s used to see if patients receiving a treatment progress faster (or slower) than those not receiving treatment. HR can be defined as the relative risk (RR) of an event happening at time t. HR = 3 means that three times the number of events are seen in the treatment group at any point in time. In other words, the treatment will cause the patient to progress three times as fast as patients in the control group. HR= 1 means that both groups are experiencing an equal number of events at any point in time. HR= 0.333 tells that the hazard rate in the treatment group is one third of that in the control group. Hazard ratios can be used to: show the RR of a complication in treatment group vs.&nbsp;control group, to show whether a treatment shortens an illness duration, or to show which individuals are more likely to experience an event first. While a HR is similar to RR, it isn’t exactly the same. Let’s say a clinical trial investigated survival rates for two drugs (A and B). The reported HRs and RRs were both 3. ThecRR tells that the risk of death is 3 times higher with drug A over the entire period of the study (i.e. it’s cumulative). The HR tells you that the risk of death is 3 times higher with drug A at any particular point in time. When evaluating hazard ratios, also use another measure such as median survival time, overall survival, or time to progression. These tell about clear benefits (i.e.&nbsp;survival time is increased on average by 180 days).</p></li>
-<li><p>Odds = P(event)/P(non_event). <span class="math inline">\(odds = \frac {P}{1 - P}\)</span> where P is probability. If P = 0.5 then odds = 1/1 or 1:1 or 1 to 1.</p></li>
-<li><p>OR or odds ratio <span class="math inline">\(OR = \frac {odds(cancer~ in~ smokers)}{odds(cancer~ in~ non-smokers)}\)</span>. OR is always larger than RR. If P(event) is low (&lt;0.1) then OR is similar enough to RR, otherwise OR can be larger by an order of magnitude or more. OR has no intuitive interpretation (the RR does). OR = 1 means that exposure to A does not affect the odds of property B. OR &gt; 1 means that there is a higher odds of property B happening with exposure to A. Only the OR can be used in case-control studies. Because to calculate the RR, one must know the risk. Risk is a proportion of those exposed with an outcome compared to the total population exposed. This is impossible in a case-control study, in which those who already have the outcome are included without knowing the total population exposed.</p></li>
-</ul>
-</section>
-<section id="probability-as-counting" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="probability-as-counting"><span class="header-section-number">5.3</span> 3.2. Probability as counting</h2>
+<p>Chapter 5 derived the rules of probability twice and showed that the two roads meet. This chapter follows the counting road to its first major destination: the binomial distribution, reached with elementary combinatorics. On the way, the problem that started mathematical probability — how to divide the stakes of an interrupted game — introduces a move this book keeps returning to: defining a probability by counting across imagined parallel worlds. The same move resurfaces, with higher stakes, as the potential-outcomes multiverse of Part III.</p>
 <p>In a commencement speech at USC in 1994, the famous investor Charlie Munger said,</p>
 <blockquote class="blockquote">
 <p>“If you don’t get this elementary, but mildly unnatural, mathematics of elementary probability into your repertoire, then you go through a long life like a one-legged man in an ass-kicking contest. You’re giving a huge advantage to everybody else. One of the advantages of a fellow like Buffett, whom I’ve worked with all these years, is that he automatically thinks in terms of decision trees and the elementary math of permutations and combinations….”</p>
 </blockquote>
 <p>Lets find out, what this means.</p>
-<p>We start with a simple question: “what is the probability of getting a 6, when throwing a fair die?”. Surprisingly, it took the gamblers a couple of millennia, until 16th century to find out the answer - specifically, it was first described by Fazio Cardano (1444–1524). The truth is that we can simply throw a die N times and count the k sixes that we get. Then P(six) = k/N. The probability of sixes is nothing more than the relative long-run frequency of sixes over all throws of the die. As the N increases, the estimated P(six) will gradually approach the true probability of sixes. If the die has six sides, which are equally likely to come up, then P(six) = 1/6, as is the probability for getting any number between 1 and 6.</p>
-</section>
-<section id="counting-from-a-series-of-events" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="counting-from-a-series-of-events"><span class="header-section-number">5.4</span> 3.2.1. Counting from a series of events</h2>
+<p>We start with a simple question: “what is the probability of getting a 6, when throwing a fair die?”. Surprisingly, it took the gamblers a couple of millennia, until the 16th century, to find out the answer — the first systematic treatment is by Gerolamo Cardano (1501–1576), in a book on games of chance written around 1564 and published only in 1663.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The truth is that we can simply throw a die N times and count the k sixes that we get. Then P(six) = k/N. The probability of sixes is nothing more than the relative long-run frequency of sixes over all throws of the die. As the N increases, the estimated P(six) will gradually approach the true probability of sixes. If the die has six sides, which are equally likely to come up, then P(six) = 1/6, as is the probability for getting any number between 1 and 6.</p>
+<section id="counting-from-a-series-of-events" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="counting-from-a-series-of-events"><span class="header-section-number">6.1</span> Counting from a series of events</h2>
 <ol type="1">
 <li><p>Imagine all possible results of a single throw of the die: {1, 2, 3, 4, 5, 6}. This is akin to imagining all possible futures that can ensue from a throw of a die.</p></li>
 <li><p>Count all possible futures, where the result is a six. As there is only one, k = 1.</p></li>
 <li><p>Count all possible futures. As there are 6, N = 6.</p></li>
 <li><p>Find the probability of sixes as P(six) = k/N = 1/6.</p></li>
 </ol>
-<p>This scheme seems almost too trivial to show, but it is actually quite subtle, and important for understanding the scientific method. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>This scheme seems almost too trivial to show, but it is actually quite subtle, and important for understanding the scientific method. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>The advantage of this classical interpretation of probability is that it is fairly easy to grasp; but more importantly, it seems to be objective, as it describes a process that happens in the world (in this case, someone throwing a die). Nevertheless, one should be aware that the process includes the thrower, as well as the die, the table and the laws of nature, to say the least. On the other hand, a serious disadvantage of such probability is that it can only apply where there is a frequency of events. Clearly, scientific hypotheses, being unique manifestations of human ingenuity, do not have a frequency. Thus, people whose repertoire gets no further than frequentist probabilities may call themselves objective, but they cannot even ask the question, “what is the probability that I am right in calling myself that?”</p>
+<p>Counting over imagined repetitions of an experiment can nevertheless be developed into a complete system of inference — null hypothesis testing, in which datasets, rather than hypotheses, carry the frequencies. The ambition behind it is old: Jacob Bernoulli’s <em>Ars Conjectandi</em> (1713) already aimed to read the unknown composition of an urn from the frequencies observed in a sample, using the sampling probabilities alone. Clayton has argued that this is a fallacy — the probability of the data under a hypothesis cannot, by itself, deliver the probability of the hypothesis — and traces its descent from Bernoulli through Quetelet, Galton, Pearson and Fisher into null hypothesis testing.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> That development and its problems are treated in the appendix on null hypothesis testing; Chapter 9 returns to the contrast with the Bayesian approach.</p>
 </section>
-<section id="counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="counting-the-events-in-a-series-of-experiments-leads-to-frequentist-statistics"><span class="header-section-number">5.5</span> 3.2.1.1. Counting the events in a series of experiments leads to frequentist statistics</h2>
-<p>Interestingly, the people who think they cannot ask the question about probability of a hypothesis, nevertheless try to answer it. For this they use something called null hypothesis testing. This is a statistical paradigm created by R.A. Fisher, Jerzy Neyman and Egon Pearson in 1920-1930-ies. The crux of frequentist statistics is that while hypotheses have no frequency, datasets do (albeit, only under certain precisely defined conditions). Imagine an infinite population of measurement values, from which you randomly and independently draw a sample of N values, then calculate a statistic, for example the mean. This sample mean reflects the population mean, but because of sampling error it does not do so precisely.</p>
-<blockquote class="blockquote">
-<p>The sampling error tends to be smaller, when N is larger – and it gets smaller proportionally to the square root of N. As N grows, it gets progressively harder to push the sampling error downwards.</p>
-</blockquote>
-<p>Now, imagine that we draw k such samples (each with size N) and calculate k means. The central limit theorem of statistics tells us that no matter what the sample data distribution, those means are approximately normally distributed. Note that for the central limit theorem to work, N must be at least 30, dependent on the data distribution. The overall mean of the k means is then the most likely estimate for the population mean, which in turn is the value most likely to be encountered in the population. We illustrate this by first simulating 1000 random samples, each with N=3, from standard log-normal distribution, and then calculating 1000 means. Not surprisingly, plotting the raw data leads to a nice lognormal distribution (dashed black curve), and plotting of the means (continuous black curve) leads to a fairly similar curve. However, when the 1000 samples get bigger (N=20, red curve; N=60, blue curve), the distribution of their means gets closer to normal.</p>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Density plot of distribution of 1000 means each of 1000 log-normally distributed samples. Black curve, N=3; red curve, N=10; blue curve, N=30, green curve, N=100. Raw data is shown as dotted curve.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Moreover, from the normal distribution it is easy to find the region that contains <span class="math inline">\(X\%\)</span> of the area under the curve, or <span class="math inline">\(X\%\)</span> of the probability density. The parameter values that delineate this area define <span class="math inline">\(X\%\)</span> confidence interval (CI).</p>
-<p>The interpretation of <span class="math inline">\(X\%~ CI\)</span> is that if we draw many samples and calculate as many means, then the true population mean falls inside <span class="math inline">\(X\%\)</span> of them. <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Formally, the CI makes a frequency statement about the error properties of the algorithm that calculates the CI, rather than about your sample mean. Nevertheless, if we have no background information to take into account and if the aforementioned assumptions (especially those of normality, and random and independent sampling) hold, then a confidence interval is numerically equivalent to Bayesian credible interval (also abbreviated as CI), whose interpretation is simply that <span class="math inline">\(X\% ~CI\)</span> means that the true expected value lies within this interval with X/100 probability. So you could view your confidence interval as a quick and dirty approximation to the credible interval, which you really want to have; but only if some strong assumptions hold.</p>
-<p>The confidence interval is not the only, or even the most popular, tool of frequentist statistics. This distinction belongs to the p value.</p>
-<p><strong>The logic of p value goes like this.</strong></p>
-<ol type="1">
-<li><p>As hypotheses do not have probabilities, but datasets do, we can speak of probability of data under some hypothesis – <span class="math inline">\(P(d \vert h)\)</span> or “probability of data given the hypothesis is true” – in the hope that this says something about the probability of that hypothesis, or <span class="math inline">\(P(h \vert d)\)</span>.<br>
-For a two-group comparison (experimental values versus control values, say) the easiest way to do that is to define a null hypothesis, or <span class="math inline">\(H_0\)</span>, whereby the means of the two groups are identical <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p></li>
-<li><p>Now, if there really is no effect, then by virtue of the sampling error we expect to see an effect anyway (this is called sampling effect or sampling error). And any true effect will be on top of the random sampling effect, which is equally likely to increase or decrease our estimate of the true effect. Therefore it is important to be able to distinguish between sampling effects and possible true effects. There are two possibilities. (<em>i</em>) If the true effect is not much larger than the sampling effect, they cannot be disentangled (at least not without collecting new samples). We must then say that the observed effect is consistent with the sampling effect and declare that we could not find evidence for any true non-random effect. (<em>ii</em>) If the observed effect is much larger than estimated sampling effect, then we can declare with confidence that the effect is non-random. Alas, non-randomness in no way guarantees that the effect was actually caused by the experimental treatment.</p></li>
-<li><p>We model the sampling error of the <span class="math inline">\(H_0\)</span> as a normal distribution, whose mean equals zero (the zero effect) and whose standard deviation equals the sample standard deviation divided by the square root of N.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> The standard deviation of the means (as opposed to original data points) is called the standard error of the mean or SEM. If N is large enough (at least 30), then <span class="math inline">\(mean +/- SEM = 68\%~ CI\)</span>, <span class="math inline">\(mean +/- 1.96SEM = 95\% ~CI\)</span> and <span class="math inline">\(mean +/-3SEM = 99 \% ~CI\)</span>.</p></li>
-</ol>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>A null hypothesis with SEM, 1.96SEM, and 3SEM shown as black, red and blue dashed lines, respectively.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>We use the sample data in estimating SEM of the <span class="math inline">\(H_0\)</span> because statistical software assumes that the scientific hardware (your brain) has no independent knowledge of the true population variation, and thus the sample values is used in lieu of population values. However, sample estimates of SEM can be highly misleading when N is small. Also, when the data is non-randomly drawn from the population, then even a very large sample is likely to be a poor representation of the population. As in many lab experiments N tends to be very small and it is often hard to even say, what a random sample means, <span class="math inline">\(H_0\)</span> testing tends not to work well in many branches of biology.</p>
-<p>We now calculate the mean of our sample and superimpose it on the normal distribution of <span class="math inline">\(H_0\)</span>. If our sample mean is situated where the <span class="math inline">\(H_0\)</span> distribution is still high, then it is consistent with the sample effect. On the other hand, if the height of the null distribution is very low, then the sample mean is inconsistent with the sample effect. Quantitatively, the fraction of the <span class="math inline">\(H_0\)</span> density that is cut of by our sample mean is the one-sided p value.</p>
-<blockquote class="blockquote">
-<p>p value is the long run relative frequency of obtaining data that is as far or further away from <span class="math inline">\(H_0\)</span> than your sample data, if the <span class="math inline">\(H_0\)</span> holds.</p>
-</blockquote>
-<p>The p value was introduced by Roland Fisher in 1923 for use as an informal measure of strength of evidence. If p is small, 0.001, say, we might be tempted to claim that we have strong evidence that the <span class="math inline">\(H_0\)</span> is false.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
-<p>A decade or so later Neyman and Pearson added to it something called significance level, often denoted by <span class="math inline">\(\alpha\)</span>, and derived a quite different use for the p value in the long-term quality control of the experimental setup. In their scheme, which is mathematically impeccable, p value is not a direct comment on the experiment at hand, but rather on the experimental system that generated this experiment.</p>
-<p>The goal of employing <span class="math inline">\(\alpha\)</span> is to provide an automatic procedure that makes discoveries, and does so with fixed error rates. By discovery we mean that “an effect is real”, or something like it. A discovery dichotomizes our contiuous measurements into statistically not significant non-discoveries and statistically significant discoveries, which can be either true discoveries or false discoveries (false-positives).</p>
-<p>If <span class="math inline">\(p &lt; \alpha\)</span>, then we can call the p value statistically significant. By convention, <span class="math inline">\(\alpha\)</span> is set either as 0.01, 0.05 (the most often used value), or 0.1. By setting <span class="math inline">\(\alpha\)</span> we keep the long run relative frequency of type I errors at <span class="math inline">\(\alpha\)</span> level.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> This dichotomization, which comes at a cost of information loss, allows to define the frequency of <strong>type I errors</strong> as the relative frequency by which true <span class="math inline">\(H_0\)</span> are falsely classified as “statistically significant. Thereby we have a formal procedure that allows us to make discoveries without any more scientific input as data. If this actually worked, being a scientists would be a low-education job.</p>
-<p>The Neyman-Pearson procedure is fine, statistically speaking. But its use in science carries great dangers. When scientists employ it with <span class="math inline">\(\alpha\)</span> set to 0.05, they implicitly agree to publish on average every 20th true <span class="math inline">\(H_0\)</span> as a statistically significant false-positive finding. The level of harm that ensues depends on the true frequency of true effects. This is quantified as the False Discovery Rate (FDR), where FDR = false significant effects / all significant effects. If scientists test predominantly true effects (most experiments end up in showing a true effect of experimental treatment), then FDR is low and the use of statistical significance is not an obvious folly. On the other hand, if scientists are taking risks and testing hypotheses, most of which are false (most <span class="math inline">\(H_0\)</span>s are true), then the Neyman-Pearson procedure leads to a terribly misleading picture of science as a whole. As philosophers seem to agree that testing risky hypotheses is what good scientists should be doing, therein obviously lies a problem.</p>
-</section>
-<section id="counting-in-the-multiverse" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="counting-in-the-multiverse"><span class="header-section-number">5.6</span> 3.2.2. Counting in the multiverse</h2>
-<p>Luckily for us, after 16th century with its borderline medieval thinking came the 17th and the scientific evolution. The thing that really unleashed scientific rationality was a question of gambling. Consider a game where 2 players equally pool their money to a pot that goes to the winner. The game is simple: they cast dice and after each round, whoever gets the largest sum, gets a point (draws don’t count). The game goes on until someone collects 9 points and wins the pot. But what happens when the game is suddenly interrupted after, say, player A has 7 points (and two to go) and player B has 8 points (and one to go)? Is there a just way of dividing the pot? This question bugged the best minds of Europe for centuries, when it was pretty universally thought that there isn’t a solution, until in 1654 Blaise Pascal and Pierre de Fermat solved it. While earlier attempts centered on getting an answer from the games actually played (the 8 and 7 points in our example), which led to contradiction, the insight of Fermat was that one could do a counterfactual analysis by pretending that the game goes on, albeit not in our world, but in an expanding array of parallel worlds.</p>
+<section id="counting-in-the-multiverse" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="counting-in-the-multiverse"><span class="header-section-number">6.2</span> Counting in the multiverse</h2>
+<p>Luckily for us, after 16th century with its borderline medieval thinking came the 17th and the scientific revolution. The thing that really unleashed scientific rationality was a question of gambling. Consider a game where 2 players equally pool their money to a pot that goes to the winner. The game is simple: they cast dice and after each round, whoever gets the largest sum, gets a point (draws don’t count). The game goes on until someone collects 9 points and wins the pot. But what happens when the game is suddenly interrupted after, say, player A has 7 points (and two to go) and player B has 8 points (and one to go)? Is there a just way of dividing the pot? This question bugged the best minds of Europe for centuries, when it was pretty universally thought that there isn’t a solution, until in 1654 Blaise Pascal and Pierre de Fermat solved it. While earlier attempts centered on getting an answer from the games actually played (the 8 and 7 points in our example), which led to contradiction, the insight of Fermat was that one could do a counterfactual analysis by pretending that the game goes on, albeit not in our world, but in an expanding array of parallel worlds.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -457,14 +510,14 @@ For a two-group comparison (experimental values versus control values, say) the 
 </div>
 </div>
 </div>
-<p>Here the starting point (A7B8) is in our universe. Then the 1st imaginary round splits it into two imaginary ones (A8B8 and A7B9), one of which leads to a win by player B. But on the next round player B does something that he would presumably never do in life: although there is no way for him to lose, he nevertheless keeps on playing and consequently in the second round the worlds split again, now into four. At this level every game ends in somebody winning and we can count the relative frequency of A-s wins (1) and B-s wins (3). Thus it makes sense to give ¼-th of the pot to A and ¾-th to B. This is the same as to say that P(A wins) = ¼ and P(B wins) = ¾. Probability theory is nothing but counting across the multiverse. Well, actually it is mostly about inventing algorithms that speed up this counting, as the multiverse, expanding exponentially, soon becomes non-conductive to hand-counting.</p>
+<p>Here the starting point (A7B8) is in our universe. Then the 1st imaginary round splits it into two imaginary ones (A8B8 and A7B9), one of which leads to a win by player B. But on the next round player B does something that he would presumably never do in life: although there is no way for him to lose, he nevertheless keeps on playing and consequently in the second round the worlds split again, now into four. At this level every game ends in somebody winning and we can count the relative frequency of A-s wins (1) and B-s wins (3). Thus it makes sense to give ¼-th of the pot to A and ¾-th to B. This is the same as to say that P(A wins) = ¼ and P(B wins) = ¾. Probability theory is nothing but counting across the multiverse. Well, actually it is mostly about inventing algorithms that speed up this counting, as the multiverse, expanding exponentially, soon becomes non-conducive to hand-counting.</p>
 <p>At a more conceptual level, we now have a frequency probability for a unique event. But in the multiverse everything has a frequency, and thus a probability. Since the summer of 1654, even scientific theories have probabilities. So we can bring to bear the mathematics of probability theory that is based on counting these frequencies.</p>
 </section>
-<section id="from-rules-of-combinatorics-to-probability-distribution" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="from-rules-of-combinatorics-to-probability-distribution"><span class="header-section-number">5.7</span> 3.3. From rules of combinatorics to probability distribution</h2>
-</section>
-<section id="the-addition-rule" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="the-addition-rule"><span class="header-section-number">5.8</span> 3.3.1. The Addition Rule</h2>
+<section id="the-rules-of-combinatorics" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="the-rules-of-combinatorics"><span class="header-section-number">6.3</span> The rules of combinatorics</h2>
+<p>Counting the multiverse by hand does not scale, since the number of worlds grows exponentially with the number of rounds. The rules of combinatorics are the speed-up algorithms; each answers one question of the form “in how many ways?”.</p>
+<section id="the-addition-rule" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="the-addition-rule"><span class="header-section-number">6.3.1</span> The addition rule</h3>
 <p>Let <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span> be mutually exclusive events. Let event <span class="math inline">\(E\)</span> describe the situation where either <span class="math inline">\(E_1\)</span> or <span class="math inline">\(E_2\)</span> will occur. The number of times event E will occur can be given by the expression:</p>
 <p><span class="math display">\[n(E) = n(E_1) + n(E_2)\]</span></p>
 <p>where</p>
@@ -474,46 +527,113 @@ For a two-group comparison (experimental values versus control values, say) the 
 <li><p><span class="math inline">\(n(E_2)\)</span> = Number of outcomes of event <span class="math inline">\(E_2\)</span></p></li>
 </ul>
 </section>
-<section id="the-multiplication-rule" class="level2" data-number="5.9">
-<h2 data-number="5.9" class="anchored" data-anchor-id="the-multiplication-rule"><span class="header-section-number">5.9</span> 3.3.2. The Multiplication Rule</h2>
+<section id="the-multiplication-rule" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="the-multiplication-rule"><span class="header-section-number">6.3.2</span> The multiplication rule</h3>
 <p>Suppose that <span class="math inline">\(E_1\)</span> can result in any one of <span class="math inline">\(n(E_1)\)</span> possible outcomes; and for each outcome of the event <span class="math inline">\(E_1\)</span>, there are <span class="math inline">\(n(E_2)\)</span> possible outcomes of event <span class="math inline">\(E_2\)</span>. Together there will be <span class="math inline">\(n(E_1) × n(E_2)\)</span> possible outcomes of the two events. That is, if event <span class="math inline">\(E\)</span> means that both <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span> must occur, then</p>
 <p><span class="math display">\[n(E) = n(E_1) \times n(E_2)\]</span></p>
 <p>If you have a choice of <span class="math inline">\(n_1\)</span> elements for the 1st position, a choice of <span class="math inline">\(n_2\)</span> elements for the 2nd position, and so on up to <span class="math inline">\(n_k\)</span>, then the number of possible combinations of sequences of k elements is <span class="math inline">\(n_1 \times n_2 \times … \times n_k\)</span>.</p>
 </section>
-<section id="permutations" class="level2" data-number="5.10">
-<h2 data-number="5.10" class="anchored" data-anchor-id="permutations"><span class="header-section-number">5.10</span> 3.3.3. Permutations</h2>
-<p>How many different combinations from 3 elements ABC can we get? The answer is 6: {ABC, ACB, BCA, BAC, CAB, CBC}. This generalizes to <span class="math inline">\(n_1 = 3\)</span>, <span class="math inline">\(n_2 = 2\)</span>, <span class="math inline">\(n_3 = 1\)</span> -&gt; <span class="math inline">\(n_1 \times n_2 \times n_3 = 6\)</span>, or by using n factorial: <span class="math inline">\(n! = 3! = 3 \times 2 \times 1 = 6\)</span>.</p>
+<section id="permutations" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="permutations"><span class="header-section-number">6.3.3</span> Permutations</h3>
+<p>How many different orderings of 3 elements ABC can we get? The answer is 6: {ABC, ACB, BCA, BAC, CAB, CBA}. This generalizes to <span class="math inline">\(n_1 = 3\)</span>, <span class="math inline">\(n_2 = 2\)</span>, <span class="math inline">\(n_3 = 1\)</span> -&gt; <span class="math inline">\(n_1 \times n_2 \times n_3 = 6\)</span>, or by using n factorial: <span class="math inline">\(n! = 3! = 3 \times 2 \times 1 = 6\)</span>.</p>
 <p>n factorial is defined as the product of all the integers from 1 to n.</p>
 <p><span class="math display">\[n! = (n)(n - 1)(n - 2) ... (3)(2)(1)\]</span></p>
 <p><strong>n distinct objects can be arranged (permuted) in n! ways.</strong></p>
 </section>
-<section id="variations-the-order-matters-and-repetitions-are-not-allowed" class="level2" data-number="5.11">
-<h2 data-number="5.11" class="anchored" data-anchor-id="variations-the-order-matters-and-repetitions-are-not-allowed"><span class="header-section-number">5.11</span> 3.3.4. Variations (the order matters and repetitions are not allowed)</h2>
+<section id="variations-the-order-matters-and-repetitions-are-not-allowed" class="level3" data-number="6.3.4">
+<h3 data-number="6.3.4" class="anchored" data-anchor-id="variations-the-order-matters-and-repetitions-are-not-allowed"><span class="header-section-number">6.3.4</span> Variations (the order matters and repetitions are not allowed)</h3>
 <p>n – nr of elements k – the length of the sequence</p>
 <p><span class="math display">\[V_n^k = n(n - 1) … (n - k + 1) = n!/(n - k)!\]</span></p>
 <p>8 athletes compete, how many different possibilities for the first three places? <span class="math inline">\(n_1 = 8\)</span>, <span class="math inline">\(n_2 = 7\)</span>, <span class="math inline">\(n_3 = 6\)</span></p>
 <p>8 x 7 x 6 = 336</p>
 <p>(8 - 3)! = 5!</p>
 <p>8!/5! = 336</p>
-<section id="combinations-the-order-is-not-important" class="level3" data-number="5.11.1">
-<h3 data-number="5.11.1" class="anchored" data-anchor-id="combinations-the-order-is-not-important"><span class="header-section-number">5.11.1</span> 3.3.5. Combinations (the order is not important)</h3>
+</section>
+<section id="combinations-the-order-is-not-important" class="level3" data-number="6.3.5">
+<h3 data-number="6.3.5" class="anchored" data-anchor-id="combinations-the-order-is-not-important"><span class="header-section-number">6.3.5</span> Combinations (the order is not important)</h3>
 <p>How many possible combinations of k elements is it logically possible to get of n distinct elements, or <span class="math inline">\(\binom {n}{k}\)</span>?</p>
 <p><span class="math display">\[\binom {n}{k} = \frac{n!}{k!(n - k)!}\]</span></p>
 <p>There is a single way of obtaining 0 elements out of n possibilities</p>
 <p><span class="math display">\[\binom {n}{0} = 1\]</span> and there is a single way of obtaining n elements out of n possibilities</p>
 <p><span class="math display">\[\binom {n}{n} = 1\]</span></p>
-<p>The number of different sets of 4 letters which can be chosen from the alphabet is <span class="math inline">\(\binom {26}{4} = \frac{26!}{4!(26-4!)}\)</span></p>
+<p>The number of different sets of 4 letters which can be chosen from the alphabet is <span class="math inline">\(\binom {26}{4} = \frac{26!}{4!\,(26-4)!} = 14950\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Nature chooses the cases: three ways to count particles">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nature chooses the cases: three ways to count particles
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The classical definition divides favourable cases by possible cases, <em>when the cases are equally likely</em>. The definition does not say what the cases are. Statistical physics supplies the cleanest demonstration that this choice is an empirical hypothesis, not a logical truth — and that nature can reject a counting model that seems self-evident.</p>
+<p>Place <span class="math inline">\(r\)</span> particles into <span class="math inline">\(n\)</span> cells (the cells may be regions of space or energy states). Three counting models answer the question “how many equally likely cases are there?” differently:</p>
+<ul>
+<li><p><strong>Maxwell–Boltzmann.</strong> The particles are distinguishable, like named patients: particle 1 in the first cell and particle 2 in the second is a different case from the reverse. By the multiplication rule there are <span class="math inline">\(n^r\)</span> arrangements, each taken as equally likely.</p></li>
+<li><p><strong>Bose–Einstein.</strong> The particles are indistinguishable: only the occupancy numbers — how many particles each cell holds — are physically real. The equally likely cases are the <span class="math inline">\(\binom{n+r-1}{r}\)</span> occupancy patterns.</p></li>
+<li><p><strong>Fermi–Dirac.</strong> The particles are indistinguishable and, in addition, no cell may hold more than one particle (the Pauli exclusion principle). The equally likely cases are the <span class="math inline">\(\binom{n}{r}\)</span> ways of choosing which cells are occupied.</p></li>
+</ul>
+<p>For two particles in three cells the three models give nine, six and three equally likely cases, and they disagree about observable events:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mb <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">p1 =</span> cells, <span class="at">p2 =</span> cells)  <span class="co"># distinguishable: 3^2 = 9</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>be <span class="ot">&lt;-</span> mb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p1 <span class="sc">&lt;=</span> p2)              <span class="co"># occupancy patterns: choose(4, 2) = 6</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>fd <span class="ot">&lt;-</span> mb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p1 <span class="sc">&lt;</span> p2)               <span class="co"># exclusion: choose(3, 2) = 3</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">model =</span> <span class="fu">c</span>(<span class="st">"Maxwell-Boltzmann"</span>, <span class="st">"Bose-Einstein"</span>, <span class="st">"Fermi-Dirac"</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">equally likely cases</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">nrow</span>(mb), <span class="fu">nrow</span>(be), <span class="fu">nrow</span>(fd)),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">P(both in one cell)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">mean</span>(mb<span class="sc">$</span>p1 <span class="sc">==</span> mb<span class="sc">$</span>p2),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">mean</span>(be<span class="sc">$</span>p1 <span class="sc">==</span> be<span class="sc">$</span>p2),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">mean</span>(fd<span class="sc">$</span>p1 <span class="sc">==</span> fd<span class="sc">$</span>p2))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">equally likely cases</th>
+<th style="text-align: right;">P(both in one cell)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Maxwell-Boltzmann</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bose-Einstein</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fermi-Dirac</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Which model describes the world is settled by experiment, not by argument. Photons and helium-4 atoms follow Bose–Einstein statistics; electrons, protons and neutrons follow Fermi–Dirac statistics;<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> no known particle follows Maxwell–Boltzmann statistics, which survives as an approximation valid when the available cells far outnumber the particles.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>Nor was arrangement-counting self-evident before physics intervened. In the <em>Encyclopédie</em> of 1754, d’Alembert maintained that two tosses of a coin present three equally possible cases — heads on the first throw, heads on the second, or heads on neither — and concluded that the probability of at least one head is 2/3 rather than 3/4.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> For coins, taking the patterns rather than the ordered arrangements as the equal cases is an error; for photons, pattern-counting is the rule nature follows. The choice of the equally likely cases was contested for two centuries before experiment settled it for particles, and no amount of unaided reasoning could have settled it.</p>
+<p>The probability calculus is the same in all three cases. The sum and product rules of Chapter 5 are untouched, and each model computes with the combinatorial shortcuts derived above. What differs is the sample space and the assignment of equal probabilities over it. In Jaynes’s terms, what differs is the information: if particles are indistinguishable, then arrangements that differ only by swapping them are one case, and counting them separately would impose a distinction the system does not contain. “Equally likely” is therefore the empirical component of every classical-probability calculation; the loaded die of exercise 6 makes the same point at a smaller scale.</p>
+</div>
+</div>
 </section>
 </section>
-<section id="from-counting-to-binomial-probability-distribution" class="level2" data-number="5.12">
-<h2 data-number="5.12" class="anchored" data-anchor-id="from-counting-to-binomial-probability-distribution"><span class="header-section-number">5.12</span> 3.3.6. From counting to binomial probability distribution</h2>
+<section id="from-counting-to-the-binomial-distribution" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="from-counting-to-the-binomial-distribution"><span class="header-section-number">6.4</span> From counting to the binomial distribution</h2>
 <p>Q: What is the probability <span class="math inline">\(P_n(k)\)</span> that event A occurs exactly k times out of n tries?</p>
 <ol type="1">
 <li>we start by assuming that all k outcomes come up in an uninterrupted sequence. We look at the full series of n tries. Then by the multiplication rule:</li>
 </ol>
-<p><span class="math display">\[P(A_1…A_k \lnot A_k + 1 …\lnot A_n) = P(A_1) …P(A_k)P(\lnot A_k + 1) … P(\lnot A_n) = p^k (1 - p)^{n-k}\]</span></p>
-<p>We would get the same results no matter where the k outcomes are in the sequence. If the sample space only has two members: <span class="math inline">\(\{0, 1\}\)</span>, a.k.a. if k is limited to only 0 or 1, and if n = 1, then this becomes Bernoulli probability mass distribution</p>
-<p><span class="math display">\[f(k,p) = p^k(1 - p)^{n-k}\]</span></p>
+<p><span class="math display">\[P(A_1…A_k \lnot A_{k+1} …\lnot A_n) = P(A_1) …P(A_k)P(\lnot A_{k+1}) … P(\lnot A_n) = p^k (1 - p)^{n-k}\]</span></p>
+<p>We would get the same results no matter where the k outcomes are in the sequence. If the sample space only has two members: <span class="math inline">\(\{0, 1\}\)</span>, a.k.a. if k is limited to only 0 or 1, and if n = 1, then this becomes the Bernoulli probability mass distribution</p>
+<p><span class="math display">\[f(k,p) = p^k(1 - p)^{1-k}\]</span></p>
 <p>Example: if p = 0.1 and k=0, then <span class="math inline">\(f(0, 0.1)= 0.1^0(0.9)^1=1 \times 0.9\)</span>; and <span class="math inline">\(f(1, 0.1) = 0.1^1*0.9^0 = 0.1 \times 1\)</span></p>
 <p>This is, however, not the answer to our question, where both n and k can be any integer equal or larger than zero.</p>
 <ol start="2" type="1">
@@ -521,7 +641,7 @@ For a two-group comparison (experimental values versus control values, say) the 
 </ol>
 <p><span class="math display">\[\binom{n}{k} = \frac{n!}{k!(n - k)!}\]</span></p>
 <ol start="3" type="1">
-<li>By multiplying 1. And 2. [Pr of a single series times the number of combinations with k events] we get <span class="math display">\[P_n(k) = \binom{n}{k}p^k(1 - p)^{n-k}\]</span> This is the binomial distribution.</li>
+<li>By multiplying 1 and 2 (the probability of a single series times the number of arrangements with k events) we get <span class="math display">\[P_n(k) = \binom{n}{k}p^k(1 - p)^{n-k}\]</span> This is the binomial distribution.</li>
 </ol>
 <p>Example: What is the Pr of getting 6 heads out of 10 coin tosses? <span class="math display">\[P_{10}(6)= \binom{10}{6} (1/2)^6 (1/2)^4 = (10!/(4!6!)) (1/2)^6 (1/2)^4  = 0.205\]</span> Table: Full binomial probability distribution for <span class="math inline">\(P_{10}(5)\)</span></p>
 <div class="cell">
@@ -552,582 +672,43 @@ For a two-group comparison (experimental values versus control values, say) the 
 </table>
 </div>
 </div>
-<p>We can plot this probability distribution as a symmetric graph (it is symmetric as long as A and notA are equally probable).</p>
+<p>The distribution is symmetric as long as A and NOT A are equally probable. Plotting it, and seeing what the binomial, Poisson and normal distributions are good for, is the business of Chapter 7.</p>
 </section>
-<section id="probability-distribution" class="level2" data-number="5.13">
-<h2 data-number="5.13" class="anchored" data-anchor-id="probability-distribution"><span class="header-section-number">5.13</span> 3.4. Probability distribution</h2>
-<p>As probability measures epistemic uncertainty, the role of the probability distribution is to provide the full description of uncertainty over the sample space. The formal output of any statistical analysis is a probability distribution.</p>
-<blockquote class="blockquote">
-<p>A probability distribution lists for every member of sample space the probability of this member.</p>
-</blockquote>
-<p>The sample space (<span class="math inline">\(\Omega\)</span>) is the full set of mutually exclusive and exhaustive events/outcomes/hypotheses/parameter values that comprise all logically possible futures (the full multiverse).<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
-<p>Importantly, we can slice the <span class="math inline">\(\Omega\)</span> cake in infinitely many ways, and the probability distribution that we end up with depends on the slicing. Whatever may be said of the downstream analysis, slicing the <span class="math inline">\(\Omega\)</span> is a scientific, rather than logical, exercise. A robot may well be able to calculate a probability distribution, but this will not turn it into a scientist!</p>
-</section>
-<section id="binomial-disrtibution" class="level2" data-number="5.14">
-<h2 data-number="5.14" class="anchored" data-anchor-id="binomial-disrtibution"><span class="header-section-number">5.14</span> 3.4.1. Binomial disrtibution</h2>
-<p>For a coin throwing experiment the omega is <span class="math inline">\(\{heads,~ tails\}\)</span>, for measurements of a continuous variable <span class="math inline">\(\Omega\)</span> is the infinite set of real numbers, and so on.</p>
-<p>What sort of information does a probability distribution contain? Say, we have a fair coin which we toss 10 times and count the number of heads. We model this experiment as a Bernoulli process, leading to binomial probability distribution. The sample space X is then some number of heads between 0 and 10, a.k.a. X = <span class="math inline">\(\{0, 1, …, 10 ~heads\}\)</span>.</p>
-<hr>
-<p>Any sequence of experiments conforming to these requirements is a <strong>Bernoulli process</strong>.</p>
+<section id="key-points" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="key-points"><span class="header-section-number">6.5</span> Key points</h2>
 <ul>
-<li><p>n independent experiments (tries), each with two possible outcomes (<span class="math inline">\(\Omega = {A \land \lnot A}\)</span>). <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p></li>
-<li><p>If <span class="math inline">\(A_i\)</span> is the outcome A in i-th experiment, the <span class="math inline">\(P(A_i)\)</span> is constant over the experiments</p></li>
-<li><p><span class="math inline">\(P(\lnot A) = 1 - P(A)\)</span></p></li>
+<li>The <strong>classical definition of probability</strong>: the number of favourable cases divided by the number of possible cases, when the cases are equally likely. Its background assumptions are stability of the system, constancy of nature, and exchangeability.</li>
+<li>A frequency-only repertoire cannot assign probabilities to <strong>unique events</strong>, such as scientific hypotheses. Null hypothesis testing is the workaround built on the frequencies of datasets (see the appendix on null hypothesis testing).</li>
+<li>The <strong>problem of points</strong> (Pascal and Fermat, 1654): a fair division of the stakes is found by counting the ways the interrupted game could have continued in <strong>imagined parallel worlds</strong>. In the multiverse every event, however unique, has a frequency — and therefore a probability.</li>
+<li>The <strong>rules of combinatorics</strong> are counting shortcuts: addition for mutually exclusive alternatives, multiplication for sequential choices, <span class="math inline">\(n!\)</span> for orderings, <span class="math inline">\(n!/(n-k)!\)</span> for ordered selections, and <span class="math inline">\(\binom{n}{k}\)</span> for unordered selections.</li>
+<li>The “equally likely cases” of the classical definition are an <strong>empirical hypothesis</strong>. The same particles-in-cells setup yields different probabilities under Maxwell–Boltzmann, Bose–Einstein and Fermi–Dirac counting; experiment, not logic, decides which counting nature follows. The probability calculus itself is the same in all three.</li>
+<li>The <strong>binomial distribution</strong> is assembled from two of these shortcuts: the multiplication rule gives the probability <span class="math inline">\(p^k(1-p)^{n-k}\)</span> of one particular sequence of successes and failures, and <span class="math inline">\(\binom{n}{k}\)</span> counts the sequences.</li>
+<li>Counting across parallel worlds returns in Part III as the <strong>potential-outcomes</strong> framework, where the parallel worlds are the treated and untreated versions of the same patient (Chapter 10).</li>
 </ul>
-<hr>
-<div class="cell" data-fig.margin="true">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> <span class="fu">dbinom</span>(<span class="at">x=</span>x, <span class="at">size=</span><span class="dv">10</span>, <span class="at">prob=</span><span class="fl">0.5</span>))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_col</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Binomial probability distribution models tossing of a coin. x is sample space, y denotes probability of each member of Omega.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>The most likely outcome of this experiment, X = 5, is at the highest point of the binomial distribution. And consequently, the higher the distribution over some value of X, the higher the probability that we will get as many heads from our experiment. We can look at this as a probability ratio – if the probability density over some value <span class="math inline">\(X=x_j\)</span> is two times higher than over some other value <span class="math inline">\(X=x_k\)</span>, then the result <span class="math inline">\(x_j\)</span> is two times likelier to happen than the result <span class="math inline">\(x_k\)</span> (but note that both results may be a lot less likely than the most likely result). Thus, even before starting the experiment, we can ask the following kinds of questions, solely based on the probability distribution:</p>
+</section>
+<section id="exercises" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.6</span> Exercises</h2>
 <ol type="1">
-<li>What is the most likely number of heads that we will get? Technically this is the expected value of X, or <span class="math inline">\(EX\)</span>. The expected value of sample space X is the sum of each individual value <span class="math inline">\(x_i\)</span> times the probability <span class="math inline">\(p_i\)</span> of that value being the true value. It is also the value <span class="math inline">\(X = x\)</span>, which is the center of mass of the probability distribution. <span class="math display">\[EX = \sum x_ip_i\]</span> or in R:</li>
+<li><p><strong>Divide the pot.</strong> Players A and B play to 5 points; the game is interrupted with A on 2 points and B on 4. Following Fermat, let the game continue in imagination for the maximum number of rounds it could still take, count the continuations won by each player, and divide the pot. Verify your division by simulating the interrupted game many times with <code>sample()</code> or <code>rbinom()</code>.</p></li>
+<li><p><strong>Ward arithmetic.</strong> (a) In how many different orders can 5 patients be scheduled for morning rounds? (b) How many distinct pairs of patients can be chosen from a ward of 10? (c) Out of 8 candidate biomarkers, in how many ways can an ordered shortlist of 3 be filled? For each, state whether you used permutations, combinations, or variations.</p></li>
+<li><p><strong>Build the binomial by hand.</strong> In a population where 30% are carriers of an infection, 4 people are sampled independently. Use the multiplication rule to write down the probability of the particular sequence carrier, carrier, non-carrier, non-carrier; count the arrangements containing two carriers with <span class="math inline">\(\binom{4}{2}\)</span>; combine the two numbers, and check the result with <code>dbinom(2, 4, 0.3)</code>.</p></li>
+<li><p><strong>Strokes on a ward.</strong> Source <code>R/simulate_cohort.R</code>, generate the cohort, and estimate the stroke risk among untreated patients by counting rows. Use the binomial distribution to compute the probability that 4 or more of 20 untreated patients have a stroke, and check the answer by simulation with <code>rbinom()</code>. Then identify the binomial assumption that the cohort violates (do all untreated patients share one stroke probability?).</p></li>
+<li><p><strong>From Fermat to potential outcomes.</strong> In three or four sentences, compare Fermat’s imagined continuations of the interrupted game with the parallel-worlds reading of the counterfactual “what would have happened to this treated patient without treatment”. Name one way the two are alike and one way they differ (consider: are the branching probabilities known?).</p></li>
+<li><p><strong>The loaded die.</strong> The classical definition assumes equally likely cases. A loaded die has six faces but not six equally likely outcomes. Explain why favourable-over-possible fails here, and how the equal-likeliness requirement relates to desideratum 3.3 of Chapter 5 (equivalent states of knowledge receive equivalent plausibilities).</p></li>
+<li><p><strong>Counting like a photon.</strong> Two particles are placed into four cells. (a) Count the equally likely cases under each of the three counting models of the callout box. (b) Under each model, compute the probability that both particles occupy the same cell. (c) Adapt the enumeration code from the box to verify your answers. (d) State in one sentence which parts of this chapter’s machinery are the same across all three models, and what changes instead.</p></li>
 </ol>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(EX <span class="ot">&lt;-</span> <span class="fu">sum</span>(data<span class="sc">$</span>x <span class="sc">*</span> data<span class="sc">$</span>y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5</code></pre>
-</div>
-</div>
-<p>Interpreting the EX is a thorny problem. Perhaps the most honest way to do this would be to imagine that every individual value, from which the EX was calculated, is in a bag in euro currency. Then, if you pay EX euros to extract a random value, this transaction will most probably allow you to stay even. For most purposes, this does not sound like a scientifically relevant interpretation. Importantly, the EX is not the most likely single value you might draw (this being the mode), nor is the value from which half the values are smaller/larger (this being the median).<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> The EX is more popular than the mode or the median because historically it was often impossible to calculate CI-s and p values from the latter. In modern statistics this is no longer so. Thus you should choose your measure of central tendency/typical value based on scientific preferences.</p>
-<ol start="2" type="1">
-<li>What is the standard deviation of the probability distribution? We start by defining variance as <span class="math inline">\(VX = \sum(x_i - EX)^2p\)</span> where <span class="math inline">\(x_i - E(X)\)</span> is the deviation of i-th value from the expected value of X. <span class="math display">\[SD(X) = \sqrt {VX}\]</span></li>
-</ol>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>( <span class="fu">sum</span>( (data<span class="sc">$</span>x <span class="sc">-</span> EX)<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> data<span class="sc">$</span>y) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.581139</code></pre>
-</div>
-</div>
-<p>The range <span class="math inline">\(EX +/- SD(X)\)</span> usually covers about 2/3 of the values at the center of the distribution. For binomial distribution the variance is <span class="math inline">\(V[X] = Np(1 - p)\)</span>, and if <span class="math inline">\(Np\)</span> is an integer, then mean = median = mode. Standard error for a proportion p is <span class="math inline">\(\sqrt{\frac{p(1-p)}{N}}\)</span>.</p>
-<ol start="3" type="1">
-<li>What is the probability that the true value is greater than/smaller than/lies within an interval of X? If, for example, <span class="math inline">\(2\%\)</span> of the probability density lies beyond (is greater than) some value <span class="math inline">\(x_i\)</span> of X, then we say that the probability that <span class="math inline">\(X &gt; x_i\)</span>, or <span class="math inline">\(P(X&gt;x_i) = 0.02\)</span>.</li>
-</ol>
-<p>To get the probability that we get 7 or more heads out of 10 coin tosses we sum the probabilities for every outcome with 7 or more heads:</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(x <span class="sc">&gt;=</span> <span class="dv">7</span>) </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(d1<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.171875</code></pre>
-</div>
-</div>
-<ol start="4" type="1">
-<li>What interval of X covers some given fraction of the probability density? For example, if <span class="math inline">\(95\%\)</span> of the probability density lies between values <span class="math inline">\(X = x_j\)</span> and <span class="math inline">\(X = x_k\)</span>, then we say that the true value of x lies within the interval <span class="math inline">\(x_j\)</span> and <span class="math inline">\(x_k\)</span> with <span class="math inline">\(95\%\)</span> probability. This is then the <span class="math inline">\(95\%\)</span> credible interval.</li>
-</ol>
-<p>When I make 10 tosses, then how many heads will I get with 50% probability?</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">quantile</span>(data<span class="sc">$</span>y, <span class="at">prob=</span><span class="fl">0.5</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(y <span class="sc">&gt;=</span> a) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 2
-      x      y
-  &lt;int&gt;  &lt;dbl&gt;
-1     2 0.0439
-2     3 0.117 
-3     4 0.205 
-4     5 0.246 
-5     6 0.205 
-6     7 0.117 
-7     8 0.0439</code></pre>
-</div>
-</div>
-<p>So with probability 0.5 I get 2 to 8 heads.</p>
-<p>In R dbinom() gives the density of binomial distribution. For example the probability of X = 3, or P(X=3) where <span class="math inline">\(X \sim Binom(5, 0.2)\)</span> is the same as</p>
-<p><span class="math display">\[dbinom(3, 5, 0.2) = \binom{5}{3}(0.2)^3 (0.8)^2 = 0.0512\]</span></p>
-<p>pbinom() is the cumulative density function (CDF), which takes first the value X where the function is evaluated, and then the 2 parameters of the binomial function.</p>
-<p><span class="math display">\[pbinom(3, 5, 0.2 = \sum \binom{5}{k} (0.2)^k (0.8)^{5 - k} = 0.9933)\]</span></p>
-<p>rbinom() generates binomial random variables. rbinom(10, 5, 0.5) generates 10 i.i.d. (independent and identically distributed) Bin(5, 0.5) random variables (10 numbers between 0 and 5, which are numbers of successes from 5 experiments, the whole thing repeated 10 times).</p>
-<p><strong>Examples of binomial calculations in base::R</strong></p>
-<ul>
-<li>The probability of a particular outcome (probability of getting 5 heads out of 10 coin tosses if P(head)=0.5)</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">5</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">prob=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2460938</code></pre>
-</div>
-</div>
-<p>Note that the probability of a particular outcome like k=5 successes is only computable in the discrete case. In the continuous case, the probability of obtaining a particular point value will always be zero.</p>
-<ul>
-<li>Using the dbinom() or pbinom(), we can get the cumulative probability of obtaining 1 or less, 2 or less successes.</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="dv">0</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbinom</span>(<span class="dv">1</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbinom</span>(<span class="dv">2</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0546875</code></pre>
-</div>
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#or equivalently</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0546875</code></pre>
-</div>
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#or equivalently</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pbinom</span>(<span class="dv">2</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.5</span>, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0546875</code></pre>
-</div>
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For the probability of obtaining 3 or more successes out of 10, lower.tail = FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<ul>
-<li>We can also find out the value of the variable k (the quantile) such that the probability of obtaining k or less than k successes is some specific probability value p.&nbsp;This is the inverse of the cumulative distribution function (the quantile function). The inverse of the CDF (known as the quantile function in R because it returns the quantile, the value k) is available as qbinom(). What value k of the outcome is such that the probability of obtaining k or less successes is 0.37?</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qbinom</span>(<span class="at">p=</span><span class="fl">0.37</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
-<ul>
-<li>We generate simulated data (n data points) from a binomial distribution by specifying the number of trials and the probability of success</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="at">n=</span><span class="dv">5</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">prob=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 7 5 7 1 2</code></pre>
-</div>
-</div>
-<p>Here we did 5 simulated coin tossing experiments, with 10 tosses each.</p>
-<section id="poisson-distribution" class="level3" data-number="5.14.1">
-<h3 data-number="5.14.1" class="anchored" data-anchor-id="poisson-distribution"><span class="header-section-number">5.14.1</span> 3.4.2 Poisson distribution</h3>
-<p>If you have a bernoulli sequence, whose number of events (successes) is much smaller than the number of experiments, then the binomial distribution can be converted into Poisson distribution, which only takes in the number events. Poisson distribution is a good data model if</p>
-<ul>
-<li><p>there are many chances for an event to occur, but taken one-by-one they are all unlikely</p></li>
-<li><p>these events are independent and exchangeable</p></li>
-<li><p>the frequency of events are constant (the elementary mechanisms generating the events do not change)</p></li>
-<li><p>two events cannot occur in the same time/place</p></li>
-<li><p>the probability of an event is proportional to an interval in time or space.</p></li>
-</ul>
-<p>The number n of arrivals of a Poisson process in unit time is Poisson distributed. The single parameter is the rate <span class="math inline">\(\lambda\)</span> of the arrival of the Poisson process (<span class="math inline">\(\lambda\)</span> is an integer &gt; 0). The Poisson paradigm is also called the law of rare events. The interpretation of “rare” is that the probability of event is small, not that <span class="math inline">\(\lambda\)</span> is small. For example, the low probability of getting an email from a specific person in a particular hour is offset by the large number of people who could send you an email in that hour.</p>
-<p><span class="math inline">\(\lambda\)</span> is also the expected value (the number of events), and its standard deviation is defined as <span class="math inline">\(\sqrt \lambda\)</span>. Its formula is</p>
-<p><span class="math display">\[f(x) = exp(- \lambda) \frac{\lambda^x}{x!}\]</span> If we have observed 5 events in a time interval (5 deaths in a week, say), then the probability that next week we will have 3 deaths is</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="sc">-</span><span class="dv">5</span>)<span class="sc">*</span>(<span class="dv">5</span><span class="sc">^</span><span class="dv">3</span><span class="sc">/</span><span class="fu">factorial</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1403739</code></pre>
-</div>
-</div>
-<p>or</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dpois</span>(<span class="dv">3</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1403739</code></pre>
-</div>
-</div>
-<p>We can plot a Poisson probability distribution like this</p>
-<div class="cell" data-fig.margin="true">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">15</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">dpois</span>(x, <span class="dv">5</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> <span class="fu">geom_col</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Poisson distribution for lambda = 5</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Often biological counts are overdispersed (larger Var than allowed by Poisson). <strong>Negative binomial</strong> (a.k.a. gamma-Poisson) is a mixture of Poisson distributions that have different <span class="math inline">\(\lambda\)</span>s. In an overdispersion situation we may want to condition the model on X-vars that will convert the Y-var into a simple Poisson or binomial distribution. Then we do not need to use Negbinomial likelihood. Putting Poisson likelihood into a multi-level model can sometimes help. Negbinomial is a continuous mixture where each Poisson-distributed count comes from its own Poisson distribution. It is a continuous distribution that assumes that each Poisson process has its own <span class="math inline">\(\lambda\)</span> and that these <span class="math inline">\(\lambda\)</span>s are gamma-distributed. Gamma distribution has two parameters, <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\phi\)</span>. <span class="math display">\[y \sim NegBinomial(\lambda, \phi)\]</span> If <span class="math inline">\(\phi\)</span> gets close to zero, then NegBinomial gets close to normal distribution with the same <span class="math inline">\(\mu\)</span>. if <span class="math inline">\(\phi &gt;0\)</span>, <span class="math inline">\(Var(X)= \lambda + \lambda 2/\phi\)</span>. Larger <span class="math inline">\(\phi\)</span> gets the distribution closer to pure Poisson. In regression models with Poisson likelihoods we redefine <span class="math inline">\(\lambda\)</span> as a linear model with log-link.</p>
-<p>For overdispersed binomial distributions we use <strong>beta-binomial</strong> likelihood, which assumes that each event has its own realization probability, and the probability distribution is the distribution of these probabilities, not of a single probability for all events. X-vars do not fix the probability of an individual event. Beta-binomial has 2 parameters: <span class="math inline">\(p\)</span> is the mean probability and <span class="math inline">\(\theta\)</span> is the shape parameter. <span class="math inline">\(\theta=2\)</span> gives a flat distribution between 0 and 1. Beta distribution is in the probability scale. Regression models with beta binomial likelihood look like this:</p>
-<p><span class="math display">\[y \sim BetaBinom(n, p, \theta)\]</span> <span class="math display">\[logit(p) = \beta X\]</span></p>
-</section>
-<section id="normal-and-log-normal-distributions" class="level3" data-number="5.14.2">
-<h3 data-number="5.14.2" class="anchored" data-anchor-id="normal-and-log-normal-distributions"><span class="header-section-number">5.14.2</span> 3.4.3. Normal and log-normal distributions</h3>
-<p>The binomial distribution is the most common probabilistic model for experiments and other phenomena with two possible outcomes. As its assumptions include stability of independent and random events, it is not suitable for all natural mechanisms that generate binary outcomes. So mathematiciens have created a host of other distributions suitable for binary or categorical outcomes, incl.&nbsp;the Piosson distribution, Negative Binomial distribution, the hypergeometric distribution (assumes random draws without replacement, unlike the binomial), etc.</p>
-<p>Another common class of outcomes is real numbers, which we call continuous outcomes. The most commonly used probability distribution for modeling continuous outcomes is the normal distribution. For example, if you are running most classical statistical models, like a t test, principal component analysis, correlation, or linear regression, you are probabaly using the normal probability model under the hood. This is so mainly for historical computability reasons - the mathematics of the normal distrtibution is convenient for calculating important statistics with pen and paper. In biology the most useful probability distribution is actually the log-normal distribution.</p>
-<p>We start by simulating a process that generates normal/lognormal data.</p>
-<p>Lets suppose that we have 12 separate genes influencing a continuous trait (i.e.&nbsp;growth rate). The effects of these genes are independent of each other (The allele status of gene 1 does not have any influence on the effect of allele status of gene 2 on growth rate, and so on). Then the effects are additive. Each realization of an organisms growth rate comes from a random mixture of these genes (the effects of individual alleles are randomly picked from 1 to 2)</p>
-<p>A single growth rate:</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># runif(12, 1, 100) generates 12 random numbers between 1 and 100 </span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">1</span>, <span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 720.7742</code></pre>
-</div>
-</div>
-<p>What happens, if we simulate 10,000 growth rates?</p>
-<div class="cell" data-fig.margin="true">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>growth <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">sum</span>(<span class="fu">runif</span>(<span class="at">n=</span><span class="dv">12</span>, <span class="at">min=</span><span class="dv">1</span>, <span class="at">max=</span><span class="dv">2</span>))) </span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(growth)) <span class="sc">+</span> </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>independent effects result in normal data</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>This is close enough to a normal distribution. Lets model these data through an actual normal distribution. The parameter, which determines the exact shape of a binomial distribution, is probability of success (p). Similarly, the exact shape of the normal distribution is determined by two parameters, the <span class="math inline">\(\mu\)</span>, which determines the location of the peak, and the <span class="math inline">\(\sigma\)</span>, which determines the scale of the distribution (roughly speaking, the width of the thing).<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> We calculate these parameters directly from the simulated data, as is done by most classical statistical techniques. By fixing the values of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> we have <em>fitted</em> the model. We can see that the modeled distribution is very close to data, which means that it is now easy to simulate new data from the normal model and, generally, to study the model as a stand-in for the physical world.</p>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Superimposed data distribution of simulated growth rates and growth rates modeled by normal distribution (red line)</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>What, if we do not assume independence of effects? Then we assume that the status of gene 1 has an effect on how much the statuses of genes 2, 3, …12 affect the outcome (growth rate). The the simplest model of interacting effects involves taking their product. And this results in lognormal distribution of growth rates.</p>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Interacting effects result in log-normal data</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>The thing with log-normally distributed data is that by taking the logarithm of such data (or by plotting them in log scale) we get normally distributed data.</p>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The best test of whether your data is lognormal is to take the logarithm of these data. In the log-scale these data should look normal.</p>
-<p>If we think that our data comes from a process that generates approximately normal data (statistically speaking, we are talking about the population, not the sample), then we should model this by normal distribution. The full normal model is described by the function</p>
-<p><span class="math display">\[f(x) = \frac {1}{\sigma \sqrt{2 \pi} }  exp(-(\frac{(x - \mu)^2}{2 \sigma^2})\]</span></p>
-<p>where x and <span class="math inline">\(\mu\)</span> are real numbers between -Inf and Inf, and <span class="math inline">\(\sigma &gt; 0\)</span>.</p>
-<p>If we set mu to zero and sigma to one (this parametrization is called the <em>standard normal distribution</em>), we can calculate it like this:</p>
-<div class="cell" data-fig.margin="true">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">2</span><span class="sc">*</span>pi) <span class="sc">*</span> sigma)) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>((x <span class="sc">-</span> mu)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span> sigma<span class="sc">^</span><span class="dv">2</span>)))</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Standard normal distribution</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>In R we have this function as dnorm()</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(<span class="at">x=</span>x, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="dv">1</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>function rnorm() will draw random numbers from a normal distribution</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">3</span>, <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 106.13327  92.58037  99.39897</code></pre>
-</div>
-</div>
-<p>function qnorm() will show quantiles of normal distribution. For example, if p is a vector of probabilities, then</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="at">p=</span><span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1]  83.55146 116.44854</code></pre>
-</div>
-</div>
-<p>tells us that if we draw random numbers from this distribution, then we can expect <span class="math inline">\(5\%\)</span> of these numbers to be smaller than 83.55 and <span class="math inline">\(95\%\)</span> to be smaller than 116.45. Thus 83.55 is the 5th percentile (quantile) and 116.45 is the 95th percentile (quantile) of this distribution. This also tells us that <span class="math inline">\(90\%\)</span> of the datapoints (probability density) will be in the range: 83.55 to 116.45.</p>
-<p>function pnorm() gives the probability of obtaining a value <span class="math inline">\(&lt; q\)</span> from a normal distribution.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="at">q=</span><span class="dv">83</span>, <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.04456546</code></pre>
-</div>
-</div>
-<p>So the probability of obtaining a sample value less than 83 is about <span class="math inline">\(4\%\)</span>.</p>
-<p>and the probability of obtaining a value between 85 and 100 is</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="at">q=</span><span class="dv">100</span>, <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">10</span>) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="at">q=</span><span class="dv">85</span>, <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4331928</code></pre>
-</div>
-</div>
-<p>In continuous distributions, it is important to understand that the probability density function or PDF defines a mapping from the y values (the possible values that the data can have) to a quantity called the density of each possible value. We can see this function in action when we use dnorm to compute, say, <span class="math inline">\(dnorm(1, mean = 0, sd = 1)\)</span>: [1] 0.242 This quantity is not the probability of observing 1 in this distribution. As probability in a continuous distribution is the area under the curve, this area will always be zero at any point value. If we want to know the probability of obtaining values between an upper and lower bound b and a, i.e., P(a&lt;Y&lt;b) where these are two distinct values, we must use the cumulative distribution function or CDF: in R, for the normal distribution, this is the pnorm function. For example, the probability of observing a value between +2 and -2 in a normal distribution with mean 0 and standard deviation 1 is:</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9544997</code></pre>
-</div>
-</div>
-<p>Mathematically the lognormal model is described by this function:</p>
-<p><span class="math display">\[f(x) = \frac{1}{x \beta \sqrt {2 \pi}} exp(- \frac{1}{2}(log(x/\alpha)/ \beta)^2)\]</span> kus <span class="math inline">\(x &gt; 0\)</span> <span class="math display">\[E(X) = \alpha \times exp(\beta^2/2)\]</span></p>
-<p>Again, here we have a model with two parameters, but the EX and SD(X) no longer equal a model parameter.</p>
-<p><span class="math display">\[SD(X) = \alpha ^2 \times exp(\beta^2) \times (exp(\beta^2) - 1)\]</span></p>
-<div class="cell" data-fig.margin="true">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">dlnorm</span>(x, <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="dv">100</span>), <span class="at">sdlog =</span> <span class="fu">log</span>(<span class="dv">10</span>))</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="cn">NULL</span>, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="05-rational-uncertainty_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>the log-normal model</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Note that the R function <code>dlnorm()</code> takes its parameters in logarithmic form.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qlnorm</span>(<span class="at">p=</span><span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), <span class="at">meanlog=</span><span class="fu">log</span>(<span class="dv">100</span>), <span class="at">sdlog=</span><span class="fu">log</span>(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1]    2.265408 4414.216471</code></pre>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plnorm</span>(<span class="at">q=</span><span class="fu">c</span>(<span class="fl">2.265</span>, <span class="dv">4414</span>), <span class="at">meanlog=</span><span class="fu">log</span>(<span class="dv">100</span>), <span class="at">sdlog=</span><span class="fu">log</span>(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.04999194 0.94999780</code></pre>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>A probability distribution f(x) shows for each value of X, how likely it is to get this value, in relation to other values of X.</p>
-</blockquote>
-<p>For continuous X we talk about probability density (functions), for discrete X we talk about probability mass (functions).</p>
-<p>Not all probability distributions have defined expected value and/or SD. They may have other properties that make them usable models.</p>
-</section>
-</section>
-<section id="a-philosophical-aside" class="level2" data-number="5.15">
-<h2 data-number="5.15" class="anchored" data-anchor-id="a-philosophical-aside"><span class="header-section-number">5.15</span> 3.5. A philosophical aside</h2>
-<p>A probability distribution can arise in two ways. We just used the binomial distribution as a model for a coin tossing experiment. We assumed that we know how many times we plan toss the coin (N = 10) and, more importantly, that the coin is fair (prob = 0.5). Thus we fully understand the experiment and its results, albeit probabilistic, are also fully predictable. This is the deductive use of probability theory that, while making the implications of the coin tossing game excplicit, generates no new knowledge, which is not already present in the rules of the game. If we new the rules of the game, then general properties of the data that might happen are already implicitly present in those rules. We cannot say exactly, which data we will see, but we know exactly the probability of getting a head, from which we deduced the probability of getting k heads (or “k or more heads”, etc.) out of n tosses.</p>
-<p>In classical philosophy there are two ways ways of understanding the world. One is knowldege (<em>episteme</em>), which is by definition true. Another is belief (<em>doxa</em>), which comes to us in degrees. Knowledge is the domain of mathematicians and philosophers, while belief is what everybody else has to survive on. Knowledge we can get deductively from axioms and beliefs we get inductively from the phyisical world. In the coin tossing simulation experiment, where we knew the data generating system, we calculated the probability distribution to get knowledge. But in the real world we never get to have knowledge in this sense, which means that we need to use probabilities differently.</p>
-<p>This fundamentally different belief-generating usage of probability theory uses the results of N experiments (data) to guess the rules of the game. In particular, we would like to estimate the probability of getting heads.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> This means creating new knowledge which is not implicit in data. As we cannot create knowledge in this way, we have to make do with creating new beliefs. These new beliefs still come in the form of a probability distribution. To make this inductive leap we must go from the probability <span class="math inline">\(P(data \vert rules)\)</span> to <span class="math inline">\(P(rules \vert data)\)</span>. For this we use the Bayes theorem, which we will explain in the next chapter.</p>
-</section>
-<section id="probability-theory-and-the-bayes-theorem" class="level2" data-number="5.16">
-<h2 data-number="5.16" class="anchored" data-anchor-id="probability-theory-and-the-bayes-theorem"><span class="header-section-number">5.16</span> 3.6. Probability theory and the Bayes theorem</h2>
-<blockquote class="blockquote">
-<p>Words: proposition, conditional probability, prior probability, principle of total information, sample space</p>
-</blockquote>
-<p>We define rationality narrowly as the best way of converting evidence into beliefs, and beliefs into decisions. Probability theory deals with the first part of this definition. Philosophically speaking, one could think of probability theory as a model of rational thinking, rather than the real thing, thus admitting that there might well be more to rationality than is captured by it, while stressing that probability theory does capture an important part of what it means to be rational.</p>
-<p>How would you describe the thinking of a narrowly rational robot? What would we want to be the basic rules of reasoning or desiderata of such a robot, on which we could then formalize into a mathematical description of thinking under uncertainty. In other words, can we present a full list of norms of common sense, from which we can derive a rational thinking machine? These rules should be such that a rational person would not want to consciously violate any of them. Jaynes, E. T. (2003). Probability Theory: The Logic of Science. Cambridge University Press.</p>
-<p>The robot reasons about unambiguous Aristotelian propositions, which have truth values (but we don’t need to actually know, whether a proposition is true or false, it suffices that it in principle has this truth-property). So it cannot help with much of ordinary human communication, to which unchanging truth values cannot be assigned.</p>
-<p>The robot reasons by assigning degrees of plausibilities to propositions, based on evidence given to it. Each piece of new evidence leads to shifting of these plausibilities. Hence the 1st desideratum:</p>
-<ol type="1">
-<li><p>Degrees of plausibility are represented by real numbers. We represent a greater plausibility with a greater number.</p></li>
-<li><p>Qualitative correspondence with common sense - if the robot gets information that supports hypothesis A, then the plausibility of A increases, and <em>vice versa</em>.</p></li>
-<li><p>Consistency.</p></li>
-</ol>
-<p>3.1. If a conclusion can be reasoned in many ways, then each must lead to the same result.</p>
-<p>3.2. The principle of total information – all relevant information must be taken into account when shifting plausibilities. Also note that while causal physical influences propagate only forward in time, logical information works in both directions, so it does not matter when the evidence was collected in relation to the phenomenon it describes.</p>
-<p>3.3. Equivalent states of knowledge are presented by equivalent plausibility numbers.</p>
-<p>Surprisingly, these rules are enough to ensure a rational brain. Mathematical probability theory is fully consistent with these desiderata and requires no more than them.</p>
-<p>Degrees of plausibilities are quantified by probabilities and probability distribution are gives a full description of uncertainty.</p>
-<blockquote class="blockquote">
-<p>The fundamental principle of all probabilistic inference: to judge the truth of proposition A, calculate the probability that A is true, conditional of all the evidence on hand: <span class="math inline">\(P(A \vert E_1E_2…)\)</span>.</p>
-</blockquote>
-<section id="the-kolmogorov-axioms" class="level3" data-number="5.16.1">
-<h3 data-number="5.16.1" class="anchored" data-anchor-id="the-kolmogorov-axioms"><span class="header-section-number">5.16.1</span> 3.6.1. The Kolmogorov axioms</h3>
-<p><strong>Notation:</strong></p>
-<p><span class="math inline">\(P(A)\)</span> probability of A. A stands for proposition, event, hypothesis, parameter value, etc.</p>
-<p><span class="math inline">\(\land\)</span> - AND, <span class="math inline">\(P(A \land B)\)</span> means “probability that both A and B are true”</p>
-<p><span class="math inline">\(\lor\)</span> - OR, <span class="math inline">\(P(A \lor B)\)</span> means “probability that either A or B, or both A and B are true”</p>
-<p><span class="math inline">\(\lnot\)</span> - NOT, <span class="math inline">\(P(\lnot A)\)</span> means “probability of not A” or “probability that A is FALSE”.</p>
-<p><span class="math inline">\(A \vert B\)</span> - conditional, <span class="math inline">\(P(A \vert B)\)</span> means “probability of A given B” or “probability that A is true if we assume that B is true”<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
-<p><em>Prior probability</em> <span class="math inline">\(P(Hypothesis)\)</span> is a purely logical term that incorporates all relevant evidence that is not present in data. The separation of evidence into “data” and “prior” is a matter of convenience of calculation, nothing more.</p>
-<p><em>Likelihood</em> <span class="math inline">\(P(data \vert Hypothesis)\)</span> models how likely is the sample data for each member of the sample space. If <span class="math inline">\(\Omega =\{H_1,H_2\}\)</span>, then the likelihood space has 2 members as well: <span class="math inline">\(P(data \vert H_1)\)</span> is the probability of seeing sample data, if it happens that <span class="math inline">\(H_1\)</span> is true, and <span class="math inline">\(P(data \vert H_2)\)</span> is the probability of seeing sample data, if it happens that <span class="math inline">\(H_2\)</span> is true. If the likelihood ratio <span class="math inline">\(LR = \frac{P(data \vert H_1)}{P(data \vert H_2)} = 1\)</span>, then the data is irrelevant. LR = 10 means that data supports <span class="math inline">\(H_1\)</span> ten times more than <span class="math inline">\(H_2\)</span>.</p>
-<blockquote class="blockquote">
-<p>LR is also called <em>evidence</em>.</p>
-</blockquote>
-<p>The fact that our sample data provides a lot more evidence for <span class="math inline">\(H_1\)</span> over <span class="math inline">\(H_2\)</span> does not in itself mean that we should think it more likely that <span class="math inline">\(H_1\)</span> is true than <span class="math inline">\(H_2\)</span>, or any other logically possible hypothesis. Likelihoods do not sum to one over the sample space. Therefore, likelihood is not a true probability.</p>
-<p><em>Posterior probability</em> <span class="math inline">\(P(Hypothesis \vert data~ \&amp; ~prior)\)</span> is the product of prior and likelihood over each member of the sample space, normalized over the posterior probability distribution so that probabilities sum to one. Posterior distribution is the output of Bayesian inference. This is the probability distribution that holds our beliefs about uncertainty concerning parameter values.</p>
-<hr>
-<p><strong>Axioms:</strong></p>
-<ol type="1">
-<li><p><span class="math inline">\(P(A) \geq 0\)</span></p></li>
-<li><p><span class="math inline">\(P(\Omega) = 1\)</span><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a></p></li>
-<li><p><span class="math inline">\(P(A \lor B) = P(A) + P(B)\)</span>, if A and B are independent.</p></li>
-<li><p><span class="math inline">\(P(A~\vert~B) = \frac{P(A \land B)}{P(B)}\)</span><a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p></li>
-</ol>
-<p>The definition for conditional probability arises naturally from set theory: The number of elements in sample space S is n(S), and S contains two subspaces A and B, which have an overlap (intersection) <span class="math inline">\(A \land B\)</span>. Calculating <span class="math inline">\(P(A \vert B)\)</span> is the same as calculating the number of elements contained in the intersection of A and B, relative to the number of elements contained in the whole subspace B: <span class="math inline">\(P(A \vert B) = \frac{n(A \cap B)}{n(B)}\)</span>. By dividing both numerator and denominator with n(S) we convert absolute numbers into fractions, a.k.a. probabilities:</p>
-<p><span class="math display">\[P(A \vert B) = \frac{n(A \cap B)/n(S)}{n(B)/n(S)} = \frac{P(A \cap B)}{P(B)}\]</span></p>
-</section>
-<section id="some-derivations" class="level3" data-number="5.16.2">
-<h3 data-number="5.16.2" class="anchored" data-anchor-id="some-derivations"><span class="header-section-number">5.16.2</span> 3.6.2. Some derivations</h3>
-<ol start="5" type="1">
-<li><p><span class="math inline">\(0 \leq P(A) \leq 1\)</span> - probabilities are bounded by 0 and 1.</p></li>
-<li><p><span class="math inline">\(P(\lnot A) = 1 - P(A)\)</span></p></li>
-<li><p>Monotonicity: if B is a subset of A (<span class="math inline">\(B \subset A\)</span>), then <span class="math inline">\(P(B) \leq P(A)\)</span>. If B can be deduced from A: <span class="math inline">\([A \lor (B \land \lnot A) \Leftrightarrow B]\)</span>, then <span class="math inline">\(P(B) \leq P(A)\)</span>.</p></li>
-<li><p><span class="math inline">\(P(A \land B) \le P(A)\)</span>; <span class="math inline">\(P(A) \leq P(A \lor B)\)</span></p></li>
-<li><p>If B can be deduced from A and <span class="math inline">\(P(A) &gt; 0\)</span>, then <span class="math inline">\(P(B~ \vert ~A) = 1\)</span> and <span class="math inline">\(P(\lnot B~ \vert A) = 0\)</span>.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a></p></li>
-<li><p>Logically equivalent propositions/hypotheses have the same probability: if <span class="math inline">\(A \Leftrightarrow B\)</span>, then <span class="math inline">\(P(A) = P(B)\)</span></p></li>
-<li><p>Def: A and B are independent (not correlated) if and only if <span class="math inline">\(P(A~ \vert B) = P(A)\)</span></p></li>
-<li><p>If A and B are independent, then <span class="math display">\[P(A\land B) = P(A)P(B)\]</span></p></li>
-<li><p>If A and B are not independent, then <span class="math display">\[P(A \lor B) = P(A) + P(B) - P(A \land B)\]</span> and for 3 events: <span class="math display">\[\begin{array}{lcl} P(A \lor B \lor C) = P(A) + P(B) + P(C) - \\P(A \land B) - P(B \land C) - P(A \land C) + \\P(A \land B \land C) \end{array}\]</span></p></li>
-</ol>
-</section>
-<section id="the-bayes-theorem" class="level3" data-number="5.16.3">
-<h3 data-number="5.16.3" class="anchored" data-anchor-id="the-bayes-theorem"><span class="header-section-number">5.16.3</span> 3.6.3. The Bayes theorem</h3>
-<p>We can derive the Bayes theorem straight from the definition of conditional probability (4.)</p>
-<p><span class="math display">\[P(A\vert B) = \frac{P(A \land B)}{P(B)}\]</span>,</p>
-<p>and equivalently <span class="math display">\[P(B\vert A) = \frac{P(B \land A)}{P(A)}\]</span>.</p>
-<p>As <span class="math display">\[P(A \land B) = P(B \land A)\]</span></p>
-<p><span class="math display">\[P(A\vert B)P(B) = P(B\vert A)P(A)\]</span> and</p>
-<p><span class="math display">\[P(A\vert B) =\frac{P(A)P(B\vert A)}{P(B)}\]</span> This is the Bayes Theorem. Now, lets substitute A with Hypothesis H and B with data d.</p>
-<p><span class="math display">\[P(H \vert d) =\frac{P(H)P(d\vert H)}{P(d)}\]</span> Here <span class="math inline">\(P(H~\vert~ d)\)</span> is the posterior, <span class="math inline">\(P(H)\)</span> is the prior probability of the hypothesis, <span class="math inline">\(P(d~\vert~H)\)</span> is the likelihood, or the probability of data given the hypothesis, and <span class="math inline">\(P(d)\)</span> is the total probability of the data, summed over all the hypotheses in the sample space. P(d) is the normalization member, which guarantees that the posterior probabilities sum to one over the sample space.</p>
-<p><strong>The single most important thing to remember is that posterior is proportional to the product of prior and likelihood.</strong></p>
-<p>What does <span class="math inline">\(P(d)\)</span> really mean? If <span class="math inline">\(\Omega = \{H, \lnot H \}\)</span>, then</p>
-<p><span class="math display">\[P(d) = P(d \land H) + P(d \land \lnot H) = P(H)P(d\vert H) + P(\lnot H)P(d\vert \lnot H)\]</span></p>
-<p>where the final step comes from the definition of conditional probability.</p>
-<hr>
-<p><strong>Example</strong> (with real US data from the spring of 2020): We have an antibody test for COVID-19. If 1000 covid-19 positive patients are tested, on average 840 of them get a true-positive result (sensitivity of the test is 84%). If 1000 non-infected people are tested, 5 get a false-positive result (specificity of the test is 1 - 0.005 = 0.995, or 99.5%). We think that about 1% of the population has been exposed to the virus. Now, if a random person gets a positive result, what is the probability that this person is infected?</p>
-<ul>
-<li><p>hypothesis space has 2 members: <span class="math inline">\(H_1\)</span> - infected, <span class="math inline">\(H_2\)</span> - not infected</p></li>
-<li><p>priors: <span class="math inline">\(P(H_1) = 0.01\)</span>, <span class="math inline">\(P(H_2) = 1 - P(H_1) = 0.99\)</span></p></li>
-<li><p>likelihoods <span class="math inline">\(P(+ | H_1) = 0.8\)</span>, <span class="math inline">\(P(+ | H_2) = 0.05\)</span></p></li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>Pr_H1 <span class="ot">=</span> <span class="fl">0.01</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>Pr_H2 <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> Pr_H1</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>L_H1 <span class="ot">=</span> <span class="fl">0.84</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>L_H2 <span class="ot">=</span> <span class="fl">0.005</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>(<span class="at">Pr_infected =</span> (Pr_H1 <span class="sc">*</span> L_H1)<span class="sc">/</span>(Pr_H1 <span class="sc">*</span> L_H1 <span class="sc">+</span> Pr_H2 <span class="sc">*</span> L_H2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6292135</code></pre>
-</div>
-</div>
-<p>There is a more intuitive solution. Imagine 1000 random persons, 10 of whom are infected and 990 are not. Now from the infected 10 x 0.84 = 8.4 test positive and from the uninfected 990 x 0.005 = 5 test positive. The probability of being infected, if getting a positive test result, is then 8.4/(8.4+5) = 0.63.</p>
-<p>NYT 24.08.2020:</p>
-<blockquote class="blockquote">
-<p>Getting an antibody test to see if you had Covid-19 months ago is pointless. Many tests are inaccurate, some look for the wrong antibodies and even the right antibodies fade away, said the Infectious Diseases Society of America, which issued the new guidelines. Antibody testing generally should be used only for population surveys, not for diagnosing illness in individuals, the panel said. Even for that purpose, only tests that are correctly positive more than 96 percent of time and correctly negative at least 99.5 percent of the time should be used, according to the guidelines. Very few of the dozens of tests that the panel looked at met those standards. None can be done at home or immediately in doctors offices, and the best are assays known as Elisa or chemiluminescence immunoassay. With two exceptions, antibody tests should not be used to diagnose individual infections, the society said. When a patient has all of the symptoms of Covid-19, including X-ray evidence of pneumonia, but still comes up negative on repeated diagnostic PCR tests for the virus, an antibody test may be useful. The tests can also be used for diagnosis when a doctor suspects a child has multisystem inflammatory syndrome, a rare but serious complication of Covid-19 in children. Because it is not known how long after the initial infection this inflammation begins, doctors should do both a PCR test and an antibody test, the guidelines said.</p>
-</blockquote>
-<p>What if we want to estimate the true value of a continuous parameter (for example the probability that a patient dies of COVID_19, or the mean length of hospitalization with COVID-19)? In such cases the hypothesis space consists of infinite number of elements (real numbers from 0 to 1, and integers from 0 to Inf, respectively). This means that we must specify an infinite number of likelihoods and an infinite number of prior probabilities, before we can run the calculation! Luckily we can do this using continuous functions, which by definition specify infinite number of points. Then the posterior will be a continuous function as well.</p>
-<hr>
-<p>More generally, for a sample space with n members (n mutually exclusive and exhaustive hypotheses) <span class="math inline">\(\Omega = \{H_1, H_2, ...H_n \}\)</span> and</p>
-<p><span class="math display">\[P(d) = P(H_1)P(d\vert H_1) + P(H_2)P(d\vert H_2) + ... + P(H_n)P(d\vert H_n)\]</span></p>
-<p>This is the formula for total, a.k.a. marginal, probability.</p>
-<p>So the Bayes theorem becomes</p>
-<p><span class="math display">\[P(H_1\vert d) =\frac{P(H_1)P(d\vert H_1)}{P(H_1)P(d\vert H_1) + P(H_2)P(d \vert H_2) + ... + P(H_n)P(d \vert H_n)}\]</span></p>
-<p>Now we have a formula that allows us, in logically the best way, to combine evidence that is present in sample data (as modeled in the likelihood) with data-independent beliefs (as modeled in the prior), and end up with a posterior probability of hypothesis, given data and prior. In other words, we can use the Bayes theorem to combine disparate strands of information into a single posterior that (usually) comes in the form of probability distribution. There is no magic involved, just basic probability theory. The Bayes theorem is not a truth machine – it just combines information that we put into it. If the information in the prior or in the likelihood is grossly wrong, there is no guarantee that even in the long run the posterior converges on truth (although under most realistic scenarios it does just that). Importantly, Bayes theorem works iteratively and there is no lower limit of data that you can put into it: N=1 is fine.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a>. Also, it is easy to incorporate new data, as you can simply redefine your posterior from the previous iteration as the new prior, add new data as likelihood, and calculate the new posterior, which before long will become a prior. Thus Bayesian inference recapitulates the piecemeal nature of scientific inference. Importantly, unlike with frequentist statistics, there are no stopping rules, meaning that you can safely calculate the posterior after receiving each new datum.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> In addition, as Bayesians calculate the probabilities of hypotheses/parameter values directly, the have no need for the sampling distribution of data, which lets them off the hook with the random sample. Bayesians look at the exact data, not some imaginary random sample from an infinite statistical population. As frequentist statistics needs its samples to be independent and identically distributed random variables (<em>iid</em>, also see point 11.), for Bayesian analysis the data need less restrictively to be merely exchangeable, meaning that the order by which individual datums are put through the analysis should not have any effect on the results.</p>
-<blockquote class="blockquote">
-<p>Bayesian inference comes straight from probability theory, while frequentist inference is a collection of ad hoc procedures, which require more stringent conditions to work properly.</p>
-</blockquote>
 
 
-</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>“Reports that say that something hasn’t happened are always interesting to me, because as we know, there are known knowns; there are things we know we know. We also know there are known unknowns; that is to say we know there are some things we do not know. But there are also unknown unknowns - the ones we don’t know we don’t know. And if one looks throughout the history of our country and other free countries, it is the latter category that tends to be the difficult ones.” Donald Rumsfeld (US Secretary of Defence, 2002)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>It is a thorny question, how fundamentally these uncertainties really differ from each other. Here we take the strong view that ultimately all uncertainties that matter (with the possible exception of quantum mechanics) are epistemic, meaning that they are in our heads. For example, if we could see every atom, every electron in the cell, we could perhaps predict every mutation and lose the randomness from biological variation<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>The further assumptions of this kind of futures counting (besides that all futures are equally likely to occur) are stability of the system (i.e., the properties of the die, the thrower, the table, the laws of physics, etc. do not change during the experiment), the constancy of nature (this is an assumption behind all causal thinking), and exchangeability (i.e., the result does not depend on the order that you record the data).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>This does not mean that your particular sample mean lies within the <span class="math inline">\(X\%~ CI\)</span> with <span class="math inline">\(X\%\)</span> probability.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>that is, on average the experimental treatment has no effect at all or mean(treatment value) – mean(control value) = 0<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>The null hypothesis does not have to be normal, but historically they usually are.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>This intuition can be very wrong.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>Thanks to <span class="math inline">\(\alpha\)</span>, we can define the confidence interval through the p value: <span class="math inline">\(X\%~ CI\)</span> covers a range of parameter values, whose p values are not statistically significant at significance level <span class="math inline">\(\alpha = 1 – X\)</span>. Thus, the CI and the p value carry redundant information.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p><span class="math inline">\(\Omega\)</span> could be {<span class="math inline">\(H_1\)</span> – my wife is cheating on me; <span class="math inline">\(H_2\)</span> – my wife is not cheating on me}, or {<span class="math inline">\(H_1\)</span> – my wife is cheating on me with my best friend; <span class="math inline">\(H_2\)</span> – my wife is cheating on me, but not with my best friend; <span class="math inline">\(H_3\)</span> – my wife is not cheating on me}.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p>Sample space (<span class="math inline">\(\Omega\)</span>) is a list of all possible outcomes.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn11"><p>For symmetrical probability distributions, incl.&nbsp;the normal distribution, the EX = mode = median.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn12"><p>For the normal distribution, but not for many other distributions with location/scale parametrization, <span class="math inline">\(\mu = EX = mean\)</span> and <span class="math inline">\(\sigma = SD(x)\)</span>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn13"><p>Of course, we could ask for the probability that the coin is fair, but we already know this probability to be zero, as no coin is completely fair.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn14"><p>B does not have to be actually true, we just assume for the sake of argument that it is.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn15"><p>The probability of a sure thing is one, which means that the probabilities under a probability distribution sum to one.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn16"><p>This is the definition of conditional probability. If you find it unintuitive, try this: in the urn there are 3 spheres and 3 cubes. Two of the spheres are blue and one is red. What is the probability that a random object drawn from the box is a red sphere? Solution: <span class="math inline">\(P(sphere)=1/2\)</span>; <span class="math inline">\(P(red ~\vert ~sphere)= 1/3\)</span>; <span class="math inline">\(\begin{array}{lcl} P(sphere \land red)=P(sphere)P(red ~\vert sphere)\\ = 1/2 \times 1/3 = 1/6. \end{array}\)</span><a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn17"><p>If evidence <em>e</em> can be duduced from hypothesis <em>H</em> (<em>H</em> predicts <em>e</em>) and if <span class="math inline">\(P(H) &gt; 0\)</span> and <span class="math inline">\(P(e) &lt; 1\)</span>, then <span class="math inline">\(P(H~ \lvert~ e) &gt; P(H)\)</span>, or <em>e</em> increases the probability of <em>H</em>.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn18"><p>Frequentist statistics does not work like this. There you need to have some minimum N for the algorithms to work as advertised.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn19"><p>In frequentist statistics you need stopping rules (predetermined sample size), so you would not simply call a “significant effect” as soon as the randomly fluctuating p value first drops below the significance level. In Bayesian statistics there is no significance level and no dichotomization of continuous evidence, so stopping rules would be meaningless.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Cardano G, <em>Liber de ludo aleae</em> (written c.&nbsp;1564, published 1663); English translation in Ore O, <em>Cardano, the Gambling Scholar</em>, Princeton: Princeton University Press, 1953.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The further assumptions of this kind of futures counting (besides that all futures are equally likely to occur) are stability of the system (i.e., the properties of the die, the thrower, the table, the laws of physics, etc. do not change during the experiment), the constancy of nature (this is an assumption behind all causal thinking), and exchangeability (i.e., the result does not depend on the order that you record the data).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Clayton A, <em>Bernoulli’s Fallacy: Statistical Illogic and the Crisis of Modern Science</em>, New York: Columbia University Press, 2021.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Bose SN, “Plancks Gesetz und Lichtquantenhypothese,” <em>Z Phys</em> 1924;26:178-181 (<a href="https://doi.org/10.1007/BF01327326">DOI</a>); Fermi E, “Zur Quantelung des idealen einatomigen Gases,” <em>Z Phys</em> 1926;36:902-912 (<a href="https://doi.org/10.1007/BF01400221">DOI</a>); Dirac PAM, “On the theory of quantum mechanics,” <em>Proc R Soc Lond A</em> 1926;112:661-677 (<a href="https://doi.org/10.1098/rspa.1926.0133">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Feller W, <em>An Introduction to Probability Theory and Its Applications, Volume I</em>, 3rd ed., New York: Wiley, 1968.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>d’Alembert JLR, “Croix ou pile,” in Diderot D, d’Alembert JLR (eds.), <em>Encyclopédie, ou Dictionnaire raisonné des sciences, des arts et des métiers</em>, vol.&nbsp;4, Paris: Briasson, 1754; the episode and its relation to quantum counting are discussed in Gorroochurn P, <em>Classic Problems of Probability</em>, Hoboken: Wiley, 2012 (problem 12).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1543,13 +1124,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./04-rational-certainty.html" class="pagination-link" aria-label="Rational thinking under certainty.">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span>
+      <a href="./ch05-two-roads-probability.html" class="pagination-link" aria-label="Two roads to probability: Jaynes and Kolmogorov">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Two roads to probability: Jaynes and Kolmogorov</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./06-bayesian-inference.html" class="pagination-link" aria-label="4. The basics of Bayesian inference">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./ch07-distributions.html" class="pagination-link" aria-label="Probability distributions">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

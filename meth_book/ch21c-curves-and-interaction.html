@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 24&nbsp; Curves and interaction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./08-glm.html" rel="next">
+<link href="./ch21b-bayesian-workflow.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html">Part V. Bayesian regression: models to counterfactual predictions</a></li><li class="breadcrumb-item"><a href="./ch21c-curves-and-interaction.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#curves-in-the-process-model" id="toc-curves-in-the-process-model" class="nav-link active" data-scroll-target="#curves-in-the-process-model"><span class="header-section-number">24.1</span> Curves in the process model</a>
+  <ul class="collapse">
+  <li><a href="#polynomials" id="toc-polynomials" class="nav-link" data-scroll-target="#polynomials"><span class="header-section-number">24.1.1</span> Polynomials</a></li>
+  <li><a href="#splines" id="toc-splines" class="nav-link" data-scroll-target="#splines"><span class="header-section-number">24.1.2</span> Splines</a></li>
+  <li><a href="#why-age-gets-a-spline" id="toc-why-age-gets-a-spline" class="nav-link" data-scroll-target="#why-age-gets-a-spline"><span class="header-section-number">24.1.3</span> Why age gets a spline</a></li>
+  </ul></li>
+  <li><a href="#interaction" id="toc-interaction" class="nav-link" data-scroll-target="#interaction"><span class="header-section-number">24.2</span> Interaction</a>
+  <ul class="collapse">
+  <li><a href="#an-interaction-and-the-effect-it-hides" id="toc-an-interaction-and-the-effect-it-hides" class="nav-link" data-scroll-target="#an-interaction-and-the-effect-it-hides"><span class="header-section-number">24.2.1</span> An interaction, and the effect it hides</a></li>
+  <li><a href="#when-to-include-an-interaction-and-when-not" id="toc-when-to-include-an-interaction-and-when-not" class="nav-link" data-scroll-target="#when-to-include-an-interaction-and-when-not"><span class="header-section-number">24.2.2</span> When to include an interaction, and when not</a></li>
+  </ul></li>
+  <li><a href="#when-to-omit-a-main-effect" id="toc-when-to-omit-a-main-effect" class="nav-link" data-scroll-target="#when-to-omit-a-main-effect"><span class="header-section-number">24.3</span> When to omit a main effect</a>
+  <ul class="collapse">
+  <li><a href="#the-invariance-argument" id="toc-the-invariance-argument" class="nav-link" data-scroll-target="#the-invariance-argument"><span class="header-section-number">24.3.1</span> The invariance argument</a></li>
+  <li><a href="#the-same-syntax-three-different-meanings" id="toc-the-same-syntax-three-different-meanings" class="nav-link" data-scroll-target="#the-same-syntax-three-different-meanings"><span class="header-section-number">24.3.2</span> The same syntax, three different meanings</a></li>
+  <li><a href="#factor-factor-cell-means-coding" id="toc-factor-factor-cell-means-coding" class="nav-link" data-scroll-target="#factor-factor-cell-means-coding"><span class="header-section-number">24.3.3</span> Factor × factor: cell-means coding</a></li>
+  <li><a href="#factor-continuous-separate-slopes" id="toc-factor-continuous-separate-slopes" class="nav-link" data-scroll-target="#factor-continuous-separate-slopes"><span class="header-section-number">24.3.4</span> Factor × continuous: separate slopes</a></li>
+  <li><a href="#the-six-legitimate-uses-in-epidemiology" id="toc-the-six-legitimate-uses-in-epidemiology" class="nav-link" data-scroll-target="#the-six-legitimate-uses-in-epidemiology"><span class="header-section-number">24.3.5</span> The six legitimate uses in epidemiology</a></li>
+  <li><a href="#use-1-a-structural-zero-in-the-exposure" id="toc-use-1-a-structural-zero-in-the-exposure" class="nav-link" data-scroll-target="#use-1-a-structural-zero-in-the-exposure"><span class="header-section-number">24.3.6</span> Use 1: a structural zero in the exposure</a></li>
+  <li><a href="#use-2-semicontinuous-exposure-participation-and-intensity" id="toc-use-2-semicontinuous-exposure-participation-and-intensity" class="nav-link" data-scroll-target="#use-2-semicontinuous-exposure-participation-and-intensity"><span class="header-section-number">24.3.7</span> Use 2: semicontinuous exposure — participation and intensity</a></li>
+  <li><a href="#use-3-cell-means-coding-for-reporting" id="toc-use-3-cell-means-coding-for-reporting" class="nav-link" data-scroll-target="#use-3-cell-means-coding-for-reporting"><span class="header-section-number">24.3.8</span> Use 3: cell-means coding for reporting</a></li>
+  <li><a href="#use-4-main-effects-absorbed-by-strata-or-fixed-effects" id="toc-use-4-main-effects-absorbed-by-strata-or-fixed-effects" class="nav-link" data-scroll-target="#use-4-main-effects-absorbed-by-strata-or-fixed-effects"><span class="header-section-number">24.3.9</span> Use 4: main effects absorbed by strata or fixed effects</a></li>
+  <li><a href="#use-5-case-only-geneenvironment-designs" id="toc-use-5-case-only-geneenvironment-designs" class="nav-link" data-scroll-target="#use-5-case-only-geneenvironment-designs"><span class="header-section-number">24.3.10</span> Use 5: case-only gene–environment designs</a></li>
+  <li><a href="#use-6-causal-contrast-models" id="toc-use-6-causal-contrast-models" class="nav-link" data-scroll-target="#use-6-causal-contrast-models"><span class="header-section-number">24.3.11</span> Use 6: causal contrast models</a></li>
+  <li><a href="#mechanism-as-a-reason-product-laws-and-sufficient-causes" id="toc-mechanism-as-a-reason-product-laws-and-sufficient-causes" class="nav-link" data-scroll-target="#mechanism-as-a-reason-product-laws-and-sufficient-causes"><span class="header-section-number">24.3.12</span> Mechanism as a reason: product laws and sufficient causes</a></li>
+  <li><a href="#what-is-not-a-reason-to-omit-a-main-effect" id="toc-what-is-not-a-reason-to-omit-a-main-effect" class="nav-link" data-scroll-target="#what-is-not-a-reason-to-omit-a-main-effect"><span class="header-section-number">24.3.13</span> What is not a reason to omit a main effect</a></li>
+  </ul></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">24.4</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.5</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-linear-regression.html">Part V. Bayesian regression: models to counterfactual predictions</a></li><li class="breadcrumb-item"><a href="./ch21c-curves-and-interaction.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and interaction</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Chapter 22 used the shape of one covariate to demonstrate a workflow. This chapter takes the two structural choices that workflow was arbitrating between and treats them on their own terms.</p>
+<p>The first is <strong>curvature</strong>. Nothing requires a predictor to contribute a straight line, and when a confounder’s shape is mis-modelled the consequence is not a cosmetic lack of fit but residual confounding in the treatment effect. Polynomials are the obvious remedy and the wrong one; splines are the right one, and in <code>brms</code> their wiggliness is estimated rather than chosen.</p>
+<p>The second is <strong>interaction</strong>. The additive structure <span class="math inline">\(\mu_i = \alpha + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_K x_{iK}\)</span> asserts that each predictor’s effect is the same at every value of the others. That is a substantive claim about the world, not a neutral default, and a product term <span class="math inline">\(\beta_{int} x_1 x_2\)</span> is what removes it. Because effects are reported as marginal contrasts, an interacted model still yields a single number, so interpretability is no argument for leaving the assumption in place.</p>
+<p>Both continue with the second study of Chapter 22, whose data generating process is in <code>R/simulate_study2.R</code>. The average causal effect there is -13.89 mmHg.</p>
+<section id="curves-in-the-process-model" class="level2" data-number="24.1">
+<h2 data-number="24.1" class="anchored" data-anchor-id="curves-in-the-process-model"><span class="header-section-number">24.1</span> Curves in the process model</h2>
+<p>Nothing in the linear model requires a predictor to enter as itself. As the footnote in Chapter 20 records, “linear” constrains how the <em>coefficients</em> enter, not the predictors, so <span class="math inline">\(x^2\)</span>, <span class="math inline">\(\log x\)</span> and a spline basis are all admissible and all keep the model linear. What changes is which shapes of relation the model can represent.</p>
+<section id="polynomials" class="level3" data-number="24.1.1">
+<h3 data-number="24.1.1" class="anchored" data-anchor-id="polynomials"><span class="header-section-number">24.1.1</span> Polynomials</h3>
+<p>The obvious flexible term is a polynomial: add <span class="math inline">\(x^2\)</span>, then <span class="math inline">\(x^3\)</span>, and so on. It works, and it has two well-known faults. Its basis is <strong>global</strong>: each coefficient multiplies a function that is non-zero over the whole range, so the data at one end of the age range influence the fitted curve at the other. And its behaviour outside, and near the edges of, the observed range is poor, with high-degree polynomials swinging violently near the boundaries. Raw powers are also strongly correlated with each other, which makes the posterior badly conditioned; centring the predictor, or using orthogonal polynomials, helps with the conditioning but not with the global support.</p>
+<p>For the second study the quadratic in the table above is a real improvement over the line – it recovers most of the missing effect – and it is still 0.47 mmHg from the truth, because a parabola cannot be flat at both ends and steep in the middle.</p>
+</section>
+<section id="splines" class="level3" data-number="24.1.2">
+<h3 data-number="24.1.2" class="anchored" data-anchor-id="splines"><span class="header-section-number">24.1.2</span> Splines</h3>
+<p>A spline replaces the global basis with a <strong>local</strong> one. The range of the predictor is divided at a set of knots, a low-degree polynomial is fitted within each interval, and the pieces are joined so that the result is smooth. Each basis function is non-zero only near its own knot, so the fit at age 45 is determined by the patients near 45.</p>
+<p>Flexibility then has to be controlled, and this is where the Bayesian reading is the natural one. A <strong>penalised</strong> spline attaches a penalty to the curve’s wiggliness, with a smoothing parameter <span class="math inline">\(\lambda\)</span> setting how hard the penalty bites: as <span class="math inline">\(\lambda \to \infty\)</span> the fitted curve becomes a straight line, and as <span class="math inline">\(\lambda \to 0\)</span> it interpolates the data. In a frequentist GAM <span class="math inline">\(\lambda\)</span> is chosen by cross-validation or REML. In <code>brms</code>, <code>s(age)</code> puts the same basis in the model and treats the wiggliness penalty as a <strong>prior variance</strong> on the spline coefficients, estimated jointly with everything else: the parameter called <code>sds(sage_1)</code> in the model summary is that scale, and the smooth’s effective degrees of freedom follow from its posterior. Regularisation and prior are the same object here, which is why a penalised spline needs no extra machinery in a Bayesian fit.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-spline-fit" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-spline-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch21c-curves-and-interaction_files/figure-html/fig-spline-fit-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spline-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.1: The fitted age curve for untreated patients under three process models, against the curve the data were simulated from (dashed). The straight line cannot bend at all. The parabola bends, but a single curvature cannot be flat at both ends and steep in the middle, so it overshoots badly above 80. The spline follows the simulated curve closely, drifting a few mmHg above it past 80, where almost every patient is treated and there is little untreated data to hold it down.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The technical material – how the bases are constructed, what a thin-plate spline is, how tensor products handle two smooth predictors at once, and how the effective degrees of freedom are counted – is in the mgcv appendix, which works in <code>mgcv</code> directly. Everything in this chapter is fitted with <code>brms</code>, which accepts <code>s()</code> and <code>t2()</code> terms and estimates their smoothing parameters as part of the posterior. For a single continuous predictor the <code>brms</code> default (a thin-plate spline with a basis dimension of 10) is almost always enough; the basis dimension is an upper bound on flexibility, not a target, because the penalty decides how much of it is used.</p>
+</section>
+<section id="why-age-gets-a-spline" class="level3" data-number="24.1.3">
+<h3 data-number="24.1.3" class="anchored" data-anchor-id="why-age-gets-a-spline"><span class="header-section-number">24.1.3</span> Why age gets a spline</h3>
+<p>The general case for a spline is the argument above about local support. The case for giving <em>age</em> one, in nearly every epidemiological model, is more specific and worth stating as a rule.</p>
+<ol type="1">
+<li><p><strong>The age relation is usually not linear over the range a cohort spans.</strong> Blood pressure is a good illustration, because the same cohort shows both behaviours at once. In the Framingham data, systolic pressure rises roughly linearly from age 30 to 84, but diastolic pressure rises and then <em>falls</em> after age 50 to 60, pulse pressure climbs steeply from that point, and mean arterial pressure reaches an asymptote.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Three of those four quantities cannot be described by a straight line in age, and which one an analysis happens to use as outcome or confounder is not usually chosen with the shape in mind. A linear age term is a claim about the shape, and the claim is often false.</p></li>
+<li><p><strong>Age is usually a confounder, and mis-modelling a confounder leaves residual confounding.</strong> This is the practical point. Adjustment removes the part of the confounding that the model’s functional form can represent, and leaves the rest. The demonstration is in the table above: the estimate with a linear age term is -12.06 mmHg, with a spline -13.93, against a truth of -13.89. Nothing was omitted from the model. Age was in it. The bias came from the <em>shape</em>. The mechanism is that what a straight line cannot represent stays in the residual, and the residual is correlated with treatment whenever treatment prevalence varies over the same range in which the line’s error varies – which is what an age-keyed prescribing rule guarantees.</p></li>
+<li><p><strong>The cost is a coefficient you cannot interpret, which costs nothing.</strong> A spline has no single slope, so there is no “effect of age per year” to report. Under this book’s convention that is not a loss: effects are reported as contrasts of model predictions, and a contrast in age – the difference in expected outcome between age 60 and age 70, say – is available from the fitted smooth with <code>avg_comparisons()</code> whenever it is wanted. What you give up is a number that was, in the linear model, an artefact of a shape assumption.</p></li>
+<li><p><strong>Categorising age is not an adequate substitute.</strong> Ten-year bands leave the within-band variation unadjusted, which is residual confounding of the same kind and often of similar size, and they throw away information that the spline uses. If a categorical age variable is used for presentation, adjust with the spline and present the categories.</p></li>
+</ol>
+<p>The same argument applies to any continuous confounder measured over a wide range: calendar time, baseline blood pressure, body mass index, dose.</p>
+</section>
+</section>
+<section id="interaction" class="level2" data-number="24.2">
+<h2 data-number="24.2" class="anchored" data-anchor-id="interaction"><span class="header-section-number">24.2</span> Interaction</h2>
+<p>The additive structure specifies parallel slopes. To see what this means, let’s simulate some data. We have a categorical variable z with 2 levels, “A” and “B”, denoting experimental conditions A and B. We have an x-variable (akin to a time variable), which covers the range 0 to 2 with 50 equally spaced points. And we have a continuous measurement variable y, which in experiment “A” goes up as x increases and in experiment B goes down at the same rate.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1701</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>xg <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="at">length.out =</span> <span class="dv">50</span>)   <span class="co"># the x-variable: 50 equally spaced points, 0 to 2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># condition A: intercept 0, slope +1, both with normal noise</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>yA <span class="ot">&lt;-</span> (<span class="dv">0</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">50</span>, <span class="dv">0</span>, <span class="fl">0.2</span>)) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">50</span>, <span class="dv">0</span>, <span class="fl">0.2</span>)) <span class="sc">*</span> xg</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># condition B: intercept 2, slope -1</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>yB <span class="ot">&lt;-</span> (<span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">50</span>, <span class="dv">0</span>, <span class="fl">0.2</span>)) <span class="sc">+</span> (<span class="sc">-</span><span class="dv">1</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">50</span>, <span class="dv">0</span>, <span class="fl">0.2</span>)) <span class="sc">*</span> xg</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>dfx <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">z =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> <span class="dv">50</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> <span class="fu">rep</span>(xg, <span class="dv">2</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> <span class="fu">c</span>(yA, yB))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The two conditions cross in the middle of the x range, so their mean y values are nearly the same – 1.03 in A and 1.09 in B – while their slopes are opposite in sign. Any model that can only report a difference in means will therefore report that nothing is happening.</p>
+<p>What happens if we model these data with the additive equation <span class="math inline">\(\mu_i = \alpha + \beta_1 x_i + \beta_2 z_i\)</span>?</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-additive-parallel" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-additive-parallel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch21c-curves-and-interaction_files/figure-html/fig-additive-parallel-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-additive-parallel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.2: An additive model mu = a + b1<em>x + b2</em>z, where z is a two-level categorical variable, forces the two slopes to be parallel. Both fitted lines are nearly flat and nearly on top of each other, so the model reports that conditions A and B behave almost identically.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This model fails to capture the simulated data. The additive structure restricts the A and B slopes to be parallel, and the best a pair of parallel lines can do with crossing data is to run through the middle of both. The fitted x-slope is 0.048 and the fitted deflection for z = B is 0.066: both are close to zero, so the model concludes that x does nothing and that the two conditions lead to nearly identical outcomes. Neither conclusion is true of the data in <a href="#fig-additive-parallel" class="quarto-xref">Figure&nbsp;<span>24.2</span></a>.</p>
+<p>The fix is an interaction term, which is a multiplication term:</p>
+<p><span class="math display">\[\mu_i = \alpha + \beta_1 x_i + \beta_2 z_i + \beta_3 x_i z_i\]</span></p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-interaction-free" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interaction-free-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch21c-curves-and-interaction_files/figure-html/fig-interaction-free-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interaction-free-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.3: An interaction model mu = a + b1<em>x + b2</em>z + b3<em>x</em>z lets each condition have its own slope, and now the fit recovers the crossing pattern in the data.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Now the fit recovers the simulated structure (<a href="#fig-interaction-free" class="quarto-xref">Figure&nbsp;<span>24.3</span></a>). The generating values were intercept 0, deflection for z = B of 2, x-slope 1, and a change in slope for B of -2, i.e.&nbsp;<span class="math inline">\(\mu_i = 0 + 1 x_i + 2 z_i - 2 x_i z_i\)</span>. The fitted coefficients, to two decimals, are 0.01, 1.02, 2, and -1.94 – each within a couple of tenths of the truth, which is as close as 100 noisy points allow. In particular <span class="math inline">\(\beta_3\)</span> is the change in the <em>x-slope</em> when z moves from A to B, not a change in intercept.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">posterior_summary</span>(m_sim_interaction)[<span class="fu">c</span>(<span class="st">"b_Intercept"</span>, <span class="st">"b_x"</span>, <span class="st">"b_zB"</span>, <span class="st">"b_x:zB"</span>, <span class="st">"sigma"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Estimate  Est.Error       Q2.5      Q97.5
+b_Intercept  0.01151922 0.08296102 -0.1458330  0.1729027
+b_x          1.01821027 0.07183379  0.8793600  1.1553791
+b_zB         2.00126568 0.11474378  1.7721426  2.2238961
+b_x:zB      -1.93728666 0.09935605 -2.1294366 -1.7442851
+sigma        0.29767665 0.02123553  0.2592106  0.3423138</code></pre>
+</div>
+</div>
+<p>If z is continuous rather than two-level, the interaction model still works, and gives a separate x-slope for every z value and, conversely, a separate z-slope for each x value.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The model expects the relationship between x and y – how much a unit increase in x changes the predicted mean y – to depend on the value of z, and symmetrically expects the relationship between z and y to depend on the value of x. This symmetry is worth dwelling on: the model neither knows nor cares which of x and z is of main interest to you, or which of them (if either) causally affects y. That asymmetry has to come from you and from the DAG, not from the fit; Chapter 16 separates statistical interaction from effect modification on this point. What the model <em>does</em> assume is that <span class="math inline">\(\sigma\)</span>, the sd of y around its predicted mean, is the same at every combination of x and z (it makes no assumptions about the variability of the predictors themselves, which it conditions on). And, with the flat default priors used here, it applies no shrinkage to the interaction coefficient – Chapter 27 is about what changes when it does.</p>
+<section id="an-interaction-and-the-effect-it-hides" class="level3" data-number="24.2.1">
+<h3 data-number="24.2.1" class="anchored" data-anchor-id="an-interaction-and-the-effect-it-hides"><span class="header-section-number">24.2.1</span> An interaction, and the effect it hides</h3>
+<p>Return to the second study, where the drug’s effect varies with age. The comparison of interest is between the additive spline model and the one that lets the effect vary, <code>s(age, by = drug)</code>. Their marginal estimates are close:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The population-average effect is almost unchanged by allowing the effect to vary with age.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">average effect (mmHg)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">lower 95%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">upper 95%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">drug + s(age)</td>
+<td style="text-align: left;">-13.93</td>
+<td style="text-align: left;">-14.54</td>
+<td style="text-align: left;">-13.33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">drug + s(age, by = drug)</td>
+<td style="text-align: left;">-14.02</td>
+<td style="text-align: left;">-14.64</td>
+<td style="text-align: left;">-13.41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">the truth</td>
+<td style="text-align: left;">-13.89</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Their statements about individual patients are not.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(m2_spby, <span class="at">variables =</span> <span class="st">"drug"</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">45</span>, <span class="dv">55</span>, <span class="dv">65</span>, <span class="dv">75</span>, <span class="dv">85</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ age Estimate  2.5 % 97.5 %
+  45   -20.44 -22.44 -18.57
+  55   -16.38 -17.79 -14.96
+  65   -12.63 -13.91 -11.32
+  75   -10.66 -12.15  -9.09
+  85    -6.19  -9.11  -3.17
+
+Term: drug
+Type: response
+Comparison: 1 - 0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-hetero" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hetero-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch21c-curves-and-interaction_files/figure-html/fig-hetero-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hetero-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.4: The drug’s effect as a function of age. The dashed line is the truth the data were simulated from. The flat blue line is what the additive model reports: one number, at every age. The curve with the band is the interaction model, which recovers the varying effect, and whose band widens at both ends of the age range because there are fewer patients there and, at the old end, few untreated ones.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The additive model is not merely less informative here. It reports, with a narrow interval, that the drug lowers pressure by about 13.9 mmHg in a 45-year-old, when the truth is 20, and by the same amount in an 85-year-old, when the truth is under 6. A clinician deciding whom to treat is given a number that is wrong for both ends of the age range, and nothing in the additive fit indicates it.</p>
+<p>There is a second, subtler consequence. The single slope of an additive model is not an estimate of the population-average effect. It is a <strong>variance-weighted</strong> average of the age-specific effects, weighted by <span class="math inline">\(p(a)\{1 - p(a)\}\)</span>, the conditional variance of treatment at each age – so patients in age ranges where treatment is close to 50/50 count for more than those in ranges where almost everyone, or almost nobody, is treated. In this study that weighted average is -13.56 mmHg against a population average of -13.89: a gap of 0.33 mmHg, which is about the size of the estimate’s own posterior sd (0.31 mmHg) and so is not detectable in a study of this size. Under randomisation the weights are constant and the gap disappears; the more treatment prevalence depends on the modifier, and the more the effect varies across it, the larger it becomes. The interaction model has no such problem, because the estimand is formed by averaging predicted contrasts over the population rather than by reading a slope.</p>
+</section>
+<section id="when-to-include-an-interaction-and-when-not" class="level3" data-number="24.2.2">
+<h3 data-number="24.2.2" class="anchored" data-anchor-id="when-to-include-an-interaction-and-when-not"><span class="header-section-number">24.2.2</span> When to include an interaction, and when not</h3>
+<p>The practical position of this book is that in a causal analysis an interaction between the treatment and a covariate is the <strong>default</strong>, and its omission is the choice that needs defending. There are four reasons for it.</p>
+<p><strong>An additive model asserts homogeneity of effect; an interaction model estimates it.</strong> “No interaction” is not a neutral starting point. It is the claim that the treatment does the same thing to a 45-year-old as to an 85-year-old, which is a claim about biology and about the population, of the kind that would need argument if it were stated in words. It is rarely stated in words, because leaving a term out of a formula does not feel like an assertion. And yet, it is one.</p>
+<p><strong>Interpretability is not a reason to omit interactions.</strong> The usual objection to interactions is that they turn one effect into many and leave nothing to report. That objection has force only if effects are read off coefficients. Under the convention used throughout this book they are not: the reported effect is a contrast of predictions from the fitted model, averaged over the population, and an interacted model yields that single number just as an additive model does – in the table above the two average estimates differ by 0.08 mmHg. What the interacted model adds is the ability to also report the effect at any covariate value, with its own uncertainty. There is no trade-off between having one number and having many.</p>
+<p><strong>A fully interacted model is closer to what standardisation does.</strong> Letting treatment interact with every covariate is equivalent to fitting the outcome model separately in the treated and the untreated and then standardising both to the same population. That is g-computation with no cross-arm structure imposed, and it is what the capstone of Chapter 28 does. An additive model borrows the covariate-effect structure from one arm to the other, which is an efficiency gain paid for with an assumption.</p>
+<p><strong>The cost is precision, and it is usually modest.</strong> An interaction is estimated from a difference of slopes, which needs more data than a main effect, and the marginal effect from an interacted model usually has a wider interval: in the table above the 95% interval widens from 1.21 to 1.23 mmHg. When the covariate has many levels, or the cells are thin, the cost is much larger, and then the decision is a real one.</p>
+<p>The cases for <em>not</em> including interactions:</p>
+<ul>
+<li><p><strong>The cells are genuinely empty.</strong> With a rare covariate value and few events, an unshrunk interaction is estimated from almost nothing and the model becomes unstable. The right response is usually not omission but <strong>shrinkage</strong>: put a weakly informative prior on the interaction coefficients, centred at zero with a scale set by what a plausible degree of modification looks like, so the data can move the term but noise cannot. Omitting the term is the special case of a prior that is a point mass at zero, and there is rarely a reason to be that certain. Where the modifier has many levels, the natural version of this is hierarchical – varying slopes with a shared scale, described in Chapter 27.</p></li>
+<li><p><strong>The covariate is a nuisance and the estimand is marginal.</strong> If a covariate is in the model only to block a back-door path or to reduce <span class="math inline">\(\sigma\)</span>, and the question is the population-average effect, an additive term is often adequate. Say so as a decision, and check it: compare with the interacted model on <code>loo</code> (a comparison within a fixed adjustment set, which is what <code>loo</code> is for) and, more importantly, compare the marginal estimates. If they agree, the additive model is a defensible simplification.</p></li>
+<li><p><strong>Interaction is not the question and the interval matters more than the detail.</strong> A legitimate choice, provided the homogeneity assumption is stated where the model is described.</p></li>
+</ul>
+<p>That is <em>not</em> a reason:</p>
+<ul>
+<li><strong>“The interaction term was not statistically significant.”</strong> A product term with an interval overlapping zero is weak evidence of homogeneity, especially at the sample sizes at which subgroup effects are typically estimated, and it is evidence about interaction <em>on the scale the model happens to use</em>. As Chapter 16 shows, a null interaction on the multiplicative scale is compatible with a large one on the additive scale, and it is usually the additive scale that decisions turn on. Deciding homogeneity from a non-significant product term combines a weak test with the wrong scale.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled" title="Interaction terms without their main effects">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interaction terms without their main effects
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A product term is a statement about how a slope <em>changes</em>, so it is interpretable only alongside the terms whose slope it modifies. Dropping those does not simplify the model; it fits a different and usually incoherent one.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-interaction-broken" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interaction-broken-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch21c-curves-and-interaction_files/figure-html/fig-interaction-broken-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interaction-broken-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.5: Two mutilated interaction models on the crossing data. Left: mu = a + b<em>x</em>z keeps one intercept for both conditions, so two slopes must pivot about a shared point. Right: mu = b<em>x</em>z forces both lines through the origin, and the fitted B slope comes out positive, the opposite sign to the one the data were built with.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>With one shared intercept (left panel) the fitted intercept is 1.01, near the grand mean of y (1.06), and the slopes are 0.27 for A and -0.18 for B, both far from the generating values of +1 and -1: a line that must pass through a shared intercept cannot also match its own group. With the intercept removed as well (right panel) the slopes are 1.03 and 0.58, and the sign of the B relation has reversed.</p>
+<p>The rule that follows is mechanical: include an interaction with all of its lower-order terms, and read the product coefficient as a modification of them. It is a default rather than a law, and the next section states the condition under which it can be broken.</p>
+<p>For the spline analogue the rule needs a qualification, because <code>s(age, by = drug)</code> constructs two different terms depending on how <code>drug</code> is coded, and only one of them behaves like a product term.</p>
+<p>When <code>drug</code> is a <strong>factor</strong>, as it is here, the term fits a separate age curve for each arm. Each of those curves is <em>centred</em> – constrained to sum to zero over the data – so neither can carry the difference in level between the arms, and the parametric <code>drug</code> term is required to supply it. A separate <code>s(age)</code> must <em>not</em> be added: the arm-specific curves already provide both age relations, and <code>s(age)</code> would be a third curve competing with them for the same signal. This is the form the model above uses, and the form the mgcv appendix treats as standard.</p>
+<p>When <code>drug</code> is a <strong>numeric</strong> 0/1 indicator, the term is instead a single curve multiplied by <code>drug</code> – a varying coefficient – and it is not centred. Now <code>s(age)</code> <em>is</em> required, because without it the untreated arm has no age relation at all, and the estimate is badly biased as a result. But the parametric <code>drug</code> term becomes redundant: <code>drug</code> times the constant part of the curve is already inside the term’s unpenalised component, so adding <code>drug</code> separately makes the design rank-deficient. <code>mgcv</code> reports this and drops the coefficient; <code>brms</code> leaves both in, identified only by their prior and only as a sum. Nothing that is reported as a marginal contrast is harmed by it, but the <code>drug</code> coefficient then means nothing on its own.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="when-to-omit-a-main-effect" class="level2" data-number="24.3">
+<h2 data-number="24.3" class="anchored" data-anchor-id="when-to-omit-a-main-effect"><span class="header-section-number">24.3</span> When to omit a main effect</h2>
+<p>Is it ever defensible for an interaction model to omit a main effect? Writing <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> for the main effects and <span class="math inline">\(X_1{:}X_2\)</span> for the interaction, the formulas at issue are</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">+</span> x1<span class="sc">:</span>x2      <span class="co"># interaction present, but no main effect for x2</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> x1<span class="sc">:</span>x2       <span class="co"># interaction only: no intercept, no main effects</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The answer is sometimes, under specific conditions. Two questions settle it, and they have to be asked in that order.</p>
+<ol type="1">
+<li><p><strong>Is anything being omitted at all by omiting main effects?</strong> For factors the answer is often no. R recodes a factor to fill the gap left by a missing lower-order term, so a formula that looks non-hierarchical can produce the same design matrix, the same fit and the same predictions as the saturated model. Nothing has been dropped and there is nothing to defend.</p></li>
+<li><p><strong>If something is being omitted, is zero a state of the world or a convention?</strong> A model y ~ x1 + x1:x2 lacking <span class="math inline">\(x_2\)</span> as a main effect asserts that <span class="math inline">\(x_2\)</span> has no effect on the outcome at <span class="math inline">\(x_1 = 0\)</span>. That is a substantive claim when <span class="math inline">\(x_1 = 0\)</span> means <em>unexposed</em>, and an artefact of the measurement scale when it means <em>0 °C</em>.</p></li>
+</ol>
+<p>Question 1 is about the algebra of model matrices and is settled by inspection. Question 2 is about biology and is settled by argument. This section takes them in that order, and then works through the situations in epidemiology in which the answer comes out in favour of the reduced model.</p>
+<section id="the-invariance-argument" class="level3" data-number="24.3.1">
+<h3 data-number="24.3.1" class="anchored" data-anchor-id="the-invariance-argument"><span class="header-section-number">24.3.1</span> The invariance argument</h3>
+<blockquote class="blockquote">
+<p><strong>Dropping the main effect of <span class="math inline">\(X_2\)</span> does not say “<span class="math inline">\(X_2\)</span> does not matter.” It says: the effect of <span class="math inline">\(X_2\)</span> on <span class="math inline">\(Y\)</span> is zero at <span class="math inline">\(X_1 = 0\)</span>.</strong></p>
+</blockquote>
+<p>Here is why. Start from the full model, in which the lower-order terms make the fit indifferent to where the predictors’ origins are placed.</p>
+<p><span class="math display">\[E[Y] = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2\]</span></p>
+<p>Recentre <span class="math inline">\(X_1\)</span> by substituting <span class="math inline">\(X_1 = X_1^* + a\)</span> and collecting terms:</p>
+<p><span class="math display">\[E[Y] = (\beta_0 + a\beta_1) + \beta_1 X_1^* + (\beta_2 + a\beta_3) X_2 + \beta_3 X_1^* X_2\]</span></p>
+<p>The coefficient on <span class="math inline">\(X_2\)</span> is now <span class="math inline">\(\beta_2 + a\beta_3\)</span>. So the constraint <span class="math inline">\(\beta_2 = 0\)</span> holds in one coordinate system and fails in every other one. The shift has been absorbed by the coefficient on <span class="math inline">\(X_2\)</span>, and <span class="math inline">\(\beta_3\)</span> is unchanged. Recentring <span class="math inline">\(X_2\)</span> is absorbed, symmetrically, by the coefficient on <span class="math inline">\(X_1\)</span>. The pairing is crossed: the main effect of <span class="math inline">\(X_2\)</span> is what makes the model invariant to the origin of <span class="math inline">\(X_1\)</span>, and the main effect of <span class="math inline">\(X_1\)</span> to the origin of <span class="math inline">\(X_2\)</span>.</p>
+<p>A model containing <span class="math inline">\(X_1X_2\)</span> but not <span class="math inline">\(X_2\)</span> is therefore invariant to recentring <span class="math inline">\(X_2\)</span> and not to recentring <span class="math inline">\(X_1\)</span>. It commits to the particular value <span class="math inline">\(X_1 = 0\)</span>, and it is defensible only if that value is a <strong>structural zero</strong> – a state the variable can actually be in, at which the claim being made is substantive – rather than a convention. Omitting both main effects requires both variables to have structural zeros; omitting the intercept as well requires the outcome to be zero when they both are. This is the general criterion, and it gives a check to set beside the rule: recentre the predictor and see whether the model’s claims move. If they move and the origin was arbitrary, the omission is an error. That is what goes wrong in <a href="#fig-interaction-broken" class="quarto-xref">Figure&nbsp;<span>24.5</span></a>, where <code>x</code> is a simulated predictor whose zero means nothing.</p>
+<p>The question “may I drop this main effect?” is therefore the question <strong>is <span class="math inline">\(X_1 = 0\)</span> a real, observed value at which <span class="math inline">\(X_2\)</span> demonstrably has no effect?</strong> Where it is not, converting a temperature from °C to Kelvin will change the interaction estimate and can reverse the conclusion. Nothing about the biology has changed; only the placement of zero. By contrast the full model, spanning <span class="math inline">\(\{1, X_1, X_2, X_1X_2\}\)</span>, is unchanged by shifting either variable. That is the formal content of Nelder’s <strong>marginality principle</strong>: keep the lower-order terms marginal to any interaction you include, because models that violate marginality are not invariant to location shifts of the predictors.</p>
+<p><strong>A model without the <code>x2</code> main effect is not a reparameterisation.</strong> We simulate from a known truth and refit after moving the origin of <code>x1</code>. The true interaction coefficient is <strong>0.05</strong>, and each fit is summarised by its interaction estimate and by its residual sum of squares.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n  <span class="ot">&lt;-</span> <span class="dv">400</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">50</span>, <span class="at">sd =</span> <span class="dv">10</span>)   <span class="co"># think: age in years</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>y  <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> x1 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> x2 <span class="sc">+</span> <span class="fl">0.05</span> <span class="sc">*</span> x1 <span class="sc">*</span> x2 <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> y, <span class="at">x1 =</span> x1, <span class="at">x2 =</span> x2)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>shift_demo <span class="ot">&lt;-</span> <span class="cf">function</span>(k, dat) {</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  dat<span class="sc">$</span>z  <span class="ot">&lt;-</span> dat<span class="sc">$</span>x1 <span class="sc">-</span> k</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  m_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z <span class="sc">*</span> x2,     <span class="at">data =</span> dat)   <span class="co"># 1, z, x2, z:x2</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  m_red  <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z <span class="sc">+</span> z<span class="sc">:</span>x2,   <span class="at">data =</span> dat)   <span class="co"># 1, z, z:x2   &lt;- no x2 main effect</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">origin_of_x1  =</span> <span class="fu">paste0</span>(<span class="st">"x1 - "</span>, k),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">full_beta_int =</span> <span class="fu">coef</span>(m_full)[[<span class="st">"z:x2"</span>]],</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">full_RSS      =</span> <span class="fu">sum</span>(<span class="fu">residuals</span>(m_full)<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">red_beta_int  =</span> <span class="fu">coef</span>(m_red)[[<span class="st">"z:x2"</span>]],</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">red_RSS       =</span> <span class="fu">sum</span>(<span class="fu">residuals</span>(m_red)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">50</span>), shift_demo, <span class="at">dat =</span> d))</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(res, <span class="at">digits =</span> <span class="dv">4</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Truth for the interaction coefficient is 0.05."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Truth for the interaction coefficient is 0.05.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">origin_of_x1</th>
+<th style="text-align: right;">full_beta_int</th>
+<th style="text-align: right;">full_RSS</th>
+<th style="text-align: right;">red_beta_int</th>
+<th style="text-align: right;">red_RSS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">x1 - 0</td>
+<td style="text-align: right;">0.0566</td>
+<td style="text-align: right;">1770.97</td>
+<td style="text-align: right;">0.0785</td>
+<td style="text-align: right;">1791.633</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">x1 - 40</td>
+<td style="text-align: right;">0.0566</td>
+<td style="text-align: right;">1770.97</td>
+<td style="text-align: right;">0.2209</td>
+<td style="text-align: right;">4173.593</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">x1 - 50</td>
+<td style="text-align: right;">0.0566</td>
+<td style="text-align: right;">1770.97</td>
+<td style="text-align: right;">0.0409</td>
+<td style="text-align: right;">7851.597</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Read the table column by column:</p>
+<ul>
+<li><strong><code>full_beta_int</code> and <code>full_RSS</code> are constant down the rows.</strong> Centring is a harmless reparameterisation. It changes what the <em>main-effect</em> coefficients mean, but not the fit, the predictions, or the interaction estimate.</li>
+<li><strong><code>red_beta_int</code> and <code>red_RSS</code> move, substantially.</strong> The model without the <code>x2</code> main effect is <em>not</em> a reparameterisation. Each row is a different model with a different fit – and a different answer to the research question, driven by an arbitrary choice of where zero is placed.</li>
+</ul>
+<p>The Celsius-to-Kelvin version of the same point, a shift of 273.15:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="fl">273.15</span>), shift_demo, <span class="at">dat =</span> d)),</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">digits =</span> <span class="dv">4</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Same data, 'Celsius' vs 'Kelvin'. Look at red_beta_int."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Same data, ‘Celsius’ vs ‘Kelvin’. Look at red_beta_int.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">origin_of_x1</th>
+<th style="text-align: right;">full_beta_int</th>
+<th style="text-align: right;">full_RSS</th>
+<th style="text-align: right;">red_beta_int</th>
+<th style="text-align: right;">red_RSS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">x1 - 0</td>
+<td style="text-align: right;">0.0566</td>
+<td style="text-align: right;">1770.97</td>
+<td style="text-align: right;">0.0785</td>
+<td style="text-align: right;">1791.633</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">x1 - -273.15</td>
+<td style="text-align: right;">0.0566</td>
+<td style="text-align: right;">1770.97</td>
+<td style="text-align: right;">0.0123</td>
+<td style="text-align: right;">1852.148</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>And the fully unmoored version, <code>y ~ 0 + x1:x2</code>, which forces the response surface through zero along <em>both</em> axes:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m_pure <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> x1<span class="sc">:</span>x2, <span class="at">data =</span> d)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">*</span> x2,   <span class="at">data =</span> d)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">RSS_pure_interaction =</span> <span class="fu">sum</span>(<span class="fu">residuals</span>(m_pure)<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">RSS_full_model       =</span> <span class="fu">sum</span>(<span class="fu">residuals</span>(m_full)<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>RSS_pure_interaction       RSS_full_model 
+           119494.37              1770.97 </code></pre>
+</div>
+</div>
+<p>The residual sum of squares is larger by a factor of 67.5. For two continuous predictors on a typical epidemiological outcome, this model is essentially never defensible.</p>
+</section>
+<section id="the-same-syntax-three-different-meanings" class="level3" data-number="24.3.2">
+<h3 data-number="24.3.2" class="anchored" data-anchor-id="the-same-syntax-three-different-meanings"><span class="header-section-number">24.3.2</span> The same syntax, three different meanings</h3>
+<p>Everything above assumed both predictors were continuous. As soon as one of them is a factor the same formula can mean something else entirely, and the reason is a single rule about how R builds design matrices:</p>
+<blockquote class="blockquote">
+<p>A factor is coded with <strong>all</strong> of its levels inside an interaction term whenever the corresponding lower-order term is absent from the formula, and with one fewer level otherwise. A continuous predictor contributes one column and cannot be recoded.</p>
+</blockquote>
+<p>That asymmetry generates everything below. Dropping the main effect of a factor usually changes nothing, because the factor’s coding expands to absorb it. Dropping the main effect of a continuous predictor always removes a column, and therefore always changes the model.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>nz <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>dz <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">yy =</span> <span class="fu">rnorm</span>(nz),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">f  =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>),    nz, <span class="cn">TRUE</span>)),  <span class="co"># a two-level factor</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">g  =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"no"</span>, <span class="st">"yes"</span>), nz, <span class="cn">TRUE</span>)),  <span class="co"># a second two-level factor</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x  =</span> <span class="fu">rnorm</span>(nz, <span class="dv">50</span>, <span class="dv">10</span>),                         <span class="co"># a continuous predictor</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">u  =</span> <span class="fu">rnorm</span>(nz, <span class="dv">50</span>, <span class="dv">10</span>))                         <span class="co"># a second continuous predictor</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>forms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">~</span> f <span class="sc">*</span> x, <span class="sc">~</span> f <span class="sc">+</span> f<span class="sc">:</span>x, <span class="sc">~</span> x <span class="sc">+</span> f<span class="sc">:</span>x, <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> f<span class="sc">:</span>x,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>           <span class="sc">~</span> f <span class="sc">*</span> g, <span class="sc">~</span> f <span class="sc">+</span> f<span class="sc">:</span>g, <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> f<span class="sc">:</span>g,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>           <span class="sc">~</span> x <span class="sc">*</span> u, <span class="sc">~</span> x <span class="sc">+</span> x<span class="sc">:</span>u)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">formula =</span> <span class="fu">c</span>(<span class="st">"f * x"</span>, <span class="st">"f + f:x"</span>, <span class="st">"x + f:x"</span>, <span class="st">"0 + f:x"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"f * g"</span>, <span class="st">"f + f:g"</span>, <span class="st">"0 + f:g"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"x * u"</span>, <span class="st">"x + x:u"</span>),</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">columns =</span> <span class="fu">vapply</span>(forms, <span class="cf">function</span>(fm)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>         <span class="fu">paste</span>(<span class="fu">colnames</span>(<span class="fu">model.matrix</span>(fm, dz)), <span class="at">collapse =</span> <span class="st">", "</span>), <span class="fu">character</span>(<span class="dv">1</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">caption =</span> <span class="st">"What R actually fits: f and g are two-level factors, x and u continuous."</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>What R actually fits: f and g are two-level factors, x and u continuous.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">formula</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">f * x</td>
+<td style="text-align: left;">(Intercept), fB, x, fB:x</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f + f:x</td>
+<td style="text-align: left;">(Intercept), fB, fA:x, fB:x</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">x + f:x</td>
+<td style="text-align: left;">(Intercept), x, x:fB</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0 + f:x</td>
+<td style="text-align: left;">fA:x, fB:x</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f * g</td>
+<td style="text-align: left;">(Intercept), fB, gyes, fB:gyes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f + f:g</td>
+<td style="text-align: left;">(Intercept), fB, fA:gyes, fB:gyes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0 + f:g</td>
+<td style="text-align: left;">fA:gno, fB:gno, fA:gyes, fB:gyes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">x * u</td>
+<td style="text-align: left;">(Intercept), x, u, x:u</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">x + x:u</td>
+<td style="text-align: left;">(Intercept), x, x:u</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Three rows carry the argument. <code>f + f:x</code> has the same four columns as <code>f * x</code>, differently parameterised, because dropping <code>x</code> licenses the full coding <code>fA:x</code>, <code>fB:x</code>. <code>0 + f:g</code> has four columns, one per cell, and so does the saturated <code>f * g</code>. But <code>x + x:u</code> has three columns where <code>x * u</code> has four: a column has gone, and the invariance with it.</p>
+<table class="table">
+<caption>The same two formulas mean a restriction or a reparameterisation, depending on the types of the predictors.</caption>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 23%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">\(x_1,x_2\)</span> both continuous</th>
+<th><span class="math inline">\(x_1,x_2\)</span> both factors</th>
+<th><span class="math inline">\(x_1\)</span> factor, <span class="math inline">\(x_2\)</span> continuous</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>y ~ x1 + x1:x2</code></td>
+<td>restriction: one column fewer, origin-dependent</td>
+<td>reparameterisation of the saturated model (the nesting idiom <code>x1/x2</code>)</td>
+<td>reparameterisation: a separate intercept and slope per level of <span class="math inline">\(x_1\)</span></td>
+</tr>
+<tr class="even">
+<td><code>y ~ x2 + x1:x2</code></td>
+<td>the same, with the roles swapped</td>
+<td>the same, with the roles swapped</td>
+<td><strong>restriction</strong>: a common intercept, separate slopes</td>
+</tr>
+<tr class="odd">
+<td><code>y ~ 0 + x1:x2</code></td>
+<td>almost never defensible</td>
+<td>reparameterisation: cell means</td>
+<td>lines through the origin; rarely defensible</td>
+</tr>
+</tbody>
+</table>
+<p>The top-left cell is where students get into trouble, and it is the case the invariance argument is about. The right-hand two columns are the subject of the next two subsections.</p>
+</section>
+<section id="factor-factor-cell-means-coding" class="level3" data-number="24.3.3">
+<h3 data-number="24.3.3" class="anchored" data-anchor-id="factor-factor-cell-means-coding"><span class="header-section-number">24.3.3</span> Factor × factor: cell-means coding</h3>
+<p>When both predictors are factors, dropping the “main effects” is not a restriction at all. A <span class="math inline">\(2 \times 2\)</span> design has four cells, the saturated model has four parameters, and <em>any</em> four linearly independent functions of the four cell means parameterise the same fit. Cell-means coding chooses the four means themselves.</p>
+<p>The example is an antihypertensive drug, chronic kidney disease as a candidate modifier, and change in systolic blood pressure as the outcome.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>n2      <span class="ot">&lt;-</span> <span class="dv">600</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>bp_drug <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rbinom</span>(n2, <span class="dv">1</span>, <span class="fl">0.5</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"no"</span>, <span class="st">"yes"</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ckd     <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rbinom</span>(n2, <span class="dv">1</span>, <span class="fl">0.4</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"absent"</span>, <span class="st">"present"</span>))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## change in SBP (mmHg): the drug lowers it, and lowers it further in CKD</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>dsbp <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">-</span> <span class="dv">8</span> <span class="sc">*</span> (bp_drug <span class="sc">==</span> <span class="st">"yes"</span>) <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> (ckd <span class="sc">==</span> <span class="st">"present"</span>) <span class="sc">-</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">12</span> <span class="sc">*</span> (bp_drug <span class="sc">==</span> <span class="st">"yes"</span>) <span class="sc">*</span> (ckd <span class="sc">==</span> <span class="st">"present"</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(n2, <span class="at">sd =</span> <span class="dv">6</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dsbp =</span> dsbp, <span class="at">bp_drug =</span> bp_drug, <span class="at">ckd =</span> ckd)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>m_sat  <span class="ot">&lt;-</span> <span class="fu">lm</span>(dsbp <span class="sc">~</span> bp_drug <span class="sc">*</span> ckd,                 <span class="at">data =</span> d2)   <span class="co"># saturated</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>m_cell <span class="ot">&lt;-</span> <span class="fu">lm</span>(dsbp <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> <span class="fu">interaction</span>(bp_drug, ckd), <span class="at">data =</span> d2)   <span class="co"># one mean per cell</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">max_abs_fitted_difference =</span> <span class="fu">max</span>(<span class="fu">abs</span>(<span class="fu">fitted</span>(m_sat) <span class="sc">-</span> <span class="fu">fitted</span>(m_cell))),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">residual_df_saturated     =</span> <span class="fu">df.residual</span>(m_sat),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">residual_df_cell_means    =</span> <span class="fu">df.residual</span>(m_cell))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>max_abs_fitted_difference     residual_df_saturated    residual_df_cell_means 
+             1.592504e-12              5.960000e+02              5.960000e+02 </code></pre>
+</div>
+</div>
+<p>Identical fitted values to machine precision, identical residual degrees of freedom. These are the <strong>same model in different coordinates</strong>, and that model is in turn the same as four separate models, one fitted within each combination of <code>bp_drug</code> and <code>ckd</code>. The difference is only in what the coefficients hand you directly:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">data.frame</span>(<span class="at">estimate =</span> <span class="fu">coef</span>(m_cell),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">se       =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">vcov</span>(m_cell)))),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">"Stratum-specific means, read off directly."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Stratum-specific means, read off directly.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">se</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">interaction(bp_drug, ckd)no.absent</td>
+<td style="text-align: right;">-0.841</td>
+<td style="text-align: right;">0.419</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">interaction(bp_drug, ckd)yes.absent</td>
+<td style="text-align: right;">-9.057</td>
+<td style="text-align: right;">0.444</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">interaction(bp_drug, ckd)no.present</td>
+<td style="text-align: right;">-3.646</td>
+<td style="text-align: right;">0.542</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">interaction(bp_drug, ckd)yes.present</td>
+<td style="text-align: right;">-23.880</td>
+<td style="text-align: right;">0.526</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Because the fit is unchanged, nothing in the invariance argument applies here. There is no origin to be sensitive to: a factor has levels, not a scale, and relabelling which level is the reference changes the coefficients but not the model. The reason to prefer one coding to another is entirely a question of which quantities you want to read off with their standard errors attached, which is the subject of <em>Use 3</em> below.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Three cautions on cell-means coding
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>It removes the single-coefficient interaction <strong>test</strong> — there is no one parameter to test. Fit both parameterisations.</li>
+<li><code>y ~ 0 + bp_drug:ckd</code> reproduces the cell means whenever every cell is occupied, but an empty cell leaves a column of zeros, which <code>lm</code> aliases away as an <code>NA</code> coefficient and <code>brms</code> does not remove at all. Prefer <code>interaction()</code>, which makes the cells the levels of a single factor, so an unobserved cell is dropped rather than aliased. The paragraphs below work through the difference.</li>
+<li>The equivalence is a property of <em>factors</em>. A two-level exposure stored as a 0/1 numeric is treated as continuous, the expanded coding does not happen, and the same formula becomes a restriction. Check <code>class()</code> before relying on any of this.</li>
+</ol>
+</div>
+</div>
+<p><strong>What <code>interaction()</code> does differently.</strong> The two idioms reach the same cells by different routes. <code>bp_drug:ckd</code> is a <em>term</em>: R multiplies the dummy columns of one factor by those of the other, producing one column per combination of levels. <code>interaction(bp_drug, ckd)</code> is a <em>variable</em>: it returns a single new factor whose levels are the combinations, which R then codes in the ordinary way. While every cell is occupied the two agree. They part company when one cell is empty, which in epidemiology is common — a stage of disease that nobody in the exposed group reached, a drug not licensed for one age band.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>n4 <span class="ot">&lt;-</span> <span class="dv">600</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>d4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y       =</span> <span class="fu">rnorm</span>(n4),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">exposed =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"no"</span>, <span class="st">"yes"</span>),      n4, <span class="cn">TRUE</span>)),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stage   =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"I"</span>, <span class="st">"II"</span>, <span class="st">"III"</span>), n4, <span class="cn">TRUE</span>)))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>d4 <span class="ot">&lt;-</span> d4[<span class="sc">!</span>(d4<span class="sc">$</span>exposed <span class="sc">==</span> <span class="st">"yes"</span> <span class="sc">&amp;</span> d4<span class="sc">$</span>stage <span class="sc">==</span> <span class="st">"III"</span>), ]  <span class="co"># nobody exposed at stage III</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(d4<span class="sc">$</span>exposed, d4<span class="sc">$</span>stage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     
+        I  II III
+  no   95 108  91
+  yes  97 100   0</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> exposed<span class="sc">:</span>stage,               <span class="at">data =</span> d4)), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   exposedno:stageI   exposedyes:stageI   exposedno:stageII  exposedyes:stageII 
+             -0.114               0.152              -0.059               0.133 
+ exposedno:stageIII exposedyes:stageIII 
+             -0.229                  NA </code></pre>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> <span class="fu">interaction</span>(exposed, stage), <span class="at">data =</span> d4)), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  interaction(exposed, stage)no.I  interaction(exposed, stage)yes.I 
+                           -0.114                             0.152 
+ interaction(exposed, stage)no.II interaction(exposed, stage)yes.II 
+                           -0.059                             0.133 
+interaction(exposed, stage)no.III 
+                           -0.229 </code></pre>
+</div>
+</div>
+<p>The product term produces six columns for six <em>possible</em> cells, and the column for the combination nobody is in is identically zero. No coefficient can be estimated from it, so <code>lm</code> aliases the column away and reports <code>NA</code>. <code>interaction()</code> produces a factor with an unused level, which the model frame drops before fitting: five cells, five estimates, no <code>NA</code>. The two fits are otherwise the same, with identical fitted values and identical residual degrees of freedom. Nothing is wrong with the <code>NA</code> version, but its output reads as though a stratum had been estimated and found missing, rather than never observed.</p>
+<p>The reason to care is what happens outside <code>lm</code>. <code>brms</code> does not drop the redundant column. Refitting the model above with <code>brm()</code> under the default flat prior on <code>b</code> leaves the empty-cell coefficient unidentified: the chain does not converge, and the estimate returns at the order of <span class="math inline">\(10^{13}\)</span> with an interval to match, flagged only by R-hat warnings. Under a proper prior the situation is more easily missed, because the fit is then clean. With <code>normal(0, 1)</code> on every coefficient, the five occupied cells have posterior standard deviations near 0.10 while the empty cell has 0.99 — the prior standard deviation, unchanged. The data contribute nothing to that row, R-hat is 1.00, and no warning is issued. A posterior that is still its own prior is easy to overlook in a table of six.</p>
+<p>Two corrections to the checks follow from this.</p>
+<ul>
+<li><strong><code>df.residual()</code> will not catch it.</strong> R computes residual degrees of freedom from the <em>rank</em> of the design, so an aliased fit and the saturated fit agree. Compare <code>df.residual()</code> to detect a <strong>restriction</strong>, a model that has genuinely lost a parameter; use <code>anyNA(coef())</code>, or count the occupied cells, to detect <strong>redundancy</strong>. They are different failures and need different checks.</li>
+<li><strong>The number of factors is not what matters.</strong> <code>y ~ 0 + f:g:h</code> on three complete two-level factors is a sound eight-cell means model, because with no marginal term present R codes all three factors in full. What breaks the correspondence is mixing a marginal term into a higher-order interaction: <code>y ~ 0 + f + f:g:h</code> gives ten columns for eight cells, and two of them are aliased. Keep an interaction-only formula to a single term, or use <code>interaction()</code> and let the cells be one factor.</li>
+</ul>
+</section>
+<section id="factor-continuous-separate-slopes" class="level3" data-number="24.3.4">
+<h3 data-number="24.3.4" class="anchored" data-anchor-id="factor-continuous-separate-slopes"><span class="header-section-number">24.3.4</span> Factor × continuous: separate slopes</h3>
+<p>This is the third column of the table, and the case most often met in practice: an exposure group, and a continuous variable whose slope may differ between groups. The three formulas are three different models, and only the middle one is a restriction.</p>
+<ul>
+<li><p><code>y ~ f + f:x</code> fits <strong>a separate intercept and a separate slope for each level</strong> of <code>f</code>. It is a reparameterisation of <code>y ~ f * x</code> — same fit, same predictions, same residual degrees of freedom — in which the coefficients are the two slopes themselves rather than a reference slope and a difference. In the running example, <code>sbp ~ drug + drug:age_c</code> fits the same model as <code>sbp ~ drug * age_c</code> and reports the age slope in each arm directly. Nothing has been omitted, and this is often the more convenient way to report a stratified analysis.</p></li>
+<li><p><code>y ~ x + f:x</code> fits <strong>one intercept and separate slopes</strong>: the groups are forced to coincide at <span class="math inline">\(x = 0\)</span> and allowed to diverge from there. This one <em>is</em> a restriction, and the invariance argument applies to it in full. It is defensible when <span class="math inline">\(x = 0\)</span> is a structural zero at which the groups are known to be alike — which is the nested-dose case of <em>Use 2</em> — and is an error otherwise.</p></li>
+<li><p><code>y ~ 0 + f:x</code> fits <strong>a line through the origin for each level</strong>, and requires the outcome to be zero at <span class="math inline">\(x = 0\)</span> in every group as well.</p></li>
+</ul>
+<p>The distinction has a smooth analogue, met in the callout above. With <code>drug</code> a factor, <code>s(age, by = drug)</code> fits one centred curve per arm and needs the parametric <code>drug</code> term to carry the difference in level, which is the spline version of <code>y ~ f + f:x</code>. With <code>drug</code> a 0/1 numeric, the same syntax fits a single curve multiplied by <code>drug</code>, which is a varying coefficient and behaves differently. The governing rule is the same: what R builds depends on whether the lower-order term is present, and on the class of the variable.</p>
+</section>
+<section id="the-six-legitimate-uses-in-epidemiology" class="level3" data-number="24.3.5">
+<h3 data-number="24.3.5" class="anchored" data-anchor-id="the-six-legitimate-uses-in-epidemiology"><span class="header-section-number">24.3.5</span> The six legitimate uses in epidemiology</h3>
+<p>The situations below are the ones that recur. It is worth establishing which of three kinds you are in before defending anything.</p>
+<ul>
+<li>In <em>Uses 2 and 3</em>, <strong>nothing is omitted</strong>: the reduced formula and the saturated one have the same design matrix, so there is no assumption to defend.</li>
+<li>In <em>Uses 4 and 5</em>, <strong>the main effect is not identified</strong>: the data carry no information about it, and a model that includes it is rank-deficient.</li>
+<li>In <em>Uses 1 and 6</em>, <strong>a constraint really is imposed</strong>. In Use 1 it is a biological hypothesis that can be false and should be tested. In Use 6 it holds by the definition of the estimand, which is what makes that case the cleanest.</li>
+</ul>
+<p>A seventh situation, in which the functional form comes from a mechanism rather than from a covariate list, is different in kind and is treated after the list.</p>
+</section>
+<section id="use-1-a-structural-zero-in-the-exposure" class="level3" data-number="24.3.6">
+<h3 data-number="24.3.6" class="anchored" data-anchor-id="use-1-a-structural-zero-in-the-exposure"><span class="header-section-number">24.3.6</span> Use 1: a structural zero in the exposure</h3>
+<p><span class="math inline">\(X_1\)</span> is a dose, zero among the unexposed; <span class="math inline">\(X_2\)</span> is a susceptibility marker. <code>y ~ dose + dose:G</code> states that <code>G</code> has no effect on the outcome among people with zero exposure, and enters only as modification of the dose–response. Here <span class="math inline">\(X_1 = 0\)</span> is a state people are genuinely in, and it is observed, so the invariance objection does not apply. What does apply is that the constraint is a biological claim.</p>
+<p><em>A concrete instance.</em> Slow acetylation at the <em>NAT2</em> locus is a candidate modifier of the effect of aromatic amines on bladder cancer, because the enzyme detoxifies those amines: where there is no exposure to them there is nothing to detoxify, and the mechanism supplies a reason to expect no genotype effect at zero exposure. The model <code>bladder ~ smoking + smoking:NAT2</code> encodes that expectation. Whether it holds is an empirical question, and the answer in this instance is mixed. In the Spanish Bladder Cancer Study, NAT2 slow acetylators had a raised risk of bladder cancer overall (OR 1.4, 95% CI 1.2–1.7), and the association was stronger in cigarette smokers than in never smokers.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> An overall association does not by itself establish an effect at zero exposure — tobacco smoke is not the only source of aromatic amines, and “never smoker” is not “never exposed” — but it is enough to make the omission a hypothesis rather than a default.</p>
+<p><strong>Test it; do not assume it.</strong> Fit the model with the main effect and check that it is small before fitting the model without. If <code>G</code> also affects baseline risk, as susceptibility markers usually do, the main effect is needed; omitting it pushes that part of <code>G</code>’s association into the interaction term, where it will be read as effect modification.</p>
+</section>
+<section id="use-2-semicontinuous-exposure-participation-and-intensity" class="level3" data-number="24.3.7">
+<h3 data-number="24.3.7" class="anchored" data-anchor-id="use-2-semicontinuous-exposure-participation-and-intensity"><span class="header-section-number">24.3.7</span> Use 2: semicontinuous exposure — participation and intensity</h3>
+<p>This is probably the most frequently encountered legitimate case in health services research: a <strong>semicontinuous exposure</strong>, where intensity is structurally zero for everyone untreated. Any treatment yes/no, plus sessions, hours, doses or defined daily doses among the treated. In a claims database: whether any opioid was dispensed during follow-up, and the total morphine milligram equivalents dispensed, which is zero by construction for everyone with no dispensing.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>n3      <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>treated <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n3, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>hours   <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(treated <span class="sc">==</span> <span class="dv">1</span>, <span class="fu">rgamma</span>(n3, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">scale =</span> <span class="dv">3</span>), <span class="dv">0</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>y3      <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.0</span> <span class="sc">*</span> treated <span class="sc">+</span> <span class="fl">0.4</span> <span class="sc">*</span> hours <span class="sc">+</span> <span class="fu">rnorm</span>(n3)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>d3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y3 =</span> y3, <span class="at">treated =</span> treated, <span class="at">hours =</span> hours)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>mA <span class="ot">&lt;-</span> <span class="fu">lm</span>(y3 <span class="sc">~</span> treated <span class="sc">+</span> treated<span class="sc">:</span>hours, <span class="at">data =</span> d3)   <span class="co"># "interaction, no main effect"</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>mB <span class="ot">&lt;-</span> <span class="fu">lm</span>(y3 <span class="sc">~</span> treated <span class="sc">+</span> hours,         <span class="at">data =</span> d3)   <span class="co"># ordinary additive model</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">coefficients_equal =</span> <span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(<span class="fu">unname</span>(<span class="fu">coef</span>(mA)), <span class="fu">unname</span>(<span class="fu">coef</span>(mB)))),</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">fitted_values_equal =</span> <span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(<span class="fu">fitted</span>(mA), <span class="fu">fitted</span>(mB))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> coefficients_equal fitted_values_equal 
+               TRUE                TRUE </code></pre>
+</div>
+</div>
+<p>The two models are <strong>algebraically identical</strong>. Because <code>hours == 0</code> whenever <code>treated == 0</code>, the product <code>treated:hours</code> <em>is</em> <code>hours</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">as.numeric</span>(<span class="fu">model.matrix</span>(mA)), <span class="fu">as.numeric</span>(<span class="fu">model.matrix</span>(mB)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>So no “main effect of <code>hours</code>” is being suppressed — there is nothing to suppress. <code>hours</code> has no variation and no meaning among the untreated, and the interaction notation merely makes the nesting explicit. The interpretation:</p>
+<ul>
+<li>coefficient on <code>treated</code> — the jump in outcome at zero hours, any treatment versus none;</li>
+<li>coefficient on <code>treated:hours</code> — the slope per additional hour, among the treated.</li>
+</ul>
+<p>Two practical points. First, the coefficient on <code>treated</code> is the contrast at <code>hours = 0</code>, and among the treated that is a boundary value. Where the smallest dose actually dispensed is well away from zero — a minimum pack size, a minimum course length — that coefficient is the fitted line extrapolated back to a dose nobody received, identified by the functional form rather than by data. Report the contrast at an observed dose instead. Second, the identity depends on <code>treated</code> being numeric. Coded as a factor, <code>y3 ~ treated + treated:hours</code> expands to a column <code>treatedno:hours</code> that is identically zero, which R aliases away and reports as <code>NA</code>; the fit is unharmed but the output is confusing, and other software may fail outright.</p>
+</section>
+<section id="use-3-cell-means-coding-for-reporting" class="level3" data-number="24.3.8">
+<h3 data-number="24.3.8" class="anchored" data-anchor-id="use-3-cell-means-coding-for-reporting"><span class="header-section-number">24.3.8</span> Use 3: cell-means coding for reporting</h3>
+<p>A reparameterisation, not a restriction, as shown above. The reason to want it is a reporting convention. Knol and VanderWeele recommend that analyses of effect modification present four things: estimates for each (exposure, modifier) stratum against a single reference category; the exposure effect <em>within</em> strata of the modifier; interaction measures on both the additive and the multiplicative scale; and the confounders adjusted for.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Cell-means coding gives the first of these with correct standard errors, without delta-method work on sums of coefficients.</p>
+<p>The sibling idiom for the second is the nesting operator <code>/</code>, which R expands to <code>ckd + ckd:bp_drug</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>m_nest <span class="ot">&lt;-</span> <span class="fu">lm</span>(dsbp <span class="sc">~</span> ckd <span class="sc">/</span> bp_drug, <span class="at">data =</span> d2)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">summary</span>(m_nest)<span class="sc">$</span>coefficients, <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 11%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">t value</th>
+<th style="text-align: right;">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.841</td>
+<td style="text-align: right;">0.419</td>
+<td style="text-align: right;">-2.006</td>
+<td style="text-align: right;">0.045</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ckdpresent</td>
+<td style="text-align: right;">-2.805</td>
+<td style="text-align: right;">0.685</td>
+<td style="text-align: right;">-4.094</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ckdabsent:bp_drugyes</td>
+<td style="text-align: right;">-8.216</td>
+<td style="text-align: right;">0.611</td>
+<td style="text-align: right;">-13.447</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ckdpresent:bp_drugyes</td>
+<td style="text-align: right;">-20.234</td>
+<td style="text-align: right;">0.755</td>
+<td style="text-align: right;">-26.792</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The two coefficients whose names end in <code>:bp_drugyes</code> are the drug effect within each level of CKD — directly estimated, with directly usable standard errors. Together the two fits produce the Knol–VanderWeele layout with no hand computation: four stratum means from <code>m_cell</code>, two within-stratum effects from <code>m_nest</code>. Their third item, the comparison of scales, is a separate matter and belongs to Chapter 16; neither parameterisation settles it, because both are fitted on one scale at a time.</p>
+</section>
+<section id="use-4-main-effects-absorbed-by-strata-or-fixed-effects" class="level3" data-number="24.3.9">
+<h3 data-number="24.3.9" class="anchored" data-anchor-id="use-4-main-effects-absorbed-by-strata-or-fixed-effects"><span class="header-section-number">24.3.9</span> Use 4: main effects absorbed by strata or fixed effects</h3>
+<p>Here the formula <em>looks</em> non-hierarchical but marginality is not actually violated: the marginal terms are present, having been absorbed by the stratum indicators. Including them explicitly adds no information, only collinear columns.</p>
+<p>The clearest case is difference-in-differences with two-way fixed effects (Chapter 18). Consider a state-level policy — a Medicaid expansion adopted by half the states — with outcomes measured before and after:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>units <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>did <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">unit =</span> <span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span>units), <span class="at">time =</span> <span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>))</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>did<span class="sc">$</span>treated <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.integer</span>(did<span class="sc">$</span>unit) <span class="sc">&lt;=</span> units <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>did<span class="sc">$</span>post    <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.integer</span>(did<span class="sc">$</span>time) <span class="sc">==</span> <span class="dv">2</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>did<span class="sc">$</span>y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> did<span class="sc">$</span>treated <span class="sc">+</span> <span class="fl">0.7</span> <span class="sc">*</span> did<span class="sc">$</span>post <span class="sc">+</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>         <span class="fl">1.2</span> <span class="sc">*</span> did<span class="sc">$</span>treated <span class="sc">*</span> did<span class="sc">$</span>post <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(did), <span class="at">sd =</span> <span class="fl">0.3</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>X_hier <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> treated <span class="sc">*</span> post <span class="sc">+</span> unit <span class="sc">+</span> time, did)  <span class="co"># "hierarchical"</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>X_int  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> treated<span class="sc">:</span>post <span class="sc">+</span> unit <span class="sc">+</span> time, did)    <span class="co"># interaction only</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>m_hier <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> treated <span class="sc">*</span> post <span class="sc">+</span> unit <span class="sc">+</span> time, <span class="at">data =</span> did)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>m_int  <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> treated<span class="sc">:</span>post <span class="sc">+</span> unit <span class="sc">+</span> time,   <span class="at">data =</span> did)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">specification =</span> <span class="fu">c</span>(<span class="st">"treated * post + unit + time"</span>, <span class="st">"treated:post + unit + time"</span>),</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">columns       =</span> <span class="fu">c</span>(<span class="fu">ncol</span>(X_hier), <span class="fu">ncol</span>(X_int)),</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">rank          =</span> <span class="fu">c</span>(<span class="fu">qr</span>(X_hier)<span class="sc">$</span>rank, <span class="fu">qr</span>(X_int)<span class="sc">$</span>rank))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 specification columns rank
+1 treated * post + unit + time     104  102
+2   treated:post + unit + time     102  102</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(<span class="fu">fitted</span>(m_hier), <span class="fu">fitted</span>(m_int)))   <span class="co"># identical fits?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(m_int)[[<span class="st">"treated:post"</span>]], <span class="dv">3</span>)            <span class="co"># the DiD estimate; truth 1.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.156</code></pre>
+</div>
+</div>
+<p>The “hierarchical” specification has two more columns than the interaction-only one and the same rank: <code>treated</code> is a function of the unit indicators and <code>post</code> of the time indicators, so the two extra columns add nothing. R drops two aliased columns and returns <code>NA</code> for them, and which two depends on the order of terms in the formula: written as above it drops one unit and one time indicator, whereas <code>y ~ unit + time + treated * post</code> drops <code>treated</code> and <code>post</code> themselves. The fitted values are the same in every case, which is the reminder that the deficiency is a property of the design and not of the syntax. The difference-in-differences estimate is near its generating value of 1.2 either way.</p>
+<p>The same structure appears wherever a conditional likelihood eliminates within-stratum constants:</p>
+<ul>
+<li><strong>Matched case–control studies and conditional logistic regression.</strong> Anything constant within a matched set drops out of the conditional likelihood. If the study matched on sex, the sex main effect is inestimable — but <code>exposure:sex</code> is perfectly estimable, and is the standard way to report effect modification by a matching variable.</li>
+<li><strong>Case-crossover designs.</strong> Each person serves as their own control, so every time-invariant characteristic — genotype, sex, chronic comorbidity — is differenced out. Its interaction with the time-varying exposure survives.</li>
+</ul>
+<p>This is a good teaching case, because it shows the rule is about <strong>identification</strong> and not about formula syntax. Nobody has asserted that sex does not affect the outcome; the design has made that question unanswerable, and the formula reflects the design.</p>
+</section>
+<section id="use-5-case-only-geneenvironment-designs" class="level3" data-number="24.3.10">
+<h3 data-number="24.3.10" class="anchored" data-anchor-id="use-5-case-only-geneenvironment-designs"><span class="header-section-number">24.3.10</span> Use 5: case-only gene–environment designs</h3>
+<p>Here the main effects genuinely cannot be estimated: among cases only there are no non-cases to compare with, so neither the effect of the genotype nor that of the exposure is identified. What remains identified is their interaction. If genotype <span class="math inline">\(G\)</span> and exposure <span class="math inline">\(E\)</span> are independent in the source population and the disease is rare, the <span class="math inline">\(G\)</span>–<span class="math inline">\(E\)</span> association <em>among cases</em> estimates the multiplicative interaction, and does so with better precision than the full case–control analysis. This is the setting for which non-hierarchical logistic models were first argued to make sense biologically.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2024</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fl">2e6</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, <span class="fl">0.30</span>)                                  <span class="co"># susceptibility genotype</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>E <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, <span class="fl">0.40</span>)                                  <span class="co"># exposure, independent of G</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, <span class="fl">0.002</span> <span class="sc">*</span> <span class="fl">1.5</span><span class="sc">^</span>G <span class="sc">*</span> <span class="fl">2.0</span><span class="sc">^</span>E <span class="sc">*</span> <span class="fl">3.0</span><span class="sc">^</span>(G <span class="sc">*</span> E))   <span class="co"># interaction RR = 3</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>cases <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(G, E)[Y <span class="sc">==</span> <span class="dv">1</span>, ]</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>m_co  <span class="ot">&lt;-</span> <span class="fu">glm</span>(G <span class="sc">~</span> E, <span class="at">family =</span> binomial, <span class="at">data =</span> cases)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(<span class="at">estimate =</span> <span class="fu">coef</span>(m_co)[[<span class="st">"E"</span>]], <span class="fu">confint.default</span>(m_co)[<span class="st">"E"</span>, ],</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">truth =</span> <span class="fu">log</span>(<span class="dv">3</span>)), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>estimate    2.5 %   97.5 %    truth 
+   1.098    1.006    1.189    1.099 </code></pre>
+</div>
+</div>
+<p>A logistic regression of genotype on exposure, fitted in the 9342 cases and ignoring everyone else, recovers the multiplicative interaction.</p>
+<p>The design is efficient and strongly assumption-dependent, and the assumption that matters is <span class="math inline">\(G \perp E\)</span> in the source population. Any real association between the two is added to the estimate, and nothing in the case-only data can detect it:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, <span class="fl">0.30</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>E2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, <span class="fu">plogis</span>(<span class="fu">qlogis</span>(<span class="fl">0.40</span>) <span class="sc">+</span> <span class="fu">log</span>(<span class="fl">1.6</span>) <span class="sc">*</span> G2))   <span class="co"># G-E odds ratio 1.6</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>Y2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="dv">1</span>, <span class="fl">0.002</span> <span class="sc">*</span> <span class="fl">1.5</span><span class="sc">^</span>G2 <span class="sc">*</span> <span class="fl">2.0</span><span class="sc">^</span>E2 <span class="sc">*</span> <span class="fl">3.0</span><span class="sc">^</span>(G2 <span class="sc">*</span> E2))</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>c2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">G =</span> G2, <span class="at">E =</span> E2)[Y2 <span class="sc">==</span> <span class="dv">1</span>, ]</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(<span class="at">estimate                =</span> <span class="fu">coef</span>(<span class="fu">glm</span>(G <span class="sc">~</span> E, binomial, <span class="at">data =</span> c2))[[<span class="st">"E"</span>]],</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">interaction_only        =</span> <span class="fu">log</span>(<span class="dv">3</span>),</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">plus_source_association =</span> <span class="fu">log</span>(<span class="dv">3</span> <span class="sc">*</span> <span class="fl">1.6</span>)), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>               estimate        interaction_only plus_source_association 
+                  1.538                   1.099                   1.569 </code></pre>
+</div>
+</div>
+<p>The estimate has moved to the log of the product, and the case-only data cannot separate the two contributions. The assumption is testable only in controls, or in an external sample of the source population — an argument for collecting controls even when the case-only estimator is the one you intend to report.</p>
+<p><em>A concrete instance.</em> In the study cited above, case-only meta-analyses supported an interaction between NAT2 slow acetylation and cigarette smoking in bladder cancer (p for interaction 0.009), while the GSTM1 association was not modified by smoking status. Independence of genotype and smoking behaviour in the source population is plausible for a detoxification genotype and less plausible for genotypes in the nicotine-metabolism pathway, which are associated with smoking intensity: the design’s validity turns on which gene is being studied, not on the design alone.</p>
+</section>
+<section id="use-6-causal-contrast-models" class="level3" data-number="24.3.11">
+<h3 data-number="24.3.11" class="anchored" data-anchor-id="use-6-causal-contrast-models"><span class="header-section-number">24.3.11</span> Use 6: causal contrast models</h3>
+<p>This is the cleanest of the six, because the omitted terms are absent by the definition of the estimand rather than by an assumption about the world.</p>
+<p>A structural nested mean model parameterises the effect of setting treatment to <span class="math inline">\(a\)</span> rather than to zero, within levels of a covariate <span class="math inline">\(V\)</span>, through a <strong>blip</strong> function:</p>
+<p><span class="math display">\[E[Y(a) - Y(0) \mid V] = a(\psi_0 + \psi_1 V)\]</span></p>
+<p>A blip function represents the conditional average treatment effect for a specific patient history or set of covariates. The left-hand side is a contrast of potential outcomes, not an outcome. Three consequences follow, which between them account for every missing term.</p>
+<p><strong>There is no intercept, because the contrast is zero at <span class="math inline">\(a = 0\)</span>.</strong> Setting <span class="math inline">\(a = 0\)</span> makes the left-hand side <span class="math inline">\(E[Y(0) - Y(0) \mid V]\)</span>, which is zero for every individual and every value of <span class="math inline">\(V\)</span>. A blip function with an intercept, <span class="math inline">\(\psi_{00} + a(\psi_0 + \psi_1 V)\)</span>, would assert that the effect of no treatment against no treatment is <span class="math inline">\(\psi_{00} \neq 0\)</span> which is a contradiction in terms.</p>
+<p><strong>There is no main effect of <span class="math inline">\(V\)</span>, because <span class="math inline">\(V\)</span>’s prognostic effect cancels in the difference.</strong> <span class="math inline">\(V\)</span> may be strongly related to the outcome, and usually is. It is absent here because it enters <span class="math inline">\(Y(a)\)</span> and <span class="math inline">\(Y(0)\)</span> identically. Where it does appear is in the untreated mean <span class="math inline">\(E[Y(0) \mid V]\)</span>, a separate nuisance quantity that estimation either models explicitly or, under g-estimation, sidesteps. Writing a main effect of <span class="math inline">\(V\)</span> into the blip would make the same assertion the intercept did: that the contrast of <span class="math inline">\(Y(0)\)</span> with itself depends on <span class="math inline">\(V\)</span>.</p>
+<p><strong><span class="math inline">\(\psi_1\)</span>, not <span class="math inline">\(\psi_0\)</span>, carries the effect modification.</strong> <span class="math inline">\(\psi_0\)</span> is the effect at <span class="math inline">\(V = 0\)</span>, and <span class="math inline">\(\psi_1\)</span> is how that effect changes with <span class="math inline">\(V\)</span>.</p>
+<p>The last point connects this case to the rest of the chapter. Write the conditional mean of the <em>observed</em> outcome in fully interacted form,</p>
+<p><span class="math display">\[E[Y \mid A = a, V, L] = \beta_0 + \beta_1 a + \beta_2 V + \beta_3 aV + \beta_4^{\top} L,\]</span></p>
+<p>and take the difference between <span class="math inline">\(a = 1\)</span> and <span class="math inline">\(a = 0\)</span>. The result is <span class="math inline">\(\beta_1 + \beta_3 V\)</span>: the intercept and <span class="math inline">\(\beta_2 V\)</span> have cancelled. So <span class="math inline">\(\psi_0 = \beta_1\)</span> and <span class="math inline">\(\psi_1 = \beta_3\)</span> when the outcome model is correct. <strong>A blip function is what a fully interacted outcome model leaves behind once the contrast has been taken.</strong> The main effects were not dropped; they were differenced away. This is also why the interaction-by-default position of the previous section and the omit-the-main-effect position here are not in tension: they are statements about two different objects, the outcome model and the contrast.</p>
+<p>The cancellation can be seen directly. The three fits below differ only in <span class="math inline">\(\beta_2\)</span>, the prognostic effect of <span class="math inline">\(V\)</span>, and the same residual noise is used in each, so any movement in the blip would be real rather than sampling variation.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">99</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="dv">4000</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>V  <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(nb, <span class="dv">1</span>, <span class="fl">0.5</span>)                      <span class="co"># modifier, also prognostic</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>L  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(nb)                               <span class="co"># a confounder</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>A  <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(nb, <span class="dv">1</span>, <span class="fu">plogis</span>(<span class="sc">-</span><span class="fl">0.3</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> L))   <span class="co"># treatment depends on L</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>e  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(nb)                               <span class="co"># the same noise in every scenario</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>blip_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(b2) {</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  Y  <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fl">0.8</span> <span class="sc">*</span> L <span class="sc">+</span> b2 <span class="sc">*</span> V <span class="sc">+</span> (<span class="fl">0.6</span> <span class="sc">+</span> <span class="fl">1.4</span> <span class="sc">*</span> V) <span class="sc">*</span> A <span class="sc">+</span> e</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  co <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> A <span class="sc">*</span> V <span class="sc">+</span> L))</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">`</span><span class="at">beta2 (V main effect)</span><span class="st">`</span> <span class="ot">=</span> b2, <span class="st">`</span><span class="at">fitted V coefficient</span><span class="st">`</span> <span class="ot">=</span> co[[<span class="st">"V"</span>]],</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">psi0 = coef A</span><span class="st">`</span> <span class="ot">=</span> co[[<span class="st">"A"</span>]], <span class="st">`</span><span class="at">psi1 = coef A:V</span><span class="st">`</span> <span class="ot">=</span> co[[<span class="st">"A:V"</span>]])</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">as.data.frame</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="sc">-</span><span class="dv">2</span>), blip_fit))), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  beta2 (V main effect) fitted V coefficient psi0 = coef A psi1 = coef A:V
+1                     0              -0.0029        0.5536          1.4496
+2                     3               2.9971        0.5536          1.4496
+3                    -2              -2.0029        0.5536          1.4496</code></pre>
+</div>
+</div>
+<p>The fitted <code>V</code> coefficient tracks <span class="math inline">\(\beta_2\)</span> down the rows. The two blip parameters do not move at all, to four decimal places, whether <span class="math inline">\(V\)</span>’s prognostic effect is absent, large and positive, or negative. The generating values were 0.6 and 1.4.</p>
+<p>The no-intercept form is not a stylistic preference; it is what makes g-estimation work. G-estimation removes the hypothesised effect from the observed outcome,</p>
+<p><span class="math display">\[H(\psi) = Y - A(\psi_0 + \psi_1 V),\]</span></p>
+<p>and searches for the <span class="math inline">\(\psi\)</span> that makes <span class="math inline">\(H(\psi)\)</span> independent of treatment given the measured confounders — the property <span class="math inline">\(Y(0)\)</span> has under conditional exchangeability. For <span class="math inline">\(H(\psi)\)</span> to be a candidate <span class="math inline">\(Y(0)\)</span> it must leave the untreated untouched, and it does: at <span class="math inline">\(A = 0\)</span> the subtracted term is zero and <span class="math inline">\(H = Y\)</span>. Add an intercept to the blip and the same constant would be removed from treated and untreated alike, so <span class="math inline">\(H\)</span> would no longer equal <span class="math inline">\(Y\)</span> among the untreated and would no longer estimate <span class="math inline">\(Y(0)\)</span>. The omitted terms are what make the estimator valid.</p>
+<p><em>A concrete instance.</em> Structural nested models were introduced for occupational cohorts showing a healthy worker survivor effect: workers leave employment as their health declines, so past exposure affects later employment, which affects later exposure. Employment status is then a time-varying confounder that is itself affected by prior treatment, the configuration in which ordinary regression adjustment fails and g-methods are required (Chapter 14). A blip function such as <span class="math inline">\(E[Y(\bar a) - Y(\bar 0) \mid V] = \psi_0 \sum_k a_k\)</span>, where <span class="math inline">\(\bar a = (a_1, \dots, a_K)\)</span> is the whole exposure history and <span class="math inline">\(\bar 0\)</span> is never being exposed, expresses the effect of each additional year of exposure, with no main effect for employment status anywhere in it, because employment status has cancelled along with everything else common to the two potential outcomes. The method’s practical record in this setting is more modest than its theoretical standing, largely through model dependence and weak information about <span class="math inline">\(\psi\)</span>;<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> the <code>DTRreg</code> package implements g-estimation of these models in R.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+</section>
+<section id="mechanism-as-a-reason-product-laws-and-sufficient-causes" class="level3" data-number="24.3.12">
+<h3 data-number="24.3.12" class="anchored" data-anchor-id="mechanism-as-a-reason-product-laws-and-sufficient-causes"><span class="header-section-number">24.3.12</span> Mechanism as a reason: product laws and sufficient causes</h3>
+<p>A seventh case is different in kind from the six above, because the model’s form comes from a mechanism rather than from a covariate list. The law of mass action, <span class="math inline">\(\text{rate} = k[A][B]\)</span>, is a pure product with no main effects and no intercept, and correctly so: both concentrations have true zeros and the rate is zero if either reactant is absent. Note, though, what happens on taking logarithms: <span class="math inline">\(\log(\text{rate}) = \log k + \log[A] + \log[B]\)</span>, which is additive with no interaction at all. Multiplicative mechanisms are usually additive on the log scale, so a product law is more often an argument for a log link (Chapter 24) than for a linear model without main effects. The familiar epidemiological instance is the offset: expected count = person-time <span class="math inline">\(\times\)</span> rate, a product whose coefficient is fixed at one, because zero person-time yields zero events structurally.</p>
+<p>The same structure has a mechanistic reading in Rothman’s sufficient-component-cause framework (Chapter 16). Suppose two binary factors <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are components of one sufficient cause, and that neither is a component of any sufficient cause acting without the other. Then, writing <span class="math inline">\(p_0\)</span> for the risk from mechanisms involving neither and <span class="math inline">\(p_1\)</span> for the risk from the shared mechanism, the risk is <span class="math inline">\(p_0 + p_1 ab\)</span>: an interaction-only model on the <strong>risk-difference scale</strong>, with an intercept and no main effects. The structural zeros are unambiguous, because <span class="math inline">\(a = 0\)</span> means the factor is absent. The additive interaction contrast is then <span class="math inline">\(p_{11} - p_{10} - p_{01} + p_{00} = p_1\)</span>, which is why the mechanistic question is tied to departure from additivity and not from multiplicativity. Two qualifications carry over from Chapter 16: the implication requires monotonicity – neither factor prevents the outcome in anyone – and it runs one way only, since other response types can mask a real synergism and leave the risks additive.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> A pure product term is thus a strong mechanistic hypothesis, not a simplification, and it is a hypothesis about a particular scale.</p>
+</section>
+<section id="what-is-not-a-reason-to-omit-a-main-effect" class="level3" data-number="24.3.13">
+<h3 data-number="24.3.13" class="anchored" data-anchor-id="what-is-not-a-reason-to-omit-a-main-effect"><span class="header-section-number">24.3.13</span> What is not a reason to omit a main effect</h3>
+<p><strong>Parsimony, or a main effect whose interval covers zero.</strong> Omitting a term is a prior with a point mass at zero, which is the argument made in the previous section against dropping interactions; it applies with the same force to main effects. Where a structural zero is plausible but not certain, fit the unconstrained model and check that the main effect is small, rather than assuming it. Where the data are too thin to estimate it, shrink it with a prior rather than deleting it.</p>
+<p><strong>The DAG.</strong> No omission of a main effect can be justified by reading a causal diagram. A variable that modifies <span class="math inline">\(X_1\)</span>’s effect appears in the outcome’s structural equation, so the graph carries an arrow from it whether or not its contribution vanishes at <span class="math inline">\(X_1 = 0\)</span>. What is asserted when a main effect is dropped is a feature of the functional form, and a DAG, being non-parametric, cannot express it. Chapter 16 separates the two questions.</p>
+<p><strong>Mistaking a restriction for a reparameterisation.</strong> This is the error the whole section is built to prevent. Before defending an omission, establish which of the two it is: compare <code>ncol(model.matrix())</code> and <code>df.residual()</code> against the saturated fit. If they agree, nothing has been omitted and no defence is needed. If they do not, the model is committed to an origin, and the question is whether that origin is a state of the world.</p>
+</section>
+</section>
+<section id="key-points" class="level2" data-number="24.4">
+<h2 data-number="24.4" class="anchored" data-anchor-id="key-points"><span class="header-section-number">24.4</span> Key points</h2>
+<ul>
+<li>Mis-modelling the <em>shape</em> of a confounder leaves <strong>residual confounding</strong>. Age was in the model as a straight line and the estimate was still substantially biased. Give continuous confounders splines; in <code>brms</code>, <code>s(age)</code> treats the wiggliness penalty as a prior variance and estimates it with everything else.</li>
+<li>Polynomials buy flexibility at the price of global behaviour: a cubic fitted to the middle of the range still dictates the fit at its ends. A spline is local, which is why it is the default here.</li>
+<li><strong>Interaction is the default in causal modelling.</strong> An additive model asserts that the effect is the same at every covariate value; an interacted model estimates whether it is. Because effects are reported as marginal contrasts, the interacted model still yields one number, so interpretability is not a reason to omit the term. When data are thin, shrink the interaction with a prior rather than deleting it.</li>
+<li>The single slope of an additive model is a <strong>variance-weighted</strong> average of the covariate-specific effects, not the population average. The two coincide under randomisation and diverge as treatment prevalence comes to depend on the modifier.</li>
+<li>Product terms are read only alongside their lower-order terms. Models such as <code>y ~ x:z</code> or <code>y ~ 0 + x:z</code> are not simpler; they are different models, and here they get the sign wrong.</li>
+<li>Before defending an omitted main effect, establish whether anything has been omitted. With <strong>factors</strong>, R expands the coding to fill the gap, so <code>y ~ f + f:g</code> and <code>y ~ 0 + f:g</code> are <strong>reparameterisations</strong> of the saturated model – same design matrix rank, same fit, different coefficients. With a <strong>continuous</strong> predictor a column is genuinely lost, and the model becomes origin-dependent. Compare <code>df.residual()</code> with the saturated fit to tell them apart.</li>
+<li>Where a restriction really is imposed, the criterion is precise: a main effect may be omitted only when the <em>other</em> variable in the product has a <strong>structural zero</strong>, because that main effect is what makes the model invariant to the origin of the other. Semicontinuous doses, fixed-effect absorption, case-only designs, blip functions, mechanistic product laws and sufficient-cause synergism are of this kind; parsimony and a non-significant main effect are not.</li>
+<li>A <strong>blip function</strong> is the cleanest case, because its missing terms are missing by definition. <span class="math inline">\(E[Y(a) - Y(0) \mid V]\)</span> is a contrast, so it is zero at <span class="math inline">\(a = 0\)</span> and <span class="math inline">\(V\)</span>’s prognostic effect has cancelled – which is to say a blip function is what a fully interacted outcome model leaves behind once the contrast is taken.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="24.5">
+<h2 data-number="24.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.5</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Make the additive model fail on the average, not only in the subgroups.</strong> The chapter shows that the additive model targets a variance-weighted average that differs from the population average by about 0.33 mmHg here. Change the prescribing rule in <code>R/simulate_study2.R</code> so that treatment prevalence depends much more sharply on age (steepen the guideline), regenerate the study, and recompute both the variance-weighted and the population-average effect. How large can you make the gap while keeping every age stratum non-degenerate – that is, without violating positivity?</p></li>
+<li><p><strong>Shrinkage instead of omission.</strong> Take a random 300-patient subsample of the study and fit both <code>sbp ~ drug * age_c</code> and <code>sbp ~ drug + age_c</code>. At that sample size the interaction is poorly determined. Now refit the interaction model with <code>prior(normal(0, 2), class = "b", coef = "drug:age_c")</code> and with <code>prior(normal(0, 0.5), ...)</code>. Compare the marginal effect, the age-specific effects, and <code>loo</code> across all four fits. Which prior scale would you be prepared to defend in a methods section, and on what grounds?</p></li>
+<li><p><strong>Where a polynomial misbehaves.</strong> Fit the age curve with a fifth-order polynomial and with <code>s(age)</code>. Plot both fitted curves over the observed age range, and then over 35 to 95. Which extrapolates in a way you would be willing to put in a paper, and what property of each basis explains the difference?</p></li>
+<li><p><strong>Effect modification is not interaction on every scale.</strong> Refit the age-varying model on the difference scale as here, and then on the ratio scale by fitting the outcome with a log link. Report the age-specific effects both ways. Does the drug’s effect vary with age on both scales, on one, or on neither, and what does that imply about the phrase “there is an interaction”?</p></li>
+<li><p><strong>Restriction or reparameterisation?</strong> For each of <code>sbp ~ drug + drug:age_c</code>, <code>sbp ~ age_c + drug:age_c</code> and <code>sbp ~ 0 + drug:age_c</code> fitted to <code>study2</code>, predict from the formula alone whether it is a reparameterisation of <code>sbp ~ drug * age_c</code> or a restriction, then check with <code>ncol(model.matrix())</code> and <code>df.residual()</code>. Refit the two that are restrictions after recentring <code>age_c</code> on 70 instead of 62, and report which estimates move. Finally, coerce <code>drug</code> to a 0/1 numeric and repeat: which of the three formulas changes its meaning, and why?</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Franklin SS, Gustin W, Wong ND, Larson MG, Weber MA, Kannel WB, Levy D, “Hemodynamic patterns of age-related changes in blood pressure. The Framingham Heart Study,” <em>Circulation</em> 1997;96:308-315 (<a href="https://doi.org/10.1161/01.cir.96.1.308">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>It must be noted, though, that continuous interaction models require more data to accurately estimate the interaction term (the difference between slopes) than simple additive models.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The <strong>residual sum of squares</strong>, <span class="math inline">\(\text{RSS} = \sum_i (y_i - \hat{y}_i)^2\)</span>, adds up the squared distances between the observed values and the values the fitted model predicts for them. It is in the squared units of the outcome and has no natural scale, so one value on its own says little; what is informative is the comparison between fits to the same data. Chapter 20 derives where the quantity comes from: with a normal likelihood the log-likelihood contains the term <span class="math inline">\(-\sum_i \varepsilon_i^2 / 2\sigma^2\)</span>, so maximising that likelihood minimises RSS – a property of the normal likelihood rather than a separate principle. It is used here as an algebraic diagnostic and not as a criterion for choosing a model. Two parameterisations of one model produce identical fitted values and therefore identical RSS, so any movement in RSS establishes that the two formulas describe different models, which is what the tables below are built to show. One caution applies when models of different size are compared, as in the pure-interaction fit at the end of this subsection: adding a parameter can never increase RSS, so a small difference is expected and only a large one carries information. Model comparison proper is done with <code>loo</code>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>García-Closas M, Malats N, Silverman D, Dosemeci M, Kogevinas M, Hein DW, Tardón A, Serra C, Carrato A, García-Closas R, Lloreta J, Castaño-Vinyals G, Yeager M, Welch R, Chanock S, Chatterjee N, Wacholder S, Samanic C, Torà M, Fernández F, Real FX, Rothman N, “NAT2 slow acetylation, GSTM1 null genotype, and risk of bladder cancer: results from the Spanish Bladder Cancer Study and meta-analyses,” <em>Lancet</em> 2005;366:649-659 (<a href="https://doi.org/10.1016/S0140-6736(05)67137-1">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Knol MJ, VanderWeele TJ, “Recommendations for presenting analyses of effect modification and interaction,” <em>Int J Epidemiol</em> 2012;41:514-520 (<a href="https://doi.org/10.1093/ije/dyr218">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Piegorsch WW, Weinberg CR, Taylor JA, “Non-hierarchical logistic models and case-only designs for assessing susceptibility in population-based case-control studies,” <em>Stat Med</em> 1994;13:153-162 (<a href="https://doi.org/10.1002/sim.4780130206">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Joffe MM, “Structural nested models, g-estimation, and the healthy worker effect: the promise (mostly unrealized) and the pitfalls,” <em>Epidemiology</em> 2012;23:220-222 (<a href="https://doi.org/10.1097/EDE.0b013e318245f798">DOI</a>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Wallace MP, Moodie EEM, Stephens DA, “An R Package for G-estimation of Structural Nested Mean Models,” <em>Epidemiology</em> 2017;28:e18-e20 (<a href="https://doi.org/10.1097/EDE.0000000000000586">DOI</a>).<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>VanderWeele TJ, Robins JM, “The identification of synergism in the sufficient-component-cause framework,” <em>Epidemiology</em> 2007;18:329-339 (<a href="https://doi.org/10.1097/01.ede.0000260218.66432.88">DOI</a>).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch21b-bayesian-workflow.html" class="pagination-link" aria-label="The Bayesian workflow">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./08-glm.html" class="pagination-link" aria-label="Generalised linear models and the scale of effects">
+        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

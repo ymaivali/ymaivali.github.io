@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology - 4&nbsp; Rational thinking under certainty.</title>
+<title>The Bayesian Way to Causal Epidemiology - 3&nbsp; Rational thinking under certainty</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./05-rational-uncertainty.html" rel="next">
-<link href="./03-irrational-thinking.html" rel="prev">
+<link href="./02-causal-inference.html" rel="next">
+<link href="./ch02-thinking-under-uncertainty.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -81,7 +144,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-rational-certainty.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./04-rational-certainty.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -96,7 +159,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Methodology</a> 
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -112,61 +175,13 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Part I. How to think</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -174,38 +189,273 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -220,16 +470,31 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#an-historical-aside-tri-valued-logic" id="toc-an-historical-aside-tri-valued-logic" class="nav-link active" data-scroll-target="#an-historical-aside-tri-valued-logic"><span class="header-section-number">4.0.1</span> An historical aside: tri-valued logic</a></li>
+  <li><a href="#two-assumptions-generate-the-whole-calculus" id="toc-two-assumptions-generate-the-whole-calculus" class="nav-link active" data-scroll-target="#two-assumptions-generate-the-whole-calculus"><span class="header-section-number">3.1</span> Two assumptions generate the whole calculus</a></li>
+  <li><a href="#the-connectives-are-counted-not-chosen" id="toc-the-connectives-are-counted-not-chosen" class="nav-link" data-scroll-target="#the-connectives-are-counted-not-chosen"><span class="header-section-number">3.2</span> The connectives are counted, not chosen</a></li>
+  <li><a href="#one-connective-is-enough" id="toc-one-connective-is-enough" class="nav-link" data-scroll-target="#one-connective-is-enough"><span class="header-section-number">3.3</span> One connective is enough</a></li>
+  <li><a href="#entailment-truth-preserved-in-every-row" id="toc-entailment-truth-preserved-in-every-row" class="nav-link" data-scroll-target="#entailment-truth-preserved-in-every-row"><span class="header-section-number">3.4</span> Entailment: truth preserved in every row</a></li>
+  <li><a href="#assertion-as-a-contract-the-sure-loss-argument" id="toc-assertion-as-a-contract-the-sure-loss-argument" class="nav-link" data-scroll-target="#assertion-as-a-contract-the-sure-loss-argument"><span class="header-section-number">3.5</span> Assertion as a contract: the sure-loss argument</a></li>
+  <li><a href="#what-the-conditional-is-and-what-it-is-not" id="toc-what-the-conditional-is-and-what-it-is-not" class="nav-link" data-scroll-target="#what-the-conditional-is-and-what-it-is-not"><span class="header-section-number">3.6</span> What the conditional is, and what it is not</a></li>
+  <li><a href="#three-things-to-remember" id="toc-three-things-to-remember" class="nav-link" data-scroll-target="#three-things-to-remember"><span class="header-section-number">3.7</span> Three things to remember</a></li>
+  <li><a href="#the-strong-syllogisms-and-the-weak-ones" id="toc-the-strong-syllogisms-and-the-weak-ones" class="nav-link" data-scroll-target="#the-strong-syllogisms-and-the-weak-ones"><span class="header-section-number">3.8</span> The strong syllogisms and the weak ones</a></li>
+  <li><a href="#an-historical-aside-three-valued-logic" id="toc-an-historical-aside-three-valued-logic" class="nav-link" data-scroll-target="#an-historical-aside-three-valued-logic"><span class="header-section-number">3.9</span> An historical aside: three-valued logic</a></li>
+  <li><a href="#logic-and-rational-thought" id="toc-logic-and-rational-thought" class="nav-link" data-scroll-target="#logic-and-rational-thought"><span class="header-section-number">3.10</span> Logic and rational thought</a>
+  <ul class="collapse">
+  <li><a href="#gödels-theorem-a-limit-from-within" id="toc-gödels-theorem-a-limit-from-within" class="nav-link" data-scroll-target="#gödels-theorem-a-limit-from-within"><span class="header-section-number">3.10.1</span> Gödel’s theorem: a limit from within</a></li>
+  </ul></li>
+  <li><a href="#from-certainty-to-uncertainty" id="toc-from-certainty-to-uncertainty" class="nav-link" data-scroll-target="#from-certainty-to-uncertainty"><span class="header-section-number">3.11</span> From certainty to uncertainty</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">3.12</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.13</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./04-rational-certainty.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></h1>
 </div>
 
 
@@ -246,37 +511,398 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>If you have all the relevant data, without measurement error, bias, or anything else that might make it unreliable, then rational thinking is more or less the same thing as logical thinking. More precisely, propositional logic can be viewed a model of rational argument. Schematically, logical thinking looks like this:</p>
+<p>If you have all the relevant data, without measurement error, bias, or anything else that might make it unreliable, then rational thinking is more or less the same thing as logical thinking. More precisely, propositional logic can be viewed as a model of rational argument. Schematically, logical thinking looks like this:</p>
 <p>True premises -&gt; the algorithms of logic -&gt; true conclusions.</p>
 <p>The algorithms are used to convert premises into conclusions. If this is done correctly, then the truth of the conclusions is guaranteed as a logical necessity.</p>
 <p>For example:</p>
 <hr>
 <ul>
-<li><p>Premiss1: All men are mortal</p></li>
-<li><p>Premiss2: Socrates is a man</p></li>
+<li><p>Premiss 1: All men are mortal</p></li>
+<li><p>Premiss 2: Socrates is a man</p></li>
 <li><p>Conclusion: Socrates is mortal</p></li>
 </ul>
 <hr>
-<p>The algorithm is given by the truth table, and the logical rule is called the conditional, a.k.a. the implication:</p>
-<ul>
-<li></li>
-</ul>
-<p>If A then B (a.k.a. A -&gt; B)</p>
-<ul>
-<li></li>
-</ul>
-<p>The truth table is:</p>
-<ul>
-<li></li>
-</ul>
+<p>Strictly speaking, this syllogism belongs to predicate logic: “All men are mortal” is a statement about every member of a class, and analysing it requires quantifiers (“for all”, “there exists”). We stay one level lower, in propositional logic, which treats whole propositions as unanalysed units that are true or false. The propositional skeleton of the argument is: if Socrates is a man, then Socrates is mortal; Socrates is a man; therefore Socrates is mortal. Everything this chapter needs can be said at the propositional level.</p>
+<p>Rather than presenting propositional logic as a list of rules to be memorised, this chapter constructs it from two explicit assumptions, and then asks what the construction can and cannot do. The same strategy — state the assumptions, derive the calculus — is repeated for probability in Chapter 7, with one of the two assumptions weakened.</p>
+<section id="two-assumptions-generate-the-whole-calculus" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="two-assumptions-generate-the-whole-calculus"><span class="header-section-number">3.1</span> Two assumptions generate the whole calculus</h2>
+<p>The construction device, which we will reuse in Chapter 7, is due to Jaynes.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Imagine a robot: an idealised reasoner that we design ourselves, free of the biases catalogued in the previous chapter. The robot receives propositions — statements that are either true or false, such as “the patient was treated” or “the patient had a stroke within five years” — and must compute judgements about compound statements built from them. We give the robot two design specifications:</p>
+<ol type="1">
+<li><p><strong>Bivalence.</strong> Every proposition carries one of two values, TRUE or FALSE. There is no third value, and the robot is never permitted to answer “it depends” or “unknown”.</p></li>
+<li><p><strong>Truth-functionality.</strong> The truth value of a compound proposition is fully determined by the truth values of its parts. To evaluate “A AND B” the robot consults the value of A and the value of B, and nothing else — not their subject matter, not their history, not any causal relation between them.</p></li>
+</ol>
+<p>Everything in this chapter follows from these two specifications. Both are substantive assumptions, not platitudes. Bivalence fails for propositions whose truth is not yet settled — the historical aside at the end of this chapter — and it is the assumption that Part II of this book weakens. Truth-functionality fails for causal statements, as discussed below under the conditional, and repairing that failure requires the separate machinery of Part III. Each limit of the calculus can thus be traced to the assumption that produces it.</p>
+</section>
+<section id="the-connectives-are-counted-not-chosen" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="the-connectives-are-counted-not-chosen"><span class="header-section-number">3.2</span> The connectives are counted, not chosen</h2>
+<p>A truth table lists every possible assignment of truth values to the elementary propositions. With two propositions A and B there are four rows: both true, only A true, only B true, neither true. Each row is one possible state of the world, as far as A and B are concerned, and together the rows are a complete case analysis: whatever the world is like, it is described by one of the rows.</p>
+<p>By truth-functionality, a connective is a rule that fills in one output column of such a table. The familiar connectives are:</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>tf <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">ifelse</span>(x, <span class="st">"T"</span>, <span class="st">"F"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">A =</span> <span class="fu">tf</span>(a), <span class="at">B =</span> <span class="fu">tf</span>(b),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">NOT A</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(<span class="sc">!</span>a),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">A AND B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(a <span class="sc">&amp;</span> b),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">A OR B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(a <span class="sc">|</span> b),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">A -&gt; B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(<span class="sc">!</span>a <span class="sc">|</span> b),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">A IFF B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(a <span class="sc">==</span> b)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">A</th>
 <th style="text-align: left;">B</th>
-<th style="text-align: left;">if A then B</th>
+<th style="text-align: left;">NOT A</th>
+<th style="text-align: left;">A AND B</th>
+<th style="text-align: left;">A OR B</th>
+<th style="text-align: left;">A -&gt; B</th>
+<th style="text-align: left;">A IFF B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>NOT A is true when A is false. A AND B is true only in the row where both parts are true. A OR B is false only in the row where both parts are false (this is the inclusive “or”: one or the other or both). The conditional A -&gt; B and the biconditional A IFF B are discussed in their own section below. In the logical literature these connectives are written <span class="math inline">\(\lnot A\)</span>, <span class="math inline">\(A \land B\)</span>, <span class="math inline">\(A \lor B\)</span>, <span class="math inline">\(A \to B\)</span> and <span class="math inline">\(A \leftrightarrow B\)</span>; we keep the word forms, which match the R output.</p>
+<p>The two design specifications do more than license these particular connectives: they fix the complete inventory. A connective with two inputs must assign T or F to each of the four rows, so there are <span class="math inline">\(2^4 = 16\)</span> possible binary connectives — no fewer, no more, and none outside the following table. The same counting works at any arity: there are four unary connectives (of which only negation deserves a name) and, in general, <span class="math inline">\(2^{2^n}\)</span> connectives of <span class="math inline">\(n\)</span> inputs. The systematic study of all truth functions goes back to Post.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pat <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">paste</span>(<span class="fu">tf</span>(x), <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>key <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">always TRUE (tautology)</span><span class="st">`</span>       <span class="ot">=</span> <span class="fu">pat</span>(<span class="fu">rep</span>(<span class="cn">TRUE</span>, <span class="dv">4</span>)),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A OR B</span><span class="st">`</span>                        <span class="ot">=</span> <span class="fu">pat</span>(a <span class="sc">|</span> b),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">B -&gt; A</span><span class="st">`</span>                        <span class="ot">=</span> <span class="fu">pat</span>(<span class="sc">!</span>b <span class="sc">|</span> a),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A, regardless of B</span><span class="st">`</span>            <span class="ot">=</span> <span class="fu">pat</span>(a),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A -&gt; B</span><span class="st">`</span>                        <span class="ot">=</span> <span class="fu">pat</span>(<span class="sc">!</span>a <span class="sc">|</span> b),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">B, regardless of A</span><span class="st">`</span>            <span class="ot">=</span> <span class="fu">pat</span>(b),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A IFF B</span><span class="st">`</span>                       <span class="ot">=</span> <span class="fu">pat</span>(a <span class="sc">==</span> b),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A AND B</span><span class="st">`</span>                       <span class="ot">=</span> <span class="fu">pat</span>(a <span class="sc">&amp;</span> b),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A NAND B</span><span class="st">`</span>                      <span class="ot">=</span> <span class="fu">pat</span>(<span class="sc">!</span>(a <span class="sc">&amp;</span> b)),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A XOR B</span><span class="st">`</span>                       <span class="ot">=</span> <span class="fu">pat</span>(<span class="fu">xor</span>(a, b)),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">NOT B</span><span class="st">`</span>                         <span class="ot">=</span> <span class="fu">pat</span>(<span class="sc">!</span>b),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">NOT (A -&gt; B)</span><span class="st">`</span>                  <span class="ot">=</span> <span class="fu">pat</span>(a <span class="sc">&amp;</span> <span class="sc">!</span>b),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">NOT A</span><span class="st">`</span>                         <span class="ot">=</span> <span class="fu">pat</span>(<span class="sc">!</span>a),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">NOT (B -&gt; A)</span><span class="st">`</span>                  <span class="ot">=</span> <span class="fu">pat</span>(<span class="sc">!</span>a <span class="sc">&amp;</span> b),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A NOR B</span><span class="st">`</span>                       <span class="ot">=</span> <span class="fu">pat</span>(<span class="sc">!</span>(a <span class="sc">|</span> b)),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">always FALSE (contradiction)</span><span class="st">`</span>  <span class="ot">=</span> <span class="fu">pat</span>(<span class="fu">rep</span>(<span class="cn">FALSE</span>, <span class="dv">4</span>)))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>sixteen <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">0</span>, <span class="cf">function</span>(k) {</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">as.logical</span>(<span class="fu">intToBits</span>(k))[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">f =</span> <span class="fu">paste0</span>(<span class="st">"f"</span>, k),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A=T,B=T</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(out[<span class="dv">1</span>]),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A=T,B=F</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(out[<span class="dv">2</span>]),</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A=F,B=T</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(out[<span class="dv">3</span>]),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">A=F,B=F</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(out[<span class="dv">4</span>]),</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">reads as</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">names</span>(key)[<span class="fu">match</span>(<span class="fu">pat</span>(out), key)])</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>sixteen <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">f</th>
+<th style="text-align: left;">A=T,B=T</th>
+<th style="text-align: left;">A=T,B=F</th>
+<th style="text-align: left;">A=F,B=T</th>
+<th style="text-align: left;">A=F,B=F</th>
+<th style="text-align: left;">reads as</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">f15</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">always TRUE (tautology)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f14</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">A OR B</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f13</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">B -&gt; A</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f12</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">A, regardless of B</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f11</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">A -&gt; B</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f10</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">B, regardless of A</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f9</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">A IFF B</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f8</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">A AND B</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f7</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">A NAND B</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f6</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">A XOR B</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f5</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">NOT B</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f4</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">NOT (A -&gt; B)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f3</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">NOT A</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f2</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">NOT (B -&gt; A)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f1</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">A NOR B</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f0</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">always FALSE (contradiction)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The index of each function is its output column read as a binary number (T = 1, F = 0), so the enumeration is mechanical and provably exhaustive. Note that the table contains every connective we introduced, several that merely repeat or negate an input, and two degenerate cases — the tautology, which is true in every row, and the contradiction, which is true in none.</p>
+</section>
+<section id="one-connective-is-enough" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="one-connective-is-enough"><span class="header-section-number">3.3</span> One connective is enough</h2>
+<p>Logical implication is a convenience rule rather than a fundamental rule of logic. The whole of propositional logic can be generated from several small sets of connectives: {AND, NOT}, {OR, NOT}, or even the single connective NAND — NOT(A AND B) — or the single connective NOR.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> This is why one can build computers that use a single type of logic gate. A NAND gate’s output is up when at least one of the inputs is down, and down when both inputs are up; by combining NAND gates one can create any logic function. The following table verifies the constructions of NOT, AND and OR from NAND alone — and since {AND, NOT} generate everything, so does NAND:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nand <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) <span class="sc">!</span>(x <span class="sc">&amp;</span> y)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">A =</span> <span class="fu">tf</span>(a), <span class="at">B =</span> <span class="fu">tf</span>(b),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">NOT A</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(<span class="sc">!</span>a),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">NAND(A, A)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(<span class="fu">nand</span>(a, a)),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">A AND B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(a <span class="sc">&amp;</span> b),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">NAND(NAND(A,B), NAND(A,B))</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(<span class="fu">nand</span>(<span class="fu">nand</span>(a, b), <span class="fu">nand</span>(a, b))),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">A OR B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(a <span class="sc">|</span> b),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">NAND(NAND(A,A), NAND(B,B))</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(<span class="fu">nand</span>(<span class="fu">nand</span>(a, a), <span class="fu">nand</span>(b, b)))) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 6%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 29%">
+<col style="width: 7%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">A</th>
+<th style="text-align: left;">B</th>
+<th style="text-align: left;">NOT A</th>
+<th style="text-align: left;">NAND(A, A)</th>
+<th style="text-align: left;">A AND B</th>
+<th style="text-align: left;">NAND(NAND(A,B), NAND(A,B))</th>
+<th style="text-align: left;">A OR B</th>
+<th style="text-align: left;">NAND(NAND(A,A), NAND(B,B))</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In each pair of columns the target connective and its NAND construction agree row by row, which is the only sense of “equality” a truth-functional system has.</p>
+</section>
+<section id="entailment-truth-preserved-in-every-row" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="entailment-truth-preserved-in-every-row"><span class="header-section-number">3.4</span> Entailment: truth preserved in every row</h2>
+<p>The truth table also defines what a valid argument is. An argument from premises to a conclusion is <strong>valid</strong> — the premises <strong>entail</strong> the conclusion — when every row that makes all the premises true also makes the conclusion true. Because the rows are a complete case analysis, validity can be checked mechanically: write out the table, find the rows where the premises all hold, inspect the conclusion there. The Socrates argument in its propositional form is the pattern called <em>modus ponens</em>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">A =</span> <span class="fu">tf</span>(a), <span class="at">B =</span> <span class="fu">tf</span>(b),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">premise 1: A -&gt; B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(<span class="sc">!</span>a <span class="sc">|</span> b),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">premise 2: A</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(a),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">all premises true</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>((<span class="sc">!</span>a <span class="sc">|</span> b) <span class="sc">&amp;</span> a),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">conclusion: B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">tf</span>(b)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 26%">
+<col style="width: 18%">
+<col style="width: 26%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">A</th>
+<th style="text-align: left;">B</th>
+<th style="text-align: left;">premise 1: A -&gt; B</th>
+<th style="text-align: left;">premise 2: A</th>
+<th style="text-align: left;">all premises true</th>
+<th style="text-align: left;">conclusion: B</th>
 </tr>
 </thead>
 <tbody>
@@ -284,8 +910,14 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: left;">T</td>
 <td style="text-align: left;">T</td>
 <td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
 <td style="text-align: left;">T</td>
 <td style="text-align: left;">F</td>
 <td style="text-align: left;">F</td>
@@ -294,32 +926,229 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: left;">F</td>
 <td style="text-align: left;">T</td>
 <td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">F</td>
 <td style="text-align: left;">F</td>
 <td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>The conditional is FALSE if and only if A is TRUE and B is FALSE. In all other cases the conclusion is TRUE. A -&gt; B does not mean that B is logically deducible from A. So, in any everyday meaning of the word, A does not imply B. All A -&gt; B means is that A and B have the same truth value. In formal logic every true statement implies every other true statement.</p>
-<p>Logical implication is a convenience rule rather than a fundamental rule of logic. The whole of propositional logic can be deduced from any of several sets of simpler rules, including {conjunction and negation}, {NAND – not(A and B)}, {NOR – not(A or B)}. This is why you can build computers that have a single type of logic gate. For example, a NAND gate’s output is up when at least one of the inputs is down, and down if both inputs are up. By combining NAND gates one can create any logic function.</p>
-<p>Three things to remember:</p>
+<p>Only the first row makes both premises true, and in that row the conclusion is true; the argument is valid. Note what validity does and does not promise. It transmits truth: <em>if</em> the premises are true, the conclusion is true. If a premise is false, a valid argument promises nothing about the conclusion — the guarantee in the schema at the start of this chapter requires both the true premises and the correct algorithm.</p>
+<p>A set of propositions is <strong>consistent</strong> when at least one row makes all of them true, and <strong>inconsistent</strong> when no row does. Inconsistency has a drastic consequence: by the definition just given, an inconsistent set entails every proposition whatsoever, because there is no row where all the premises hold and the conclusion fails. A single contradiction therefore does not produce one wrong conclusion; it removes the distinction between conclusions and non-conclusions.</p>
+<p>Checking validity row by row and deriving conclusions step by step from rules (such as repeated modus ponens) are two different procedures, and it is a theorem, not an accident, that they agree: every argument derivable by the standard rules is valid in the tables, and every tabularly valid argument is derivable. This completeness result for propositional logic is also due to Post, in the same 1921 paper.</p>
+</section>
+<section id="assertion-as-a-contract-the-sure-loss-argument" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="assertion-as-a-contract-the-sure-loss-argument"><span class="header-section-number">3.5</span> Assertion as a contract: the sure-loss argument</h2>
+<p>The truth-table definition of consistency has an operational counterpart, which we set out here because the book reuses it under uncertainty (Chapter 7). Read an assertion as a contract: by asserting a proposition, you accept a penalty of one unit, payable if the proposition turns out false. Denying B — asserting NOT B — means you pay one unit if B turns out true.</p>
+<p>Suppose you assert all three of: A -&gt; B, A, and NOT B.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>loss <span class="ot">&lt;-</span> <span class="cf">function</span>(true) <span class="fu">ifelse</span>(true, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">A =</span> <span class="fu">tf</span>(a), <span class="at">B =</span> <span class="fu">tf</span>(b),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">assert A -&gt; B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">loss</span>(<span class="sc">!</span>a <span class="sc">|</span> b),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">assert A</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">loss</span>(a),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">assert NOT B</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">loss</span>(<span class="sc">!</span>b)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">net payoff</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">assert A -&gt; B</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">assert A</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">assert NOT B</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">A</th>
+<th style="text-align: left;">B</th>
+<th style="text-align: right;">assert A -&gt; B</th>
+<th style="text-align: right;">assert A</th>
+<th style="text-align: right;">assert NOT B</th>
+<th style="text-align: right;">net payoff</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">-1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">-2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In every row the net payoff is negative: you pay at least one unit no matter how the world turns out. The loss is guaranteed by the form of the commitments alone, before any facts are in. This is what inconsistency means under the contract reading: a set of assertions is inconsistent when its penalty table has no zero-loss row, and consistent when at least one row leaves you unharmed. Entailment can be restated the same way: A entails B when asserting A while denying B is a guaranteed loss.</p>
+<p>In this chapter commitments come in only two strengths — full assertion or none. Chapter 7 allows graded commitments, bets at any odds between 0 and 1, and shows that the requirement of avoiding guaranteed loss then forces the sum and product rules of probability. That result is the Dutch book argument.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The penalty table above is its limiting case under certainty, and the parallel is worth stating in one line: inconsistency is a sure loss under certainty; incoherence is a sure loss under uncertainty.</p>
+<p>One caveat applies to the sure-loss argument here, to the Dutch book, and equally to the desiderata route of Chapter 7. The argument reasons by cases over the rows of a truth table, and reasoning by cases is itself classical logic; a derivation of logic that uses logic is not a creation from nothing. What such constructions deliver is a short, explicit list of assumptions from which the calculus follows — so that when a rule is questioned, the question can be redirected to the assumption that produces it. That is the sense of “from first principles” used throughout this book.</p>
+</section>
+<section id="what-the-conditional-is-and-what-it-is-not" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="what-the-conditional-is-and-what-it-is-not"><span class="header-section-number">3.6</span> What the conditional is, and what it is not</h2>
+<p>The conditional A -&gt; B is FALSE if and only if A is TRUE and B is FALSE; in all other cases it is TRUE. It rules out one row of the table — the row where A holds and B fails — and asserts nothing more. In particular, A -&gt; B does not say that B is deducible from A, that A is evidence for B, or that A brings B about. When B is true, A -&gt; B is true whatever A is about; when A is false, A -&gt; B is true whatever B is about. “If the Moon is made of cheese, then Tartu is in Estonia” is a true proposition, and in formal logic every true statement implies every other true statement. These so-called paradoxes of material implication are not defects of the calculus. They follow from truth-functionality: an “if” that may consult only two truth values has f11 in the table of sixteen as its only reasonable candidate, and f11 is what the candidate can do.</p>
+<p>The everyday “if” is a different object, because it routinely carries causal content. Consider: “if the patient had not been treated, she would have had a stroke”. This is a <strong>counterfactual conditional</strong>. For a treated patient the antecedent is false, so the material reading makes the sentence automatically true — and it makes the opposite sentence, “if the patient had not been treated, she would <em>not</em> have had a stroke”, automatically true as well. Both cannot be informative, yet for a clinician one of them states the effect of the treatment and the other denies it. The truth of a counterfactual depends on what <em>would have happened</em> in an unrealised case, and that is not a function of the actual truth values of its parts. The counterfactual “if” violates truth-functionality, and no reassignment of rows can repair it, because the defect is in the inputs, not the output column. The machinery for such sentences — potential outcomes — is built in Part III (Chapter 10), after the ground is prepared in Chapter 4.</p>
+</section>
+<section id="three-things-to-remember" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="three-things-to-remember"><span class="header-section-number">3.7</span> Three things to remember</h2>
 <ol type="1">
-<li><p>The concept of causality is not encoded in logic. Logic is about co-occurrence of A and B; it cannot even express the thought that A might be a cause of B. Mathematical description of causal relations is its own thing, independent of classical logic and probability theory and statistical inference. We will come to it later.</p></li>
-<li><p>Propositional logic is monotonic, meaning that once a conclusion is achieved, then it cannot in principle be changed. Getting new data after forming one’s conclusions makes no difference – once you have a conclusion, this conclusion stands forever.</p></li>
-<li><p>Logic is deductive, like mathematics – it essentially provides risk-free arguments with the downside being that technically no new information can be bought into being via logical argument. Logic is an axiomatic system, like geometry. From axioms one can deduce theorems, a.k.a. rules for doing stuff, but these rules are already embedded in the axioms.</p></li>
+<li><p>The concept of causality is not encoded in logic. Logic is about co-occurrence of A and B; it cannot even express the thought that A might be a cause of B. As the previous section shows, this is not an omission that a better connective could fix: causal conditionals violate truth-functionality itself. The mathematical description of causal relations is its own subject, independent of classical logic, probability theory and statistical inference (Chapter 4 and Part III).</p></li>
+<li><p>Propositional logic is monotonic, meaning that once a conclusion is achieved, it cannot in principle be changed. Getting new data after forming one’s conclusions makes no difference — once you have a conclusion, this conclusion stands forever.</p></li>
+<li><p>Logic is deductive, like mathematics — it provides risk-free arguments, with the downside that technically no new information can be brought into being by a logical argument. Logic is an axiomatic system, like geometry. From axioms one can deduce theorems, a.k.a. rules for doing stuff, but these rules are already embedded in the axioms.</p></li>
 </ol>
-<p>The previous points show that while the rules of logic can be important for the general structure of scientific argument (the most basic of them being that a thing cannot be TRUE and FALSE at the same time), they are clearly not sufficient for explaining, or modelling, or prescribing the scientific argument. This does not mean that a scientific argument is extra-logical or illogical, it merely means that we need an expanded non-monotonic logic that can deal with uncertainty.</p>
-<p>We need an expanded of logic that allows to make risky conclusions under uncertain information. This expanded logic must reduce into classical logic, when uncertainty is reduced to certainty. The “risky” part means that the expanded logic must be inductive – it must be able to generalize from particular data (countable instances of something happening) to general conclusions. Obviously, these general conclusions cannot be certain (uncertainty can never beget certainty), which leads us to the next requirement: the new logic must be able to quantify uncertainty – to give it numerical values.</p>
-<p>This expanded logic is called probability theory, and it quantifies uncertainty as probabilities. Probabilities are real numbers between 0 and 1 that conform to certain mathematical rules, which we describe later in chapter …</p>
-<section id="an-historical-aside-tri-valued-logic" class="level3" data-number="4.0.1">
-<h3 data-number="4.0.1" class="anchored" data-anchor-id="an-historical-aside-tri-valued-logic"><span class="header-section-number">4.0.1</span> An historical aside: tri-valued logic</h3>
-<p>In 1465 Peter de Rivo of the University of Louvain was asked by a student a thorny question: after Christ had told to St Peter “Thou will deny me thrice”, could St Peter, in principle, not denied Christ? If the answer had been “No”, then the de Rivo would have committed the heresy of determinism (without free will there is little point in christian doctrine of salvation). On the other hand, had the answer been “Yes”, that would have made Christ a liar, at least potentially so. In the event, the professors answer was “yes, St Peter had the power to not deny Christ, but this would not have made Christ a liar because his utterance to St Peter was neither true nor false, but has neutral truth value. And the contradictory truth value for a neutral statement is itself neutral. Accordingly, if you claimed that St Peter did not deny Christ, then your claim would be heretical only if it is false (in the sense that St Peter actually denied Christ as predicted). Thus, for a prediction about tomorrow to be true today, it must be unpreventably so.”Either there is no present and actual truth in the articles of faith about the future, or what they say is something that even a divine power cannot prevent.” This trivalent logic was condemned by the Pope in 1474, not to reemerge until the 20th century. The proof that we can build a self-contained probabilitistic logic where between True and False lie the infinite set of real numbers between 0 and 1, so that this logic is fully compatible with the traditional bivalent logic, had to wait until the middle of 20th century.</p>
+</section>
+<section id="the-strong-syllogisms-and-the-weak-ones" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="the-strong-syllogisms-and-the-weak-ones"><span class="header-section-number">3.8</span> The strong syllogisms and the weak ones</h2>
+<p>Classical logic licenses two inference patterns built on the conditional, which Jaynes calls the strong syllogisms:</p>
+<ul>
+<li><p><strong>Modus ponens.</strong> A -&gt; B; A is true; therefore B is true.</p></li>
+<li><p><strong>Modus tollens.</strong> A -&gt; B; B is false; therefore A is false.</p></li>
+</ul>
+<p>Both are valid in the truth-table sense, as checked above. But everyday and scientific reasoning constantly uses two further patterns, which Pólya called the weak syllogisms:<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<ul>
+<li><p>A -&gt; B; B is true; therefore A becomes <em>more plausible</em>.</p></li>
+<li><p>A -&gt; B; A is false; therefore B becomes <em>less plausible</em>.</p></li>
+</ul>
+<p>A clinical example: suppose that if the patient has the disease, the antigen test is positive. The test comes back positive. The patient’s having the disease has not been proved — other conditions can also produce a positive test — but the result is evidence that bears on the diagnosis. As a classical inference this is the fallacy of affirming the consequent; as a description of how evidence accumulates, it is the daily operation of diagnosis, and of science generally.</p>
+<p>Classical logic is not wrong about the weak syllogisms; it is silent about them. The conclusion “more plausible” is not TRUE or FALSE, so a bivalent calculus has no place to put it. This silence is the design specification for Part II: we need a calculus that reproduces the strong syllogisms as limiting cases and gives numerical content to the weak ones — by how much does a positive test raise the plausibility of disease? Chapters 5 and 7 construct that calculus by two independent routes, and Chapter 8 supplies the number (the weight of evidence).</p>
+</section>
+<section id="an-historical-aside-three-valued-logic" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="an-historical-aside-three-valued-logic"><span class="header-section-number">3.9</span> An historical aside: three-valued logic</h2>
+<p>In 1465 Peter de Rivo of the University of Louvain was asked by a student a thorny question: after Christ had told St Peter “Thou wilt deny me thrice”, could St Peter, in principle, have refrained from denying Christ? If the answer had been “No”, then de Rivo would have committed the heresy of determinism (without free will there is little point in the Christian doctrine of salvation). On the other hand, had the answer been “Yes”, that would have made Christ a liar, at least potentially so. In the event, the professor’s answer was that St Peter did have the power not to deny Christ, but that this would not have made Christ a liar, because Christ’s utterance to St Peter was neither true nor false: it had a neutral truth value, and the contradictory of a neutral statement is itself neutral. Accordingly, the claim that St Peter did not deny Christ would be heretical only if it were false (in the sense that St Peter actually denied Christ as predicted). For a prediction about tomorrow to be true today, it must be unpreventably so: “Either there is no present and actual truth in the articles of faith about the future, or what they say is something that even a divine power cannot prevent.” This three-valued logic was condemned by the Pope in 1474, and the idea did not re-emerge until the twentieth century.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>The twentieth-century return happened in two steps, and the second connects directly to this chapter’s contract reading of assertion. Łukasiewicz published the first formal three-valued logic in 1920, with the third value read as “possible” and motivated by the same problem of future contingents that had been argued at Louvain.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> Then consider a bet on B made conditional on A: the bet is won if A and B are both true, lost if A is true and B is false, and called off, with the stake returned, if A is false. The called-off bet is neither a win nor a loss — a third outcome, forced by the structure of the contract. De Finetti developed this three-outcome structure into a logic of conditional events,<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> and the called-off bet reappears in Chapter 7 as the operational definition of conditional probability.</p>
+<p>The proof that we can build a self-contained probabilistic logic, in which between TRUE and FALSE lie the real numbers between 0 and 1, and which is fully compatible with the traditional bivalent logic, had to wait until the middle of the twentieth century.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Varieties of logic">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Varieties of logic
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Propositional logic is one member of a family of formal systems. The family is organised by a single question: which of this chapter’s assumptions does each system keep, and which does it relax?</p>
+<ul>
+<li><p><strong>Propositional logic</strong> keeps bivalence and truth-functionality. It is consistent, complete and decidable: a truth table settles any question in a finite number of steps.</p></li>
+<li><p><strong>Predicate logic</strong> adds quantifiers (“for all”, “there exists”), which the Socrates syllogism needs in its original form. It keeps bivalence and completeness but loses decidability: no mechanical procedure exists that delivers a verdict on every argument in a finite number of steps.</p></li>
+<li><p><strong>Modal logics</strong> add the operators “necessarily” and “possibly”, which are not truth-functional: the truth value of “possibly A” is not determined by the truth value of A. Systems with the same structure handle time (“eventually A”), obligation (“A is required”) and knowledge (“the agent knows A”).</p></li>
+<li><p><strong>Many-valued logics</strong> relax bivalence, admitting a third truth value (the historical aside above) or more. <strong>Fuzzy logic</strong> admits a continuum: “the patient is hypertensive” can hold to degree 0.7. The degree measures how far a vague predicate applies; it is not a probability, which is a graded belief about a proposition that is itself either true or false.</p></li>
+<li><p><strong>Intuitionistic logic</strong> reads “A is true” as “A has a proof” and therefore gives up the law of excluded middle: when neither a proof nor a refutation of A exists, A OR NOT A cannot be asserted. It is the working logic of constructive mathematics.</p></li>
+<li><p><strong>Non-monotonic logics</strong> relax monotonicity (point 2 of “Three things to remember”): adding a premise can remove a conclusion. The standard example: birds fly, Tweety is a bird, so Tweety flies; on learning that Tweety is a penguin, the conclusion is withdrawn rather than contradicted. Classical logic cannot represent this pattern, yet it is the routine form of clinical judgement — a working diagnosis is held until further findings displace it. Formal versions (default logic, circumscription) were developed in artificial-intelligence research.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> They are qualitative: they state when a default conclusion is blocked, but not how much plausibility it loses.</p></li>
+<li><p><strong>Probability theory</strong> (Part II) is also a non-monotonic extension of classical logic, and a quantitative one: conditioning on new data moves the plausibility of a conclusion by a stated amount, and classical logic is recovered at the endpoints 0 and 1. Among the systems in this list, it is the one that satisfies the requirements collected at the end of this chapter, which is why this book adopts it.</p></li>
+</ul>
+<p>The list shows that “logic” names a family of calculi, not a single doctrine. Each member is generated by assumptions, as in this chapter, and the choice among them is a question of which assumptions fit the reasoning task at hand.</p>
+</div>
+</div>
+</section>
+<section id="logic-and-rational-thought" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="logic-and-rational-thought"><span class="header-section-number">3.10</span> Logic and rational thought</h2>
+<p>This chapter opened with the claim that, under certainty, rational thinking is more or less logical thinking. With the calculus in hand, the claim can be assessed. Three observations separate logic from a complete account of rational thought, and a theorem of Gödel’s limits the deductive ideal on its own ground.</p>
+<p>First, logic evaluates form, not content. A valid argument transmits the truth of the premises to the conclusion; it does not certify any premise. In the schema at the start of this chapter — true premises, correct algorithm, true conclusions — logic is responsible only for the algorithm. Whether the premises deserve belief is decided by measurement, study design and prior evidence, and none of that work is deductive.</p>
+<p>Second, logic does not rank its conclusions. From any premise, infinitely many conclusions follow validly: A entails A OR B for every B whatsoever. Validity does not order this unbounded set by relevance or use, and derivation costs time. Which consequences are worth deriving depends on the reasoner’s goals, and the calculus does not represent goals. Rational thought is purposive; validity is indifferent to purpose.</p>
+<p>Third, as a description of human reasoning, classical logic fails, and the failure is itself informative. In Wason’s selection task, the subject sees four cards showing A, K, 4 and 7, is told that every card has a letter on one side and a number on the other, and must select all the cards, and only the cards, that need to be turned over to test the rule “if a card has a vowel on one side, then it has an even number on the other side”.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> The rule can be refuted only by a card carrying a vowel and an odd number, and only the A card and the 7 card could turn out to be such a card; the K and the 4 cannot, since the rule says nothing about consonants and does not claim that an even number must have a vowel on its reverse. Only a small minority of subjects select A and 7; the most common choices are A alone, or A together with 4. Turning the 4 in the expectation that a vowel behind it would support the rule is the fallacy of affirming the consequent — a weak syllogism treated as if it were strong.</p>
+<p>Oaksford and Chater showed that the same behaviour has a different status under a different standard.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> Read the task as inductive hypothesis testing: which cards are expected to yield the most information about whether the rule holds, in a world where vowels and even numbers are rare? Under that reading, the expected information gain of the four cards reproduces the order in which subjects actually choose them, and turning the 4 is close to optimal data selection. The same choice is a fallacy relative to the deductive standard and a near-optimal experiment relative to the informational one. A verdict of irrationality is therefore always relative to a normative standard, and the standard must be named. The biases catalogued in the previous chapter are read, in this book, against the standard built in Part II.</p>
+<section id="gödels-theorem-a-limit-from-within" class="level3" data-number="3.10.1">
+<h3 data-number="3.10.1" class="anchored" data-anchor-id="gödels-theorem-a-limit-from-within"><span class="header-section-number">3.10.1</span> Gödel’s theorem: a limit from within</h3>
+<p>Propositional logic is consistent, complete and decidable. In the early twentieth century it was a live ambition — associated with Hilbert’s programme and with Russell and Whitehead’s <em>Principia Mathematica</em> — to extend this situation to the whole of mathematics: to fix a list of axioms and mechanical rules from which every mathematical truth follows, and to prove, by elementary means, that the system is consistent. Had the ambition succeeded, rationality in mathematics would have been reduced to computation: every question settled, in principle, by running the rules.</p>
+<p>In 1931 Gödel proved that this cannot be done.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> Take any formal system that (i) is consistent, (ii) has a mechanically checkable list of axioms and rules, and (iii) is expressive enough to state elementary arithmetic — whole numbers with addition and multiplication. Gödel’s <strong>first incompleteness theorem</strong> states that such a system contains a sentence of arithmetic that the system can neither prove nor refute; on the standard reading of arithmetic, the sentence is true. The <strong>second incompleteness theorem</strong> identifies one such sentence: the statement that the system itself is consistent. A consistent system of this strength cannot prove its own consistency.</p>
+<p>The argument can be given in outline. Gödel encoded sentences and proofs as numbers, so that “sentence number n is provable in this system” became itself a sentence of arithmetic, and he constructed a sentence G that, under the encoding, states “G is not provable in this system”. Suppose, for simplicity, that the system proves only true sentences. Then G cannot be provable, since a proof would make G false. So G is unprovable — which is what G states, so G is true: a true sentence the system cannot reach. Gödel’s published proof replaces the assumption that the system proves only truths with a weaker consistency assumption, at the price of a longer argument; the conclusion stands. An accessible book-length account is Nagel and Newman’s.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<p>Two boundaries on the result should be stated, because the theorem attracts overstatement. It applies to formal systems satisfying conditions (i)–(iii);<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> it does not say that mathematical knowledge is unreliable, and the mathematics used in this book is unaffected by it in practice. Nor does it establish, by itself, any claim about human minds exceeding machines; such extensions require additional premises that are themselves disputed.</p>
+<p>What the theorem does establish, for this chapter’s question, is narrow and definite: the identification of rationality with derivation inside one fixed formal system fails even in pure mathematics, the most favourable case available to it. With the axioms held certain, no such system reaches every truth of its own domain, and no such system certifies its own consistency; the reasons for trusting a formal system are always partly outside the system. This book proceeds accordingly: the present chapter derived logic from two assumptions, and Chapter 7 derives probability from a short list of desiderata, but in both cases the assumptions are defended by argument about the reasoning task, not proved within the calculus they generate.</p>
+<p>None of this demotes logic. Deductive structure is what makes a scientific argument checkable, and the requirement that conclusions follow from stated premises is not negotiable. The conclusions of this section are specific: logic does not supply premises, does not rank conclusions, does not describe human reasoners. A normative account of scientific reasoning must therefore extend deduction rather than reproduce it, and the next section lists what the extension must do.</p>
+</section>
+</section>
+<section id="from-certainty-to-uncertainty" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="from-certainty-to-uncertainty"><span class="header-section-number">3.11</span> From certainty to uncertainty</h2>
+<p>The previous sections show that while the rules of logic are important for the general structure of scientific argument (the most basic of them being that a thing cannot be TRUE and FALSE at the same time), they are clearly not sufficient for explaining, or modelling, or prescribing the scientific argument. This does not mean that a scientific argument is extra-logical or illogical; it means that we need an expanded, non-monotonic logic that can deal with uncertainty.</p>
+<p>Collecting the requirements accumulated over this chapter, the expanded logic must:</p>
+<ol type="1">
+<li><p>reduce to classical logic when uncertainty is reduced to certainty;</p></li>
+<li><p>be inductive — able to generalise from particular data to general conclusions — and therefore non-monotonic: new data must be able to revise a conclusion;</p></li>
+<li><p>quantify uncertainty, giving it numerical values, since general conclusions drawn from particular data cannot be certain (uncertainty can never beget certainty);</p></li>
+<li><p>license the weak syllogisms: when A -&gt; B holds and B is observed, the calculus must say by how much A gains in plausibility;</p></li>
+<li><p>protect its user from sure loss, in the contract sense of this chapter, when commitments come in degrees.</p></li>
+</ol>
+<p>This expanded logic is probability theory, and it quantifies uncertainty as probabilities — real numbers between 0 and 1 that conform to a small set of rules. Chapters 5 and 7 derive those rules twice, by two independent routes: from counting (Pascal and Fermat, formalised by Kolmogorov, in Chapter 5), and from desiderata on the robot’s degrees of plausibility (Cox and Jaynes, in Chapter 7); the Dutch book argument, also in Chapter 7, shows that the same rules are forced by the no-sure-loss requirement. That such different starting points yield one calculus is the main reason for taking that calculus seriously as the logic of science.</p>
+</section>
+<section id="key-points" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="key-points"><span class="header-section-number">3.12</span> Key points</h2>
+<ul>
+<li>Classical propositional logic follows from two design assumptions: <strong>bivalence</strong> (every proposition is TRUE or FALSE) and <strong>truth-functionality</strong> (the value of a compound depends only on the values of its parts).</li>
+<li>The connectives are not a convention but a count: <span class="math inline">\(2^{2^n}\)</span> connectives of <span class="math inline">\(n\)</span> inputs, sixteen binary ones; small sets generate all of them, and <strong>NAND</strong> alone suffices.</li>
+<li><strong>Entailment</strong> is truth preservation in every row of the truth table; <strong>consistency</strong> is the existence of a row that makes all the propositions true. Both are checked by complete, mechanical case analysis.</li>
+<li>Under the contract reading of assertion, <strong>inconsistency is a guaranteed loss</strong>; the same argument with graded commitments is the Dutch book (Chapter 7).</li>
+<li>The material conditional rules out one row and asserts nothing more. The causal and counterfactual “if” of everyday language is <strong>not truth-functional</strong>; it requires the potential-outcomes machinery of Part III.</li>
+<li>Logic is <strong>monotonic</strong> and <strong>deductive</strong>: conclusions do not change with new data, and no new information is created by a valid argument.</li>
+<li>The <strong>strong syllogisms</strong> are valid; the <strong>weak syllogisms</strong> — where evidence accumulates — receive no truth value at all. Meeting that gap is the design specification for Part II.</li>
+<li>“Logic” names a family of calculi distinguished by which classical assumption each relaxes: bivalence (many-valued and fuzzy logics), truth-functionality (modal logics), monotonicity (default logics and probability). Probability is the quantitative non-monotonic member, and the one this book adopts.</li>
+<li>Logic is not a complete theory of rational thought: it does not certify premises, does not rank valid conclusions by relevance, and does not describe human performance (the selection task). By <strong>Gödel’s incompleteness theorems</strong>, no single consistent formal system strong enough for arithmetic proves every truth of its domain, or its own consistency.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.13</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Count the connectives.</strong> Adapt the enumeration code to list all <span class="math inline">\(2^{2^1} = 4\)</span> unary connectives (the truth table now has two rows). Name each one. How many ternary connectives are there, and why is enumerating them by hand no longer attractive?</p></li>
+<li><p><strong>NOR is also enough.</strong> Using only NOR — NOT(A OR B) — construct NOT A, A AND B, and A OR B, and verify your constructions by truth table, following the NAND chunk as a template.</p></li>
+<li><p><strong>AND and OR are not enough.</strong> Try to construct NOT A using only AND and OR (and the propositions themselves). Inspect the row in which every elementary proposition is TRUE: what value does any AND/OR compound take there, and what value must NOT A take? Conclude that {AND, OR} is not functionally complete.</p></li>
+<li><p><strong>A sure loss of your own.</strong> Build the penalty table for a reasoner who asserts A -&gt; B, asserts NOT B, and also asserts A (violating modus tollens). Show that every row loses, and identify the row in which the reasoner loses twice.</p></li>
+<li><p><strong>Which “if” is truth-functional?</strong> Classify each sentence as capturable by the material conditional (f11) or not, with one sentence of justification each: (a) “If the p-value is below 0.05, the result is declared significant.” (b) “If the dose had been halved, the patient would have survived.” (c) “If the alarm sounds, there is a fire, because the alarm is triggered by smoke.”</p></li>
+<li><p><strong>Diagnosis as a weak syllogism.</strong> Take the premise “if the patient has the disease, the test is positive” to be true without exception (sensitivity 1). (a) The test is negative: which strong syllogism applies, and what does it license? (b) The test is positive: what does classical logic license, and what would you nevertheless conclude in practice? (c) Now suppose the premise holds for only 90% of diseased patients. Which of your answers survives, and in what form? (Chapter 8 returns to this calculation.)</p></li>
+<li><p><strong>Three-valued tables.</strong> Introduce a third value N (“neutral”) and order the values F &lt; N &lt; T. Let NOT swap T and F while fixing N; let AND return the minimum and OR the maximum of its inputs. Write out the three-valued tables for NOT, AND and OR, and show that A OR NOT A is no longer a tautology. Which row of your table is de Rivo’s defence of Christ’s prediction?</p></li>
+<li><p><strong>The selection task.</strong> Four cards show A, K, 4 and 7; every card has a letter on one side and a number on the other. The rule under test: “if a card has a vowel on one side, then it has an even number on the other side”. (a) State which cards must be turned over, and justify each choice — and each omission — using the strong syllogisms. (b) A subject turns the 4, expecting a vowel behind it to support the rule. Name the fallacy, and connect it to a weak syllogism. (c) Suppose vowels and even numbers are rare among cards in general. Argue informally that turning the 4 may then be expected to be more informative than turning the 7. (Chapter 8 supplies the machinery that makes “informative” precise.)</p></li>
+</ol>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Jaynes ET, <em>Probability Theory: The Logic of Science</em> (Bretthorst GL, ed.), Cambridge: Cambridge University Press, 2003 (chapters 1–2).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Post EL, “Introduction to a general theory of elementary propositions,” <em>Am J Math</em> 1921;43:163-185 (<a href="https://doi.org/10.2307/2370324">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Sheffer HM, “A set of five independent postulates for Boolean algebras, with application to logical constants,” <em>Trans Am Math Soc</em> 1913;14:481-488 (<a href="https://doi.org/10.2307/1988701">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Ramsey FP, “Truth and Probability” (written 1926), in Braithwaite RB (ed.), <em>The Foundations of Mathematics and other Logical Essays</em>, London: Kegan Paul, Trench, Trubner &amp; Co., 1931:156-198; de Finetti B, “La prévision: ses lois logiques, ses sources subjectives,” <em>Ann Inst Henri Poincaré</em> 1937;7:1-68 (<a href="https://www.numdam.org/item/AIHP_1937__7_1_1_0/">text</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Pólya G, <em>Mathematics and Plausible Reasoning. Volume II: Patterns of Plausible Inference</em>, Princeton: Princeton University Press, 1954; Jaynes ET, <em>Probability Theory: The Logic of Science</em>, Cambridge: Cambridge University Press, 2003 (chapter 1).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Baudry L (ed.), <em>The Quarrel over Future Contingents (Louvain 1465–1475)</em>, translated by Guerlac R, Dordrecht: Kluwer, 1989.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Łukasiewicz J, “O logice trójwartościowej,” <em>Ruch Filozoficzny</em> 1920;5:170-171; English translation: “On three-valued logic,” in Borkowski L (ed.), <em>Selected Works by Jan Łukasiewicz</em>, Amsterdam: North-Holland, 1970:87-88.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>de Finetti B, “La logique de la probabilité,” in <em>Actes du Congrès International de Philosophie Scientifique, IV: Induction et probabilité</em>, Paris: Hermann, 1936:31-39.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Cox RT, “Probability, frequency and reasonable expectation,” <em>Am J Phys</em> 1946;14:1-13 (<a href="https://doi.org/10.1119/1.1990764">DOI</a>).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Reiter R, “A logic for default reasoning,” <em>Artif Intell</em> 1980;13:81-132 (<a href="https://doi.org/10.1016/0004-3702(80)90014-4">DOI</a>); McCarthy J, “Circumscription—a form of non-monotonic reasoning,” <em>Artif Intell</em> 1980;13:27-39 (<a href="https://doi.org/10.1016/0004-3702(80)90011-9">DOI</a>).<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Wason PC, “Reasoning about a rule,” <em>Q J Exp Psychol</em> 1968;20:273-281 (<a href="https://doi.org/10.1080/14640746808400161">DOI</a>).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Oaksford M, Chater N, “A rational analysis of the selection task as optimal data selection,” <em>Psychol Rev</em> 1994;101:608-631 (<a href="https://doi.org/10.1037/0033-295X.101.4.608">DOI</a>).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Gödel K, “Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I,” <em>Monatsh Math Phys</em> 1931;38:173-198 (<a href="https://doi.org/10.1007/BF01700692">DOI</a>).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Nagel E, Newman JR, <em>Gödel’s Proof</em>, New York: New York University Press, 1958; revised edition (Hofstadter DR, ed.), 2001.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>The three conditions, restated. (i) <em>Consistency</em>: the system never proves both a sentence and its negation. (ii) <em>Mechanical checkability</em>: an algorithm can decide, for any proposed proof, whether it follows the system’s axioms and rules; the axioms need not be finite in number, but they must be recognisable by machine. (iii) <em>Arithmetic strength</em>: the system can express and prove elementary facts about the whole numbers under addition and multiplication. Each condition carries weight, and dropping any one of them voids the theorem: an inconsistent system proves every sentence, including all true ones; the system whose axioms are all true sentences of arithmetic is consistent and complete, but no algorithm can recognise its axioms; and systems too weak to express multiplication can be consistent, complete and decidable — propositional logic is one example, and arithmetic with addition but no multiplication is another.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -734,13 +1563,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./03-irrational-thinking.html" class="pagination-link" aria-label="1. Irrational thinking">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span>
+      <a href="./ch02-thinking-under-uncertainty.html" class="pagination-link" aria-label="How to think under uncertainty">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05-rational-uncertainty.html" class="pagination-link" aria-label="3. Rational thinking under uncertainty.">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02-causal-inference.html" class="pagination-link" aria-label="Causal inference and Experiment">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 20&nbsp; Sensitivity analysis and unmeasured confounding</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-linear-regression.html" rel="next">
+<link href="./ch18-quasi-experimental.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch15-mediation.html">Part IV. Beyond the backdoor</a></li><li class="breadcrumb-item"><a href="./ch19-sensitivity-analysis.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-analyst-who-cannot-measure-severity" id="toc-the-analyst-who-cannot-measure-severity" class="nav-link active" data-scroll-target="#the-analyst-who-cannot-measure-severity"><span class="header-section-number">20.1</span> The analyst who cannot measure severity</a></li>
+  <li><a href="#the-e-value" id="toc-the-e-value" class="nav-link" data-scroll-target="#the-e-value"><span class="header-section-number">20.2</span> The E-value</a></li>
+  <li><a href="#what-the-e-value-misses-when-the-confounder-is-real" id="toc-what-the-e-value-misses-when-the-confounder-is-real" class="nav-link" data-scroll-target="#what-the-e-value-misses-when-the-confounder-is-real"><span class="header-section-number">20.3</span> What the E-value misses when the confounder is real</a></li>
+  <li><a href="#the-bounding-factor-behind-the-e-value" id="toc-the-bounding-factor-behind-the-e-value" class="nav-link" data-scroll-target="#the-bounding-factor-behind-the-e-value"><span class="header-section-number">20.4</span> The bounding factor behind the E-value</a></li>
+  <li><a href="#where-the-confounder-sits-in-the-graph" id="toc-where-the-confounder-sits-in-the-graph" class="nav-link" data-scroll-target="#where-the-confounder-sits-in-the-graph"><span class="header-section-number">20.5</span> Where the confounder sits in the graph</a></li>
+  <li><a href="#negative-and-positive-controls" id="toc-negative-and-positive-controls" class="nav-link" data-scroll-target="#negative-and-positive-controls"><span class="header-section-number">20.6</span> Negative and positive controls</a></li>
+  <li><a href="#placing-an-e-value-in-context" id="toc-placing-an-e-value-in-context" class="nav-link" data-scroll-target="#placing-an-e-value-in-context"><span class="header-section-number">20.7</span> Placing an E-value in context</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">20.8</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">20.9</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch15-mediation.html">Part IV. Beyond the backdoor</a></li><li class="breadcrumb-item"><a href="./ch19-sensitivity-analysis.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Every method in Part III and Part IV recovers a causal effect by measuring the right variables and adjusting for them (Chapters 12–14), or by exploiting a structure — an instrument, a mediator, a threshold — that stands in for randomisation (Chapters 17, 18). Each rests on an assumption the data cannot confirm: that the adjustment set blocks every back-door path, that the instrument affects the outcome only through treatment, that nothing else changes at the cutoff. This chapter takes the assumption most analyses depend on — no unmeasured confounding — and asks a quantitative question about the case in which it fails: <strong>how strong would an unmeasured confounder have to be to overturn the conclusion?</strong></p>
+<p>The question matters because the assumption is almost never exactly true. In the master cohort the confounder that drives the whole problem, disease <code>severity</code>, is <em>partly unmeasured</em> by design (Chapter 12): a physician treats on a clinical impression that no recorded variable fully captures. An analyst who cannot measure it is left with an estimate that is confounded to an unknown degree. Sensitivity analysis does not remove that confounding — nothing computed from the observed data can — but it converts the vague worry “there might be unmeasured confounding” into a number: the strength an unmeasured confounder would need, which the analyst can then judge against subject-matter knowledge.</p>
+<p>We use the master cohort throughout, because it has a feature real data never offers: we know the truth, and we know exactly how strong the hidden confounder is, so we can check whether the sensitivity analysis points in the right direction.</p>
+<section id="the-analyst-who-cannot-measure-severity" class="level2" data-number="20.1">
+<h2 data-number="20.1" class="anchored" data-anchor-id="the-analyst-who-cannot-measure-severity"><span class="header-section-number">20.1</span> The analyst who cannot measure severity</h2>
+<p>We load the cohort and record the true causal risk ratio from the oracle, then take the position of an analyst who has <code>age</code> and <code>diabetes</code> but not <code>severity</code>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df    <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">cohort_truth</span>(df)                    <span class="co"># the oracle answer key</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>truth_RR <span class="ot">&lt;-</span> truth<span class="sc">$</span>ATE_RR</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>A risk ratio for a binary outcome is fit with a Poisson working model and a log link, read with a robust (sandwich) standard error — the estimator introduced for the risk-ratio scale earlier in the book. The following helper returns the drug’s risk ratio and a 95% interval.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sandwich); <span class="fu">library</span>(lmtest)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>rr_poisson <span class="ot">&lt;-</span> <span class="cf">function</span>(formula, data) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  m  <span class="ot">&lt;-</span> <span class="fu">glm</span>(formula, <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> data)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  co <span class="ot">&lt;-</span> <span class="fu">coeftest</span>(m, <span class="at">vcov =</span> sandwich)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  b  <span class="ot">&lt;-</span> co[<span class="st">"drug"</span>, <span class="st">"Estimate"</span>]; se <span class="ot">&lt;-</span> co[<span class="st">"drug"</span>, <span class="st">"Std. Error"</span>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">RR =</span> <span class="fu">exp</span>(b), <span class="at">lo =</span> <span class="fu">exp</span>(b <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se), <span class="at">hi =</span> <span class="fu">exp</span>(b <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>crude    <span class="ot">&lt;-</span> <span class="fu">rr_poisson</span>(stroke <span class="sc">~</span> drug, df)                        <span class="co"># no adjustment</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>adj_meas <span class="ot">&lt;-</span> <span class="fu">rr_poisson</span>(stroke <span class="sc">~</span> drug <span class="sc">+</span> age <span class="sc">+</span> diabetes, df)       <span class="co"># measured confounders only</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>adj_full <span class="ot">&lt;-</span> <span class="fu">rr_poisson</span>(stroke <span class="sc">~</span> drug <span class="sc">+</span> age <span class="sc">+</span> diabetes <span class="sc">+</span> severity, df)  <span class="co"># if severity were known</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The drug-stroke risk ratio under three analyses. The truth is a protective RR of about 0.60; only the analysis that adjusts for severity recovers it.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Analysis</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RR</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Crude (no adjustment)</td>
+<td style="text-align: right;">1.67</td>
+<td style="text-align: left;">(1.54, 1.82)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Adjusted for age + diabetes</td>
+<td style="text-align: right;">1.18</td>
+<td style="text-align: left;">(1.08, 1.29)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Adjusted for age + diabetes + severity</td>
+<td style="text-align: right;">0.61</td>
+<td style="text-align: left;">(0.56, 0.67)</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The crude risk ratio is 1.67: the drug appears to <em>raise</em> stroke risk, the sign-reversed answer of Chapter 12. Adjusting for the measured confounders pulls it down to 1.18, but it still points the wrong way — <code>age</code> and <code>diabetes</code> do not capture the confounding by indication that runs through <code>severity</code>. Only the third row, which adjusts for <code>severity</code>, recovers the true protective effect of about 0.6. The realistic analyst, who cannot measure <code>severity</code>, is stuck at 1.18 and knows only that some unmeasured confounding remains. The question is how much.</p>
+</section>
+<section id="the-e-value" class="level2" data-number="20.2">
+<h2 data-number="20.2" class="anchored" data-anchor-id="the-e-value"><span class="header-section-number">20.2</span> The E-value</h2>
+<p>VanderWeele and Ding proposed a single summary for this situation.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The <strong>E-value</strong> is the minimum strength of association, on the risk-ratio scale, that an unmeasured confounder would need to have with <em>both</em> the treatment and the outcome — over and above the measured covariates — to fully explain away an observed treatment-outcome association. It is computed from the point estimate alone. For an observed risk ratio <span class="math inline">\(\mathrm{RR}\)</span> (taking the reciprocal first if it is protective, so the working value is <span class="math inline">\(\ge 1\)</span>):</p>
+<p><span class="math display">\[
+\text{E-value} = \mathrm{RR} + \sqrt{\mathrm{RR}\,(\mathrm{RR} - 1)}.
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>evalue_rr <span class="ot">&lt;-</span> <span class="cf">function</span>(rr) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  rr <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(rr <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span> <span class="sc">/</span> rr, rr)          <span class="co"># protective effects: work on the &gt;1 scale</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  rr <span class="sc">+</span> <span class="fu">sqrt</span>(rr <span class="sc">*</span> (rr <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ev_point <span class="ot">&lt;-</span> <span class="fu">evalue_rr</span>(adj_meas[<span class="st">"RR"</span>])       <span class="co"># for the point estimate</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ev_ci    <span class="ot">&lt;-</span> <span class="fu">evalue_rr</span>(adj_meas[<span class="st">"lo"</span>])        <span class="co"># CI limit closest to the null (lower, since RR &gt; 1)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For the age-and-diabetes-adjusted estimate of 1.18, the E-value is 1.65. The interpretation is precise: an unmeasured confounder could account for the apparent harm only if it were associated with both drug receipt and stroke by a risk ratio of at least 1.65 each, beyond <code>age</code> and <code>diabetes</code>. A weaker confounder — one below that threshold on either arm — could not move the estimate all the way to the null. VanderWeele and Ding recommend reporting the E-value for the confidence limit nearest the null as well; here that limit is 1.08, with an E-value of 1.39.</p>
+<p>The formula assumes nothing about the confounder beyond its two risk ratios: it need not be binary, and there may be several confounders acting jointly, in which case the E-value refers to their combined effect. The relationship is derived from a bounding argument (Ding and VanderWeele, next section) rather than from a specific model, which is what makes a single number defensible.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The E-value describes the strength needed to move the estimate <em>to the null</em>. It does not say such a confounder exists. Read on its own, a large E-value is reassuring only to the extent that a confounder that strong is implausible in the setting at hand — which is a judgement about the subject matter, not a property of the data.</p>
+</div>
+</div>
+</section>
+<section id="what-the-e-value-misses-when-the-confounder-is-real" class="level2" data-number="20.3">
+<h2 data-number="20.3" class="anchored" data-anchor-id="what-the-e-value-misses-when-the-confounder-is-real"><span class="header-section-number">20.3</span> What the E-value misses when the confounder is real</h2>
+<p>The E-value’s reassurance rests on the confounder being implausibly strong. The master cohort shows why that reading can fail: here the unmeasured confounder is not hypothetical, and we can measure how strong it actually is. We contrast the top and bottom quartiles of <code>severity</code> and estimate its association with the outcome and with treatment, on the same risk-ratio scale and adjusting for the same measured covariates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>qs  <span class="ot">&lt;-</span> <span class="fu">quantile</span>(df<span class="sc">$</span>severity, <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sev_hi =</span> <span class="fu">case_when</span>(severity <span class="sc">&gt;=</span> qs[<span class="dv">2</span>] <span class="sc">~</span> <span class="dv">1</span>L,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                            severity <span class="sc">&lt;=</span> qs[<span class="dv">1</span>] <span class="sc">~</span> <span class="dv">0</span>L,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_integer_</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sev_hi))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>RR_UY <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(<span class="fu">glm</span>(stroke <span class="sc">~</span> sev_hi <span class="sc">+</span> age <span class="sc">+</span> diabetes, <span class="fu">poisson</span>(), df2))[<span class="st">"sev_hi"</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>RR_UA <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(<span class="fu">glm</span>(drug   <span class="sc">~</span> sev_hi <span class="sc">+</span> age <span class="sc">+</span> diabetes, <span class="fu">poisson</span>(), df2))[<span class="st">"sev_hi"</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">severity_outcome_RR =</span> RR_UY, <span class="at">severity_treatment_RR =</span> RR_UA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  severity_outcome_RR.sev_hi severity_treatment_RR.sev_hi 
+                    4.633787                     4.614220 </code></pre>
+</div>
+</div>
+<p>High-<code>severity</code> patients have about 4.6 times the stroke risk of low-<code>severity</code> patients and are about 4.6 times as likely to be treated. Both associations are far above the E-value threshold of 1.65. That is the point of the example: a confounder strong enough to explain away the apparent harm is not implausible here — it is the actual data-generating mechanism. In a confounding-by-indication setting, where the same clinical severity that prompts treatment also drives the outcome, associations of this magnitude are the rule, not the exception, and an E-value of 1.65 offers little protection. This is why adjusting for <code>severity</code> does not merely pull the estimate to the null but carries it past, to the truly protective 0.61.</p>
+<p>The direction of the moral is the reverse of the usual one. Sensitivity analysis is most often used to <em>defend</em> a finding — to argue that no plausible confounder could overturn it. The same arithmetic, applied to a confounded estimate, warns that a plausible confounder could overturn it, and here does.</p>
+</section>
+<section id="the-bounding-factor-behind-the-e-value" class="level2" data-number="20.4">
+<h2 data-number="20.4" class="anchored" data-anchor-id="the-bounding-factor-behind-the-e-value"><span class="header-section-number">20.4</span> The bounding factor behind the E-value</h2>
+<p>The E-value is a special case of a more general bound.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> An unmeasured confounder <code>U</code> with risk ratio <span class="math inline">\(\mathrm{RR}_{UA}\)</span> on treatment and <span class="math inline">\(\mathrm{RR}_{UY}\)</span> on the outcome can bias an observed risk ratio by at most the <strong>bias factor</strong></p>
+<p><span class="math display">\[
+\mathrm{BF} = \frac{\mathrm{RR}_{UA}\,\mathrm{RR}_{UY}}{\mathrm{RR}_{UA} + \mathrm{RR}_{UY} - 1}.
+\]</span></p>
+<p>The true risk ratio lies no closer to the null than <span class="math inline">\(\mathrm{RR}_{\text{obs}}/\mathrm{BF}\)</span> (for an estimate above 1) — a worst case that holds whatever the confounder’s distribution. The E-value is the value at which, setting <span class="math inline">\(\mathrm{RR}_{UA} = \mathrm{RR}_{UY}\)</span>, the bias factor exactly equals the observed risk ratio, so the bound just reaches the null. Any pair <span class="math inline">\((\mathrm{RR}_{UA}, \mathrm{RR}_{UY})\)</span> whose bias factor reaches <span class="math inline">\(\mathrm{RR}_{\text{obs}}\)</span> would suffice; the E-value picks the single point on that curve where the two arms are equal.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bias_factor <span class="ot">&lt;-</span> <span class="cf">function</span>(rr_ua, rr_uy) (rr_ua <span class="sc">*</span> rr_uy) <span class="sc">/</span> (rr_ua <span class="sc">+</span> rr_uy <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>BF_severity <span class="ot">&lt;-</span> <span class="fu">bias_factor</span>(RR_UA, RR_UY)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">bias_factor_of_severity =</span> BF_severity, <span class="at">observed_RR =</span> adj_meas[<span class="st">"RR"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>bias_factor_of_severity.sev_hi                 observed_RR.RR 
+                      2.592300                       1.182878 </code></pre>
+</div>
+</div>
+<p>The bias factor that <code>severity</code> can actually produce is 2.59, larger than the observed 1.18 — so <code>severity</code> alone is capable of explaining away the apparent harm and then some, consistent with the sign reversal we know is real. The curve below shows every confounder strength that would just explain away the estimate; the E-value is where it crosses the diagonal, and the actual <code>severity</code> point lies well beyond it.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-evalue-curve" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-evalue-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch19-sensitivity-analysis_files/figure-html/fig-evalue-curve-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-evalue-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.1: Confounder strengths that would explain away the age-and-diabetes-adjusted estimate. Each point on the curve is a pair of risk ratios (with treatment, with the outcome) whose bias factor equals the observed risk ratio, so it would move the estimate exactly to the null; anything up and to the right would reverse it. The E-value is the point where the curve meets the diagonal (equal strength on both arms). The cross marks the actual strength of severity, which lies far beyond the curve — a confounder this strong is not hypothetical here.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="where-the-confounder-sits-in-the-graph" class="level2" data-number="20.5">
+<h2 data-number="20.5" class="anchored" data-anchor-id="where-the-confounder-sits-in-the-graph"><span class="header-section-number">20.5</span> Where the confounder sits in the graph</h2>
+<p>The E-value asks about a confounder occupying a specific position: a common cause of treatment and outcome, left out of the adjustment set. In the master cohort that node is <code>severity</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-sensitivity-dag" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sensitivity-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch19-sensitivity-analysis_files/figure-html/fig-sensitivity-dag-1.png" class="img-fluid figure-img" width="321">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sensitivity-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.2: The unmeasured confounder in the master cohort. Age and diabetes are measured and adjusted; severity (dashed) is the common cause of treatment and outcome that the analyst cannot fully measure. The E-value quantifies how strong the severity-drug and severity-stroke associations would jointly need to be to account for the observed drug-stroke association.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The two arrows out of <code>severity</code> are the two risk ratios in the bias factor. Bounding methods of this kind extend to more elaborate positions — a confounder that is also affected by treatment, or one that acts through selection rather than confounding — with correspondingly more elaborate bias formulas.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> But the logic is the same: name the unobserved associations, and compute the largest bias they could produce.</p>
+</section>
+<section id="negative-and-positive-controls" class="level2" data-number="20.6">
+<h2 data-number="20.6" class="anchored" data-anchor-id="negative-and-positive-controls"><span class="header-section-number">20.6</span> Negative and positive controls</h2>
+<p>The E-value asks a hypothetical: how strong would a confounder have to be? A second family of sensitivity analysis asks an empirical question instead — does the data itself show a signature of bias? — by using variables whose true causal relationship to treatment or outcome is known in advance. The known answer becomes a yardstick: an estimate that departs from it is measuring bias.</p>
+<p>The <strong>negative control</strong> was introduced in Chapter 18 as a device for detecting bias, and that discussion (with its simulation) is the mechanism. Here we place it as a sensitivity analysis for the specific assumption this chapter is about — no unmeasured confounding. A negative control is a variable for which the true effect is known to be zero, chosen so that it carries the <em>same</em> confounding as the analysis of interest.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> There are two forms. A <strong>negative-control outcome</strong> is an outcome the treatment cannot cause but which shares the treatment’s confounders; in the master cohort, an outcome driven by disease <code>severity</code> and by the prescribing process, but with no biological pathway from the drug — its apparent drug association is pure confounding. A <strong>negative-control exposure</strong> is a pseudo-treatment that cannot affect the real outcome but is assigned through the same confounded process; its apparent effect on stroke is, again, a readout of bias. If either control shows a non-zero association where the truth is zero, the no-unmeasured-confounding assumption is not holding, and the size of the spurious association gauges how much bias remains. In pharmacoepidemiology these are also called <strong>falsification endpoints</strong>: outcomes prespecified as implausible consequences of the treatment, checked precisely because a positive result there falsifies the assumption that the design has removed confounding.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> A worked epidemiological use is the assessment of mammographic-screening studies, where associations between screening participation and outcomes screening cannot plausibly affect reveal the healthy-screenee selection that contaminates the real estimate.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>A <strong>positive control</strong> runs the logic in the other direction. It is a treatment-outcome relationship whose effect is known to be non-zero and of roughly established size — often a different exposure applied to the same design, or the same exposure against an outcome it is known to affect. If the analysis fails to recover the known effect — returns a null, or an attenuated estimate — the procedure is missing signal it should detect, which points to attenuation from measurement error, over-adjustment, or residual confounding acting toward the null. Positive controls are harder to use than negative ones, because they require agreement on the true effect size, not merely on a null; they are therefore used mainly to check that a method <em>can</em> detect an effect of the expected magnitude, rather than to correct an estimate to a precise value.</p>
+<p>Assembling many controls turns detection into calibration. <strong>Empirical calibration</strong> fits the estimator to a large set of negative controls to trace out its actual null distribution — the spread of estimates the procedure returns when the truth is zero — which is generally not centred at the null and not as narrow as the reported standard errors imply. That empirical null is then used to recalibrate the p-value and confidence interval of the real analysis so they have their nominal meaning; adding positive controls at known effect sizes extends the calibration across the range of real effects.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> The correction is only as good as the controls: it removes the systematic error that the controls <em>share</em> with the analysis, and is silent on any bias they do not. Under stronger, explicitly stated assumptions, a matched pair of negative controls (one exposure, one outcome) can go beyond detection and <em>identify</em> the confounding, allowing it to be removed rather than merely flagged — the basis of proximal causal inference.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> The assumptions there are demanding and the methods recent; a current review sets out where they apply.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<p>The common thread with the rest of the chapter is the trade of one unverifiable assumption for another. A control is informative only if it genuinely shares the analysis’s confounding <em>and</em> genuinely has the known (null or non-null) effect assumed of it — and neither can be checked in the data, only argued from subject-matter knowledge. A negative control that fails to share the confounding will wrongly reassure; one with a small real effect will wrongly alarm. Like the E-value, controls convert a vague worry into a specific, checkable claim, but the claim rests on a judgement about the world, not on the data alone.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A critical appraisal: negative controls without a DAG
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The mammographic-screening study cited above for careful use of negative controls is worth revisiting. Lousdal <em>et al.</em> compared breast-cancer mortality between women who participated in screening and women who were invited but did not, adjusting for civil status, education, income, reproductive history and hormone use, and estimating a hazard ratio by Cox regression with age as the time scale. They added two negative-control outcomes (death from other causes, death from external causes) and a negative-control exposure (dental-care attendance). No DAG was drawn. Not drawing a DAG and using a Cox model are both consequential choices.</p>
+<p><strong>The graph the study needs.</strong> The exposure is <em>participation</em>, which the woman chooses. The disposition that leads her to attend — call it a health-seeking tendency — also lowers her breast-cancer mortality through routes that have nothing to do with screening: earlier symptomatic presentation, treatment adherence, healthier behaviour. It is a common cause of participation and outcome, and it is essentially unmeasured. A second unmeasured common cause, baseline health and competing-risk frailty, points the other way: frailer women both attend less and die more. The measured covariates are proxies standing alongside or downstream of the health-seeking tendency, not the tendency itself.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-lousdal-dag" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lousdal-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch19-sensitivity-analysis_files/figure-html/fig-lousdal-dag-1.png" class="img-fluid figure-img" width="615">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lousdal-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.3: The self-selection structure of a screening-participation study. Screening participation is chosen, and the unmeasured health-seeking tendency is a common cause of participation and of breast-cancer mortality (through non-screening routes); baseline health and competing-risk frailty is a second unmeasured common cause. The measured covariates sit downstream of, or alongside, the health-seeking tendency rather than capturing it. The brown arrow is the effect of interest.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>The effect is not identified by the chosen covariates.</strong> With the two dispositions unmeasured, we can ask the graph directly whether any set of the measured variables suffices to identify the participation effect.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">dagitty</span>(<span class="st">'dag {</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">  A [exposure]</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">  Y [outcome]</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">  HS [latent]</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">  HEALTH [latent]</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">  C</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">  HS -&gt; C; HS -&gt; A; HS -&gt; Y</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="st">  HEALTH -&gt; A; HEALTH -&gt; Y</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">  C -&gt; A; C -&gt; Y</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="st">  A -&gt; Y</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">}'</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">adjustmentSets</span>(g, <span class="at">exposure =</span> <span class="st">"A"</span>, <span class="at">outcome =</span> <span class="st">"Y"</span>)   <span class="co"># empty output = no sufficient set exists</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The function returns <em>nothing</em>: there is no adjustment set. An empty result here does not mean “adjust for nothing” — that would print an empty set, <code>{}</code> — it means no set of the measured variables closes every back-door path, so the effect is <strong>not identifiable</strong> from these data. Conditioning on exactly the covariates the study uses leaves back-door paths open through the unmeasured health-seeking tendency (<code>A &lt;- HS -&gt; Y</code>) and through frailty (<code>A &lt;- HEALTH -&gt; Y</code>). The adjustment removes the fraction of confounding that runs through measured proxies and leaves the direct self-selection paths untouched.</p>
+<p>That is precisely why the study needs its negative controls: the authors know the covariates cannot capture self-selection, so they use negative-control outcomes to <em>detect</em> the residual <code>HS -&gt; Y</code> and <code>HEALTH -&gt; Y</code> bias that adjustment cannot reach. The design tacitly concedes the identification gap the graph makes explicit. The negative controls are being used correctly and informatively — as a diagnosis of the confounding, not a cure for it.</p>
+<p><strong>A timing problem the graph also surfaces.</strong> Hormone use is defined as at least two prescriptions “from 1995 onwards”, a window that extends past the second invitation that defines time-zero. A variable measured after the exposure that is also affected by it is a mediator or a collider, not a baseline confounder; conditioning on it can open a path rather than close one (Chapter 15, Chapter 11). Without the prescription dates relative to time-zero one cannot say how much use is post-exposure, but the definition as written straddles the exposure, and adjusting a post-exposure variable is a design error independent of the self-selection problem.</p>
+<p><strong>The estimator is the wrong one, on two counts.</strong> First, the hazard ratio is <em>non-collapsible</em>: even with no confounding, adjusting for a risk factor changes the hazard ratio, because the two models condition on different risk sets. The “general” and “breast-cancer-specific” models are therefore not on a common scale, and the change between them conflates a change in confounding with a change in collapsibility. Second, a hazard ratio conditions on survival to each time point, so once frailty affects mortality the later risk sets are differentially depleted of high-risk women, and the instantaneous hazard ratio is biased by this selection <em>even under randomisation</em>.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> With age as the time scale and a strong competing-risk arrow, the later-age contrasts compare survivor populations already sorted by unmeasured frailty. This selection is itself a graphical object — conditioning on survival is conditioning on a collider on the frailty-to-outcome path (Chapter 11).<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> A collapsible marginal estimand — a risk difference or risk ratio at a fixed horizon, recovered by standardisation or g-computation (Chapters 12, 24) — would have avoided both problems.</p>
+<p><strong>Why the study fails.</strong> The exposure is self-selected on a disposition that is both unmeasured and a direct cause of the outcome, so the effect is not identified by any available covariate set; the covariates are weak proxies (and one is mis-timed); and the Cox hazard ratio would not be a clean causal contrast even if the confounding were solved. What the data support is not an adjusted hazard ratio but a <em>bound</em> — a negative-control or E-value statement of how large the participant survival advantage would have to be before it is entirely self-selection. A recent analysis of the German breast cancer screening programme makes the same case, that the survival advantage of participants is largely confounding to be isolated rather than an effect to be reported.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p>The lesson generalises beyond screening. Negative controls are a genuine advance, but they detect bias; they do not license an adjusted point estimate when the graph shows the effect is unidentified. A DAG drawn before the analysis would have shown that the participation contrast was not identifiable from the measured data, and redirected the study toward the invitation contrast (randomised in many programmes, hence an instrument — Chapter 17) or toward an explicit bound. The tools of this chapter are for the case where identification has already been argued and one asks how fragile it is — not a substitute for asking whether it holds.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A reanalysis sketch: emulate the trial the screening programme almost ran
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The critique above ends with a redirection rather than a verdict of despair: analyse the <em>invitation</em>, not the <em>participation</em>. This box sketches what that reanalysis looks like as a target trial emulation. It is a design, not a fitted model — the screening cohort is not the book’s simulated dataset — but the components are concrete enough to show why the invitation contrast is identifiable where the participation contrast is not.</p>
+<p>The move is to specify the randomised trial the question implies, then ask how the observational data can enact each part of it.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> The trial that a screening programme approximates is not “screen vs do not screen” — no one can be assigned to <em>comply</em> — but “invite vs do not invite”, the intention-to-screen contrast that the screening randomised trials themselves estimated. Invitation <em>can</em> be assigned, so the trial exists; and in a programme rolled out across regions at different times, invitation varies quasi-exogenously by area and calendar period, which is the observational analogue of randomising it.</p>
+<div class="cell">
+<div id="tbl-tte-screening" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tte-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;20.1: Target trial and emulation for the effect of a mammographic-screening invitation on breast-cancer mortality. The contrast is intention-to-screen; the participation effect is recovered only as a complier average causal effect, with invitation as an instrument.
+</figcaption>
+<div aria-describedby="tbl-tte-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div>
+<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<caption>The target trial and its emulation.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Component</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Target trial</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Emulation with the cohort</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Eligibility</td>
+<td style="text-align: left; width: 16em;">Women of screening age, no prior breast cancer, resident in the area</td>
+<td style="text-align: left; width: 16em;">Same, from the registry at the area's programme start</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Time zero</td>
+<td style="text-align: left; width: 16em;">The date the invitation is issued</td>
+<td style="text-align: left; width: 16em;">The area's programme start date (staggered regional roll-out)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Strategies</td>
+<td style="text-align: left; width: 16em;">Invite to screening vs do not invite</td>
+<td style="text-align: left; width: 16em;">Resident when the programme began (invited) vs not-yet-covered area or period</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Assignment</td>
+<td style="text-align: left; width: 16em;">Randomise invitation at time zero</td>
+<td style="text-align: left; width: 16em;">No randomisation; invitation quasi-exogenous by area and period; adjust area and period</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Outcome</td>
+<td style="text-align: left; width: 16em;">Breast-cancer mortality (underlying cause C50)</td>
+<td style="text-align: left; width: 16em;">The same registry outcome</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Follow-up</td>
+<td style="text-align: left; width: 16em;">From time zero to death or administrative censoring</td>
+<td style="text-align: left; width: 16em;">Calendar-time-aligned; earlier- vs later-adopting areas compared before and after roll-out (difference-in-differences)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Causal contrast</td>
+<td style="text-align: left; width: 16em;">Effect of being invited (intention-to-screen)</td>
+<td style="text-align: left; width: 16em;">Intention-to-screen; participation as a complier effect with invitation as instrument</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Analysis</td>
+<td style="text-align: left; width: 16em;">Compare mortality between invitation arms</td>
+<td style="text-align: left; width: 16em;">Difference-in-differences in area-level mortality; standardised risk ratio at a fixed horizon; IV / complier analysis for the per-protocol effect</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Two features of the emulation are what the participation analysis lacked.</p>
+<p><em>Time zero is the invitation date, and it is defined by information available then.</em> Eligibility, assignment, and the start of follow-up all coincide at the area’s programme start, so the misalignment biases (immortal time, prevalent-user selection) are closed off. The participation analysis has no such instant: participation is realised over the screening round, after the person has already been observed choosing, and the self-selection is baked into that choice.</p>
+<p><em>Assignment does not condition on the self-selecting behaviour.</em> Because eligibility is residence when the programme began — not attendance — the exposure contrast is not defined by the health-seeking tendency. That tendency still affects who <em>attends</em> given an invitation, but it no longer sits on the arrow that defines the groups being compared. The remaining confounders are area and calendar-period differences (secular trends in incidence, treatment, and competing mortality), which are measured or proxied, not the unmeasured disposition. The adjustment set is then a graphical question for the invitation DAG — a much easier graph, since the <code>HS → A</code> arrow is gone.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<p>The contrast this delivers is the <strong>intention-to-screen</strong> effect: the effect of being invited, diluted by non-attendance, which is the honest population-level quantity a programme can claim. The <strong>participation</strong> effect — the thing the original study wanted — is recovered only under the stronger assumptions of an instrumental-variable analysis, taking invitation as an instrument for attendance and reporting a complier average causal effect (Chapter 17), with the non-attendance and the exclusion restriction stated as assumptions rather than adjusted away. An observational study built this way already exists in outline: the Danish comparative analyses exploited exactly this staggered regional introduction, comparing mortality trends in screened and unscreened areas rather than participants and non-participants.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> The estimator that staggered structure calls for is a difference-in-differences — the change in area-level breast-cancer mortality from before to after roll-out, contrasted between earlier- and later-adopting areas.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p>
+<p>The sensitivity analysis then has something identifiable to be sensitive <em>about</em>. The invitation effect can carry an E-value for residual area/period confounding, and the same negative-control outcomes (deaths screening cannot affect) now test a much weaker residual bias rather than the whole self-selection engine. This is the intended relationship between the two halves of the chapter: design first to make an effect identifiable, then use sensitivity analysis to bound the confounding that design could not remove — not the other way round.</p>
+</div>
+</div>
+</section>
+<section id="placing-an-e-value-in-context" class="level2" data-number="20.7">
+<h2 data-number="20.7" class="anchored" data-anchor-id="placing-an-e-value-in-context"><span class="header-section-number">20.7</span> Placing an E-value in context</h2>
+<p>The E-value is a screening device, not a full sensitivity analysis. It reports the strength at the boundary and says nothing about strengths short of it, and it deliberately uses no information about the confounder’s prevalence or its correlation with the measured covariates. Where such information is available, a fuller analysis substitutes it directly. The oldest form is external adjustment: take the confounder’s associations from another data source, and compute what the estimate would become under a range of assumed strengths and prevalences.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> <a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> The array-based version tabulates the corrected estimate over a grid of assumed confounder-treatment and confounder-outcome associations, so a reader can see at once which combinations would overturn the finding.</p>
+<p>The idea is older than its formalisation. Cornfield and colleagues, defending the association between smoking and lung cancer,<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> argued that any factor entirely responsible for a ninefold mortality ratio would itself have to be at least nine times as common among smokers — a threshold so extreme that no candidate confounder met it. That is the E-value argument in words: the observed association sets a floor on how strong a confounder must be, and the defence is that no plausible factor reaches the floor. The E-value gives the floor a formula.</p>
+<p>Two cautions apply throughout. First, a sensitivity analysis addresses only the bias it is built for — unmeasured confounding here — and is silent on measurement error, selection, and model misspecification. Second, no sensitivity analysis can rescue a study from confounding; it can only state the terms on which the conclusion survives, and leave the reader to judge whether an unmeasured confounder on those terms is credible. In the master cohort we know the answer: a confounder that strong is present, and the apparent harm is an artefact of it.</p>
+</section>
+<section id="key-points" class="level2" data-number="20.8">
+<h2 data-number="20.8" class="anchored" data-anchor-id="key-points"><span class="header-section-number">20.8</span> Key points</h2>
+<ul>
+<li><strong>Sensitivity analysis quantifies, but does not remove, unmeasured confounding.</strong> It converts “there might be a confounder” into the strength a confounder would need to change the conclusion, which is then judged against subject-matter knowledge.</li>
+<li><strong>The E-value</strong> is the minimum risk-ratio association, with both treatment and outcome, that an unmeasured confounder would need to explain away an observed effect: <span class="math inline">\(\mathrm{RR} + \sqrt{\mathrm{RR}(\mathrm{RR}-1)}\)</span>. Report it for the point estimate and for the confidence limit nearest the null.</li>
+<li><strong>A large E-value is reassuring only if a confounder that strong is implausible.</strong> In confounding by indication, where the driver of treatment is also a driver of the outcome, the required strength is often easily met — in the master cohort the unmeasured <code>severity</code> has associations of about 4.6 on each arm, far above the E-value of 1.65, which is why adjusting for it reverses the sign.</li>
+<li><strong>The E-value is a special case of a bias-factor bound</strong> (Ding and VanderWeele): any confounder with treatment and outcome risk ratios <span class="math inline">\(\mathrm{RR}_{UA}, \mathrm{RR}_{UY}\)</span> biases the estimate by at most <span class="math inline">\(\mathrm{RR}_{UA}\mathrm{RR}_{UY}/(\mathrm{RR}_{UA}+\mathrm{RR}_{UY}-1)\)</span>. The E-value is where equal arms make that bound reach the null.</li>
+<li><strong>When external information on the confounder exists</strong>, use it: external and array-based adjustment (Lin et al.; Schneeweiss) give the corrected estimate over a grid of assumed strengths and prevalences, rather than a single boundary value.</li>
+<li><strong>Negative and positive controls</strong> test the no-confounding assumption empirically. A negative control (outcome or exposure, also called a falsification endpoint) has a known zero effect but shares the confounding, so a non-zero estimate reveals residual bias; a positive control has a known non-zero effect, so failure to recover it reveals attenuation. Many negative controls together enable <strong>empirical calibration</strong> of p-values and intervals, and a matched pair can, under strong assumptions, identify and remove the confounding (proximal causal inference).</li>
+<li><strong>The argument is Cornfield’s</strong>: an observed association sets a floor on how strong a confounder must be to explain it, and the defence of a causal reading is that no plausible factor reaches the floor.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="20.9">
+<h2 data-number="20.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">20.9</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>E-value by hand.</strong> A study reports an adjusted risk ratio of 2.0. Compute its E-value. Now suppose a critic proposes a confounder associated with treatment by a risk ratio of 1.5 and with the outcome by 3.0. Using the bias factor <span class="math inline">\(\mathrm{RR}_{UA}\mathrm{RR}_{UY}/(\mathrm{RR}_{UA}+\mathrm{RR}_{UY}-1)\)</span>, does this confounder suffice to explain away the effect? Reconcile your answer with the E-value.</p></li>
+<li><p><strong>The confidence limit.</strong> Refit the age-and-diabetes-adjusted model and compute the E-value for the point estimate and for the confidence limit closest to the null. Why is the second always smaller, and which should a cautious reader weigh more heavily?</p></li>
+<li><p><strong>Change the strength of the hidden confounder.</strong> In <code>R/simulate_cohort.R</code> the parameter <code>g_sev</code> sets how strongly <code>severity</code> drives stroke and <code>d_sev</code> how strongly it drives treatment. Halve <code>g_sev</code>, re-simulate, and recompute (a) the age-and-diabetes-adjusted risk ratio and its E-value and (b) the actual severity-outcome and severity-treatment risk ratios. Does the actual confounding still clear the E-value bar? Does the sign still reverse?</p></li>
+<li><p><strong>A confounder that does not suffice.</strong> Find, by trial, a value of <code>g_sev</code> for which the adjusted estimate no longer reverses sign (stays above 1 but the truth is protective). Compute the E-value and the actual bias factor. Interpret the case in which the actual confounding is real but too weak to reverse the naive conclusion.</p></li>
+<li><p><strong>Conceptual.</strong> A published observational study reports a protective risk ratio of 0.70 with an E-value of 1.9, and the authors argue no confounder is plausibly that strong. What would you need to know about the exposure and the outcome to agree or disagree? Contrast a setting where 1.9 is genuinely reassuring with one (like confounding by indication) where it is not.</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>VanderWeele TJ, Ding P, “Sensitivity Analysis in Observational Research: Introducing the E-Value,” <em>Ann Intern Med</em> 2017;167:268-274 (<a href="https://doi.org/10.7326/M16-2607">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Ding P, VanderWeele TJ, “Sensitivity Analysis Without Assumptions,” <em>Epidemiology</em> 2016;27:368-377 (<a href="https://doi.org/10.1097/EDE.0000000000000457">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>VanderWeele TJ, Arah OA, “Bias formulas for sensitivity analysis of unmeasured confounding for general outcomes, treatments, and confounders,” <em>Epidemiology</em> 2011;22:42-52 (<a href="https://doi.org/10.1097/EDE.0b013e3181f74493">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Lipsitch M, Tchetgen Tchetgen E, Cohen T, “Negative controls: a tool for detecting confounding and bias in observational studies,” <em>Epidemiology</em> 2010;21:383-388 (<a href="https://doi.org/10.1097/EDE.0b013e3181d61eeb">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Prasad V, Jena AB, “Prespecified falsification end points: can they validate true observational associations?,” <em>JAMA</em> 2013;309:241-242 (<a href="https://doi.org/10.1001/jama.2012.96867">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Lousdal ML, Lash TL, Flanders WD, Brookhart MA, Kristiansen IS, Kalager M, Støvring H, “Negative controls to detect uncontrolled confounding in observational studies of mammographic screening comparing participants and non-participants,” <em>Int J Epidemiol</em> 2020;49:1032-1042 (<a href="https://doi.org/10.1093/ije/dyaa029">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Schuemie MJ, Ryan PB, DuMouchel W, Suchard MA, Madigan D, “Interpreting observational studies: why empirical calibration is needed to correct p-values,” <em>Stat Med</em> 2014;33:209-218 (<a href="https://doi.org/10.1002/sim.5925">DOI</a>); Schuemie MJ, Hripcsak G, Ryan PB, Madigan D, Suchard MA, “Empirical confidence interval calibration for population-level effect estimation studies in observational healthcare data,” <em>Proc Natl Acad Sci U S A</em> 2018;115:2571-2577 (<a href="https://doi.org/10.1073/pnas.1708282114">DOI</a>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Miao W, Geng Z, Tchetgen Tchetgen EJ, “Identifying causal effects with proxy variables of an unmeasured confounder,” <em>Biometrika</em> 2018;105:987-993 (<a href="https://doi.org/10.1093/biomet/asy038">DOI</a>).<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Shi X, Miao W, Tchetgen Tchetgen EJ, “A selective review of negative control methods in epidemiology,” <em>Curr Epidemiol Rep</em> 2020;7:190-202 (<a href="https://doi.org/10.1007/s40471-020-00243-4">DOI</a>).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Hernán MA, “The hazards of hazard ratios,” <em>Epidemiology</em> 2010;21:13-15 (<a href="https://doi.org/10.1097/EDE.0b013e3181c1ea43">DOI</a>).<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Hernán MA, Hernández-Díaz S, Robins JM, “A structural approach to selection bias,” <em>Epidemiology</em> 2004;15:615-625 (<a href="https://doi.org/10.1097/01.ede.0000135174.63482.43">DOI</a>).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Buschmann L, Wellmann I, Bonberg N, Wellmann J, Hense HW, Karch A, “Isolating the effect of confounding from the observed survival benefit of screening participants - a methodological approach illustrated by data from the German mammography screening programme,” <em>BMC Med</em> 2024;22:43 (<a href="https://doi.org/10.1186/s12916-024-03258-6">DOI</a>).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Hernán MA, Wang W, Leaf DE, “Target Trial Emulation: A Framework for Causal Inference From Observational Data,” <em>JAMA</em> 2022;328:2446-2447 (<a href="https://doi.org/10.1001/jama.2022.21383">DOI</a>).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Hernán MA, Robins JM, “Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available,” <em>Am J Epidemiol</em> 2016;183:758-764 (<a href="https://doi.org/10.1093/aje/kwv254">DOI</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Jørgensen KJ, Zahl PH, Gøtzsche PC, “Breast cancer mortality in organised mammography screening in Denmark: comparative study,” <em>BMJ</em> 2010;340:c1241 (<a href="https://doi.org/10.1136/bmj.c1241">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>The simple design solution “person-time from each area’s start date, pooled into one rate” would have been the weakest link in the TTE, for four reasons. <strong>(1) It aligns the study arms on the wrong clock.</strong> Breast-cancer mortality fell steeply over the roll-out decades from improvements in adjuvant treatment that had nothing to do with screening; if the invited person-time and the not-yet-invited person-time occupy different calendar windows, that decline is confounded directly into the contrast. Aligning on “time since each area’s start” does not fix this — two areas starting five years apart contribute their “year 1” from different calendar years. The staggered adoption is, structurally, a difference-in-differences design: contrast the <em>change</em> in mortality (before vs after roll-out) between earlier- and later-adopting areas, which differences out any time-invariant area level and any common secular trend, under a parallel-trends assumption that can itself be checked in the pre-periods (Dimick JB, Ryan AM, “Methods for evaluating changes in health care policy: the difference-in-differences approach,” <em>JAMA</em> 2014;312:2401-2402, <a href="https://doi.org/10.1001/jama.2014.16153">DOI</a>). <strong>(2) It ignores the induction lag.</strong> Screening lowers breast-cancer mortality only after several years — the cancers it detects early must be ones whose earlier treatment changes the death rate, and that divergence appears late; counting deaths from day zero averages the eventual benefit with an early period in which the intervention cannot yet have acted, biasing the estimate toward the null (Independent UK Panel on Breast Cancer Screening, “The benefits and harms of breast cancer screening: an independent review,” <em>Lancet</em> 2012;380:1778-1786, <a href="https://doi.org/10.1016/S0140-6736(12)61611-0">DOI</a>; Tabár L, Vitak B, Chen TH-H, Yen AM-F, et al., “Swedish two-county trial: impact of mammographic screening on breast cancer mortality during 3 decades,” <em>Radiology</em> 2011;260:658-663, <a href="https://doi.org/10.1148/radiol.11110469">DOI</a>). A grace period, or a time-varying effect constrained to zero early, addresses this. <strong>(3) It counts the wrong deaths.</strong> Pooling all underlying-cause C50 deaths (the “follow-up model”) includes deaths from cancers diagnosed <em>before</em> time zero, which screening could not have affected — more dilution toward the null. The “evaluation” or incidence-based-mortality model counts only deaths from cancers diagnosed after entry, at the cost of requiring diagnosis-date linkage (Dibden A, Offman J, Duffy SW, Gabe R, “Worldwide review and meta-analysis of cohort studies measuring the effect of mammography screening programmes on incidence-based breast cancer mortality,” <em>Cancers</em> 2020;12:976, <a href="https://doi.org/10.3390/cancers12040976">DOI</a>). Which model is <em>correct</em> depends on the target: the follow-up model answers the honest population question (the effect of an invitation on everyone eligible), the evaluation model isolates the effect on screen-detectable disease. <strong>(4) A single pooled rate or hazard reintroduces the problems this chapter already raised against the original Cox analysis</strong> — non-collapsibility and survivorship selection. A collapsible, marginal summary — a standardised risk ratio or risk difference at a fixed horizon, or restricted mean survival time — both avoids those and displays the delayed effect rather than averaging it away. In short, the defensible follow-up specification is: align the arms in calendar time as a difference-in-differences on staggered adoption; begin counting outcomes after an induction lag; prefer incidence-based mortality where the linkage exists; and summarise as a fixed-horizon standardised contrast rather than a pooled hazard.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Lin DY, Psaty BM, Kronmal RA, “Assessing the sensitivity of regression results to unmeasured confounders in observational studies,” <em>Biometrics</em> 1998;54:948-963 (<a href="https://doi.org/10.2307/2533848">DOI</a>).<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>Schneeweiss S, “Sensitivity analysis and external adjustment for unmeasured confounders in epidemiologic database studies of therapeutics,” <em>Pharmacoepidemiol Drug Saf</em> 2006;15:291-303 (<a href="https://doi.org/10.1002/pds.1200">DOI</a>).<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Cornfield J, Haenszel W, Hammond EC, Lilienfeld AM, Shimkin MB, Wynder EL, “Smoking and lung cancer: recent evidence and a discussion of some questions,” <em>J Natl Cancer Inst</em> 1959;22:173-203 (<a href="https://doi.org/10.1093/jnci/22.1.173">DOI</a>). (Original 1959 article not indexed in the live PubMed database; citation and DOI verified by web search and the 2009 <em>Int J Epidemiol</em> reprint.)<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch18-quasi-experimental.html" class="pagination-link" aria-label="The quasi-experimental zoo">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-linear-regression.html" class="pagination-link" aria-label="Linear regression, causally">
+        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

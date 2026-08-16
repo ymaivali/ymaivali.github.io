@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 16&nbsp; DAG-based mediation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch16-interaction.html" rel="next">
+<link href="./ch14-time-varying-confounding.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch15-mediation.html">Part IV. Beyond the backdoor</a></li><li class="breadcrumb-item"><a href="./ch15-mediation.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-mediator-in-the-graph" id="toc-the-mediator-in-the-graph" class="nav-link active" data-scroll-target="#the-mediator-in-the-graph"><span class="header-section-number">16.1</span> The mediator in the graph</a></li>
+  <li><a href="#total-direct-and-indirect-effects" id="toc-total-direct-and-indirect-effects" class="nav-link" data-scroll-target="#total-direct-and-indirect-effects"><span class="header-section-number">16.2</span> Total, direct, and indirect effects</a></li>
+  <li><a href="#what-the-cohort-really-does" id="toc-what-the-cohort-really-does" class="nav-link" data-scroll-target="#what-the-cohort-really-does"><span class="header-section-number">16.3</span> What the cohort really does</a></li>
+  <li><a href="#adjusting-for-the-mediator-destroys-the-total-effect" id="toc-adjusting-for-the-mediator-destroys-the-total-effect" class="nav-link" data-scroll-target="#adjusting-for-the-mediator-destroys-the-total-effect"><span class="header-section-number">16.4</span> Adjusting for the mediator destroys the total effect</a></li>
+  <li><a href="#estimating-direct-and-indirect-effects" id="toc-estimating-direct-and-indirect-effects" class="nav-link" data-scroll-target="#estimating-direct-and-indirect-effects"><span class="header-section-number">16.5</span> Estimating direct and indirect effects</a></li>
+  <li><a href="#why-this-is-harder-than-it-looks" id="toc-why-this-is-harder-than-it-looks" class="nav-link" data-scroll-target="#why-this-is-harder-than-it-looks"><span class="header-section-number">16.6</span> Why this is harder than it looks</a></li>
+  <li><a href="#checking-an-ai-assisted-analysis" id="toc-checking-an-ai-assisted-analysis" class="nav-link" data-scroll-target="#checking-an-ai-assisted-analysis"><span class="header-section-number">16.7</span> Checking an AI-assisted analysis</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">16.8</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">16.9</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch15-mediation.html">Part IV. Beyond the backdoor</a></li><li class="breadcrumb-item"><a href="./ch15-mediation.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Every causal estimate so far has been a <em>total</em> effect: the consequence of treating for the whole population. Chapters 12 and 14 try to get that number right against confounding. Here we ask a different question. Suppose a stroke-prevention drug lowers blood pressure. Because blood pressure causes stroke, at least part of the drug’s effect must run through blood pressure. Is that the whole story, or does the drug also protect by some other route that does not pass through blood pressure at all? Splitting the total effect into a part that flows <em>through</em> a named intermediate variable and a part that flows <em>around</em> it is the business of mediation analysis.</p>
+<p>Estimating a total effect needs the treated and untreated to be comparable; estimating the split needs that <em>and</em> a second comparability condition on the intermediate variable, which randomisation of the treatment cannot supply. Much of this chapter is about this extra condition and the ways an analysis fails when it is ignored — often by including the intermediate variable in the outcome regression.</p>
+<section id="the-mediator-in-the-graph" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="the-mediator-in-the-graph"><span class="header-section-number">16.1</span> The mediator in the graph</h2>
+<p>The intermediate variable is called a <strong>mediator</strong>. In the cohort, the mediator is post-baseline systolic blood pressure (<code>sbp</code>): the drug lowers it (<code>drug -&gt; sbp</code>) and as sbp influences stroke risk (<code>sbp -&gt; stroke</code>), so <code>drug -&gt; sbp -&gt; stroke</code> is a causal chain carrying part of the effect. A separate arrow <code>drug -&gt; stroke</code> carries whatever effect does not pass through blood pressure. The confounders C are each a common cause of treatment, mediator and outcome. Because C points into both SBP and stroke, it confounds the mediator-outcome relationship as well as the treatment-outcome relationship.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-mediation-dag" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mediation-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch15-mediation_files/figure-html/fig-mediation-dag-1.png" class="img-fluid figure-img" width="442">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mediation-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.1: The mediation structure in the cohort. The drug reaches stroke by two routes: the indirect path drug -&gt; SBP -&gt; stroke and the direct arrow drug -&gt; stroke. The confounder set C is a common cause of all three of treatment, mediator and outcome.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A mediator is structurally distinct from the two basic DAG structures we met in Chapter 11. A <strong>confounder</strong> is a common cause of treatment and outcome (a fork, <code>A &lt;- C -&gt; Y</code>); adjusting for it <em>removes</em> bias. A <strong>collider</strong> is a common effect of two variables (<code>A -&gt; S &lt;- Y</code>); adjusting for it <em>creates</em> bias. A mediator lies <em>on</em> the causal path from treatment to outcome (<code>A -&gt; M -&gt; Y</code>); adjusting for it removes the part of the effect that runs through it. The three demand opposite handling, and the same variable plays different roles for different questions — in Chapter 14, blood pressure at a later visit was a confounder of the <em>later</em> treatment and a mediator of the <em>earlier</em> one at the same time, which is what made that setting intractable for ordinary regression.</p>
+<p>An interesting feature of <a href="#fig-mediation-dag" class="quarto-xref">Figure&nbsp;<span>16.1</span></a> is that the confounders in <code>C</code> point into both the mediator and the outcome. Both age and severity do this: older and sicker patients have higher blood pressure and more strokes for reasons that have nothing to do with the drug, so each confounds the <em>mediator-outcome</em> relationship. (Severity is the one we deliberately hide later, to show what its omission does.) The treatment is assigned as if at random within levels of <code>C</code> in this cohort, but the <em>mediator</em> is not assigned that way. We will see that the decomposition of the direct and mediated paths depends on comparability of the mediator, not just of the treatment.</p>
+</section>
+<section id="total-direct-and-indirect-effects" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="total-direct-and-indirect-effects"><span class="header-section-number">16.2</span> Total, direct, and indirect effects</h2>
+<p>To define the pieces precisely we extend the potential-outcome notation of Chapter 10. Write <span class="math inline">\(Y(a)\)</span> for the outcome under treatment level <span class="math inline">\(a\)</span>, and <span class="math inline">\(M(a)\)</span> for the value the mediator would take under treatment <span class="math inline">\(a\)</span>. The new object is a <strong>nested counterfactual</strong>, <span class="math inline">\(Y(a, m)\)</span>: the outcome if treatment were set to <span class="math inline">\(a\)</span> <em>and</em> the mediator were set, independently, to <span class="math inline">\(m\)</span>. Combining the two, <span class="math inline">\(Y(a, M(a^*))\)</span> is the outcome if treatment were set to <span class="math inline">\(a\)</span> while the mediator took the value it <em>would have taken</em> under a possibly different treatment <span class="math inline">\(a^*\)</span>. The total effect is the contrast in which everything moves together,</p>
+<p><span class="math display">\[
+\text{TE} \;=\; E[Y(1, M(1)) - Y(0, M(0))] .
+\]</span></p>
+<p>There are two ways to define a “direct” effect, and they answer different questions.</p>
+<p>The <strong>controlled direct effect</strong> fixes the mediator at one value <span class="math inline">\(m\)</span> for everyone and toggles the treatment: <span class="math display">\[
+\text{CDE}(m) \;=\; E[Y(1, m) - Y(0, m)] .
+\]</span> It answers a policy question — what the treatment would do if we <em>also</em> intervened to hold blood pressure at <span class="math inline">\(m\)</span> — and it generally depends on the chosen <span class="math inline">\(m\)</span>. The <strong>natural direct effect</strong> instead lets the mediator take the value it would naturally have had under no treatment, and toggles only the direct arrow: <span class="math display">\[
+\text{NDE} \;=\; E[Y(1, M(0)) - Y(0, M(0))] .
+\]</span> The <strong>natural indirect effect</strong> holds the treatment switched on and moves the mediator from the value it would take untreated to the value it would take treated: <span class="math display">\[
+\text{NIE} \;=\; E[Y(1, M(1)) - Y(1, M(0))] .
+\]</span></p>
+<p>The natural effects are built to add up. Inserting and subtracting the cross-world term <span class="math inline">\(Y(1, M(0))\)</span> telescopes the total effect into the two pieces: <span class="math display">\[
+\underbrace{Y(1,M(1)) - Y(0,M(0))}_{\text{total}}
+=\underbrace{Y(1,M(1)) - Y(1,M(0))}_{\text{indirect (NIE)}}
++\underbrace{Y(1,M(0)) - Y(0,M(0))}_{\text{direct (NDE)}} .
+\]</span> So <span class="math inline">\(\text{TE} = \text{NDE} + \text{NIE}\)</span> on the difference scale. Splitting instead through the other cross-world term <span class="math inline">\(Y(0, M(1))\)</span> gives a second, equally valid decomposition, with direct effect <span class="math inline">\(\text{NDE}^\ast = E[Y(1,M(1)) - Y(0,M(1))]\)</span> and indirect effect <span class="math inline">\(\text{NIE}^\ast = E[Y(0,M(1)) - Y(0,M(0))]\)</span> — the mediator now moved with the drug held <em>off</em>. The two decompositions agree on a single split only when treatment and mediator do not interact in their effect on the outcome. In this cohort they <em>do</em> interact, so the two disagree; that gap, and what it means, is the subject of the next section. The four-way decomposition promotes the interaction to a component of its own (Chapter 16); here we keep the two-way split and are explicit about which reference it uses.</p>
+<p>The term that makes all of this possible, <span class="math inline">\(Y(1, M(0))\)</span>, is a <strong>cross-world</strong> quantity: the stroke risk for a patient who is <em>treated</em>, but whose blood pressure is held at the level it would have been had she been <em>untreated</em>. No experiment can place a person in that state, because a person is either treated or not.</p>
+<p>The four worlds entering the two decompositions are summarised below; each corresponds to one of the cohort’s oracle columns, which exist only because we built the data.</p>
+<table class="table-striped table">
+<caption>The four counterfactual worlds. Decomposition A uses the first three; decomposition B uses the first, third and fourth. The two agree only without a treatment-mediator interaction.</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Counterfactual</th>
+<th>Drug in the outcome</th>
+<th>Blood pressure held at</th>
+<th>Oracle column</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Y(0, M(0))\)</span></td>
+<td>untreated</td>
+<td>its untreated level</td>
+<td><code>risk0</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Y(1, M(0))\)</span></td>
+<td>treated</td>
+<td>its untreated level <em>(cross-world)</em></td>
+<td><code>risk_d1m0</code></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(Y(1, M(1))\)</span></td>
+<td>treated</td>
+<td>its treated level</td>
+<td><code>risk1</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Y(0, M(1))\)</span></td>
+<td>untreated</td>
+<td>its treated level <em>(cross-world)</em></td>
+<td><code>risk_d0m1</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-the-cohort-really-does" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="what-the-cohort-really-does"><span class="header-section-number">16.3</span> What the cohort really does</h2>
+<p>Because the data-generating process is known, each counterfactual world is a column we can read directly. The natural effects are simple averages of differences between those columns — and there are two ways to take them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>age_c <span class="ot">&lt;-</span> (df<span class="sc">$</span>age <span class="sc">-</span> <span class="dv">62</span>) <span class="sc">/</span> <span class="dv">10</span>            <span class="co"># base assignment keeps the oracle attribute</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sbp10 <span class="ot">&lt;-</span> (df<span class="sc">$</span>sbp <span class="sc">-</span> <span class="dv">140</span>) <span class="sc">/</span> <span class="dv">10</span>           <span class="co"># blood pressure, centred (per 10 mmHg)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>o <span class="ot">&lt;-</span> <span class="fu">attr</span>(df, <span class="st">"oracle"</span>)                   <span class="co"># the answer key</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>EY00 <span class="ot">&lt;-</span> <span class="fu">mean</span>(o<span class="sc">$</span>risk0)        <span class="co"># E[Y(0, M(0))]</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>EY11 <span class="ot">&lt;-</span> <span class="fu">mean</span>(o<span class="sc">$</span>risk1)        <span class="co"># E[Y(1, M(1))]</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>EY10 <span class="ot">&lt;-</span> <span class="fu">mean</span>(o<span class="sc">$</span>risk_d1m0)    <span class="co"># E[Y(1, M(0))]  -- cross-world for decomposition A</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>EY01 <span class="ot">&lt;-</span> <span class="fu">mean</span>(o<span class="sc">$</span>risk_d0m1)    <span class="co"># E[Y(0, M(1))]  -- cross-world for decomposition B</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">NDE_A =</span> EY10 <span class="sc">-</span> EY00, <span class="at">NIE_A =</span> EY11 <span class="sc">-</span> EY10,    <span class="co"># split through Y(1, M(0))</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">NDE_B =</span> EY11 <span class="sc">-</span> EY01, <span class="at">NIE_B =</span> EY01 <span class="sc">-</span> EY00,    <span class="co"># split through Y(0, M(1))</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">total =</span> EY11 <span class="sc">-</span> EY00)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       NDE_A        NIE_A        NDE_B        NIE_B        total 
+-0.020918314 -0.006317794 -0.012830591 -0.014405517 -0.027236108 </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">cohort_truth</span>(df)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pm_a  <span class="ot">&lt;-</span> truth<span class="sc">$</span>NIE  <span class="sc">/</span> truth<span class="sc">$</span>total         <span class="co"># proportion mediated, decomposition A</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pm_b  <span class="ot">&lt;-</span> truth<span class="sc">$</span>NIE2 <span class="sc">/</span> truth<span class="sc">$</span>total         <span class="co"># proportion mediated, decomposition B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The drug lowers five-year stroke risk by a total of -0.0272 on the risk-difference scale. But the split of that total into direct and indirect parts is <strong>not unique</strong>. Measuring the indirect effect with the drug held <em>on</em> (decomposition A), the direct effect is -0.0209 and the indirect -0.0063: 23% of the protection flows through blood pressure. Measuring it with the drug held <em>off</em> (decomposition B), the direct effect is -0.0128 and the indirect -0.0144: 53% mediated. Same total, same data, two answers — 23% versus 53% mediated.</p>
+<p>The gap is not sampling noise; it is built into the cohort. The drug and blood pressure <strong>interact</strong> in their effect on stroke: the drug’s direct benefit is larger when blood pressure is high, or equivalently blood pressure does less harm once the drug is on board. When such an interaction is present, moving the mediator matters less with the drug on than with it off, so the indirect effect is smaller in decomposition A than in B, and the direct effect correspondingly larger. The two natural decompositions divide the interaction between the direct and indirect pieces differently, which is why they disagree. Only without a treatment-mediator interaction do they collapse to one number. We take decomposition A, 23% mediated, as the reference answer key below, and return to the ambiguity when we estimate it.</p>
+</section>
+<section id="adjusting-for-the-mediator-destroys-the-total-effect" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="adjusting-for-the-mediator-destroys-the-total-effect"><span class="header-section-number">16.4</span> Adjusting for the mediator destroys the total effect</h2>
+<p>The reflex of an analyst who has learned about confounding is to put every available variable into the outcome model. Blood pressure is available, so in it goes. To see what that does, standardise the outcome model the way Chapter 12 did — fit it, predict the risk under <code>drug = 1</code> and under <code>drug = 0</code> for everyone, and contrast — first with the correct confounder set and then with blood pressure added.</p>
+<p>We fit the outcome with a <strong>log link</strong> rather than the linear or logistic default. Concretely this is a Poisson working model (<code>family = poisson()</code>), the Bayesian counterpart of the log-binomial or <em>modified-Poisson</em> regression standard in epidemiology.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> On the log scale the drug’s coefficient is a log <strong>risk ratio</strong>, and the model represents the drug as multiplying stroke risk by a constant factor across covariate patterns — the scale on which a treatment effect is most often portable across populations of differing baseline risk. Two consequences matter. First, the marginal contrasts we report (the risk difference and risk ratio) are obtained by <strong>standardisation</strong>: predict each patient’s risk under <code>drug = 1</code> and under <code>drug = 0</code>, average, and contrast. <code>marginaleffects::avg_comparisons()</code> does this on the fitted model, and because every prediction is a posterior draw, each contrast comes out as a posterior distribution, not a point estimate with a bolted-on interval. Second, the Poisson likelihood is a <em>working</em> model for a 0/1 outcome — it does not enforce a ceiling at risk = 1 — so its credible intervals are mildly conservative; we adopt it because it delivers risk ratios directly and, unlike a strict log-binomial likelihood, samples without trouble. A logit link would fit as readily but reports odds ratios, which are not collapsible and are not the decision-relevant contrast (Chapter 24).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>priors_out <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),   <span class="co"># log baseline risk</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.5</span>), <span class="at">class =</span> <span class="st">"b"</span>))           <span class="co"># log risk ratios</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>priors_med <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">2</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"b"</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>m_total <span class="ot">&lt;-</span> <span class="fu">brm</span>(stroke <span class="sc">~</span> drug <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> priors_out,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">800</span>, <span class="at">warmup =</span> <span class="dv">400</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">file =</span> <span class="st">"models/ch15_total"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>m_over  <span class="ot">&lt;-</span> <span class="fu">brm</span>(stroke <span class="sc">~</span> drug <span class="sc">+</span> sbp10 <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> priors_out,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">800</span>, <span class="at">warmup =</span> <span class="dv">400</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">file =</span> <span class="st">"models/ch15_over"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>total_rr <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(m_total, <span class="at">variables =</span> <span class="st">"drug"</span>, <span class="at">comparison =</span> <span class="st">"ratioavg"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>total_rd <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(m_total, <span class="at">variables =</span> <span class="st">"drug"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>over_rr  <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(m_over,  <span class="at">variables =</span> <span class="st">"drug"</span>, <span class="at">comparison =</span> <span class="st">"ratioavg"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>over_rd  <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(m_over,  <span class="at">variables =</span> <span class="st">"drug"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>lo <span class="ot">&lt;-</span> <span class="fu">c</span>(total_rr<span class="sc">$</span>conf.low,  over_rr<span class="sc">$</span>conf.low)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>hi <span class="ot">&lt;-</span> <span class="fu">c</span>(total_rr<span class="sc">$</span>conf.high, over_rr<span class="sc">$</span>conf.high)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">model             =</span> <span class="fu">c</span>(<span class="st">"confounders only (total effect)"</span>, <span class="st">"+ blood pressure (over-adjusted)"</span>),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">risk ratio</span><span class="st">`</span>      <span class="ot">=</span> <span class="fu">c</span>(total_rr<span class="sc">$</span>estimate, over_rr<span class="sc">$</span>estimate),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">95% CrI</span><span class="st">`</span>         <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">"[%.3f, %.3f]"</span>, lo, hi),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">risk difference</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(total_rd<span class="sc">$</span>estimate, over_rd<span class="sc">$</span>estimate)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">"Standardised drug effect, with and without the mediator in the model."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Standardised drug effect, with and without the mediator in the model.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">risk ratio</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">95% CrI</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">risk difference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">confounders only (total effect)</td>
+<td style="text-align: right;">0.618</td>
+<td style="text-align: left;">[0.561, 0.685]</td>
+<td style="text-align: right;">-0.026</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">+ blood pressure (over-adjusted)</td>
+<td style="text-align: right;">0.738</td>
+<td style="text-align: left;">[0.654, 0.828]</td>
+<td style="text-align: right;">-0.015</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Adjusting for the confounders alone recovers the total effect: a risk ratio of 0.618 (95% credible interval 0.561 to 0.685), against the true 0.6. Adding blood pressure to the same model moves the risk ratio to 0.738, and the risk difference from -0.0257 to -0.0154 — roughly 40% of the protective effect disappears. This is the <strong>over-adjustment</strong> flagged in Chapter 12. Conditioning on the mediator blocks the path <code>drug -&gt; sbp -&gt; stroke</code>, so the estimate no longer counts the protection that runs through blood pressure. An analyst who reports 0.738 as “the effect of the drug, adjusted for blood pressure” has not produced a cleaner total effect; he has produced a different quantity — a direct effect — and mislabelled it.</p>
+<p>The mislabelling matters because the two answer different questions, and because a mediator does not announce itself in a regression table. Its coefficient looks like any other adjustment. The decision about which variables belong in the model comes from the DAG (Chapter 11), and the DAG says that blood pressure is downstream of the treatment, not a confounder of it.</p>
+</section>
+<section id="estimating-direct-and-indirect-effects" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="estimating-direct-and-indirect-effects"><span class="header-section-number">16.5</span> Estimating direct and indirect effects</h2>
+<p>If conditioning on the mediator is wrong, how is the decomposition estimated? The natural effects are averages over the counterfactual worlds, and we can build those worlds by simulation, in the manner of the g-formula in Chapter 14. We fit two models: one for how the mediator responds to treatment and confounders (the mediator’s law of motion), and one for the outcome given treatment, mediator and confounders. Then we generate each world by setting the treatment that enters the <em>outcome</em> model and the treatment that enters the <em>mediator</em> model separately — which is what lets us realise the cross-world combinations <span class="math inline">\(Y(1, M(0))\)</span> and <span class="math inline">\(Y(0, M(1))\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m_med <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp10 <span class="sc">~</span> drug <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> priors_med,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">800</span>, <span class="at">warmup =</span> <span class="dv">400</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">file =</span> <span class="st">"models/ch15_med"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>m_out <span class="ot">&lt;-</span> <span class="fu">brm</span>(stroke <span class="sc">~</span> drug <span class="sc">*</span> sbp10 <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> priors_out,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">800</span>, <span class="at">warmup =</span> <span class="dv">400</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">file =</span> <span class="st">"models/ch15_out"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The outcome model carries a <code>drug * sbp10</code> interaction term, because in this cohort the drug and blood pressure interact; a main-effects outcome model would force a single direct/indirect split and misstate both pieces. With the two models fitted, the g-computation carries their posterior draws through the four worlds.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gcomp_draws <span class="ot">&lt;-</span> <span class="cf">function</span>(med, out, <span class="at">n_draws =</span> <span class="dv">200</span>, <span class="at">seed =</span> <span class="dv">1</span>) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(seed)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  mid <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample.int</span>(brms<span class="sc">::</span><span class="fu">ndraws</span>(med), n_draws))    <span class="co"># mediator posterior draws</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  oid <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample.int</span>(brms<span class="sc">::</span><span class="fu">ndraws</span>(out), n_draws))    <span class="co"># outcome posterior draws (paired)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulate the mediator under each treatment from its full posterior predictive:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># posterior_predict integrates the mediator coefficients AND the residual, per draw</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  M0 <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(med, <span class="fu">transform</span>(df, <span class="at">drug =</span> <span class="dv">0</span>), <span class="at">draw_ids =</span> mid)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  M1 <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(med, <span class="fu">transform</span>(df, <span class="at">drug =</span> <span class="dv">1</span>), <span class="at">draw_ids =</span> mid)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  world <span class="ot">&lt;-</span> <span class="cf">function</span>(a_dir, M)                             <span class="co"># posterior draws of E[Y(a_dir, M)]</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">vapply</span>(<span class="fu">seq_len</span>(n_draws), <span class="cf">function</span>(s)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mean</span>(<span class="fu">posterior_epred</span>(out, <span class="fu">transform</span>(df, <span class="at">drug =</span> a_dir, <span class="at">sbp10 =</span> M[s, ]),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                           <span class="at">draw_ids =</span> oid[s])), <span class="fu">numeric</span>(<span class="dv">1</span>))</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  EY00 <span class="ot">&lt;-</span> <span class="fu">world</span>(<span class="dv">0</span>, M0); EY11 <span class="ot">&lt;-</span> <span class="fu">world</span>(<span class="dv">1</span>, M1)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  EY10 <span class="ot">&lt;-</span> <span class="fu">world</span>(<span class="dv">1</span>, M0); EY01 <span class="ot">&lt;-</span> <span class="fu">world</span>(<span class="dv">0</span>, M1)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">NDE_A =</span> EY10 <span class="sc">-</span> EY00, <span class="at">NIE_A =</span> EY11 <span class="sc">-</span> EY10,        <span class="co"># decomposition A</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">NDE_B =</span> EY11 <span class="sc">-</span> EY01, <span class="at">NIE_B =</span> EY01 <span class="sc">-</span> EY00,        <span class="co"># decomposition B</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">total =</span> EY11 <span class="sc">-</span> EY00)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">gcomp_draws</span>(m_med, m_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Three details carry the logic. The treatment fed to the mediator (<code>M0</code> versus <code>M1</code>) and the treatment fed to the outcome model are set independently; the cross-world <code>world(1, M0)</code> uses <code>drug = 1</code> in the outcome model but the mediator drawn under <em>no</em> treatment, and <code>world(0, M1)</code> does the reverse. The mediator is drawn with <code>posterior_predict()</code> rather than held at its fitted mean, so each simulated blood pressure carries the full posterior predictive spread — the mediator coefficients’ uncertainty and the residual together — which matters because the outcome is non-linear in blood pressure and the average risk must integrate over that spread, not just its centre. And the draws are paired by index across the four worlds (<code>mid</code> for the mediator, <code>oid</code> for the outcome), so within a posterior draw the worlds differ only in the quantities the strategy changes; the credible intervals below therefore propagate uncertainty from <em>both</em> fitted models, not only the outcome.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sprintf</span>(<span class="st">"%.4f (%.4f, %.4f)"</span>, <span class="fu">mean</span>(x), <span class="fu">quantile</span>(x, .<span class="dv">025</span>), <span class="fu">quantile</span>(x, .<span class="dv">975</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">quantity            =</span> <span class="fu">c</span>(<span class="st">"direct (NDE)"</span>, <span class="st">"indirect (NIE)"</span>, <span class="st">"proportion mediated (%)"</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">decomposition A</span><span class="st">`</span>   <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">ci</span>(post<span class="sc">$</span>NDE_A), <span class="fu">ci</span>(post<span class="sc">$</span>NIE_A), <span class="fu">ci</span>(<span class="dv">100</span> <span class="sc">*</span> post<span class="sc">$</span>NIE_A <span class="sc">/</span> post<span class="sc">$</span>total)),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">decomposition B</span><span class="st">`</span>   <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">ci</span>(post<span class="sc">$</span>NDE_B), <span class="fu">ci</span>(post<span class="sc">$</span>NIE_B), <span class="fu">ci</span>(<span class="dv">100</span> <span class="sc">*</span> post<span class="sc">$</span>NIE_B <span class="sc">/</span> post<span class="sc">$</span>total))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">caption =</span> <span class="st">"Posterior mediation g-computation: two decompositions (mean and 95% credible interval)."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Posterior mediation g-computation: two decompositions (mean and 95% credible interval).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">quantity</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">decomposition A</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">decomposition B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">direct (NDE)</td>
+<td style="text-align: left;">-0.0218 (-0.0306, -0.0147)</td>
+<td style="text-align: left;">-0.0134 (-0.0194, -0.0080)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">indirect (NIE)</td>
+<td style="text-align: left;">-0.0067 (-0.0098, -0.0034)</td>
+<td style="text-align: left;">-0.0151 (-0.0212, -0.0099)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">proportion mediated (%)</td>
+<td style="text-align: left;">23.9519 (11.9626, 38.0022)</td>
+<td style="text-align: left;">53.1125 (37.2075, 68.8775)</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>The estimate recovers each piece. Under decomposition A the direct effect is -0.0212 against the true -0.0209 and the indirect -0.0071 against -0.0063; under decomposition B the direct is -0.0131 and the indirect -0.0153, against -0.0128 and -0.0144. The credible intervals cover the truth in every case.</p>
+<p>The two decompositions disagree, as the oracle said they must: 26% mediated on one and 54% on the other. The gap is structural — the exposure-mediator interaction, which the oracle confirms at 23% against 53% — not an artefact of this particular sample, and a lone “proportion mediated” would hide the choice of reference. But it sits inside wide uncertainty: the proportion mediated is a ratio of two small effects, each carrying error, and here each interval spans tens of percentage points, so the two overlap despite aiming at genuinely different targets. It is a notoriously sample-hungry quantity; report it, if at all, with the decomposition named, the scale named, and the credible interval attached — never as a bare point estimate. The merit of carrying both models’ posterior draws through the simulation is that this interval falls out as a posterior distribution over the whole decomposition, rather than a bootstrap bolted on afterwards; Chapter 28 develops the Bayesian workflow in full.</p>
+<p>For comparison, the frequentist estimator this section replaces — an <code>lm</code> mediator and a <code>glm(family = poisson)</code> outcome, run through the identical world simulation — is kept below. It returns point estimates but no measure of uncertainty.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>The pre-Bayesian lm / glm estimator, for comparison</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>med_f <span class="ot">&lt;-</span> <span class="fu">lm</span>(sbp10 <span class="sc">~</span> drug <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">data =</span> df)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>out_f <span class="ot">&lt;-</span> <span class="fu">glm</span>(stroke <span class="sc">~</span> drug <span class="sc">*</span> sbp10 <span class="sc">+</span> severity <span class="sc">+</span> age_c <span class="sc">+</span> diabetes, <span class="at">family =</span> poisson, <span class="at">data =</span> df)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>gcomp_freq <span class="ot">&lt;-</span> <span class="cf">function</span>(med, out, <span class="at">draws =</span> <span class="dv">50</span>, <span class="at">seed =</span> <span class="dv">1</span>) {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(seed); s <span class="ot">&lt;-</span> <span class="fu">sigma</span>(med)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  mu0 <span class="ot">&lt;-</span> <span class="fu">predict</span>(med, <span class="fu">transform</span>(df, <span class="at">drug =</span> <span class="dv">0</span>)); mu1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(med, <span class="fu">transform</span>(df, <span class="at">drug =</span> <span class="dv">1</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  a00 <span class="ot">&lt;-</span> a11 <span class="ot">&lt;-</span> a10 <span class="ot">&lt;-</span> a01 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (d <span class="cf">in</span> <span class="fu">seq_len</span>(draws)) {</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    e  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(df), <span class="dv">0</span>, s)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    pe <span class="ot">&lt;-</span> <span class="cf">function</span>(a, mu) <span class="fu">mean</span>(<span class="fu">predict</span>(out, <span class="fu">transform</span>(df, <span class="at">drug =</span> a, <span class="at">sbp10 =</span> mu <span class="sc">+</span> e), <span class="at">type =</span> <span class="st">"response"</span>))</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    a00 <span class="ot">&lt;-</span> a00 <span class="sc">+</span> <span class="fu">pe</span>(<span class="dv">0</span>, mu0); a11 <span class="ot">&lt;-</span> a11 <span class="sc">+</span> <span class="fu">pe</span>(<span class="dv">1</span>, mu1); a10 <span class="ot">&lt;-</span> a10 <span class="sc">+</span> <span class="fu">pe</span>(<span class="dv">1</span>, mu0); a01 <span class="ot">&lt;-</span> a01 <span class="sc">+</span> <span class="fu">pe</span>(<span class="dv">0</span>, mu1)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">c</span>(<span class="at">NDE_A =</span> a10 <span class="sc">-</span> a00, <span class="at">NIE_A =</span> a11 <span class="sc">-</span> a10, <span class="at">NDE_B =</span> a11 <span class="sc">-</span> a01, <span class="at">NIE_B =</span> a01 <span class="sc">-</span> a00)) <span class="sc">/</span> draws</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>freq <span class="ot">&lt;-</span> <span class="fu">gcomp_freq</span>(med_f, out_f)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(freq, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  NDE_A   NIE_A   NDE_B   NIE_B 
+-0.0221 -0.0067 -0.0136 -0.0152 </code></pre>
+</div>
+</div>
+<p>The <code>lm</code>/<code>glm</code> point estimates (NDE -0.0221, NIE -0.0067 on decomposition A) fall within rounding of the posterior means above; what the Bayesian fit adds is the interval, a posterior distribution over the whole decomposition rather than a single number.</p>
+</section>
+<section id="why-this-is-harder-than-it-looks" class="level2" data-number="16.6">
+<h2 data-number="16.6" class="anchored" data-anchor-id="why-this-is-harder-than-it-looks"><span class="header-section-number">16.6</span> Why this is harder than it looks</h2>
+<p>The estimator above is correct only under assumptions that go beyond anything the total effect required. Identifying the natural direct and indirect effects needs four distinct no-unmeasured-confounding conditions, conditional on the measured covariates <span class="math inline">\(C\)</span>:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<ol type="1">
+<li>no unmeasured confounding of the <strong>treatment-outcome</strong> relationship;</li>
+<li>no unmeasured confounding of the <strong>mediator-outcome</strong> relationship;</li>
+<li>no unmeasured confounding of the <strong>treatment-mediator</strong> relationship;</li>
+<li>no mediator-outcome confounder is <strong>itself affected by the treatment</strong>.</li>
+</ol>
+<p>The first is the familiar exchangeability of Chapter 12, and a randomised trial delivers it. The third is also delivered by randomising the treatment. But the <strong>second</strong> is not: randomising the drug does nothing to make blood pressure comparable across the patients who end up with high versus low blood pressure, because the drug does not assign blood pressure. In the cohort, <code>severity</code> is such a mediator-outcome confounder — it raises both blood pressure and stroke risk — and it must be measured and adjusted for, or the direct and indirect effects are not identified.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> To see how badly this bites, run the same estimator with <code>severity</code> left out of both models, as it would be if severity were unmeasured.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m_med_u <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp10 <span class="sc">~</span> drug <span class="sc">+</span> age_c <span class="sc">+</span> diabetes,                 <span class="co"># severity omitted</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> priors_med,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">800</span>, <span class="at">warmup =</span> <span class="dv">400</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">file =</span> <span class="st">"models/ch15_med_u"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>m_out_u <span class="ot">&lt;-</span> <span class="fu">brm</span>(stroke <span class="sc">~</span> drug <span class="sc">*</span> sbp10 <span class="sc">+</span> age_c <span class="sc">+</span> diabetes,        <span class="co"># severity omitted</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">family =</span> <span class="fu">poisson</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> priors_out,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">800</span>, <span class="at">warmup =</span> <span class="dv">400</span>, <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">file =</span> <span class="st">"models/ch15_out_u"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>post_u <span class="ot">&lt;-</span> <span class="fu">gcomp_draws</span>(m_med_u, m_out_u)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">NDE_A =</span> <span class="fu">mean</span>(post_u<span class="sc">$</span>NDE_A), <span class="at">NIE_A =</span> <span class="fu">mean</span>(post_u<span class="sc">$</span>NIE_A), <span class="at">total =</span> <span class="fu">mean</span>(post_u<span class="sc">$</span>total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       NDE_A        NIE_A        total 
+ 0.019052324 -0.012053775  0.006998549 </code></pre>
+</div>
+</div>
+<p>Both the total and its decomposition now go wrong, because <code>severity</code> confounds two relationships at once. It confounds the treatment — sicker patients are treated more and stroke more — so the omitted-<code>severity</code> total, 0.007, is badly biased and even changes sign; blood pressure in the outcome model proxies only the part of <code>severity</code> that runs <em>through</em> blood pressure, leaving its direct path to stroke unadjusted. And it confounds the mediator-outcome relationship, which is the failure specific to mediation: the direct effect is estimated as 0.0191, against the true -0.0209 — a protective effect reversed to a harmful-looking one, with a credible interval lying entirely on the wrong side of zero. Conditioning on blood pressure in the outcome model opens the collider path <code>drug -&gt; sbp &lt;- severity -&gt; stroke</code>, and the unblocked back-door through <code>severity</code> floods the direct estimate. The two failures are separable in principle: randomising the treatment would remove the confounding of the <em>total</em> effect but leave this collider mechanism untouched, so the direct effect would still reverse. Exercise 3 isolates that mechanism with a confounder that touches only the mediator and the outcome.</p>
+<p>The fourth assumption is subtler and cannot be tested even in principle. It rules out any variable that is affected by the treatment and then confounds the mediator-outcome relationship. If such a variable exists — a treatment-induced change in, say, kidney function that affects both blood pressure and stroke — then no adjustment recovers the natural effects, because adjusting for the variable blocks part of the indirect path while not adjusting leaves the mediator-outcome relationship confounded. This is the mediation analogue of the treatment-confounder feedback of Chapter 14, and it is why natural effects rest on a <strong>cross-world</strong> independence that has no experimental analogue.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> One can randomise the treatment; one cannot randomise a patient into the world where they are treated but their blood pressure is what it would have been untreated.</p>
+<p>The controlled direct effect asks less. It needs only the first two conditions and a well-defined intervention on the mediator, and it carries no cross-world assumption — which is why some authors prefer it when the mediator is something one could actually manipulate (a blood-pressure target). Its cost is that it does not decompose the total effect into two pieces that sum, and that it depends on the value the mediator is set to whenever treatment and mediator interact.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Because they <em>do</em> interact here, that dependence is real: fixing blood pressure at 130 versus 160 mmHg gives controlled direct effects that differ on the risk-ratio scale, not only the risk-difference scale (the exercises pursue this). The choice between the two direct effects is a choice between a quantity with a clean policy meaning and a quantity with a clean decomposition.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Five analyses of one mediation question.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">analysis</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">result</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">truth (oracle)</td>
+<td style="text-align: left;">A: 23% mediated; B: 53% mediated</td>
+<td style="text-align: left;">two valid splits (the drug and blood pressure interact)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">standardise over confounders</td>
+<td style="text-align: left;">total RR 0.618</td>
+<td style="text-align: left;">correct total effect</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">+ adjust for blood pressure</td>
+<td style="text-align: left;">RR 0.738</td>
+<td style="text-align: left;">total effect destroyed (mediated path blocked)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mediation g-computation</td>
+<td style="text-align: left;">A: 24% (-0.0218/-0.0067); B: 53%</td>
+<td style="text-align: left;">both decompositions recovered; split noisy and reference-dependent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">g-computation, severity hidden</td>
+<td style="text-align: left;">NDE 0.0191 (bias from hidden M-Y confounder)</td>
+<td style="text-align: left;">direct effect not identified without the M-Y confounder</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>One last caution concerns the scale, and it echoes the ambiguity we have already met. The decomposition above is additive, on the risk-difference scale, and “proportion mediated” was a ratio of risk differences. The same effect decomposed on the risk-ratio or odds-ratio scale gives different proportions, because direct and indirect effects do not combine the same way under different links. That scale-dependence sits on top of the reference-dependence of the natural split: even at one scale, the two decompositions disagree once treatment and mediator interact — a point that connects mediation to the scale-dependence of interaction in Chapter 16. There is no scale, and no single decomposition, on which the proportion mediated is <em>the</em> truth; it is a property of the choices one has made, and it must be reported with the scale and the reference named.</p>
+<p>The standard regression approach to mediation, fitting the outcome with and without the mediator and reading the difference as the indirect effect, originates with Baron and Kenny and remains common.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> It is valid in the narrow case it was designed for — a linear outcome model, no treatment-mediator interaction, and no mediator-outcome confounding. This cohort violates the first two: the outcome is non-linear and the drug interacts with blood pressure, so the single indirect effect Baron and Kenny would report corresponds to neither of the two natural decompositions and misleads silently, as the sign-reversal above shows for the third condition. The counterfactual definitions and the simulation estimator are more work, but they make the assumptions explicit and extend to non-linear outcomes, interactions, and binary mediators.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> When those assumptions are doubtful, the response is not a better point estimate but a sensitivity analysis that asks how strong an unmeasured mediator-outcome confounder would have to be to overturn the conclusion — the subject of Chapter 19.</p>
+</section>
+<section id="checking-an-ai-assisted-analysis" class="level2" data-number="16.7">
+<h2 data-number="16.7" class="anchored" data-anchor-id="checking-an-ai-assisted-analysis"><span class="header-section-number">16.7</span> Checking an AI-assisted analysis</h2>
+<p>Delegating the code does not delegate the assumptions. When a mediation analysis is produced with the help of an AI assistant — or by any collaborator whose work one has not read line by line — the review that matters targets the parts the data cannot settle. Fitting the models, simulating the counterfactual worlds, and tabulating the result is the layer where an assistant is reliable; which estimand it computed, under which assumptions, and what it assumed away is where it can be confidently wrong. The checks below are worth making before a mediation result is believed, whoever wrote the code.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Reviewing a mediation analysis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Estimand and scale.</strong> Confirm which effect is reported — a controlled direct effect (mediator fixed at a value) or the natural direct and indirect effects (mediator at its counterfactual value) — and that it answers the intended question. Confirm the scale (risk difference, risk ratio, odds ratio); the proportion mediated depends on it.</li>
+<li><strong>Identification, not fit.</strong> The natural effects need the four no-unmeasured-confounding conditions of this chapter, and randomising the treatment supplies only two. Ask for the DAG and the measured variables that discharge the mediator-outcome condition, and confirm they are present in the data. Check that the untestable cross-world condition — no treatment-induced mediator-outcome confounder — is stated rather than assumed in silence.</li>
+<li><strong>Variable roles.</strong> The mediator must be absent from any total-effect model and present in the outcome model, and the mediator-outcome confounders must be adjusted. Adjustment should follow the DAG, not a rule of entering every available covariate.</li>
+<li><strong>Interaction and the split.</strong> If treatment and mediator interact, the direct/indirect split is not unique. Confirm the outcome model was allowed an exposure-mediator interaction term, and that the report names which decomposition and reference level produced the numbers.</li>
+<li><strong>Uncertainty.</strong> Require an interval on the proportion mediated, and treat a narrow one on modest data with suspicion. Confirm the interval propagates uncertainty from the mediator model as well as the outcome model, not the outcome model alone. For a sampled fit, confirm the convergence diagnostics (R-hat near one, no divergent transitions, adequate effective sample size).</li>
+<li><strong>Internal consistency.</strong> The direct and indirect effects should sum to the total, and the total should agree with a separate total-effect analysis that omits the mediator.</li>
+<li><strong>Fragility.</strong> Because the mediator-outcome condition cannot be verified, ask how strong an unmeasured mediator-outcome confounder would have to be to move the estimate to the null (Chapter 19). A conclusion overturned by a confounder of moderate strength should be reported as fragile.</li>
+<li><strong>Decisions on the code.</strong> The choices must be clearly presented: estimand, scale, decomposition, confounder set, model and link function, priors, and software versions. A result presented without them cannot be audited.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="key-points" class="level2" data-number="16.8">
+<h2 data-number="16.8" class="anchored" data-anchor-id="key-points"><span class="header-section-number">16.8</span> Key points</h2>
+<ul>
+<li>A <strong>mediator</strong> lies on the causal path from treatment to outcome (<code>A -&gt; M -&gt; Y</code>). It is neither a confounder nor a collider, and adjusting for it removes the part of the effect that runs through it.</li>
+<li>The total effect splits into a <strong>natural direct effect</strong> and a <strong>natural indirect effect</strong> that sum to it, defined through the cross-world counterfactual <span class="math inline">\(Y(1, M(0))\)</span> — a patient treated, with the mediator held at its untreated value.</li>
+<li>When treatment and mediator <strong>interact</strong>, the split is <strong>not unique</strong>: taking the mediator at its untreated versus its treated level gives two valid decompositions that divide the interaction differently. Report which one is used; the four-way decomposition (Chapter 16) makes the interaction an explicit fourth component.</li>
+<li><strong>Putting the mediator in the outcome regression destroys the total effect</strong> by blocking the mediated path. The result is a direct effect wearing the label of a total effect, and nothing in the regression output reveals the substitution.</li>
+<li>Estimating the decomposition correctly is a <strong>g-computation</strong>: fit a mediator model and an outcome model, then simulate the counterfactual worlds, setting the treatment in the two models independently. Fitting both with <code>brms</code> and standardising with <code>marginaleffects</code> carries full posterior uncertainty into every contrast.</li>
+<li>Natural effects need <strong>four</strong> no-confounding conditions, not one. Randomising the treatment does <strong>not</strong> deliver them, because it does not make the mediator comparable; a mediator-outcome confounder such as <code>severity</code> must be measured, and the fourth condition (no treatment-induced mediator-outcome confounding) is a cross-world assumption that cannot be tested.</li>
+<li>The <strong>proportion mediated</strong> is a ratio of two estimated effects: noisy, sample-hungry, <strong>scale-dependent</strong>, and <strong>reference-dependent</strong>. Report it with an interval, with the scale named, and with the decomposition named.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="16.9">
+<h2 data-number="16.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">16.9</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Watch the path close.</strong> Refit the standardisation adding the confounders one at a time, and then adding <code>sbp10</code> last. At which step does the estimate change from the crude association towards the truth, and at which step does it move away again? Relate each move to a path in <a href="#fig-mediation-dag" class="quarto-xref">Figure&nbsp;<span>16.1</span></a>.</p></li>
+<li><p><strong>The cross-world column.</strong> Using the oracle, confirm by hand that <code>mean(o$risk_d1m0)</code> lies between <code>mean(o$risk0)</code> and <code>mean(o$risk1)</code>, and explain in words what a patient contributing to <code>risk_d1m0</code> is assumed to experience. Why can this number never be estimated from a contrast of observed groups alone?</p></li>
+<li><p><strong>Break the second assumption deliberately.</strong> The <code>unmeasured</code> analysis dropped <code>severity</code>. Instead, keep <code>severity</code> but generate a <em>new</em> mediator-outcome confounder that the analyst does not measure (a variable that raises both <code>sbp</code> and <code>stroke</code>), and rerun the g-computation. How large must its effect be before the estimated direct effect changes sign? Connect your answer to Chapter 19.</p></li>
+<li><p><strong>Controlled versus natural, with interaction.</strong> Compute the controlled direct effect by fixing <code>sbp10</code> at <span class="math inline">\((130-140)/10\)</span> and then at <span class="math inline">\((160-140)/10\)</span> in the outcome model <code>m_out</code>, using <code>avg_comparisons(m_out, variables = "drug", newdata = ...)</code>. On the risk-ratio scale, do the two fixed values give the same CDE now? Compare with a refit of <code>m_out</code> that drops the <code>drug:sbp10</code> term, where they <em>would</em> be equal on the ratio scale, and explain what the interaction changes.</p></li>
+<li><p><strong>Conceptual.</strong> A trialist randomises the drug and reports that, adjusting for on-treatment blood pressure, the drug still lowers stroke risk, concluding that the drug “works partly through a route other than blood pressure.” Which of the four identification conditions does randomisation secure, which does it not, and why is the conclusion not justified by the randomised design alone?</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Zou G, “A modified Poisson regression approach to prospective studies with binary data,” <em>Am J Epidemiol</em> 2004;159:702-706 (<a href="https://doi.org/10.1093/aje/kwh090">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>VanderWeele TJ, “Mediation Analysis: A Practitioner’s Guide,” <em>Annu Rev Public Health</em> 2016;37:17-32 (<a href="https://doi.org/10.1146/annurev-publhealth-032315-021402">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Cole SR, Hernán MA, “Fallibility in estimating direct effects,” <em>Int J Epidemiol</em> 2002;31:163-165 (<a href="https://doi.org/10.1093/ije/31.1.163">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Robins JM, Greenland S, “Identifiability and exchangeability for direct and indirect effects,” <em>Epidemiology</em> 1992;3:143-155 (<a href="https://doi.org/10.1097/00001648-199203000-00013">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>VanderWeele TJ, “A unification of mediation and interaction: a 4-way decomposition,” <em>Epidemiology</em> 2014;25:749-761 (<a href="https://doi.org/10.1097/EDE.0000000000000121">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Baron RM, Kenny DA, “The moderator-mediator variable distinction in social psychological research: conceptual, strategic, and statistical considerations,” <em>J Pers Soc Psychol</em> 1986;51:1173-1182 (<a href="https://doi.org/10.1037/0022-3514.51.6.1173">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Imai K, Keele L, Tingley D, “A general approach to causal mediation analysis,” <em>Psychol Methods</em> 2010;15:309-334 (<a href="https://doi.org/10.1037/a0020761">DOI</a>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch14-time-varying-confounding.html" class="pagination-link" aria-label="Time-varying confounding and g-methods">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch16-interaction.html" class="pagination-link" aria-label="Effect modification versus interaction">
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

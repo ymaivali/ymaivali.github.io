@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methodology - 11&nbsp; Appendix 2: brms code</title>
+<title>The Bayesian Way to Causal Epidemiology - 32&nbsp; Appendix: brms code</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./11-appendix-brms.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./11-appendix-brms.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -159,7 +159,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Methodology</a> 
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -175,61 +175,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./03-irrational-thinking.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1. Irrational thinking</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Rational thinking under certainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05-rational-uncertainty.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">3. Rational thinking under uncertainty.</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">4. The basics of Bayesian inference</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">5 Basic linear regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">6. Generalized linear models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">7. Multilevel models.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Part I. How to think</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -237,38 +189,273 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix 4. MCMC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Appendix 5. mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Appendix 6 Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,23 +470,23 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#time-course" id="toc-time-course" class="nav-link active" data-scroll-target="#time-course"><span class="header-section-number">11.1</span> time course</a>
+  <li><a href="#time-course" id="toc-time-course" class="nav-link active" data-scroll-target="#time-course"><span class="header-section-number">32.1</span> time course</a>
   <ul class="collapse">
-  <li><a href="#poisson-model" id="toc-poisson-model" class="nav-link" data-scroll-target="#poisson-model"><span class="header-section-number">11.1.1</span> Poisson model</a></li>
-  <li><a href="#splines" id="toc-splines" class="nav-link" data-scroll-target="#splines"><span class="header-section-number">11.1.2</span> Splines</a></li>
-  <li><a href="#gaussian-process" id="toc-gaussian-process" class="nav-link" data-scroll-target="#gaussian-process"><span class="header-section-number">11.1.3</span> Gaussian process</a></li>
-  <li><a href="#polynomials" id="toc-polynomials" class="nav-link" data-scroll-target="#polynomials"><span class="header-section-number">11.1.4</span> Polynomials</a></li>
+  <li><a href="#poisson-model" id="toc-poisson-model" class="nav-link" data-scroll-target="#poisson-model"><span class="header-section-number">32.1.1</span> Poisson model</a></li>
+  <li><a href="#splines" id="toc-splines" class="nav-link" data-scroll-target="#splines"><span class="header-section-number">32.1.2</span> Splines</a></li>
+  <li><a href="#gaussian-process" id="toc-gaussian-process" class="nav-link" data-scroll-target="#gaussian-process"><span class="header-section-number">32.1.3</span> Gaussian process</a></li>
+  <li><a href="#polynomials" id="toc-polynomials" class="nav-link" data-scroll-target="#polynomials"><span class="header-section-number">32.1.4</span> Polynomials</a></li>
   </ul></li>
-  <li><a href="#multi-level" id="toc-multi-level" class="nav-link" data-scroll-target="#multi-level"><span class="header-section-number">11.2</span> Multi-level</a></li>
+  <li><a href="#multi-level" id="toc-multi-level" class="nav-link" data-scroll-target="#multi-level"><span class="header-section-number">32.2</span> Multi-level</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./11-appendix-brms.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./11-appendix-brms.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Appendix 2: brms code</span></h1>
+<h1 class="title"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></h1>
 </div>
 
 
@@ -338,7 +525,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(waffledivorce <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(<span class="fu">here</span>(<span class="st">"data/waffledivorce.csv"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 50 × 13
+<pre><code># A tibble: 50 x 13
    Location    Loc   Population MedianAgeMarriage Marriage `Marriage SE` Divorce
    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;                  &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
  1 Alabama     AL    4.78                     253      202 1.27              127
@@ -349,10 +536,10 @@ window.Quarto = {
  6 Colorado    CO    5.03                     257      235 1.24              116
  7 Connecticut CT    3.57                     276      171 1.06               67
  8 Delaware    DE    0.90                     266      231 2.89               89
- 9 District o… DC    0.60                     297      177 2.53               63
+ 9 District o~ DC    0.60                     297      177 2.53               63
 10 Florida     FL    18.80                    264      170 0.58               85
-# ℹ 40 more rows
-# ℹ 6 more variables: `Divorce SE` &lt;chr&gt;, WaffleHouses &lt;dbl&gt;, South &lt;dbl&gt;,
+# i 40 more rows
+# i 6 more variables: `Divorce SE` &lt;chr&gt;, WaffleHouses &lt;dbl&gt;, South &lt;dbl&gt;,
 #   Slaves1860 &lt;dbl&gt;, Population1860 &lt;dbl&gt;, PropSlaves1860 &lt;chr&gt;</code></pre>
 </div>
 </div>
@@ -368,11 +555,11 @@ window.Quarto = {
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 6
+<pre><code># A tibble: 1 x 6
   Marriage_median Divorce_median MedianAgeMarriage_median Marriage_sd Divorce_sd
             &lt;dbl&gt;          &lt;dbl&gt;                    &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
 1             197           97.5                     25.9        38.0       18.2
-# ℹ 1 more variable: MedianAgeMarriage_sd &lt;dbl&gt;</code></pre>
+# i 1 more variable: MedianAgeMarriage_sd &lt;dbl&gt;</code></pre>
 </div>
 </div>
 <p>We are using <code>standardize</code> function from <strong>rethinking</strong> package as it returns vector in contrast to <code>scale</code> function. <code>standardize</code> is a wrapper around <code>scale</code> anyway and keeping matrices in our tibbles causes trouble for some downstream functions.</p>
@@ -399,14 +586,14 @@ window.Quarto = {
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                prior     class     coef group resp dpar nlpar lb ub tag
+ student_t(3, 0, 2.5) Intercept                                         
                (flat)         b                                         
                (flat)         b Marriage                                
- student_t(3, 0, 2.5) Intercept                                         
  student_t(3, 0, 2.5)     sigma                                 0       
        source
       default
- (vectorized)
       default
+ (vectorized)
       default</code></pre>
 </div>
 </div>
@@ -567,7 +754,7 @@ window.Quarto = {
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise_at</span>(<span class="st">".epred"</span>, mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 50 × 4
+<pre><code># A tibble: 50 x 4
 # Groups:   Marriage, Divorce [50]
    Marriage Divorce  .row .epred
       &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
@@ -581,7 +768,7 @@ window.Quarto = {
  8   -0.952 -0.268     23 -0.330
  9   -0.899  0.226     29 -0.312
 10   -0.873 -1.70      32 -0.303
-# ℹ 40 more rows</code></pre>
+# i 40 more rows</code></pre>
 </div>
 </div>
 <div class="cell" data-fig.margin="true">
@@ -660,8 +847,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 </div>
 </div>
-<section id="posterior-prediction-plot" class="level5" data-number="11.0.0.0.1">
-<h5 data-number="11.0.0.0.1" class="anchored" data-anchor-id="posterior-prediction-plot"><span class="header-section-number">11.0.0.0.1</span> Posterior prediction plot</h5>
+<section id="posterior-prediction-plot" class="level5" data-number="32.0.0.0.1">
+<h5 data-number="32.0.0.0.1" class="anchored" data-anchor-id="posterior-prediction-plot"><span class="header-section-number">32.0.0.0.1</span> Posterior prediction plot</h5>
 <p>In addition to understanding the estimates, it’s important to check the model fit against the observed data.</p>
 <p>Here, we plot predicted values versus observed values at data point level:</p>
 <div class="cell">
@@ -692,8 +879,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 </div>
 </section>
-<section id="predictor-residual-plots" class="level5" data-number="11.0.0.0.2">
-<h5 data-number="11.0.0.0.2" class="anchored" data-anchor-id="predictor-residual-plots"><span class="header-section-number">11.0.0.0.2</span> Predictor residual plots</h5>
+<section id="predictor-residual-plots" class="level5" data-number="32.0.0.0.2">
+<h5 data-number="32.0.0.0.2" class="anchored" data-anchor-id="predictor-residual-plots"><span class="header-section-number">32.0.0.0.2</span> Predictor residual plots</h5>
 <p><em>A predictor residual is the average prediction error when we use all of the other predictor variables to model a predictor of interest.</em></p>
 <p>We have two predictors in our model – Marriage and MedianAgeMarriage. Let’s fit two models.</p>
 <p>Marriage ~ MedianAgeMarriage.</p>
@@ -744,8 +931,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 </div>
 </section>
-<section id="counterfactual-plots" class="level5" data-number="11.0.0.0.3">
-<h5 data-number="11.0.0.0.3" class="anchored" data-anchor-id="counterfactual-plots"><span class="header-section-number">11.0.0.0.3</span> Counterfactual plots</h5>
+<section id="counterfactual-plots" class="level5" data-number="32.0.0.0.3">
+<h5 data-number="32.0.0.0.3" class="anchored" data-anchor-id="counterfactual-plots"><span class="header-section-number">32.0.0.0.3</span> Counterfactual plots</h5>
 <p>Counterfactual plots display the causal implications of the model. They are called counterfactual (relating to or expressing what has not happened or is not the case), because they can be produced for any values of the predictor variables, even unobserved combinations. Basic use would be to observe how the outcome would change as you change one predictor at a time.</p>
 <p>Here we generate data for median age of marriage and keeping marriage rate 0. This is a datapoint-level prediction.</p>
 <div class="cell">
@@ -870,8 +1057,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 </div>
 </section>
-<section id="time-course" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="time-course"><span class="header-section-number">11.1</span> time course</h2>
+<section id="time-course" class="level2" data-number="32.1">
+<h2 data-number="32.1" class="anchored" data-anchor-id="time-course"><span class="header-section-number">32.1</span> time course</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -882,8 +1069,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>tt <span class="ot">&lt;-</span> tt <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">yr =</span> <span class="fu">parse_number</span>(yr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="poisson-model" class="level3" data-number="11.1.1">
-<h3 data-number="11.1.1" class="anchored" data-anchor-id="poisson-model"><span class="header-section-number">11.1.1</span> Poisson model</h3>
+<section id="poisson-model" class="level3" data-number="32.1.1">
+<h3 data-number="32.1.1" class="anchored" data-anchor-id="poisson-model"><span class="header-section-number">32.1.1</span> Poisson model</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -923,8 +1110,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 </div>
 </section>
-<section id="splines" class="level3" data-number="11.1.2">
-<h3 data-number="11.1.2" class="anchored" data-anchor-id="splines"><span class="header-section-number">11.1.2</span> Splines</h3>
+<section id="splines" class="level3" data-number="32.1.2">
+<h3 data-number="32.1.2" class="anchored" data-anchor-id="splines"><span class="header-section-number">32.1.2</span> Splines</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -1015,8 +1202,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 </div>
 </section>
-<section id="gaussian-process" class="level3" data-number="11.1.3">
-<h3 data-number="11.1.3" class="anchored" data-anchor-id="gaussian-process"><span class="header-section-number">11.1.3</span> Gaussian process</h3>
+<section id="gaussian-process" class="level3" data-number="32.1.3">
+<h3 data-number="32.1.3" class="anchored" data-anchor-id="gaussian-process"><span class="header-section-number">32.1.3</span> Gaussian process</h3>
 <p>While spline models can implement complex nonlinear functions, they are less efficient in modelling effects of covariate interactions. GP is a principled, probabilistic approach to learn non-parametric models, where nonlinearity is implemented through kernels. GPs have become a popular method for non-parametric modelling, especially for time-series data, and a wide variety of kernel functions have been proposed for different modelling tasks. A GP model can be made additive by defining the kernel function to be a sum of kernels. Similarly, a product of two or more kernels is also a valid kernel.</p>
 <p>a Gaussian process is a stochastic process (a collection of random variables indexed by time or space), such that every finite collection of those random variables has a multivariate normal distribution, i.e. every finite linear combination of them is normally distributed. The distribution of a Gaussian process is the joint distribution of all those (infinitely many) random variables, and as such, it is a distribution over functions with a continuous domain, e.g.&nbsp;time or space. Gaussian processes can be seen as an infinite-dimensional generalization of multivariate normal distributions. A Gaussian process can be used as a prior probability distribution over functions. For solution of the multi-output prediction problem, Gaussian process regression for vector-valued function was developed. In this method, a ‘big’ covariance is constructed, which describes the correlations between all the input and output variables taken in N points in the desired domain.</p>
 <p>Realizations from a GP correspond to random functions and GPs naturally provide a prior for an unknown regression function that is to be estimated from data. GPs differ from standard regression models in that they define priors for entire nonlinear functions, instead of their parameters. While nonlinear effects can be incorporated into standard linear models by extending the basis functions e.g.&nbsp;with higher order polynomials, GPs can automatically detect any nonlinear as well as ns effects without the need of explicitly defining basis functions.</p>
@@ -1102,8 +1289,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 </div>
 </section>
-<section id="polynomials" class="level3" data-number="11.1.4">
-<h3 data-number="11.1.4" class="anchored" data-anchor-id="polynomials"><span class="header-section-number">11.1.4</span> Polynomials</h3>
+<section id="polynomials" class="level3" data-number="32.1.4">
+<h3 data-number="32.1.4" class="anchored" data-anchor-id="polynomials"><span class="header-section-number">32.1.4</span> Polynomials</h3>
 <p><span class="math inline">\(y = \beta_0 + \beta_1time + \beta_2time^2 + N(0, \sigma)\)</span></p>
 <div class="cell">
 <details class="code-fold">
@@ -1128,8 +1315,8 @@ Posterior probabilities of point hypotheses assume equal prior probabilities.</c
 </div>
 </section>
 </section>
-<section id="multi-level" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="multi-level"><span class="header-section-number">11.2</span> Multi-level</h2>
+<section id="multi-level" class="level2" data-number="32.2">
+<h2 data-number="32.2" class="anchored" data-anchor-id="multi-level"><span class="header-section-number">32.2</span> Multi-level</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -1601,13 +1788,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./10-appendix-best-practices.html" class="pagination-link" aria-label="Appendix: Statistical Best Practices">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Appendix: Statistical Best Practices</span></span>
+      <a href="./10-appendix-best-practices.html" class="pagination-link" aria-label="Appendix: Exploratory Data Analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./12-appendix-brm-syntax.html" class="pagination-link" aria-label="Appendix 3: brm model syntax">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix 3: brm model syntax</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./12-appendix-brm-syntax.html" class="pagination-link" aria-label="Appendix: brm model syntax">
+        <span class="nav-page-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

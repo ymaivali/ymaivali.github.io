@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 18&nbsp; Instrumental variables</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch18-quasi-experimental.html" rel="next">
+<link href="./ch16-interaction.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch15-mediation.html">Part IV. Beyond the backdoor</a></li><li class="breadcrumb-item"><a href="./ch17-instrumental-variables.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#when-the-confounder-cannot-be-measured" id="toc-when-the-confounder-cannot-be-measured" class="nav-link active" data-scroll-target="#when-the-confounder-cannot-be-measured"><span class="header-section-number">18.1</span> When the confounder cannot be measured</a></li>
+  <li><a href="#the-instrument-and-its-assumptions" id="toc-the-instrument-and-its-assumptions" class="nav-link" data-scroll-target="#the-instrument-and-its-assumptions"><span class="header-section-number">18.2</span> The instrument and its assumptions</a></li>
+  <li><a href="#the-wald-estimator" id="toc-the-wald-estimator" class="nav-link" data-scroll-target="#the-wald-estimator"><span class="header-section-number">18.3</span> The Wald estimator</a></li>
+  <li><a href="#bayesian-estimation-with-brms" id="toc-bayesian-estimation-with-brms" class="nav-link" data-scroll-target="#bayesian-estimation-with-brms"><span class="header-section-number">18.4</span> Bayesian estimation with <code>brms</code></a></li>
+  <li><a href="#what-the-instrument-estimates-the-complier-effect" id="toc-what-the-instrument-estimates-the-complier-effect" class="nav-link" data-scroll-target="#what-the-instrument-estimates-the-complier-effect"><span class="header-section-number">18.5</span> What the instrument estimates: the complier effect</a></li>
+  <li><a href="#precision-is-the-other-cost" id="toc-precision-is-the-other-cost" class="nav-link" data-scroll-target="#precision-is-the-other-cost"><span class="header-section-number">18.6</span> Precision is the other cost</a></li>
+  <li><a href="#when-the-instrument-is-invalid" id="toc-when-the-instrument-is-invalid" class="nav-link" data-scroll-target="#when-the-instrument-is-invalid"><span class="header-section-number">18.7</span> When the instrument is invalid</a></li>
+  <li><a href="#conditional-instruments-and-instrumentoutcome-confounding" id="toc-conditional-instruments-and-instrumentoutcome-confounding" class="nav-link" data-scroll-target="#conditional-instruments-and-instrumentoutcome-confounding"><span class="header-section-number">18.8</span> Conditional instruments and instrument–outcome confounding</a></li>
+  <li><a href="#instruments-in-epidemiological-practice" id="toc-instruments-in-epidemiological-practice" class="nav-link" data-scroll-target="#instruments-in-epidemiological-practice"><span class="header-section-number">18.9</span> Instruments in epidemiological practice</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">18.10</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">18.11</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch15-mediation.html">Part IV. Beyond the backdoor</a></li><li class="breadcrumb-item"><a href="./ch17-instrumental-variables.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Every method in Part III rested on the same promise: measure the confounders, and the treated and untreated can be made comparable. Standardisation, inverse-probability weighting, the g-formula and the mediation estimator all fail in the same way if a confounder is left unmeasured. The cohort was built with this danger in it — <code>severity</code> is a strong confounder by indication, and a real study would measure it only partly, if at all. When the confounder cannot be measured, no amount of adjustment recovers the effect, and the methods covered so far fail.</p>
+<p>Instrumental variables take a different route.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Instead of trying to block the back-door path, they find a third variable — an <strong>instrument</strong> — that nudges treatment without being connected to the outcome in any other way, and use only the variation in treatment that the instrument creates. That variation is, by construction, unrelated to the confounders, so the slice of the treatment–outcome association it traces out is unconfounded even when the confounder is unmeasured. We are then free from the burden of identifying the outcome confounders and collecting good-quality data on them, which is a substantial gain. The burden is transferred rather than removed, however. Using an instrument replaces the classic <code>A &lt;- C -&gt; Y</code> confounding with two new liabilities: an assumption the data cannot check, whose mild violation is amplified rather than diluted (shown below), and, in most applications, a fresh confounding of the instrument itself, <code>Z &lt;- C -&gt; Y</code>, that must be measured and adjusted for. Both are developed in later sections. However, the cost is steep: the method rests on assumptions that cannot be checked from the data, it is far less precise than adjustment, and it answers a narrower question than the population average effect. This chapter develops the idea on the cohort’s instrument and shows each of those costs in turn.</p>
+<section id="when-the-confounder-cannot-be-measured" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="when-the-confounder-cannot-be-measured"><span class="header-section-number">18.1</span> When the confounder cannot be measured</h2>
+<p>The hurried analyst’s crude comparison is confounded by indication: the sicker patients are treated, so the treated look worse.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>o  <span class="ot">&lt;-</span> <span class="fu">attr</span>(df, <span class="st">"oracle"</span>); truth <span class="ot">&lt;-</span> <span class="fu">cohort_truth</span>(df)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>crude_RD <span class="ot">&lt;-</span> <span class="fu">mean</span>(df<span class="sc">$</span>stroke[df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>stroke[df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>crude_RR <span class="ot">&lt;-</span> <span class="fu">mean</span>(df<span class="sc">$</span>stroke[df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">mean</span>(df<span class="sc">$</span>stroke[df<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">crude_RD =</span> crude_RD, <span class="at">crude_RR =</span> crude_RR, <span class="at">true_ATE_RR =</span> truth<span class="sc">$</span>ATE_RR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   crude_RD    crude_RR true_ATE_RR 
+ 0.02339237  1.67207169  0.60008660 </code></pre>
+</div>
+</div>
+<p>The crude risk ratio, 1.67, makes the drug look harmful; the true effect is protective (0.6). Chapters 12 and 14 corrected this by standardising over <code>severity</code>. Suppose now that <code>severity</code> is not in the data. There is nothing to standardise over, and the crude estimate is all that adjustment can give.</p>
+<p>The cohort carries a way out. Each patient’s prescription was influenced by their physician’s prescribing preference, <code>pref</code>: some physicians lean towards the drug, others away from it, and which physician a patient happens to see is unrelated to how sick the patient is. Preference moves treatment — a patient seen by a drug-favouring physician is more likely to be treated — but, if preference is otherwise unrelated to the patient’s prognosis, it touches stroke risk only through whether the drug is taken. A variable of this kind is an instrument, and a physician’s prescribing preference is a standard one in pharmacoepidemiology.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-iv-dag" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iv-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch17-instrumental-variables_files/figure-html/fig-iv-dag-1.png" class="img-fluid figure-img" width="353">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iv-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18.1: The instrumental-variable structure. The instrument Z (physician preference) affects treatment A but reaches the outcome Y only through A. The confounder U (severity) is unmeasured, so the A-Y relationship cannot be deconfounded by adjustment. The instrument helps because there is no arrow Z -&gt; Y (the exclusion restriction) and no common cause of Z and U (the instrument is as good as randomly assigned).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-instrument-and-its-assumptions" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="the-instrument-and-its-assumptions"><span class="header-section-number">18.2</span> The instrument and its assumptions</h2>
+<p>A variable can be an instrument if it satisfies three conditions, to which a fourth is usually added so that the estimate can be interpreted.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<ol type="1">
+<li><strong>Relevance.</strong> The instrument affects treatment: <code>Z -&gt; A</code> is a real arrow, and a strong one. This is the only assumption the data can confirm, by looking at the <em>first stage</em> — how much treatment shifts with the instrument.</li>
+<li><strong>Exclusion.</strong> The instrument affects the outcome <em>only</em> through treatment: there is no arrow <code>Z -&gt; Y</code> and no other path from <code>Z</code> to <code>Y</code>. Physician preference must not touch stroke risk except by changing whether the drug is taken. This cannot be checked from the data.</li>
+<li><strong>Independence (instrument exchangeability).</strong> The instrument shares no common cause with the outcome: nothing confounds the <code>Z -&gt; Y</code> relationship. Here it holds because preference is assigned at random with respect to the patient. In a real study it must be argued — for example, that drug-favouring physicians do not also see systematically sicker patients. This too cannot be checked.</li>
+<li><strong>Monotonicity.</strong> The instrument moves everyone’s treatment in the same direction or not at all: encouragement never <em>deters</em> a patient who would otherwise have been treated. There are no “defiers”. This makes the estimate interpretable as a specific subgroup effect (see below).</li>
+</ol>
+<p>Relevance and exclusion together are what let the instrument work: the instrument creates variation in treatment (relevance) that is clean of any path to the outcome except through treatment (exclusion). Independence ensures the instrument’s own variation is not itself confounded.</p>
+</section>
+<section id="the-wald-estimator" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="the-wald-estimator"><span class="header-section-number">18.3</span> The Wald estimator</h2>
+<p>The estimator follows from the structure. The instrument shifts the chance of treatment by the first-stage amount, and it shifts the outcome by the <em>intention-to-treat</em> (ITT) amount — the raw association between instrument and outcome. Under the assumptions, the only reason the instrument moves the outcome at all is that it moved treatment, so dividing the outcome shift by the treatment shift rescales the ITT into the effect of treatment itself. This ratio is the <strong>Wald estimator</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>first_stage <span class="ot">&lt;-</span> <span class="fu">mean</span>(df<span class="sc">$</span>drug[df<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">1</span>])   <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>drug[df<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>itt         <span class="ot">&lt;-</span> <span class="fu">mean</span>(df<span class="sc">$</span>stroke[df<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>stroke[df<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>wald        <span class="ot">&lt;-</span> itt <span class="sc">/</span> first_stage</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">first_stage =</span> first_stage, <span class="at">ITT =</span> itt, <span class="at">Wald =</span> wald)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> first_stage          ITT         Wald 
+ 0.219713726 -0.006074035 -0.027645223 </code></pre>
+</div>
+</div>
+<p>Preference raises the chance of treatment by 0.22 — a strong first stage. The intention-to-treat effect is small, -0.0061, because preference changes the treatment of only a minority of patients. Dividing one by the other gives a Wald estimate of -0.0276 on the risk-difference scale: protective, and close to the true effect, where the crude estimate was harmful. For a binary instrument the Wald ratio is identical to two-stage least squares, the estimator usually named in this context — regress treatment on the instrument, then regress the outcome on the fitted treatment.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>drug_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">lm</span>(drug <span class="sc">~</span> pref, <span class="at">data =</span> df))           <span class="co"># first stage</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(df<span class="sc">$</span>stroke <span class="sc">~</span> drug_hat))[<span class="dv">2</span>]                          <span class="co"># second stage = Wald</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   drug_hat 
+-0.02764522 </code></pre>
+</div>
+</div>
+<p>The instrument bought a protective estimate without ever measuring <code>severity</code>. That is the whole appeal: it works in the presence of the unmeasured confounder that defeated adjustment.</p>
+</section>
+<section id="bayesian-estimation-with-brms" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="bayesian-estimation-with-brms"><span class="header-section-number">18.4</span> Bayesian estimation with <code>brms</code></h2>
+<p>The Wald ratio and two-stage least squares are point estimators, and their uncertainty has to be recovered by a separate device — the bootstrap used later in this chapter — because the standard error of a ratio, and of a second stage that treats the fitted treatment as if it were known, is awkward to write down. A Bayesian fit avoids both steps: the two stages are estimated jointly, and every quantity derived from them is a posterior that already carries the first-stage uncertainty.</p>
+<p>The Bayesian counterpart of two-stage least squares is a single model of <em>two</em> responses at once — treatment and stroke — fitted as a joint system whose residuals are allowed to correlate. The instrument enters the treatment equation and is absent from the outcome equation; that absence is the exclusion restriction written into the model structure, since preference is given a path to treatment but none to stroke. The unmeasured confounding is not removed. It is absorbed into the residual correlation between the two equations, which the model estimates rather than fixing at zero. Because that correlation is estimated, the drug coefficient in the outcome equation is separated from the confounding, and it is the instrument — present in one equation, absent from the other — that identifies it.</p>
+<p>Both equations use a Gaussian likelihood, so treatment and stroke are fitted as linear-probability outcomes and the drug coefficient is a risk difference, on the same scale as the Wald estimate. The residual-correlation construction is a property of this linear system and does not carry over unchanged to a log or logit link, so the risk-ratio Poisson working model used elsewhere in the book is set aside here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f_drug   <span class="ot">&lt;-</span> <span class="fu">bf</span>(drug   <span class="sc">~</span> pref)     <span class="co"># first stage: instrument -&gt; treatment</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>f_stroke <span class="ot">&lt;-</span> <span class="fu">bf</span>(stroke <span class="sc">~</span> drug)     <span class="co"># outcome: no pref term encodes exclusion</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>iv_priors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"b"</span>, <span class="at">resp =</span> <span class="st">"drug"</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>               <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"b"</span>, <span class="at">resp =</span> <span class="st">"stroke"</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>               <span class="fu">prior</span>(<span class="fu">lkj</span>(<span class="dv">2</span>),       <span class="at">class =</span> <span class="st">"rescor"</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>iv_fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(f_drug <span class="sc">+</span> f_stroke <span class="sc">+</span> <span class="fu">set_rescor</span>(<span class="cn">TRUE</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">data =</span> df, <span class="at">prior =</span> iv_priors,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">1500</span>, <span class="at">warmup =</span> <span class="dv">750</span>, <span class="at">seed =</span> <span class="dv">2024</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">file =</span> <span class="st">"models/ch17_iv"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>iv_ps <span class="ot">&lt;-</span> <span class="fu">posterior_summary</span>(iv_fit,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">c</span>(<span class="st">"b_drug_pref"</span>, <span class="st">"b_stroke_drug"</span>, <span class="st">"rescor__drug__stroke"</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(iv_ps, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Estimate Est.Error    Q2.5   Q97.5
+b_drug_pref            0.2197    0.0044  0.2109  0.2280
+b_stroke_drug         -0.0274    0.0088 -0.0443 -0.0107
+rescor__drug__stroke   0.1211    0.0201  0.0832  0.1593</code></pre>
+</div>
+</div>
+<p>The first-stage coefficient, 0.22, reproduces the first stage computed by hand above. The drug coefficient in the outcome equation, -0.0274 with a 95% credible interval of -0.044 to -0.011, is the Bayesian IV estimate on the risk-difference scale: protective, and matching the Wald value of -0.0276. Its credible interval is the Bayesian counterpart of the bootstrap interval reported below and delivers the same verdict — the small first stage in the denominator makes the effect imprecise — but it comes straight from the joint posterior rather than from resampling.</p>
+<p>Reading the effect off that coefficient is a shortcut, and it is exact only because of the model’s simple form: the outcome equation is linear with <code>drug</code> as its sole predictor, so every patient’s modelled risk difference is the same slope, and averaging over patients leaves it unchanged. The book’s general practice is not to interpret coefficients but to turn a fitted model into an effect by prediction — set <code>drug</code> to 1 and to 0 for each patient, take the difference in predicted risk, and average — using <code>marginaleffects</code>, which also carries the full posterior into the contrast.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>iv_me <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(iv_fit, <span class="at">variables =</span> <span class="st">"drug"</span>, <span class="at">resp =</span> <span class="st">"stroke"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>iv_me</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Estimate   2.5 %  97.5 %
+  -0.0276 -0.0443 -0.0107
+
+Term: drug
+Type: response
+Comparison: 1 - 0</code></pre>
+</div>
+</div>
+<p>The average risk difference is -0.0276 (95% CrI -0.044 to -0.011), reproducing the coefficient because here the two are the same quantity. The <code>resp = "stroke"</code> argument selects the outcome equation of the joint model; without it <code>avg_comparisons()</code> reports a contrast for each response, and the one for the <code>drug</code> equation is zero because <code>drug</code> does not predict itself. This prediction-based form is the one to prefer in general: as soon as the outcome model carries other covariates or a non-identity link — as the Poisson models elsewhere in the book do — the coefficient and the marginal effect part company, and only the averaged prediction is the causal contrast on the scale of interest.</p>
+<p>The residual correlation, 0.121 (95% CrI 0.083 to 0.159), is the confounding by indication made visible. It is positive because the unmeasured <code>severity</code> raises both the chance of treatment and the risk of stroke, and the crude comparison mistook that shared dependence for an effect of the drug. Adjustment would have to measure <code>severity</code> to remove it; the IV model instead estimates it as a nuisance correlation and leaves the drug coefficient uncontaminated. That is the same protection the Wald ratio gives, obtained here inside a single fitted model that reports its own uncertainty.</p>
+</section>
+<section id="what-the-instrument-estimates-the-complier-effect" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="what-the-instrument-estimates-the-complier-effect"><span class="header-section-number">18.5</span> What the instrument estimates: the complier effect</h2>
+<p>The Wald estimate is not the population average effect. To see what it is, sort patients by how they would respond to the instrument, using the potential treatments <code>D(0)</code> and <code>D(1)</code> — what each patient would take if their physician disfavoured or favoured the drug. Four types are possible.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="fu">with</span>(o, dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  D0 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> D1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"always-taker"</span>,   <span class="co"># treated regardless of the physician</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  D0 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> D1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"never-taker"</span>,    <span class="co"># untreated regardless</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  D0 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> D1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"complier"</span>,       <span class="co"># treated only if the physician favours it</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  D0 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> D1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"defier"</span>))        <span class="co"># the reverse -- ruled out by monotonicity</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(df<span class="sc">$</span>type)), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+always-taker     complier  never-taker 
+       0.436        0.216        0.347 </code></pre>
+</div>
+</div>
+<p>There are no defiers, as monotonicity requires, and the cohort splits into 44% always-takers, 35% never-takers, and 22% <strong>compliers</strong>. The instrument moves the treatment of the compliers alone: always- and never-takers do the same thing whatever their physician prefers, so the instrument tells us nothing about them. Under the four assumptions the Wald estimator equals the average treatment effect among the compliers — the <strong>local average treatment effect</strong> (LATE), or complier average effect.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Notice that the first stage, 0.22, equals the complier proportion: the share of patients whose treatment the instrument actually changes.</p>
+<p>The cohort lets us check this against the truth and, more pointedly, against the population average.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>late <span class="ot">&lt;-</span> <span class="fu">mean</span>((o<span class="sc">$</span>risk1 <span class="sc">-</span> o<span class="sc">$</span>risk0)[df<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"complier"</span>])      <span class="co"># true complier effect</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">Wald =</span> wald, <span class="at">true_LATE =</span> late, <span class="at">true_ATE =</span> truth<span class="sc">$</span>ATE_RD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Wald   true_LATE    true_ATE 
+-0.02764522 -0.01900233 -0.02723611 </code></pre>
+</div>
+</div>
+<p>The Wald estimate targets the true complier effect, -0.019, not the population average effect, -0.0272. These differ because compliers are a particular subgroup, and the cohort makes the difference concrete: the compliers are the patients on the margin of treatment.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Who is who. Always-takers are the sickest (treated whatever the physician prefers); never-takers the healthiest; compliers sit in between.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">type</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">severity</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">age</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">diabetes</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">treated</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">always-taker</td>
+<td style="text-align: right;">21810</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">65.01</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">complier</td>
+<td style="text-align: right;">10816</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">61.58</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.51</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">never-taker</td>
+<td style="text-align: right;">17374</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">58.74</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Always-takers have the highest severity — they are sick enough to be treated regardless of preference. Never-takers are the healthiest. Compliers sit between, and the LATE is the drug’s effect in <em>them</em>. The instrument can say nothing about the effect in the always-takers (the patients a clinician most wants to know about) because their treatment never changes. This is the standing limitation of instrumental variables: they identify an effect in an unlabelled subgroup defined by responsiveness to the instrument, which is rarely the group a decision is about, and whose membership cannot be determined for any individual.</p>
+</section>
+<section id="precision-is-the-other-cost" class="level2" data-number="18.6">
+<h2 data-number="18.6" class="anchored" data-anchor-id="precision-is-the-other-cost"><span class="header-section-number">18.6</span> Precision is the other cost</h2>
+<p>The Wald estimate recovers the complier effect, but with much wider uncertainty than adjustment would give, because the small first stage in the denominator magnifies the sampling error of the ITT.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>boot <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, {</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(df), <span class="at">replace =</span> <span class="cn">TRUE</span>); d <span class="ot">&lt;-</span> df[i, ]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">mean</span>(d<span class="sc">$</span>stroke[d<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(d<span class="sc">$</span>stroke[d<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">0</span>])) <span class="sc">/</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">mean</span>(d<span class="sc">$</span>drug[d<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">1</span>])   <span class="sc">-</span> <span class="fu">mean</span>(d<span class="sc">$</span>drug[d<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">0</span>]))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(boot, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       2.5%       97.5% 
+-0.04469865 -0.01167021 </code></pre>
+</div>
+</div>
+<p>The 95% bootstrap interval spans roughly -0.045 to -0.012 — wide enough to be compatible with effects from modest to large. The Bayesian credible interval from the joint <code>brms</code> model above covers much the same range, for the same reason: it is the first stage in the denominator, not the choice of estimator, that governs the width. An instrument with a weaker first stage would widen either interval further; a <em>weak instrument</em> can leave the estimate almost unidentified. The protection IV gives against unmeasured confounding is paid for in variance.</p>
+<p>There is a further cost specific to the setting this chapter is built for. The correlation a <em>valid</em> instrument can have with treatment is bounded, and the bound tightens as confounding grows: when confounding by indication is strong, no instrument that satisfies the assumptions can be strongly correlated with treatment.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> The implication is uncomfortable. The situation that motivates instrumental variables — unmeasured confounding severe enough to defeat adjustment — is the situation in which a strong first stage is hardest to obtain, and in which a first stage that <em>is</em> strong should raise the suspicion that the instrument reaches the outcome by some route other than treatment. Weakness and invalidity are therefore not independent problems: demanding a stronger instrument to buy precision tends to cost validity. The finite-sample behaviour compounds this — with a weak instrument the estimate is biased in small samples,<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> and the direction of that bias is toward the ordinary confounded estimate, its magnitude approaching that of the naïve comparison as the instrument’s explanatory power falls to zero,<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> so a weak instrument can be both imprecise and biased in the very direction IV was meant to correct. A common rule of thumb keeps the first-stage F statistic above about 10,<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> but no threshold rescues an instrument that is weak because the confounding is strong.</p>
+</section>
+<section id="when-the-instrument-is-invalid" class="level2" data-number="18.7">
+<h2 data-number="18.7" class="anchored" data-anchor-id="when-the-instrument-is-invalid"><span class="header-section-number">18.7</span> When the instrument is invalid</h2>
+<p>Exclusion and independence cannot be verified, and a small violation can do large damage. Suppose physician preference is not quite clean — drug-favouring physicians also tend to manage their patients differently in some way that affects stroke risk directly, a small arrow <code>Z -&gt; Y</code>. The cohort’s invalid-instrument variant adds such a leak.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-iv-invalid" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iv-invalid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch17-instrumental-variables_files/figure-html/fig-iv-invalid-1.png" class="img-fluid figure-img" width="357">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iv-invalid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18.2: An invalid instrument. A direct path Z -&gt; Y (dashed) violates the exclusion restriction: physician preference now affects stroke through a route other than the drug. The instrument-outcome association no longer reflects the treatment effect alone, and the Wald estimator divides a contaminated numerator by the first stage.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dfx  <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>, <span class="at">invalid_iv =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ox   <span class="ot">&lt;-</span> <span class="fu">attr</span>(dfx, <span class="st">"oracle"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>fsx  <span class="ot">&lt;-</span> <span class="fu">mean</span>(dfx<span class="sc">$</span>drug[dfx<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">1</span>])   <span class="sc">-</span> <span class="fu">mean</span>(dfx<span class="sc">$</span>drug[dfx<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>ittx <span class="ot">&lt;-</span> <span class="fu">mean</span>(dfx<span class="sc">$</span>stroke[dfx<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(dfx<span class="sc">$</span>stroke[dfx<span class="sc">$</span>pref <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>latex <span class="ot">&lt;-</span> <span class="fu">mean</span>((ox<span class="sc">$</span>risk1 <span class="sc">-</span> ox<span class="sc">$</span>risk0)[<span class="fu">with</span>(ox, D0 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> D1 <span class="sc">==</span> <span class="dv">1</span>)])</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">ITT =</span> ittx, <span class="at">Wald =</span> ittx <span class="sc">/</span> fsx, <span class="at">true_LATE =</span> latex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         ITT         Wald    true_LATE 
+ 0.001240323  0.005645180 -0.020562106 </code></pre>
+</div>
+</div>
+<p>The leak reverses the verdict. The intention-to-treat effect is now positive, 0.0012, because preference raises stroke risk through the leaked path as well as lowering it through the drug; the Wald estimate is 0.0056, the wrong sign against a true complier effect of -0.0206. The estimator cannot tell the two routes apart: it attributes the whole instrument–outcome association to treatment, so the direct effect of preference is misread as an effect of the drug. A modest violation of an untestable assumption has turned a protective drug into an apparently harmful one — the same failure the crude analysis made, reached by a different road.</p>
+</section>
+<section id="conditional-instruments-and-instrumentoutcome-confounding" class="level2" data-number="18.8">
+<h2 data-number="18.8" class="anchored" data-anchor-id="conditional-instruments-and-instrumentoutcome-confounding"><span class="header-section-number">18.8</span> Conditional instruments and instrument–outcome confounding</h2>
+<p>The invalid example above breaks the <em>exclusion</em> restriction: a direct arrow <code>Z -&gt; Y</code>. A second, distinct way an instrument fails breaks <em>independence</em>: the instrument shares a common cause with the outcome, <code>Z &lt;- C -&gt; Y</code>. Physician preference would fail this way if drug-favouring physicians also worked in better-resourced practices that lowered stroke risk through routes other than the drug. The instrument-outcome association would then mix the effect of treatment with the effect of <code>C</code>, and the Wald estimator, which attributes the whole association to treatment, would be biased.</p>
+<p>Most instruments used in epidemiology are not valid marginally; they are valid only <em>conditional</em> on measured covariates — independence holds within strata of some <code>C</code>, not overall. Such an instrument is a <strong>conditional instrument</strong>, and the analysis must adjust for <code>C</code> to block the path <code>Z &lt;- C -&gt; Y</code>, exactly as a back-door path is blocked in ordinary adjustment. The variable <code>C</code> is an <strong>instrument-outcome confounder</strong>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-iv-conditional" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iv-conditional-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ch17-instrumental-variables_files/figure-html/fig-iv-conditional-1.png" class="img-fluid figure-img" width="566">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iv-conditional-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18.3: A conditional instrument. A measured common cause C of the instrument Z and the outcome Y — an instrument-outcome confounder — opens a path Z &lt;- C -&gt; Y (red) that biases the instrument-outcome association. The instrument is valid only conditional on C: adjusting for C blocks the path, provided C is not a collider and does not lie on the Z -&gt; A -&gt; Y chain.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Conditioning to rescue an instrument is not free. Adjusting for the wrong variable — a collider, or a variable on the <code>Z -&gt; A -&gt; Y</code> chain — introduces bias rather than removing it, and conditioning changes the complier subpopulation, so the local average treatment effect shifts with the adjustment set: a conditional IV estimates a within-stratum local effect, not the marginal one. Reporting the instrument, the exact adjustment set, and the assumed structure is the minimum standard for an analysis a reader can judge.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<p>This threat is not a corner case. An audit of 187 published comparative-effectiveness IV studies found plausible unadjusted instrument-outcome confounders in every one — patient race, socioeconomic status, clinical risk factors, urban or rural residence, facility and procedure volume, and co-occurring treatments — and only a small minority had looked outside the study data for them.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> Instrument-outcome confounding is the modal threat in applied IV, not a rare one.</p>
+</section>
+<section id="instruments-in-epidemiological-practice" class="level2" data-number="18.9">
+<h2 data-number="18.9" class="anchored" data-anchor-id="instruments-in-epidemiological-practice"><span class="header-section-number">18.9</span> Instruments in epidemiological practice</h2>
+<p>The same audit gives the commonest instrument families in observational epidemiology, in rough order of use: physician or prescriber preference (this chapter’s <code>pref</code>),<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> regional or geographic variation in practice, facility or hospital variation, and distance to a treating facility (Exercise 5).<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> Distinct from these is <strong>Mendelian randomisation</strong>, which uses germline genotype as an instrument for a modifiable exposure: alleles are assorted at conception, so the genotype-outcome association is largely free of the reverse causation and confounding that distort conventional observational studies.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
+<p>The families differ mainly in how defensible their <em>untestable</em> assumptions are, not in relevance. Genetic instruments have the strongest a priori case for independence and exclusion — germline alleles are fixed at conception, cannot be caused by the outcome, and are approximately randomly assorted with respect to later environment — so both <code>Z &lt;- C -&gt; Y</code> confounding and reverse causation are structurally unlikely. Their characteristic failure is a specific exclusion violation, <strong>pleiotropy</strong> (the variant affects the outcome through a second pathway), together with linkage disequilibrium and developmental buffering; and they answer a lifelong-exposure question that need not match a short-term drug effect.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> Preference, distance and practice-variation instruments are usually strong on relevance but fragile on independence, which is what the audit found. A working order of assumption-credibility runs roughly: germline genetic, then policy or natural-experiment quasi-randomisation, then provider preference or distance.</p>
+<p>A caution on the evidence base itself. For adjustment-based observational designs there is now a large benchmarking literature comparing estimates against randomised trials, including the target-trial-emulation programme of Chapters 13 and 14. No equivalent systematic benchmark exists for conventional (observational) instrumental-variable estimates. The Cochrane methodological review comparing observational and randomised effect estimates — first published in 2014 and updated in 2024, finding little overall difference between the two (a pooled ratio of ratios of 1.08) — draws its observational arm entirely from cohort, case-control and cross-sectional designs; the 2014 version noted explicitly that no review had compared randomised trials against observational studies using instrumental variables or marginal structural models, and the 2024 update analyses no such estimator either.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a><a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> For Mendelian randomisation the position has begun to change: a 2023 study systematically compared MR and RCT evidence across 26 exposure–outcome case studies (drawn from 54 MR and 77 RCT publications), though its main conclusion was that disciplined triangulation is methodologically demanding — requiring matched phenotypes, intervention intensity and duration, study populations and comparators — rather than a single summary agreement rate.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> The other substitutes are within-study diagnostics that ask whether the IV or the adjusted estimate is less biased in a given dataset, using negative-control outcomes and covariate balance,<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> and single-target genetic validations such as a model of the heart-rate-lowering drug ivabradine that recapitulated its trial findings (benefit in heart failure, raised atrial-fibrillation risk, no effect on myocardial infarction).<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> The credibility of an IV analysis therefore still rests largely on the substantive case for the instrument, not on an empirical track record of the method.</p>
+<p>This is the trade instrumental variables offer.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> They remove the bias from unmeasured confounding, which adjustment cannot touch, but they replace it with sensitivity to exclusion and independence, which the data cannot check, and they deliver a local estimate with wide intervals. Whether the trade is worth making depends on how defensible the instrument is — which is a matter of argument about the subject, not of statistics. The quasi-experimental designs of Chapter 18 are variations on the same idea: find a source of treatment variation that is as good as randomised, and reason from it. The sensitivity analysis of Chapter 19 asks, for IV as for adjustment, how large a violation would have to be to overturn the conclusion.</p>
+</section>
+<section id="key-points" class="level2" data-number="18.10">
+<h2 data-number="18.10" class="anchored" data-anchor-id="key-points"><span class="header-section-number">18.10</span> Key points</h2>
+<ul>
+<li><strong>Instrumental variables estimate a causal effect without measuring the confounders.</strong> They use only the treatment variation induced by an instrument, which is clean of the confounding because the instrument is unrelated to it.</li>
+<li>An instrument needs <strong>relevance</strong> (affects treatment — testable), <strong>exclusion</strong> (affects the outcome only through treatment — untestable), and <strong>independence</strong> (unconfounded with the outcome — untestable); <strong>monotonicity</strong> (no defiers) makes the estimate interpretable.</li>
+<li>The <strong>Wald estimator</strong> is the intention-to-treat effect divided by the first stage; for a binary instrument it equals two-stage least squares.</li>
+<li>The <strong>Bayesian version</strong> fits treatment and outcome jointly in <code>brms</code> as a two-equation system with correlated residuals (<code>set_rescor(TRUE)</code>), the instrument in the treatment equation only. The drug coefficient in the outcome equation is the IV estimate, its posterior already carrying the first-stage uncertainty, and the residual correlation estimates the unmeasured confounding rather than assuming it away.</li>
+<li>Under the assumptions, IV estimates the <strong>local average treatment effect</strong> — the effect in the <strong>compliers</strong>, the subgroup whose treatment the instrument moves. This is generally <strong>not</strong> the population average effect, and the compliers cannot be identified individually.</li>
+<li>IV is <strong>imprecise</strong> (a weak first stage inflates the variance) and <strong>fragile</strong> (a small violation of exclusion, amplified by division by the first stage, can reverse the sign). It trades the unverifiable assumptions of adjustment for different unverifiable assumptions.</li>
+<li><strong>Most instruments are only conditionally valid.</strong> Independence usually holds within strata of measured covariates, not marginally; the common cause of instrument and outcome is an <strong>instrument-outcome confounder</strong> that must be adjusted for — the modal threat in applied IV, not a rare one. Conditioning changes the complier subgroup, so the estimand shifts with the adjustment set.</li>
+<li><strong>Instruments differ in credibility.</strong> Genetic (Mendelian randomisation) instruments have the strongest case for the untestable assumptions; preference, distance and practice-variation instruments are strong on relevance but fragile on independence.</li>
+<li><strong>The IV trade is a transfer of assumptions, not their removal, and IV is more sensitive to its assumptions than adjustment.</strong> Under strong confounding a valid instrument cannot be strongly correlated with treatment, and a small exclusion violation is amplified by the first stage. Unlike adjustment-based designs, conventional IV has no systematic empirical benchmark against randomised trials, though systematic Mendelian-randomisation-versus-trial comparisons have begun to appear.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="18.11">
+<h2 data-number="18.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.11</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Weaken the instrument.</strong> Re-simulate with a smaller effect of preference on treatment (reduce <code>d_pref</code> in the parameters). Recompute the first stage, the Wald estimate, and the bootstrap interval. How does the interval change as the first stage shrinks, and what does this say about weak instruments?</p></li>
+<li><p><strong>The complier proportion.</strong> Confirm numerically that the first stage equals the proportion of compliers, and explain why this identity holds under monotonicity. What would a defier do to it?</p></li>
+<li><p><strong>Vary the leak.</strong> In the invalid variant, the exclusion violation is governed by <code>leak_pref</code>. Sweep it from 0 upwards and plot the Wald estimate against the leak size. How large a leak is needed to move the estimate to the null, and how does this compare with the size of the true effect? Relate your answer to Chapter 19.</p></li>
+<li><p><strong>LATE versus ATE by design.</strong> Construct a setting in which the complier effect and the population average effect coincide (hint: make the treatment effect constant across patients in the simulation). Verify that the Wald estimate then targets the ATE. Explain why effect heterogeneity is what separates the two estimands.</p></li>
+<li><p><strong>Conceptual.</strong> A study uses distance to the nearest specialist hospital as an instrument for whether a patient receives a particular procedure. State the three core assumptions in this context, give one concrete way each could fail, and say which of them you could examine in the data and which you could only argue for.</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Greenland S, “An introduction to instrumental variables for epidemiologists,” <em>Int J Epidemiol</em> 2000;29:722-729 (<a href="https://doi.org/10.1093/ije/29.4.722">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Brookhart MA, Wang PS, Solomon DH, Schneeweiss S, “Evaluating short-term drug effects using a physician-specific prescribing preference as an instrumental variable,” <em>Epidemiology</em> 2006;17:268-275 (<a href="https://doi.org/10.1097/01.ede.0000193606.58671.c5">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Hernán MA, Robins JM, “Instruments for causal inference: an epidemiologist’s dream?,” <em>Epidemiology</em> 2006;17:360-372 (<a href="https://doi.org/10.1097/01.ede.0000222409.00878.37">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Angrist JD, Imbens GW, Rubin DB, “Identification of Causal Effects Using Instrumental Variables,” <em>J Am Stat Assoc</em> 1996;91:444-455. (Not indexed in PubMed; bibliographic details verified by web search, DOI not independently confirmed.)<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Martens EP, Pestman WR, de Boer A, Belitser SV, Klungel OH, “Instrumental variables: application and limitations,” <em>Epidemiology</em> 2006;17:260-267 (<a href="https://doi.org/10.1097/01.ede.0000215160.88317.cb">DOI</a>).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Martens EP, Pestman WR, de Boer A, Belitser SV, Klungel OH, “Instrumental variables: application and limitations,” <em>Epidemiology</em> 2006;17:260-267 (<a href="https://doi.org/10.1097/01.ede.0000215160.88317.cb">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Bound J, Jaeger DA, Baker RM, “Problems with Instrumental Variables Estimation When the Correlation Between the Instruments and the Endogenous Explanatory Variable Is Weak,” <em>J Am Stat Assoc</em> 1995;90:443-450 (<a href="https://doi.org/10.1080/01621459.1995.10476536">DOI</a>). (Econometrics journal, not indexed in PubMed; bibliographic details and DOI verified via the publisher and CrossRef.)<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Staiger D, Stock JH, “Instrumental Variables Regression with Weak Instruments,” <em>Econometrica</em> 1997;65:557-586 (<a href="https://doi.org/10.2307/2171753">DOI</a>). (Econometrics journal, not indexed in PubMed; bibliographic details and DOI verified via CrossRef.)<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Swanson SA, Hernán MA, “Commentary: how to report instrumental variable analyses (suggestions welcome),” <em>Epidemiology</em> 2013;24:370-374 (<a href="https://doi.org/10.1097/EDE.0b013e31828d0590">DOI</a>).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Garabedian LF, Chu P, Toh S, Zaslavsky AM, Soumerai SB, “Potential bias of instrumental variable analyses for observational comparative effectiveness research,” <em>Ann Intern Med</em> 2014;161:131-138 (<a href="https://doi.org/10.7326/M13-1887">DOI</a>).<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Brookhart MA, Wang PS, Solomon DH, Schneeweiss S, “Evaluating short-term drug effects using a physician-specific prescribing preference as an instrumental variable,” <em>Epidemiology</em> 2006;17:268-275 (<a href="https://doi.org/10.1097/01.ede.0000193606.58671.c5">DOI</a>).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Garabedian LF, Chu P, Toh S, Zaslavsky AM, Soumerai SB, “Potential bias of instrumental variable analyses for observational comparative effectiveness research,” <em>Ann Intern Med</em> 2014;161:131-138 (<a href="https://doi.org/10.7326/M13-1887">DOI</a>).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Davey Smith G, Ebrahim S, “‘Mendelian randomization’: can genetic epidemiology contribute to understanding environmental determinants of disease?,” <em>Int J Epidemiol</em> 2003;32:1-22 (<a href="https://doi.org/10.1093/ije/dyg070">DOI</a>).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Davey Smith G, Ebrahim S, “‘Mendelian randomization’: can genetic epidemiology contribute to understanding environmental determinants of disease?,” <em>Int J Epidemiol</em> 2003;32:1-22 (<a href="https://doi.org/10.1093/ije/dyg070">DOI</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Anglemyer A, Horvath HT, Bero L, “Healthcare outcomes assessed with observational study designs compared with those assessed in randomized trials,” <em>Cochrane Database Syst Rev</em> 2014;2014:MR000034 (<a href="https://doi.org/10.1002/14651858.MR000034.pub2">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Toews I, Anglemyer A, Nyirenda JL, Alsaid D, Balduzzi S, Grummich K, Schwingshackl L, Bero L, “Healthcare outcomes assessed with observational study designs compared with those assessed in randomized trials: a meta-epidemiological study,” <em>Cochrane Database Syst Rev</em> 2024;1:MR000034 (<a href="https://doi.org/10.1002/14651858.MR000034.pub3">DOI</a>).<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Sobczyk MK, Zheng J, Davey Smith G, Gaunt TR, “Systematic comparison of Mendelian randomisation studies and randomised controlled trials using electronic databases,” <em>BMJ Open</em> 2023;13:e072087 (<a href="https://doi.org/10.1136/bmjopen-2023-072087">DOI</a>).<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>Davies NM, Thomas KH, Taylor AE, Taylor GMJ, Martin RM, Munafò MR, Windmeijer F, “How to compare instrumental variable and conventional regression analyses using negative controls and bias plots,” <em>Int J Epidemiol</em> 2017;46:2067-2077 (<a href="https://doi.org/10.1093/ije/dyx014">DOI</a>).<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Legault MA, Sandoval J, Provost S, et al., “A genetic model of ivabradine recapitulates results from randomized clinical trials,” <em>PLoS One</em> 2020;15:e0236193 (<a href="https://doi.org/10.1371/journal.pone.0236193">DOI</a>).<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>Baiocchi M, Cheng J, Small DS, “Instrumental variable methods for causal inference,” <em>Stat Med</em> 2014;33:2297-2340 (<a href="https://doi.org/10.1002/sim.6128">DOI</a>).<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch16-interaction.html" class="pagination-link" aria-label="Effect modification versus interaction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch18-quasi-experimental.html" class="pagination-link" aria-label="The quasi-experimental zoo">
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

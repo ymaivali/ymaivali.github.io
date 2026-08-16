@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 6&nbsp; Probability as a calculus</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch06-distributions.html" rel="next">
+<link href="./ch04b-theories-of-causation.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch05-probability-calculus.html">Part II. Probability is the logic of science</a></li><li class="breadcrumb-item"><a href="./ch05-probability-calculus.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#measuring-uncertainty-with-numbers" id="toc-measuring-uncertainty-with-numbers" class="nav-link active" data-scroll-target="#measuring-uncertainty-with-numbers"><span class="header-section-number">6.1</span> Measuring uncertainty with numbers</a></li>
+  <li><a href="#the-rules-of-probability" id="toc-the-rules-of-probability" class="nav-link" data-scroll-target="#the-rules-of-probability"><span class="header-section-number">6.2</span> The rules of probability</a>
+  <ul class="collapse">
+  <li><a href="#consequences-of-the-rules" id="toc-consequences-of-the-rules" class="nav-link" data-scroll-target="#consequences-of-the-rules"><span class="header-section-number">6.2.1</span> Consequences of the rules</a></li>
+  </ul></li>
+  <li><a href="#counting-the-classical-definition-of-probability" id="toc-counting-the-classical-definition-of-probability" class="nav-link" data-scroll-target="#counting-the-classical-definition-of-probability"><span class="header-section-number">6.3</span> Counting: the classical definition of probability</a>
+  <ul class="collapse">
+  <li><a href="#counting-in-the-multiverse" id="toc-counting-in-the-multiverse" class="nav-link" data-scroll-target="#counting-in-the-multiverse"><span class="header-section-number">6.3.1</span> Counting in the multiverse</a></li>
+  </ul></li>
+  <li><a href="#the-rules-of-combinatorics" id="toc-the-rules-of-combinatorics" class="nav-link" data-scroll-target="#the-rules-of-combinatorics"><span class="header-section-number">6.4</span> The rules of combinatorics</a>
+  <ul class="collapse">
+  <li><a href="#the-addition-rule" id="toc-the-addition-rule" class="nav-link" data-scroll-target="#the-addition-rule"><span class="header-section-number">6.4.1</span> The addition rule</a></li>
+  <li><a href="#the-multiplication-rule" id="toc-the-multiplication-rule" class="nav-link" data-scroll-target="#the-multiplication-rule"><span class="header-section-number">6.4.2</span> The multiplication rule</a></li>
+  <li><a href="#permutations" id="toc-permutations" class="nav-link" data-scroll-target="#permutations"><span class="header-section-number">6.4.3</span> Permutations</a></li>
+  <li><a href="#variations-order-matters-repetitions-not-allowed" id="toc-variations-order-matters-repetitions-not-allowed" class="nav-link" data-scroll-target="#variations-order-matters-repetitions-not-allowed"><span class="header-section-number">6.4.4</span> Variations (order matters, repetitions not allowed)</a></li>
+  <li><a href="#combinations-order-not-important" id="toc-combinations-order-not-important" class="nav-link" data-scroll-target="#combinations-order-not-important"><span class="header-section-number">6.4.5</span> Combinations (order not important)</a></li>
+  </ul></li>
+  <li><a href="#from-counting-to-the-binomial-distribution" id="toc-from-counting-to-the-binomial-distribution" class="nav-link" data-scroll-target="#from-counting-to-the-binomial-distribution"><span class="header-section-number">6.5</span> From counting to the binomial distribution</a></li>
+  <li><a href="#probability-distributions-and-their-data-generating-stories" id="toc-probability-distributions-and-their-data-generating-stories" class="nav-link" data-scroll-target="#probability-distributions-and-their-data-generating-stories"><span class="header-section-number">6.6</span> Probability distributions and their data-generating stories</a></li>
+  <li><a href="#why-these-rules-and-no-others" id="toc-why-these-rules-and-no-others" class="nav-link" data-scroll-target="#why-these-rules-and-no-others"><span class="header-section-number">6.7</span> Why these rules, and no others?</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">6.8</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.9</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch05-probability-calculus.html">Part II. Probability is the logic of science</a></li><li class="breadcrumb-item"><a href="./ch05-probability-calculus.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Chapter 3 ended with a specification: reasoning under certainty is classical logic, but most scientific reasoning is not conducted under certainty, and we need a calculus that extends the logic to graded belief. Chapter 4 showed why the experiment is the cleanest way to learn a cause, and why, outside the experiment, conclusions come with uncertainty attached. This chapter lays down the calculus that measures uncertainty with numbers.</p>
+<p>The strategy is deliberately narrow. We take the rules of probability as <strong>axioms</strong> — a short list of statements about a symbol <span class="math inline">\(P\)</span> — and work out their consequences, without yet asking what the numbers <em>mean</em>. Two readings are available for that question: a probability can be read as a long-run frequency of repeatable events, or as a degree of belief that grades a state of knowledge. The choice between them, and the reasons this book takes the second, is the subject of Chapter 7. Here the numbers are left uninterpreted on purpose: the axioms and everything derived from them hold under either reading, and it is cleaner to see the machine work before arguing about what it is a machine for.</p>
+<p>What the axioms fix is the <em>relations</em> among probabilities — how the probability of “A and B” relates to the probability of A, how conditioning on new information works. What they do not fix is the actual numbers that go in. For that we need a way to assign probabilities in the first place, and the oldest such method — counting equally likely cases — occupies the second half of the chapter. It takes us, with nothing more than careful counting, to the first important probability distribution: the binomial. The chapter closes on the distinction that the rest of the book turns on, between a probability distribution as a mathematical object and the empirical distribution of a finite data set.</p>
+<section id="measuring-uncertainty-with-numbers" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="measuring-uncertainty-with-numbers"><span class="header-section-number">6.1</span> Measuring uncertainty with numbers</h2>
+<p>Suppose a proposition A — “this patient has a stroke within the year”, “the drug lowers blood pressure”, “the coin lands heads”. Under certainty A is simply true or false. Under uncertainty we want to say how <em>plausible</em> A is, and to say it with a number, so that the plausibility can be calculated with rather than merely gestured at. Write that number <span class="math inline">\(P(A)\)</span>, a real number between 0 and 1:</p>
+<ul>
+<li><span class="math inline">\(P(A) = 0\)</span> — A is certainly false;</li>
+<li><span class="math inline">\(P(A) = 0.5\)</span> — A and not-A are equally plausible;</li>
+<li><span class="math inline">\(P(A) = 1\)</span> — A is certainly true;</li>
+</ul>
+<p>with the intermediate values reading as intermediate degrees of plausibility. Two reasons make the numerical scale worth insisting on. First, numbers can be combined by fixed rules, which is what the rest of this book does. Second, verbal grades — “very likely”, “a fair chance”, “almost certain” — are understood differently by different people, professionals included, so a shared scale is a precondition for communicating uncertainty at all.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The number needs an argument attached — probability <em>of what</em>, and <em>given what</em> — but not, at this stage, an interpretation. We defer to Chapter 7 the question of whether <span class="math inline">\(P(A)\)</span> reports a frequency in the world or a degree of belief in the head of the reasoner. The axioms below are neutral between those readings.</p>
+</section>
+<section id="the-rules-of-probability" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="the-rules-of-probability"><span class="header-section-number">6.2</span> The rules of probability</h2>
+<p>The notation, which the book uses throughout (Chapter 3 introduced the same connectives in word form):</p>
+<p><span class="math inline">\(P(A)\)</span> — probability of A. A stands for a proposition, event, hypothesis, parameter value — anything that can be true or false.</p>
+<p><span class="math inline">\(\land\)</span> — AND. <span class="math inline">\(P(A \land B)\)</span> is the probability that A and B are both true.</p>
+<p><span class="math inline">\(\lor\)</span> — OR. <span class="math inline">\(P(A \lor B)\)</span> is the probability that A or B (or both) is true.</p>
+<p><span class="math inline">\(\lnot\)</span> — NOT. <span class="math inline">\(P(\lnot A)\)</span> is the probability that A is false.</p>
+<p><span class="math inline">\(A \vert B\)</span> — conditional. <span class="math inline">\(P(A \vert B)\)</span> is the probability of A given B, i.e.&nbsp;the probability that A is true if we assume B is true.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The calculus was given its standard axiomatic form in 1933 by Kolmogorov, who defined probability as a measure on a <strong>sample space</strong> <span class="math inline">\(\Omega\)</span> — the set of all possible outcomes, with events as subsets of <span class="math inline">\(\Omega\)</span>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> We adopt his axioms, reading an “event” broadly as any proposition that can carry a truth value.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>The measure-on-a-space idea has a concrete picture, due to Blitzstein and Hwang, that is worth carrying through the book.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Picture each possible outcome of the experiment as a <strong>pebble</strong>, and the sample space as the bag holding all the pebbles. Each pebble carries a mass; the masses are non-negative and together sum to 1. An <strong>event</strong> is a handful of pebbles — a subset of the bag — and its probability is the total mass of the handful. Roll two dice: the bag holds 36 pebbles, one for each ordered pair <span class="math inline">\((i, j)\)</span> with <span class="math inline">\(i, j \in \{1, \dots, 6\}\)</span>, each of mass <span class="math inline">\(1/36\)</span>; the event “the sum is 8” is the handful <span class="math inline">\(\{(2,6), (3,5), (4,4), (5,3), (6,2)\}\)</span>, so <span class="math inline">\(P(\text{sum} = 8) = 5/36\)</span>. When the outcomes form a continuum — a blood pressure, a reaction time — the pebbles melt into <strong>mud</strong>: probability is smeared over a surface, any single point carries mass zero, and an event is a region whose probability is the amount of mud over it (Chapter 6 develops this picture as the probability density). With the picture in place, the axioms are bookkeeping over pebbles.</p>
+<p><strong>Axioms:</strong></p>
+<ol type="1">
+<li><p><span class="math inline">\(P(A) \geq 0\)</span></p></li>
+<li><p><span class="math inline">\(P(\Omega) = 1\)</span><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p></li>
+<li><p><span class="math inline">\(P(A \lor B) = P(A) + P(B)\)</span>, if A and B are mutually exclusive (they cannot both be true).</p></li>
+<li><p><span class="math inline">\(P(A~\vert~B) = \frac{P(A \land B)}{P(B)}\)</span><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p></li>
+</ol>
+<p>Two remarks. First, axiom 3 requires <em>mutual exclusivity</em> — A and B cannot both happen — not independence; the distinction matters and is the subject of Exercise 4. Kolmogorov’s own axiom extends additivity to countably infinite collections of mutually exclusive events; whether that stronger form is required is a question Chapter 7 returns to, and it makes no difference to anything computed in this book. Second, axiom 4 is here a <em>definition</em> — it says what the symbol <span class="math inline">\(P(A \vert B)\)</span> means. Chapter 7 shows that on the degree-of-belief reading the same equation can instead be <em>derived</em>, as a rule the reasoner is forced to obey; for now it is simply the definition of conditional probability.</p>
+<p>In the pebble picture, learning that B occurred is an instruction: <strong>discard every pebble outside B, and rescale the remaining masses so that they again sum to 1.</strong> That instruction is the whole content of axiom 4. Continue with the two dice, and suppose we learn that the first die shows a 3. Discard the 30 pebbles whose first coordinate is not 3; six pebbles survive, each rescaled from mass <span class="math inline">\(1/36\)</span> to <span class="math inline">\(1/6\)</span>. The event “the sum is 8” now consists of the single surviving pebble <span class="math inline">\((3,5)\)</span>, so <span class="math inline">\(P(\text{sum} = 8 \mid \text{first die} = 3) = \frac{1/36}{6/36} = 1/6\)</span> — up from <span class="math inline">\(5/36\)</span>, because the information removed proportionally more of the ways to fail than of the ways to succeed.</p>
+<p>Note what conditioning did <em>not</em> do: it created no new pebbles. In the sample space, information only ever removes possibilities and rescales what remains; it cannot add a possibility that was not in the bag from the start. This one-way character of conditioning looks like a triviality here. Chapter 7 shows that it marks the boundary of what updating alone can do for scientific inference.</p>
+<p>The definition of conditional probability reads naturally off the sample space. The number of elements in <span class="math inline">\(\Omega\)</span> is <span class="math inline">\(n(\Omega)\)</span>; two subsets A and B overlap in the intersection <span class="math inline">\(A \land B\)</span>. Computing <span class="math inline">\(P(A \vert B)\)</span> is computing the number of elements in the intersection of A and B relative to the number in B alone: <span class="math inline">\(P(A \vert B) = \frac{n(A \cap B)}{n(B)}\)</span>. Dividing numerator and denominator by <span class="math inline">\(n(\Omega)\)</span> converts counts into probabilities:</p>
+<p><span class="math display">\[P(A \vert B) = \frac{n(A \cap B)/n(\Omega)}{n(B)/n(\Omega)} = \frac{P(A \cap B)}{P(B)}\]</span></p>
+<section id="consequences-of-the-rules" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="consequences-of-the-rules"><span class="header-section-number">6.2.1</span> Consequences of the rules</h3>
+<p>The following all follow from the axioms by short derivations; the book uses them freely.</p>
+<ol start="5" type="1">
+<li><p><span class="math inline">\(0 \leq P(A) \leq 1\)</span> — probabilities are bounded by 0 and 1.</p></li>
+<li><p><span class="math inline">\(P(\lnot A) = 1 - P(A)\)</span></p></li>
+<li><p>Monotonicity: if B is a subset of A (<span class="math inline">\(B \subset A\)</span>), then <span class="math inline">\(P(B) \leq P(A)\)</span>. If B can be deduced from A: <span class="math inline">\([A \lor (B \land \lnot A) \Leftrightarrow B]\)</span>, then <span class="math inline">\(P(B) \leq P(A)\)</span>.</p></li>
+<li><p><span class="math inline">\(P(A \land B) \le P(A)\)</span>; <span class="math inline">\(P(A) \leq P(A \lor B)\)</span></p></li>
+<li><p>If B can be deduced from A and <span class="math inline">\(P(A) &gt; 0\)</span>, then <span class="math inline">\(P(B~ \vert ~A) = 1\)</span> and <span class="math inline">\(P(\lnot B~ \vert A) = 0\)</span>.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p></li>
+<li><p>Logically equivalent propositions/hypotheses have the same probability: if <span class="math inline">\(A \Leftrightarrow B\)</span>, then <span class="math inline">\(P(A) = P(B)\)</span></p></li>
+<li><p>Def: A and B are independent (not correlated) if and only if <span class="math inline">\(P(A~ \vert B) = P(A)\)</span></p></li>
+<li><p>If A and B are independent, then <span class="math display">\[P(A\land B) = P(A)P(B)\]</span></p></li>
+<li><p>If A and B are not independent, then <span class="math display">\[P(A \lor B) = P(A) + P(B) - P(A \land B)\]</span> and for 3 events: <span class="math display">\[\begin{array}{lcl} P(A \lor B \lor C) = P(A) + P(B) + P(C) - \\P(A \land B) - P(B \land C) - P(A \land C) + \\P(A \land B \land C) \end{array}\]</span></p></li>
+</ol>
+<p>Items 9 and 10 restate, inside the calculus, facts that were <em>about</em> the calculus in Chapter 3: entailment forces conditional certainty, and logical equivalence forces equal treatment. The footnote to item 9 is the germ of the <strong>weak syllogism</strong> — that observing a consequence raises the plausibility of a possible cause — which Chapter 7 justifies and Chapter 8 grows into the weight of evidence.</p>
+</section>
+</section>
+<section id="counting-the-classical-definition-of-probability" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="counting-the-classical-definition-of-probability"><span class="header-section-number">6.3</span> Counting: the classical definition of probability</h2>
+<p>The axioms constrain probabilities but do not supply them. The oldest way of supplying them is to count. Take the question “what is the probability of getting a 6 when throwing a fair die?”. It took gamblers until the 16th century to treat such questions systematically — the first treatment is Cardano’s, in a book on games of chance written around 1564 and published only in 1663.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> The answer proceeds by counting:</p>
+<ol type="1">
+<li><p>Imagine all possible results of a single throw: {1, 2, 3, 4, 5, 6}.</p></li>
+<li><p>Count the results that are a six. There is one, so <span class="math inline">\(k = 1\)</span>.</p></li>
+<li><p>Count all possible results. There are six, so <span class="math inline">\(N = 6\)</span>.</p></li>
+<li><p>The probability is <span class="math inline">\(P(\text{six}) = k/N = 1/6\)</span>.</p></li>
+</ol>
+<p>This is the <strong>classical definition of probability</strong>: the number of favourable cases divided by the number of possible cases, <em>when all cases are equally likely</em>. The scheme looks trivial but carries real assumptions, and they are worth stating: besides equal likelihood of the cases, it assumes stability of the system (the die, the thrower, the table, the laws of physics do not change during the experiment), the constancy of nature, and exchangeability (the result does not depend on the order in which the throws are recorded).<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<p>The classical definition is easy to grasp and appears to describe something objective — a process in the world, someone throwing a die. Two limits are worth flagging now and returning to in Chapter 7. First, the “objectivity” already includes the whole arrangement — the thrower, the table, the laws of nature — not the die alone. Second, and more restrictive, favourable-over-possible applies only where there is a set of equally likely cases to count. A scientific hypothesis, a one-off event, a parameter that has a single true value — these have no cases to count, and the classical definition falls silent about them. The counting road is powerful exactly where experiments are built to make it apply, and mute elsewhere.</p>
+<section id="counting-in-the-multiverse" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="counting-in-the-multiverse"><span class="header-section-number">6.3.1</span> Counting in the multiverse</h3>
+<p>The move that unlocked the counting road was made in 1654. Consider a game where two players pool equal stakes into a pot that goes to the winner. They cast dice; after each round whoever throws the larger sum scores a point (draws do not count); the game runs until someone reaches 9 points and takes the pot. Now suppose the game is interrupted when player A has 7 points and player B has 8. Is there a fair way to divide the pot? This <em>problem of points</em> was thought insoluble for centuries, until Blaise Pascal and Pierre de Fermat solved it in an exchange of letters. Earlier attempts had tried to reason from the games actually played (the 8 and 7 points), which led to contradiction. Fermat’s insight was to reason counterfactually — to let the game continue, not in our world, but in an expanding array of parallel worlds.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-multiverse" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-multiverse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig_multiverse.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multiverse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: The game continues in the multiverse
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The starting point (A7B8) is our world. The first imaginary round splits it into two (A8B8 and A7B9), one of which is already a win for B. On the next round B, who in life would simply stop having won, keeps playing, so the worlds split again, into four. At that level every game has ended, and we count: A wins 1 of the 4, B wins 3. So it is fair to give ¼ of the pot to A and ¾ to B — equivalently, <span class="math inline">\(P(\text{A wins}) = \tfrac14\)</span> and <span class="math inline">\(P(\text{B wins}) = \tfrac34\)</span>. Probability, on this reading, is counting across the multiverse; most of the mathematics that follows consists of algorithms that speed the counting up, since the multiverse expands exponentially and soon defeats counting by hand.</p>
+<p>The conceptual gain is larger than the arithmetic. Before Fermat, a unique event — this interrupted game, played once — had no frequency and so no probability. By imagining the continuations, we have given a one-off event a frequency, and hence a probability. The same device returns in Part III as the <strong>potential-outcomes</strong> framework, where the parallel worlds are the treated and untreated versions of the <em>same</em> patient, and the “continuation we did not see” is the outcome under the treatment the patient did not receive (Chapter 10). Counting across imagined worlds is one of the book’s recurring moves; it starts here.</p>
+</section>
+</section>
+<section id="the-rules-of-combinatorics" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="the-rules-of-combinatorics"><span class="header-section-number">6.4</span> The rules of combinatorics</h2>
+<p>Counting the multiverse by hand does not scale: the number of worlds grows exponentially with the number of rounds. The rules of combinatorics are the speed-up algorithms; each answers one question of the form “in how many ways?”.</p>
+<section id="the-addition-rule" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="the-addition-rule"><span class="header-section-number">6.4.1</span> The addition rule</h3>
+<p>Let <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span> be mutually exclusive events, and let <span class="math inline">\(E\)</span> be the event that either <span class="math inline">\(E_1\)</span> or <span class="math inline">\(E_2\)</span> occurs. Then</p>
+<p><span class="math display">\[n(E) = n(E_1) + n(E_2)\]</span></p>
+<p>where <span class="math inline">\(n(\cdot)\)</span> counts the outcomes of an event.</p>
+</section>
+<section id="the-multiplication-rule" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="the-multiplication-rule"><span class="header-section-number">6.4.2</span> The multiplication rule</h3>
+<p>Suppose <span class="math inline">\(E_1\)</span> can result in any one of <span class="math inline">\(n(E_1)\)</span> outcomes, and for each of those there are <span class="math inline">\(n(E_2)\)</span> possible outcomes of <span class="math inline">\(E_2\)</span>. If <span class="math inline">\(E\)</span> is the event that both <span class="math inline">\(E_1\)</span> and <span class="math inline">\(E_2\)</span> occur, then</p>
+<p><span class="math display">\[n(E) = n(E_1) \times n(E_2)\]</span></p>
+<p>More generally, with <span class="math inline">\(n_1\)</span> choices for the first position, <span class="math inline">\(n_2\)</span> for the second, and so on to <span class="math inline">\(n_k\)</span>, the number of sequences of <span class="math inline">\(k\)</span> elements is <span class="math inline">\(n_1 \times n_2 \times \dots \times n_k\)</span>.</p>
+</section>
+<section id="permutations" class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="permutations"><span class="header-section-number">6.4.3</span> Permutations</h3>
+<p>How many orderings of the three elements ABC are there? Six: {ABC, ACB, BCA, BAC, CAB, CBA}. This is <span class="math inline">\(n_1 \times n_2 \times n_3 = 3 \times 2 \times 1 = 6\)</span>, written with the factorial <span class="math inline">\(n! = 3! = 6\)</span>. In general <span class="math inline">\(n! = (n)(n-1)(n-2)\cdots(3)(2)(1)\)</span>, and</p>
+<p><strong>n distinct objects can be arranged (permuted) in n! ways.</strong></p>
+</section>
+<section id="variations-order-matters-repetitions-not-allowed" class="level3" data-number="6.4.4">
+<h3 data-number="6.4.4" class="anchored" data-anchor-id="variations-order-matters-repetitions-not-allowed"><span class="header-section-number">6.4.4</span> Variations (order matters, repetitions not allowed)</h3>
+<p>With <span class="math inline">\(n\)</span> elements and sequences of length <span class="math inline">\(k\)</span>,</p>
+<p><span class="math display">\[V_n^k = n(n - 1) \cdots (n - k + 1) = \frac{n!}{(n - k)!}\]</span></p>
+<p>Eight athletes compete; how many possibilities for the first three places? <span class="math inline">\(8 \times 7 \times 6 = 336\)</span>, equivalently <span class="math inline">\(8!/5! = 336\)</span>.</p>
+</section>
+<section id="combinations-order-not-important" class="level3" data-number="6.4.5">
+<h3 data-number="6.4.5" class="anchored" data-anchor-id="combinations-order-not-important"><span class="header-section-number">6.4.5</span> Combinations (order not important)</h3>
+<p>How many sets of <span class="math inline">\(k\)</span> elements can be chosen from <span class="math inline">\(n\)</span> distinct elements, written <span class="math inline">\(\binom{n}{k}\)</span>?</p>
+<p><span class="math display">\[\binom {n}{k} = \frac{n!}{k!(n - k)!}\]</span></p>
+<p>There is one way to choose 0 elements, <span class="math inline">\(\binom{n}{0} = 1\)</span>, and one way to choose all <span class="math inline">\(n\)</span>, <span class="math inline">\(\binom{n}{n} = 1\)</span>. The number of different sets of 4 letters drawn from the alphabet is <span class="math inline">\(\binom{26}{4} = \frac{26!}{4!\,(26-4)!} = 14950\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Nature chooses the cases: three ways to count particles">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nature chooses the cases: three ways to count particles
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The classical definition divides favourable cases by possible cases, <em>when the cases are equally likely</em>. It does not say what the cases are. Statistical physics gives the cleanest demonstration that this choice is an empirical hypothesis, not a logical truth — and that nature can reject a counting model that seems self-evident.</p>
+<p>Place <span class="math inline">\(r\)</span> particles into <span class="math inline">\(n\)</span> cells (regions of space, or energy states). Three counting models answer “how many equally likely cases are there?” differently:</p>
+<ul>
+<li><p><strong>Maxwell–Boltzmann.</strong> The particles are distinguishable, like named patients: particle 1 in the first cell and particle 2 in the second differs from the reverse. By the multiplication rule there are <span class="math inline">\(n^r\)</span> arrangements, each taken as equally likely.</p></li>
+<li><p><strong>Bose–Einstein.</strong> The particles are indistinguishable: only the occupancy numbers — how many particles each cell holds — are physically real. The equally likely cases are the <span class="math inline">\(\binom{n+r-1}{r}\)</span> occupancy patterns.</p></li>
+<li><p><strong>Fermi–Dirac.</strong> The particles are indistinguishable and no cell may hold more than one (the Pauli exclusion principle). The equally likely cases are the <span class="math inline">\(\binom{n}{r}\)</span> ways of choosing which cells are occupied.</p></li>
+</ul>
+<p>For two particles in three cells the three models give nine, six, and three equally likely cases, and they disagree about observable events:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mb <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">p1 =</span> cells, <span class="at">p2 =</span> cells)  <span class="co"># distinguishable: 3^2 = 9</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>be <span class="ot">&lt;-</span> mb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p1 <span class="sc">&lt;=</span> p2)              <span class="co"># occupancy patterns: choose(4, 2) = 6</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>fd <span class="ot">&lt;-</span> mb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p1 <span class="sc">&lt;</span> p2)               <span class="co"># exclusion: choose(3, 2) = 3</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">model =</span> <span class="fu">c</span>(<span class="st">"Maxwell-Boltzmann"</span>, <span class="st">"Bose-Einstein"</span>, <span class="st">"Fermi-Dirac"</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">equally likely cases</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">nrow</span>(mb), <span class="fu">nrow</span>(be), <span class="fu">nrow</span>(fd)),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">`</span><span class="at">P(both in one cell)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">mean</span>(mb<span class="sc">$</span>p1 <span class="sc">==</span> mb<span class="sc">$</span>p2),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">mean</span>(be<span class="sc">$</span>p1 <span class="sc">==</span> be<span class="sc">$</span>p2),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">mean</span>(fd<span class="sc">$</span>p1 <span class="sc">==</span> fd<span class="sc">$</span>p2))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">equally likely cases</th>
+<th style="text-align: right;">P(both in one cell)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Maxwell-Boltzmann</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bose-Einstein</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fermi-Dirac</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Which model describes the world is settled by experiment, not by argument. Photons and helium-4 atoms follow Bose–Einstein statistics; electrons, protons and neutrons follow Fermi–Dirac statistics;<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> no known particle follows Maxwell–Boltzmann statistics, which survives as an approximation valid when the available cells far outnumber the particles.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p>Nor was arrangement-counting self-evident before physics intervened. In the <em>Encyclopédie</em> of 1754, d’Alembert maintained that two tosses of a coin present three equally possible cases — heads on the first throw, heads on the second, or heads on neither — and concluded that the probability of at least one head is 2/3 rather than 3/4.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> For coins, taking the patterns rather than the ordered arrangements as the equal cases is an error; for photons, pattern-counting is the rule nature follows. The choice of the equally likely cases was contested for two centuries before experiment settled it for particles, and no amount of unaided reasoning could have settled it.</p>
+<p>The probability calculus is the same in all three cases. The axioms are untouched, and each model computes with the combinatorial shortcuts above. What differs is the sample space and the assignment of equal probabilities over it. “Equally likely” is therefore the empirical component of every classical-probability calculation; the loaded die of Exercise 6 makes the same point at a smaller scale.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="from-counting-to-the-binomial-distribution" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="from-counting-to-the-binomial-distribution"><span class="header-section-number">6.5</span> From counting to the binomial distribution</h2>
+<p>We can now answer a question that recurs throughout the book: what is the probability <span class="math inline">\(P_n(k)\)</span> that an event A occurs exactly <span class="math inline">\(k\)</span> times in <span class="math inline">\(n\)</span> independent tries, when A has probability <span class="math inline">\(p\)</span> on each try?</p>
+<ol type="1">
+<li>Take first the case where the <span class="math inline">\(k\)</span> occurrences come in an uninterrupted run at the start. By the multiplication rule, the probability of that particular sequence is</li>
+</ol>
+<p><span class="math display">\[P(A_1 \dots A_k\, \lnot A_{k+1} \dots \lnot A_n) = P(A_1)\dots P(A_k)\,P(\lnot A_{k+1}) \dots P(\lnot A_n) = p^k (1 - p)^{n-k}\]</span></p>
+<p>The same value results wherever the <span class="math inline">\(k\)</span> occurrences fall in the sequence. In the special case <span class="math inline">\(n = 1\)</span>, where <span class="math inline">\(k\)</span> is either 0 or 1, this is the <strong>Bernoulli</strong> probability mass function</p>
+<p><span class="math display">\[f(k, p) = p^k(1 - p)^{1-k}\]</span></p>
+<p>For example, with <span class="math inline">\(p = 0.1\)</span>: <span class="math inline">\(f(0, 0.1) = 0.1^0 \times 0.9^1 = 0.9\)</span> and <span class="math inline">\(f(1, 0.1) = 0.1^1 \times 0.9^0 = 0.1\)</span>.</p>
+<ol start="2" type="1">
+<li>For general <span class="math inline">\(k\)</span> we must also count the sequences of length <span class="math inline">\(n\)</span> in which A occurs exactly <span class="math inline">\(k\)</span> times. That count is</li>
+</ol>
+<p><span class="math display">\[\binom{n}{k} = \frac{n!}{k!(n - k)!}\]</span></p>
+<ol start="3" type="1">
+<li>Multiplying the probability of one such sequence by the number of them gives</li>
+</ol>
+<p><span class="math display">\[P_n(k) = \binom{n}{k}p^k(1 - p)^{n-k}\]</span></p>
+<p>This is the <strong>binomial distribution</strong>. For example, the probability of 6 heads in 10 tosses of a fair coin is</p>
+<p><span class="math display">\[P_{10}(6)= \binom{10}{6} (1/2)^6 (1/2)^4 = \frac{10!}{4!\,6!}\,(1/2)^6 (1/2)^4 = 0.205\]</span></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Full binomial probability distribution for <span class="math inline">\(P_{10}(k)\)</span>, fair coin</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">k</td>
+<td style="text-align: left;">0 &amp; 10</td>
+<td style="text-align: left;">1 &amp; 9</td>
+<td style="text-align: left;">2 &amp; 8</td>
+<td style="text-align: left;">3 &amp; 7</td>
+<td style="text-align: left;">4 &amp; 6</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">sum</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pn</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">0.010</td>
+<td style="text-align: left;">0.044</td>
+<td style="text-align: left;">0.117</td>
+<td style="text-align: left;">0.205</td>
+<td style="text-align: left;">0.246</td>
+<td style="text-align: left;">1.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The distribution is symmetric as long as A and not-A are equally probable. The binomial is the first fully worked <em>probability distribution</em> in the book — a rule assigning a probability to every value a count can take — and the next section says what kind of object that is.</p>
+</section>
+<section id="probability-distributions-and-their-data-generating-stories" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="probability-distributions-and-their-data-generating-stories"><span class="header-section-number">6.6</span> Probability distributions and their data-generating stories</h2>
+<p>The binomial above is a <strong>probability distribution</strong>: it lists, for every value the outcome could take (here, <span class="math inline">\(k = 0, 1, \dots, n\)</span> successes), how probable that value is. This is a <em>mathematical object</em>, fixed by the model and its parameters (<span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>), and it exists before any data are collected. It is essential to keep it apart from a second object it is easily confused with: the <strong>empirical distribution</strong> of a data set — the histogram of the values you actually observed. The probability distribution is the assumption; the empirical distribution is the evidence. They are related — a larger sample drawn under the model produces an empirical histogram that more closely resembles the probability distribution — but they are not the same thing, and later chapters depend on not confusing the model with the data it is supposed to explain. (Chapter 7 revisits this from the side of interpretation: whether the probability distribution describes the world or the analyst’s knowledge of it.)</p>
+<p>A useful discipline for meeting a new distribution is to ask what <em>data-generating story</em> produces it — the mechanism that, if it were operating, would give rise to that distribution. The story is what connects a real process to a mathematical form, and it is a better guide to which distribution to use than any list of formulae:</p>
+<ul>
+<li><p><strong>Bernoulli / binomial.</strong> A single yes/no trial with success probability <span class="math inline">\(p\)</span> is a Bernoulli draw. Count the successes in <span class="math inline">\(n\)</span> independent trials that each share the same <span class="math inline">\(p\)</span>, and the count follows the binomial — exactly the derivation above. Whenever the data are “<span class="math inline">\(k\)</span> out of <span class="math inline">\(n\)</span>” with exchangeable, equal-probability trials, this is the story: number of patients who have a stroke, number of coins that land heads, number of cells that are occupied.</p></li>
+<li><p><strong>Normal.</strong> Add up many small, independent contributions of comparable size, and the sum tends to a <strong>normal</strong> distribution almost regardless of the shape of the individual contributions — the reason measurement errors, and quantities built from many additive influences, are so often approximately normal. The story is <em>addition of many small effects</em>.</p></li>
+<li><p><strong>Log-normal.</strong> <em>Multiply</em> many small independent factors instead of adding them, and the product tends to a <strong>log-normal</strong> distribution — equivalently, the logarithm of the quantity is normal, because the log turns the product into a sum. The story is <em>multiplication of many small effects</em>, which is why concentrations, incubation periods, and incomes — quantities generated by proportional rather than additive processes — are often log-normal.</p></li>
+</ul>
+<p>These three are enough to make the point that a distribution comes from a mechanism. The systematic catalogue — the binomial and its relatives, the Poisson, the normal and log-normal, and the continuous families used later for priors and for generalised linear models — is the business of Chapter 6, where each distribution is introduced with its own story, its parameters, and the R functions that compute with it.</p>
+</section>
+<section id="why-these-rules-and-no-others" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="why-these-rules-and-no-others"><span class="header-section-number">6.7</span> Why these rules, and no others?</h2>
+<p>This chapter has taken the axioms as given and shown what follows. That leaves a question it has deliberately not answered: <em>why these rules?</em> Why should degrees of plausibility obey Kolmogorov’s axioms rather than some other calculus — and what entitles us to attach a probability to a scientific hypothesis, which has no frequency to count? Chapter 7 answers both. It shows that a reasoner who grades belief numerically and asks only that the grading be consistent is <em>forced</em> to the same sum and product rules, by an argument that never mentions counting; and it takes up what the numbers mean, why this book reads them as degrees of belief, and why that reading keeps working in the single-case settings where the counting road falls silent. It also introduces the companion of the sample space — the <em>hypothesis space</em>, the set of candidate explanations an analyst entertains — and returns there to the one-way character of conditioning noted above. The rules established here are correct under either reading. What Chapter 7 adds is the licence to use them for the questions science actually asks.</p>
+</section>
+<section id="key-points" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="key-points"><span class="header-section-number">6.8</span> Key points</h2>
+<ul>
+<li>Probability is developed here as a <strong>calculus</strong>: a symbol <span class="math inline">\(P\)</span> obeying <strong>Kolmogorov’s axioms</strong>, with everything else derived. The axioms fix the <em>relations</em> among probabilities, not the actual numbers.</li>
+<li>In the <strong>pebble picture</strong> the sample space is a bag of pebbles, an event is a handful, and probability is the mass of the handful; continuous outcomes turn the pebbles to mud (densities, Chapter 6).</li>
+<li>Conditional probability <span class="math inline">\(P(A \vert B) = P(A \land B)/P(B)\)</span> is taken here as a <strong>definition</strong>; Chapter 7 shows it can instead be <strong>derived</strong> on the degree-of-belief reading. In pebble terms, conditioning is <strong>discard and rescale</strong>: information only removes possibilities and reweighs the rest — it never adds a pebble that was not in the bag (a boundary Chapter 7 returns to).</li>
+<li>The <strong>classical definition</strong> supplies actual numbers by counting: favourable cases over possible cases, <em>when the cases are equally likely</em>. Its background assumptions are stability of the system, constancy of nature, and exchangeability. It applies only where equally likely cases can be counted, and is silent about unique events and hypotheses.</li>
+<li>The <strong>problem of points</strong> (Pascal and Fermat, 1654) fixes a fair division by counting the ways the interrupted game could have continued in <strong>imagined parallel worlds</strong>. In the multiverse a unique event acquires a frequency, and hence a probability — the device that returns as <strong>potential outcomes</strong> in Chapter 10.</li>
+<li>The <strong>rules of combinatorics</strong> are counting shortcuts: addition for mutually exclusive alternatives, multiplication for sequential choices, <span class="math inline">\(n!\)</span> for orderings, <span class="math inline">\(n!/(n-k)!\)</span> for ordered selections, and <span class="math inline">\(\binom{n}{k}\)</span> for unordered selections.</li>
+<li>“Equally likely cases” is an <strong>empirical hypothesis</strong>, not a logical truth. Maxwell–Boltzmann, Bose–Einstein and Fermi–Dirac counting give different probabilities for the same particles-in-cells setup; experiment decides which nature follows, while the calculus is the same for all three.</li>
+<li>The <strong>binomial distribution</strong> <span class="math inline">\(P_n(k) = \binom{n}{k}p^k(1-p)^{n-k}\)</span> is assembled from two shortcuts: the multiplication rule gives the probability <span class="math inline">\(p^k(1-p)^{n-k}\)</span> of one sequence, and <span class="math inline">\(\binom{n}{k}\)</span> counts the sequences.</li>
+<li>A <strong>probability distribution</strong> (the model) is distinct from the <strong>empirical distribution</strong> of a data set (the evidence). Each distribution has a <strong>data-generating story</strong>: the binomial counts equal-probability yes/no trials; the normal sums many small effects; the log-normal multiplies them. Chapter 6 is the full catalogue.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.9</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Divide the pot.</strong> Players A and B play to 5 points; the game is interrupted with A on 2 points and B on 4. Following Fermat, let the game continue in imagination for the maximum number of rounds it could still take, count the continuations won by each player, and divide the pot. Verify your division by simulating the interrupted game many times with <code>sample()</code> or <code>rbinom()</code>.</p></li>
+<li><p><strong>Ward arithmetic.</strong> (a) In how many different orders can 5 patients be scheduled for morning rounds? (b) How many distinct pairs of patients can be chosen from a ward of 10? (c) Out of 8 candidate biomarkers, in how many ways can an ordered shortlist of 3 be filled? For each, state whether you used permutations, combinations, or variations.</p></li>
+<li><p><strong>Build the binomial by hand.</strong> In a population where 30% are carriers of an infection, 4 people are sampled independently. Use the multiplication rule to write down the probability of the particular sequence carrier, carrier, non-carrier, non-carrier; count the arrangements containing two carriers with <span class="math inline">\(\binom{4}{2}\)</span>; combine the two numbers, and check the result with <code>dbinom(2, 4, 0.3)</code>.</p></li>
+<li><p><strong>Exclusive is not independent.</strong> Toss two fair coins; let A = “the first coin shows heads” and B = “the second coin shows heads”. Verify that A and B are independent but not mutually exclusive, and that applying axiom 3 to them gives the wrong answer for <span class="math inline">\(P(A \lor B)\)</span> (the right one is item 13). Then give an example of two events that are mutually exclusive but not independent.</p></li>
+<li><p><strong>Strokes on a ward.</strong> Source <code>R/simulate_cohort.R</code>, generate the cohort, and estimate the stroke risk among untreated patients by counting rows. Use the binomial distribution to compute the probability that 4 or more of 20 untreated patients have a stroke, and check the answer by simulation with <code>rbinom()</code>. Then identify the binomial assumption that the cohort violates (do all untreated patients share one stroke probability?).</p></li>
+<li><p><strong>The loaded die.</strong> The classical definition assumes equally likely cases. A loaded die has six faces but not six equally likely outcomes. Explain why favourable-over-possible fails here, and what extra information you would need to assign probabilities to its faces.</p></li>
+<li><p><strong>Counting like a photon.</strong> Two particles are placed into four cells. (a) Count the equally likely cases under each of the three counting models of the callout box. (b) Under each model, compute the probability that both particles occupy the same cell. (c) Adapt the enumeration code from the box to verify your answers. (d) State in one sentence which parts of this chapter’s machinery are the same across all three models, and what changes instead.</p></li>
+<li><p><strong>Two stories, two histograms.</strong> Draw 10,000 values as the sum of 12 independent <code>runif(1)</code> draws, and another 10,000 as the <em>product</em> of 12 such draws. Plot a histogram of each, and a histogram of the log of the second. Which of the three looks normal, and which log-normal? Relate what you see to the data-generating stories in the last section.</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The point is not merely pedantic. Studies asking people to attach numbers to phrases such as “likely” or “a real possibility” find ranges so wide that the same phrase can mean 20% to one reader and 80% to another; the disagreement persists among trained analysts.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>B does not have to be actually true; we assume for the sake of argument that it is.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Kolmogorov AN, <em>Grundbegriffe der Wahrscheinlichkeitsrechnung</em>, Berlin: Springer, 1933; English translation: <em>Foundations of the Theory of Probability</em>, New York: Chelsea, 1950.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Reading an event as a proposition, rather than strictly as a subset of a sample space, is a deliberate choice, and it is what later lets <span class="math inline">\(P\)</span> attach to a hypothesis or a parameter value — objects that are true or false but are not “outcomes” of a repeatable experiment. The two readings are compatible: the propositions form a Boolean algebra, which is isomorphic to a field of sets, so for the finite additivity used in this book nothing is lost by moving between them. Chapter 7 takes up the interpretive question this raises — how a hypothesis, which has no frequency, can have a probability.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Blitzstein JK, Hwang J, <em>Introduction to Probability</em>, 2nd ed., Boca Raton: Chapman &amp; Hall/CRC, 2019 (the pebble-world picture).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The probability of a sure thing is one, which means that the probabilities under a probability distribution sum to one.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>This is the definition of conditional probability. If you find it unintuitive, try this: in an urn there are 3 spheres and 3 cubes. Two of the spheres are blue and one is red. What is the probability that a random object drawn from the urn is a red sphere? Solution: <span class="math inline">\(P(sphere)=1/2\)</span>; <span class="math inline">\(P(red ~\vert~ sphere)= 1/3\)</span>; <span class="math inline">\(\begin{array}{lcl} P(sphere \land red)=P(sphere)P(red ~\vert sphere)\\ = 1/2 \times 1/3 = 1/6. \end{array}\)</span><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>If evidence <em>e</em> can be deduced from hypothesis <em>H</em> (<em>H</em> predicts <em>e</em>) and if <span class="math inline">\(P(H) &gt; 0\)</span> and <span class="math inline">\(P(e) &lt; 1\)</span>, then <span class="math inline">\(P(H~ \lvert~ e) &gt; P(H)\)</span>, or <em>e</em> increases the probability of <em>H</em>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Cardano G, <em>Liber de ludo aleae</em> (written c.&nbsp;1564, published 1663); English translation in Ore O, <em>Cardano, the Gambling Scholar</em>, Princeton: Princeton University Press, 1953.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The constancy of nature is the assumption behind all causal thinking; exchangeability means the result does not depend on the order in which the data are recorded. These are not trivial: much of the later book is about what to do when they fail.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Bose SN, “Plancks Gesetz und Lichtquantenhypothese,” <em>Z Phys</em> 1924;26:178-181 (<a href="https://doi.org/10.1007/BF01327326">DOI</a>); Fermi E, “Zur Quantelung des idealen einatomigen Gases,” <em>Z Phys</em> 1926;36:902-912 (<a href="https://doi.org/10.1007/BF01400221">DOI</a>); Dirac PAM, “On the theory of quantum mechanics,” <em>Proc R Soc Lond A</em> 1926;112:661-677 (<a href="https://doi.org/10.1098/rspa.1926.0133">DOI</a>).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Feller W, <em>An Introduction to Probability Theory and Its Applications, Volume I</em>, 3rd ed., New York: Wiley, 1968.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>d’Alembert JLR, “Croix ou pile,” in Diderot D, d’Alembert JLR (eds.), <em>Encyclopédie, ou Dictionnaire raisonné des sciences, des arts et des métiers</em>, vol.&nbsp;4, Paris: Briasson, 1754; the episode and its relation to quantum counting are discussed in Gorroochurn P, <em>Classic Problems of Probability</em>, Hoboken: Wiley, 2012 (problem 12).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch04b-theories-of-causation.html" class="pagination-link" aria-label="Theories of causation: the counterfactual among rivals">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch06-distributions.html" class="pagination-link" aria-label="Probability distributions">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
