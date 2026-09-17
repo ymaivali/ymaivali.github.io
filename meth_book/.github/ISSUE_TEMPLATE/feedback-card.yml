@@ -1,0 +1,63 @@
+name: Feedback card
+description: Report an error, an unclear passage, exercise trouble, or a suggestion for The Bayesian Way to Causal Epidemiology.
+title: "[Feedback] <chapter and a few words>"
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Paste the feedback card your AI companion drafted, or fill the fields
+        directly. Your GitHub username is visible on this issue; the contact field below is
+        where you choose an email address or "anonymous" for the book's revision notes.
+  - type: input
+    id: chapter
+    attributes:
+      label: Chapter and section
+      placeholder: "e.g. 25.4 Choosing the link, or the page link"
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options:
+        - student
+        - teacher
+        - other reader
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      options:
+        - error
+        - unclear passage
+        - exercise trouble
+        - question the book did not answer
+        - suggestion
+    validations:
+      required: true
+  - type: textarea
+    id: card
+    attributes:
+      label: The card
+      description: What happened, the quoted passage if any, and the suggested fix or question.
+      placeholder: Paste the whole feedback card here.
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Contact
+      description: An email address if you want a reply, or "anonymous".
+      placeholder: anonymous
+  - type: dropdown
+    id: quote
+    attributes:
+      label: May this be quoted in the book's revision notes?
+      options:
+        - "yes"
+        - "no"
+    validations:
+      required: true

@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - Appendix H — Challenges to the Bayesian position</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./20-glossary.html" rel="next">
+<link href="./16-appendix-H0.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./19-appendix-challenges.html"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A statement of purpose</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the back-door</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a-single-event-probability-says-nothing" id="toc-a-single-event-probability-says-nothing" class="nav-link active" data-scroll-target="#a-single-event-probability-says-nothing"><span class="header-section-number">H.1</span> A single-event probability “says nothing”</a></li>
+  <li><a href="#radical-uncertainty-and-the-prior" id="toc-radical-uncertainty-and-the-prior" class="nav-link" data-scroll-target="#radical-uncertainty-and-the-prior"><span class="header-section-number">H.2</span> Radical uncertainty and the prior</a></li>
+  <li><a href="#sets-of-priors-imprecise-probability-and-robust-bayes" id="toc-sets-of-priors-imprecise-probability-and-robust-bayes" class="nav-link" data-scroll-target="#sets-of-priors-imprecise-probability-and-robust-bayes"><span class="header-section-number">H.3</span> Sets of priors: imprecise probability and robust Bayes</a></li>
+  <li><a href="#dilation" id="toc-dilation" class="nav-link" data-scroll-target="#dilation"><span class="header-section-number">H.4</span> Dilation</a></li>
+  <li><a href="#is-ambiguity-aversion-irrational" id="toc-is-ambiguity-aversion-irrational" class="nav-link" data-scroll-target="#is-ambiguity-aversion-irrational"><span class="header-section-number">H.5</span> Is ambiguity aversion irrational?</a></li>
+  <li><a href="#the-position-taken-here" id="toc-the-position-taken-here" class="nav-link" data-scroll-target="#the-position-taken-here"><span class="header-section-number">H.6</span> The position taken here</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">H.7</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./19-appendix-challenges.html"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-app-challenges" class="quarto-section-identifier">Appendix H — Challenges to the Bayesian position</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> the book committed to a position: probability is epistemic, the prior is a declared component of the model open to criticism, and counting and frequency are the special cases that arise when information is symmetric or data are plentiful. That position has been attacked from several directions. Some rest on a confusion the sections of that chapter already remove; others identify genuine open problems, on which alternative theories of rational choice have been built. Setting them out is part of stating the position fairly. The aim throughout is still to honestly quantify the uncertainty that can be quantified, and not to claim more than available information supports.</p>
+<section id="a-single-event-probability-says-nothing" class="level2" data-number="H.1">
+<h2 data-number="H.1" class="anchored" data-anchor-id="a-single-event-probability-says-nothing"><span class="header-section-number">H.1</span> A single-event probability “says nothing”</h2>
+<p>The first objection holds that a probability attached to a one-off event — the result of one election, whether a particular patient survives the year — is empty, because a single event has no long-run frequency. As a claim about <em>meaning</em>, <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> has answered it: on the belief road <span class="math inline">\(P(A)\)</span> grades a state of knowledge, and the weather and patient examples of that chapter used such probabilities throughout. Importing the frequency definition and then noting that a single case has no frequency assumes the conclusion.</p>
+<p>A real point concerns <em>evaluation</em>, not meaning. A single probabilistic forecast cannot be checked against its single outcome: a forecast of 0.7 for an event that then fails to occur is not thereby shown wrong, because events assigned probability 0.3 occur about thirty per cent of the time. Judging whether a source’s probabilities are any good requires many of them, and a score that rewards <em>calibration</em> — the long-run agreement between stated probabilities and observed frequencies — of which the Brier score is the original example.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The 2016 United States presidential election, often offered as a failure of probabilistic forecasting, marks the distinction: the better-calibrated forecasts gave the eventual winner, Donald Trump, the higher probability of 0.3, and the public error was to read a probability of 0.7 for the losing candidate, Hilary Clinton, as near-certainty. Stated carefully, the objection is not that single-event probabilities are meaningless but that they cannot be validated one at a time. That is correct — calibration is assessed over a forecaster’s whole record (<a href="ch02-thinking-under-uncertainty.html" class="quarto-xref"><span>Chapter 2</span></a>), where the interval version of the same measurement, and the reasons an interval-production task cannot be scored properly at all, are set out in detail.</p>
+</section>
+<section id="radical-uncertainty-and-the-prior" class="level2" data-number="H.2">
+<h2 data-number="H.2" class="anchored" data-anchor-id="radical-uncertainty-and-the-prior"><span class="header-section-number">H.2</span> Radical uncertainty and the prior</h2>
+<p>A deeper objection holds that in many real settings a prior cannot be set at all, so the calculation never starts. It has a serious lineage: Knight separated <em>risk</em>, where the odds are known, from <em>uncertainty</em>, where they are not<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>; Keynes held that for some questions “we simply do not know”<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>; and Kay and King argue that economic and political decisions are typically non-repeatable and non-stationary, so attaching a number to them is false precision rather than information<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>The part of this objection with force is a result, which needs a bit of background. While a hard-to-elicit prior is merely a practical hurdle, the more serious attack claims that there are reasonable preferences which cannot be represented by a prior at all. Understanding its bite requires a result that points the other way: that a rational agent’s choices already <em>contain</em> a prior, stated or not. That result is Savage’s, whose construction does not begin with probabilities, but with an agent’s <em>preferences</em> among acts — options whose payoff depends on which state of the world turns out to hold — together with a small set of axioms those preferences are required to obey. A representation theorem follows: any agent whose preferences obey these axioms behaves <em>as if</em> they had attached a single probability to each state and a utility to each payoff, and then ranked acts by expected utility. The prior is therefore not an input to the theory but a consequence of it. In other words, the <em>existence</em> of a subjective prior is a theorem about coherent preferences, not an <em>ad hoc</em> assumption.</p>
+<p>One of those axioms is the <strong>sure-thing principle</strong>: if two acts yield the same payoff across some set of states, the preference between the acts must not depend on what that shared payoff is — so the states on which the acts agree can be set aside, and the choice made on the states where they differ.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Ellsberg built a wager on which reasonable people violate it.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>An urn holds 90 balls: 30 are red, and the other 60 are black or yellow in a proportion no one is told. The <em>states</em> are the colour drawn; an <em>act</em> is a bet that pays £100 on the colours it names and £0 otherwise. Consider four such bets (<a href="#tbl-ellsberg" class="quarto-xref">Table&nbsp;<span>H.1</span></a>):</p>
+<div id="tbl-ellsberg" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ellsberg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;H.1: Ellsberg’s urn: four bets and their payoffs in each state.
+</figcaption>
+<div aria-describedby="tbl-ellsberg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Bet pays £100 on…</th>
+<th style="text-align: center;">Red (30 balls)</th>
+<th style="text-align: center;">Black (?)</th>
+<th style="text-align: center;">Yellow (?)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>red</strong></td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>black</strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>red or yellow</strong></td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>black or yellow</strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">100</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Only the share of red is known (30/90), so the bets on <em>red</em> and on <em>black or yellow</em> carry known odds, while the bets on <em>black</em> and on <em>red or yellow</em> carry unknown ones. Offered the choice, most people take the bet on <strong>red</strong> over the bet on <strong>black</strong>, and the bet on <strong>black or yellow</strong> over the bet on <strong>red or yellow</strong> — the known odds each time.</p>
+<p>The two ideas now bite. By the <em>representation theorem</em>, anyone holding a single prior for the urn — treating the 60 unknown balls as, say, 30 black and 30 yellow — would score each bet by its chance of paying and rank the four once and for all. By the <em>sure-thing principle</em>, the first two bets agree on yellow (both pay 0), and the last two are those same two bets with the yellow payoff raised to 100 for both; yellow is a shared payoff within each pair, so it should cancel, and the red-versus-black ranking should carry over to the (red-or-yellow)-versus-(black-or-yellow) ranking. The observed choices reverse it. Equivalently, preferring the bet on red requires <span class="math inline">\(P(\text{red}) &gt; P(\text{black})\)</span>, while preferring the bet on black-or-yellow requires <span class="math inline">\(P(\text{black}) &gt; P(\text{red})\)</span>; no prior satisfies both. The preferences are stable and widely shared, yet no single prior represents them — the gap the objection points to. This <em>ambiguity aversion</em> is reproducible and arguably rational, so it places such preferences outside the scope of Savage’s theorem: “I cannot fix a sharp prior” is then a position the axioms do not exclude, not a confusion about probability.</p>
+<p>The orthodox reply is to add a level. If the composition of the urn is unknown, put a prior over it — and in this symmetric problem any prior that treats black and yellow alike forces the predictive probabilities to <span class="math inline">\(P(\text{red}) = P(\text{black}) = P(\text{yellow}) = 1/3\)</span>, whereupon the ambiguity disappears and the problem reduces to ordinary risk. This is de Finetti’s reduction: beliefs about an unknown frequency, weighted by a prior over its values, collapse to a single predictive distribution. The move is available, and here the choice of second-order prior does not even matter, because symmetry fixes the answer. Two things limit it. First, the reduced model predicts <em>indifference</em> between the urns, which is not what people do; it recommends against the phenomenon rather than accounting for it. Second, the symmetry is special — in an asymmetric problem the predictive probabilities depend on the parametrisation of the “ignorance” prior, the difficulty <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> noted for objective priors. Whether ambiguity may always be reduced to risk in this way is the contested step, and the models below take the other branch.</p>
+</section>
+<section id="sets-of-priors-imprecise-probability-and-robust-bayes" class="level2" data-number="H.3">
+<h2 data-number="H.3" class="anchored" data-anchor-id="sets-of-priors-imprecise-probability-and-robust-bayes"><span class="header-section-number">H.3</span> Sets of priors: imprecise probability and robust Bayes</h2>
+<p>If a single sharp prior overstates what is known, the response that keeps the calculus is to carry a <em>set</em> of priors rather than one. A closed set of distributions — a credal set — assigns each event a <em>lower</em> and an <em>upper</em> probability, <span class="math inline">\(\underline P(A) = \inf_p p(A)\)</span> and <span class="math inline">\(\overline P(A) = \sup_p p(A)\)</span> over the set; the width <span class="math inline">\(\overline P(A) - \underline P(A)\)</span> records how little is known, and is zero only when the set collapses to a point and probability becomes precise. Total ignorance is the <em>vacuous</em> set, <span class="math inline">\(\underline P(A) = 0\)</span> and <span class="math inline">\(\overline P(A) = 1\)</span> — which is what ignorance looks like, in contrast to the uniform prior, a definite symmetric commitment that <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> warned against confusing with it.</p>
+<p>Two traditions develop this with the same mathematics and different emphasis. <strong>Imprecise probability</strong> rebuilds the foundations: where de Finetti’s agent posts one fair price for a gamble, Walley’s agent posts two — a highest buying price and a lowest selling price — and declines to trade in between, so the betting argument of <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> generalises by dropping the assumption that every gamble has a single fair price.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> A concrete instance is the imprecise Dirichlet model for proportions, which begins vacuous and contracts as data accumulate.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> <strong>Robust Bayes</strong> keeps ordinary Bayes but, conceding that one prior cannot be pinned down, specifies a class of priors, recomputes the posterior quantity for each, and reports the range; a narrow range means the conclusion is insensitive to the prior, a wide one that the data do not determine it.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> This is the global form of the sensitivity analysis <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> endorsed. A decision still has to be made from a set, and one rule is <strong>maxmin expected utility</strong>: score each option by its expected utility under the least favourable prior in the set — its worst case over the priors entertained — and choose the option whose worst case is best.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> In Ellsberg’s urn this reproduces the preference for known odds, because a bet on a known colour has a value every prior agrees on, whereas a bet on an unknown colour is judged by the composition least favourable to it. A separate limit is worth keeping in view: every guarantee here holds relative to the set of models entertained, and if the data-generating process lies outside all of them, coherence no longer ensures the conclusion is correct.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+</section>
+<section id="dilation" class="level2" data-number="H.4">
+<h2 data-number="H.4" class="anchored" data-anchor-id="dilation"><span class="header-section-number">H.4</span> Dilation</h2>
+<p>Carrying a set of priors has a consequence with no analogue in single-prior analysis, and it bears directly on later chapters. Ordinarily, data narrow beliefs. With a set of priors, conditioning on an observation can <em>widen</em> the interval: for some partitions one can know in advance that, whichever cell is observed, the posterior interval for a proposition will be wider than the prior interval. This is <strong>dilation</strong>.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p>A fair coin is to be tossed, so the probability of heads is <span class="math inline">\(1/2\)</span>. A second person announces a prediction of the toss, but nothing is known of their reliability — the credal set admits everything from a perfect predictor to a perfect anti-predictor. Before the prediction is revealed the probability of heads is <span class="math inline">\(1/2\)</span>; after it is revealed, the conditional probability of heads ranges over the whole interval from near 0 to near 1, because the set contains distributions under which the prediction is highly informative in either direction. An uninterpretable signal from a source of unknown reliability widens a probability that was previously sharp, and one could have foreseen that any prediction would do so.</p>
+<p>Dilation is not an inconsistency: the model stays coherent, and no sure loss can be made against it. Whether it is a defect or a virtue is disputed. Read as a defect, an inference that becomes <em>less</em> certain on data looks pathological. Read as a virtue, the precise <span class="math inline">\(1/2\)</span> was the artefact — it relied on an unstated assumption that the prediction was independent of the coin, and once that assumption is withdrawn the wide interval is the faithful report. The phenomenon also corrects a natural assumption about robust Bayes: because robust Bayes updates a set of priors by the same rule, it dilates too. Where a robust-Bayes analysis shows no dilation, it is because the class was anchored tightly to an informative base prior — that is, more was assumed than the radical-uncertainty objection grants. One cannot claim both deep ignorance, which requires a wide set, and immunity from dilation, which requires a narrow one.</p>
+<p>The phenomenon has a direct counterpart in applied work. When the sign or magnitude of a bias — unmeasured confounding, an unknown selection mechanism — is genuinely not known, an analysis that represents that ignorance faithfully can yield bounds the data fail to narrow, and that may widen on further conditioning. This is the logic of partial identification and of the sensitivity analyses developed in <a href="ch19-sensitivity-analysis.html" class="quarto-xref"><span>Chapter 20</span></a>; dilation is the same fact stated at the level of belief.</p>
+</section>
+<section id="is-ambiguity-aversion-irrational" class="level2" data-number="H.5">
+<h2 data-number="H.5" class="anchored" data-anchor-id="is-ambiguity-aversion-irrational"><span class="header-section-number">H.5</span> Is ambiguity aversion irrational?</h2>
+<p>The biases catalogued in <a href="ch02-thinking-under-uncertainty.html" class="quarto-xref"><span>Chapter 2</span></a> — base-rate neglect, the conjunction fallacy, anchoring — are departures from probability or expected-utility theory that people renounce once the structure is pointed out. It is tempting to file ambiguity aversion alongside them, as one more failure to reason coherently. There is a strong argument for doing so, due to Raiffa: if you are indifferent between betting on red and betting on black in the unknown urn, decide the colour by a fair coin; the resulting mixture has a <em>known</em> one-half chance of paying, matching the known urn, so a coherent agent should not prefer one urn to the other.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> On this view ambiguity aversion forgoes a sure equivalence, and it does attenuate with incentives and learning.</p>
+<p>Two features distinguish it from the <a href="ch02-thinking-under-uncertainty.html" class="quarto-xref"><span>Chapter 2</span></a> biases. It survives reflection: sophisticated agents shown the argument frequently continue to prefer known odds and defend the preference, whereas the mark of a fallacy is that one abandons it once it is seen. And it has been given normative, not merely descriptive, axiomatisations — Choquet expected utility<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>, maxmin expected utility<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>, and smooth-ambiguity preferences<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> are theories of rational choice that weaken the sure-thing principle deliberately, and it has been argued that committing to a precise prior one has no information to justify is itself the less rational course.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> Whether ambiguity aversion is irrational therefore turns on whether Savage’s axioms are taken as constitutive of rationality or as one model of it — and this book has already taken the modest view, that probability theory captures an important part of rational thinking rather than the whole of it. On that view the cleaner classification is not that ambiguity aversion fails to meet the standard, but that it disputes which standard applies.</p>
+</section>
+<section id="the-position-taken-here" class="level2" data-number="H.6">
+<h2 data-number="H.6" class="anchored" data-anchor-id="the-position-taken-here"><span class="header-section-number">H.6</span> The position taken here</h2>
+<p>None of these challenges refutes the calculus; each bounds the scope of one way of using it. Single-event probabilities are meaningful and are validated over many forecasts, not one. Under radical uncertainty a sharp prior may not be available, and a set of priors with a stated decision rule is the disciplined response, at the price of phenomena such as dilation. Ambiguity aversion is better read as a rival standard than as a mistake. For the work in this book — finite data, models with declared structure, priors that must survive criticism and sensitivity analysis — a single prior, varied and checked, is adequate, and is what the later chapters use; the apparatus of sets of priors is held in reserve for the cases, flagged where they arise, in which a single prior would assert more than is known. The aim is unchanged from the first page of <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a>: to quantify the uncertainty that can be quantified, and to mark plainly the uncertainty that cannot.</p>
+</section>
+<section id="exercises" class="level2" data-number="H.7">
+<h2 data-number="H.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">H.7</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>The second-order prior in Ellsberg’s urn.</strong> Take the 90-ball urn (30 red; 60 black or yellow, unknown split). Put a prior on the number of black balls that is symmetric in black and yellow, and show that the predictive probabilities are <span class="math inline">\(P(\text{red}) = P(\text{black}) = P(\text{yellow}) = 1/3\)</span>, so an expected-utility agent is indifferent within each pair of bets in the table. State which empirical fact this prediction fails to match, and name a decision rule that reproduces the observed preference for known odds.</p></li>
+<li><p><strong>Dilation.</strong> In the coin-and-predictor example, explain why learning the prediction widens the interval for “heads” from the point <span class="math inline">\(1/2\)</span> to almost all of <span class="math inline">\([0, 1]\)</span>, and identify the single assumption a precise-prior analysis would have to add to keep the probability at <span class="math inline">\(1/2\)</span>. Does robust Bayes avoid the widening, and why?</p></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Brier GW, “Verification of Forecasts Expressed in Terms of Probability,” <em>Mon Weather Rev</em> 1950;78:1-3; Dawid AP, “The Well-Calibrated Bayesian,” <em>J Am Stat Assoc</em> 1982;77:605-610 (<a href="https://doi.org/10.1080/01621459.1982.10477856">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Knight FH, <em>Risk, Uncertainty and Profit</em>, Boston: Houghton Mifflin, 1921.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Keynes JM, <em>A Treatise on Probability</em>, London: Macmillan, 1921.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Kay J, King M, <em>Radical Uncertainty: Decision-Making Beyond the Numbers</em>, New York: W. W. Norton, 2020.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>A simple case. Two set dinners differ only by a coin toss. Menu A serves soup on heads and ice cream on tails; Menu B serves fish on heads and ice cream on tails. Both serve ice cream on tails, so tails cannot settle the choice — you should prefer A to B just as you prefer soup to fish. The sure-thing principle adds that this ranking is unchanged if the shared tails course is swapped, say for cake: altering a payoff common to both menus, in the state where they already agree, leaves the comparison untouched. Savage’s original illustration was a businessman who would buy a property whether an election went one way or the other, and so need not wait for the result.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Ellsberg D, “Risk, Ambiguity, and the Savage Axioms,” <em>Q J Econ</em> 1961;75:643-669 (<a href="https://doi.org/10.2307/1884324">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Walley P, <em>Statistical Reasoning with Imprecise Probabilities</em>, London: Chapman and Hall, 1991.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>For a proportion estimated from counts, ordinary Bayes uses a single Beta prior, which may be written through a prior strength <span class="math inline">\(s &gt; 0\)</span> and a prior mean <span class="math inline">\(t\)</span>; after <span class="math inline">\(a\)</span> successes in <span class="math inline">\(n\)</span> trials the posterior mean is <span class="math inline">\((a + st)/(n + s)\)</span>. The imprecise Dirichlet model fixes <span class="math inline">\(s\)</span> but lets the prior mean <span class="math inline">\(t\)</span> range over the whole interval <span class="math inline">\((0, 1)\)</span> — a <em>set</em> of priors in place of one — and reports the resulting range. The lower and upper probabilities for the category are then <span class="math inline">\(a/(n + s)\)</span> and <span class="math inline">\((a + s)/(n + s)\)</span>. With no data (<span class="math inline">\(n = 0\)</span>) these are <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, the vacuous interval; as <span class="math inline">\(n\)</span> grows both converge to the observed frequency <span class="math inline">\(a/n\)</span> while the width <span class="math inline">\(s/(n + s)\)</span> shrinks to zero, so the imprecision contracts at the rate information arrives. Walley P, “Inferences from Multinomial Data: Learning About a Bag of Marbles,” <em>J R Stat Soc Series B</em> 1996;58:3-34 (<a href="https://doi.org/10.1111/j.2517-6161.1996.tb02065.x">DOI</a>).<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Berger JO, “Robust Bayesian analysis: sensitivity to the prior,” <em>J Stat Plan Inference</em> 1990;25:303-328 (<a href="https://doi.org/10.1016/0378-3758(90)90079-A">DOI</a>); Berger JO, <em>Statistical Decision Theory and Bayesian Analysis</em>, 2nd ed., New York: Springer, 1985 (the robustness chapter).<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The urn fixes the credal set: <span class="math inline">\(P(\text{red}) = 1/3\)</span>, while <span class="math inline">\(P(\text{black})\)</span> ranges over <span class="math inline">\([0, 2/3]\)</span> and <span class="math inline">\(P(\text{yellow}) = 2/3 - P(\text{black})\)</span>. With the table’s £100/£0 payoffs each bet’s expected value is £100 times its chance of paying, so the ranking follows the win-probabilities. The bet on red pays with probability <span class="math inline">\(1/3\)</span> under every prior, so its worst case is <span class="math inline">\(1/3\)</span>; the bet on black pays with probability <span class="math inline">\(P(\text{black})\)</span>, whose worst case over the set is <span class="math inline">\(0\)</span> — so maxmin ranks red above black. For the wider bets, “black or yellow” pays with probability <span class="math inline">\(2/3\)</span> under every prior (worst case <span class="math inline">\(2/3\)</span>), while “red or yellow” pays with probability <span class="math inline">\(1 - P(\text{black})\)</span>, worst case <span class="math inline">\(1/3\)</span> — so maxmin ranks “black or yellow” above “red or yellow”. Both are the observed ambiguity-averse choices: each time the bet on the <em>known</em> proportion wins, because the bet on the <em>unknown</em> one is scored by its least favourable composition. Gilboa I, Schmeidler D, “Maxmin expected utility with non-unique prior,” <em>J Math Econ</em> 1989;18:141-153 (<a href="https://doi.org/10.1016/0304-4068(89)90018-9">DOI</a>).<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Bernardo JM, Smith AFM, <em>Bayesian Theory</em>, Chichester: Wiley, 1994 (the M-closed / M-complete / M-open taxonomy of model uncertainty).<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Seidenfeld T, Wasserman L, “Dilation for Sets of Probabilities,” <em>Ann Stat</em> 1993;21:1139-1154 (<a href="https://doi.org/10.1214/aos/1176349254">DOI</a>).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Raiffa H, “Risk, Ambiguity, and the Savage Axioms: Comment,” <em>Q J Econ</em> 1961;75:690-694 (the randomisation argument, published alongside Ellsberg’s paper).<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Schmeidler D, “Subjective Probability and Expected Utility without Additivity,” <em>Econometrica</em> 1989;57:571-587 (<a href="https://www.jstor.org/stable/1911053">JSTOR</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>The urn fixes the credal set: <span class="math inline">\(P(\text{red}) = 1/3\)</span>, while <span class="math inline">\(P(\text{black})\)</span> ranges over <span class="math inline">\([0, 2/3]\)</span> and <span class="math inline">\(P(\text{yellow}) = 2/3 - P(\text{black})\)</span>. With the table’s £100/£0 payoffs each bet’s expected value is £100 times its chance of paying, so the ranking follows the win-probabilities. The bet on red pays with probability <span class="math inline">\(1/3\)</span> under every prior, so its worst case is <span class="math inline">\(1/3\)</span>; the bet on black pays with probability <span class="math inline">\(P(\text{black})\)</span>, whose worst case over the set is <span class="math inline">\(0\)</span> — so maxmin ranks red above black. For the wider bets, “black or yellow” pays with probability <span class="math inline">\(2/3\)</span> under every prior (worst case <span class="math inline">\(2/3\)</span>), while “red or yellow” pays with probability <span class="math inline">\(1 - P(\text{black})\)</span>, worst case <span class="math inline">\(1/3\)</span> — so maxmin ranks “black or yellow” above “red or yellow”. Both are the observed ambiguity-averse choices: each time the bet on the <em>known</em> proportion wins, because the bet on the <em>unknown</em> one is scored by its least favourable composition. Gilboa I, Schmeidler D, “Maxmin expected utility with non-unique prior,” <em>J Math Econ</em> 1989;18:141-153 (<a href="https://doi.org/10.1016/0304-4068(89)90018-9">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Klibanoff P, Marinacci M, Mukerji S, “A Smooth Model of Decision Making under Ambiguity,” <em>Econometrica</em> 2005;73:1849-1892 (<a href="https://doi.org/10.1111/j.1468-0262.2005.00640.x">DOI</a>).<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Gilboa I, Postlewaite A, Schmeidler D, “Is It Always Rational to Satisfy Savage’s Axioms?,” <em>Econ Philos</em> 2009;25:285-296.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./16-appendix-H0.html" class="pagination-link" aria-label="Null hypothesis testing">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./20-glossary.html" class="pagination-link" aria-label="Glossary">
+        <span class="nav-page-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: The book
+    url: https://ymaivali.github.io/meth_book/
+    about: The Bayesian Way to Causal Epidemiology, online edition.

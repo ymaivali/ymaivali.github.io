@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - 1&nbsp; Introduction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch02-thinking-under-uncertainty.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch01-introduction.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./ch01-introduction.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A statement of purpose</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-introduction.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the back-door</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#scientific-method-the-short-version" id="toc-scientific-method-the-short-version" class="nav-link active" data-scroll-target="#scientific-method-the-short-version"><span class="header-section-number">1.1</span> Scientific method: the short version</a></li>
+  <li><a href="#rationality-the-short-version" id="toc-rationality-the-short-version" class="nav-link" data-scroll-target="#rationality-the-short-version"><span class="header-section-number">1.2</span> Rationality: the short version</a>
+  <ul class="collapse">
+  <li><a href="#the-assumptions-behind-rational-thought" id="toc-the-assumptions-behind-rational-thought" class="nav-link" data-scroll-target="#the-assumptions-behind-rational-thought"><span class="header-section-number">1.2.1</span> The assumptions behind rational thought</a></li>
+  </ul></li>
+  <li><a href="#bayesian-inference-the-short-version" id="toc-bayesian-inference-the-short-version" class="nav-link" data-scroll-target="#bayesian-inference-the-short-version"><span class="header-section-number">1.3</span> Bayesian inference: the short version</a></li>
+  <li><a href="#decision-theory-the-short-version" id="toc-decision-theory-the-short-version" class="nav-link" data-scroll-target="#decision-theory-the-short-version"><span class="header-section-number">1.4</span> Decision theory: the short version</a></li>
+  <li><a href="#causality-the-short-version" id="toc-causality-the-short-version" class="nav-link" data-scroll-target="#causality-the-short-version"><span class="header-section-number">1.5</span> Causality: the short version</a></li>
+  <li><a href="#modelling-the-short-version" id="toc-modelling-the-short-version" class="nav-link" data-scroll-target="#modelling-the-short-version"><span class="header-section-number">1.6</span> Modelling: the short version</a></li>
+  <li><a href="#the-plan-of-the-book" id="toc-the-plan-of-the-book" class="nav-link" data-scroll-target="#the-plan-of-the-book"><span class="header-section-number">1.7</span> The plan of the book</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch01-introduction.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./ch01-introduction.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-introduction" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The preface stated what this book is for: causal modelling in epidemiology by the Bayesian route, with probability read as the logic that binds scientific, statistical and causal thinking together. This chapter gives the short version of each of the book’s themes — scientific method, rationality, Bayesian inference, decision, causality and modelling — in the order in which the book develops them, and closes with the plan of the five parts and of how the book’s two threads, graded belief and causal structure, meet.</p>
+<section id="scientific-method-the-short-version" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="scientific-method-the-short-version"><span class="header-section-number">1.1</span> Scientific method: the short version</h2>
+<p>Science has a single goal: to produce useful knowledge. “Useful” does not necessarily mean “monetised”, as there is more to human experience than business. It means any kind of knowledge that is interesting for any reason. Scientific product is used in technology, in medicine, in business, in mass murder, in politics, in music, and, frankly, in all human affairs. Without science everything would be different.</p>
+<p>Scientists build and test theories on data. This means that science is a belief system, where existing beliefs are continually updated on new evidence. Science is evidence-based, but it is more than that. It is like a spider’s web that is continuously re-spun. Every piece of new data causes ripples across this world wide web of beliefs, and thus the web is never static, never finished. The main goal of methodology, the science of method, is to ensure optimal updating of beliefs.</p>
+</section>
+<section id="rationality-the-short-version" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="rationality-the-short-version"><span class="header-section-number">1.2</span> Rationality: the short version</h2>
+<p>We live in an uncertain world. While the world itself may or may not behave with true randomness, our attempts to collect data on it are hampered by measuring noise, random variation, and bias. Thus any attempt at making sense of the world must come to grips with these sources of uncertainty.</p>
+<p>What makes a rational entity? Perhaps its goal is making the most of limited, noisy and biased information to formulate degrees of belief; and as a step further, to convert these beliefs into optimal decisions. We can make sense of rational beliefs by thinking of a spectrum of uncertainties, beginning with radical uncertainty, where we have no relevant information to limit the possibilities and, on the other end of the continuum, completely understood uncertainty exemplified by games of chance. If we think of uncertainty in terms of the risk of something bad happening, then we immediately see the deep unpleasantness of the radical uncertainty side of the continuum, as the risks are essentially unknowable – they can be very large, very small, or anything in between. In contrast, the games of chance are much more satisfying, as their rules are perfectly understood and we can calculate from simple models the exact long-run relative frequencies of any conceivable outcome.</p>
+<p>Somewhere on this continuum lies every scientific question that we might want to answer from empirical data. What scientists often do is to try to identify interesting questions that are as far away as possible from the radical uncertainty side of things, and then apply simple stochastic models that are close to those employed for the games of chance; all in the hope that the modelling is somehow relevant to the real world. Every statistical model that uses the binomial distribution to predict binary outcomes (dead/alive, etc.) is an example of this approach to rationality.</p>
+<p>Example: <strong>COVID-19 in the spring of 2020</strong>. The first epidemiological models of the spread of COVID-19 in Europe, Estonia included, used imperfect and scanty data, assumed that the Chinese containment measures would be replicated in Europe, and were themselves built for influenza epidemics. These models failed on two levels: their predictions were wrong, and their uncertainty intervals were too narrow, disregarding the actual uncertainty.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Models appropriate for the known-uncertainty side of the spectrum were misused on a problem that lay close to radical uncertainty.</p>
+<p><strong>COVID-19 in the spring of 2021</strong>. With a year’s worth of good data and appropriately revised model structures, the models worked far better. The problem had moved away from radical uncertainty, and modelling had become useful.</p>
+<section id="the-assumptions-behind-rational-thought" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="the-assumptions-behind-rational-thought"><span class="header-section-number">1.2.1</span> The assumptions behind rational thought</h3>
+<p>What are the assumptions behind rational thought? Four are very general:</p>
+<ol type="1">
+<li><p>The constancy of Nature. The mechanisms of Nature do not change over time, neither does nature try to deceive us.</p></li>
+<li><p>The consistency of explanation: any true description of Nature is self-consistent, meaning that a claim cannot be true and false at the same time, and that two mutually inconsistent claims cannot be both true (but they can be both false).</p></li>
+<li><p>The consistency of inference: we have identified the full set of mutually exclusive and exhaustive hypotheses about the state of the world — the <em>hypothesis space</em>, which <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> distinguishes from the sample space of possible data. The rules of inference guarantee that, correctly applied, they lead to the same conclusions regardless of the route by which they were reached (<a href="ch05-probability-calculus.html" class="quarto-xref"><span>Chapter 6</span></a>).</p></li>
+<li><p>Methodological reductionism: the great diversity of observed phenomena is generated by a relatively small number of underlying causal mechanisms. That is, we can get meaningful insight into nature by studying these elementary causal mechanisms.</p></li>
+</ol>
+<p>These assumptions can never be proven to be satisfied.</p>
+<p>Three further assumptions are specific to modelling:</p>
+<ol type="1">
+<li><p>Stationarity: the data-generating process being modelled does not change during data collection (developed in the modelling section below).</p></li>
+<li><p>Exchangeability: the joint probability of the data does not depend on the order in which they were collected, so that the order carries no information. <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> gives the definition its due, and <a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a> explains why it is the assumption Bayesian inference needs.</p></li>
+<li><p>Our models are relevant to the processes that generated the data used to fit them. Only then can the fitted model be used to study the natural processes that actually interest us.</p></li>
+</ol>
+</section>
+</section>
+<section id="bayesian-inference-the-short-version" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="bayesian-inference-the-short-version"><span class="header-section-number">1.3</span> Bayesian inference: the short version</h2>
+<p>We want to find out, whether Madame Marie has extra-sensory perception (ESP). We present her with playing cards and let her guess what is on each card. We compare her data with simulated datasets that assume no ESP and find that hers stand out. Say that only 1 in 10 000 simulated datasets gives a fraction of correct guesses equal to or greater than Madame Marie’s (<span class="math inline">\(p = 10^{-4}\)</span>; the p value is set out in <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a>). We can interpret this result as showing that the data are inconsistent with the hypothesis that Marie picks cards completely randomly. But can we interpret this as weighty evidence for ESP? And, if so, does this mean that we should now put high confidence on this hypothesis? The answer is “it depends”. It depends on:</p>
+<ol type="1">
+<li><p>Our prior beliefs on whether Marie is clairvoyant. If we think this very unlikely (our prior probability is a lot less than <span class="math inline">\(10^{-4}\)</span>), then the evidence obtained is clearly not enough to change our minds. To arrive at a prior probability, we should ask both about how likely is ESP as a general mechanism, and then, whether we know something about the individual that would make her more or less likely than average to have such abilities. This is complicated, and there is no guarantee that two reasonable people would arrive at the same prior probabilities. This does not mean that we should ignore our prior beliefs because we find it hard to precisely quantify them. It does mean that we introduce a new source of uncertainty, which means that in practical analysis we might want to try out a range of priors to see how robust our inference is to the choice of prior. For any uncertainty in our data, models and priors, we must strive to carry it forward all the way into our conclusions, rather than to pretend that it does not exist.</p></li>
+<li><p>the inference from data also depends on how we choose to divide the <em>hypothesis space</em> into testable hypotheses. The hypothesis space is the set of all mutually exclusive and exhaustive hypotheses, exactly one of which must be true. So if we define our hypothesis space as consisting of two hypotheses, one of which (H1) is that “Marie has ESP”, then the other one (H2) must be that “Marie has no ESP”. If we start by giving H1 the prior probability of 1/100 000 then that means that the H2 must have a prior probability of 1 - 1/100 000. The probabilities always sum to unity across the hypothesis space. This means that if, after taking account of the data, the posterior probability of H1 is determined as 1/10, then the P(H2) must be 9/10.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> But what happens when we slice the cake differently, into three hypotheses: H1 (ESP), H2 (no ESP) and H3 (bias), the last one encompassing all mechanisms that would shift the results away from completely random card picking?<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Some of these will be conscious (fraud) and some unconscious (the experimenter might give involuntary signals to Marie), so the H3 is itself a hodgepodge of very different hypotheses.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The priors would change: P(H1) = 1/100 000, P(H3) = 1/10, say, and P(H2) = 1 - 0.1 - 1/100 000. Now it becomes crucial how well the data correspond to not only H2 (very poorly), but also to H3 (quite well). And if data is equally compatible with H1 and H3, and the prior probability of H3, P(H3) &gt;&gt; P(H1), then the same data turn out quite useless in promoting H1 for us. And again, the posterior probabilities will sum to unity across the 3 hypotheses.</p></li>
+</ol>
+<blockquote class="blockquote">
+<p>For the philosophically minded, re-slicing the hypothesis space would be akin to a Kuhnian paradigm shift where it becomes possible, and indeed necessary, to re-evaluate what the data says.</p>
+</blockquote>
+<p>These points are logical necessities — <a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a> works the example through with numbers — and they have the following consequences:</p>
+<ol type="1">
+<li><p>Evidence is always relative - it is a quantitative measure of how much more data supports one hypothesis over another hypothesis.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> There is no sense in collecting data, if you only have a single hypothesis to check it against.</p></li>
+<li><p>The weight of evidence depends on the data and the data alone contributes to evidence, but to form rational beliefs on the truth of hypotheses you also need quantified prior beliefs, which are independent of data in hand.</p></li>
+<li><p>How you divide the hypothesis space can make a big difference, and if a relevant hypothesis is excluded from consideration, that could easily invalidate your conclusions. Sadly, in science we can never be sure that we have even an inkling of what the true hypothesis looks like. Rational thought is not a truth machine – it only shows how to optimally combine information that you have. Thus, if given poor-quality data, models or hypotheses, it in no way guarantees a march towards truth.</p></li>
+</ol>
+<blockquote class="blockquote">
+<p>Here is the general workflow of updating one’s beliefs, presented as a recipe for a witches’ brew. <strong>The ingredients</strong>: one hypothesis space, appropriately granulated prior knowledge, a smattering of data, an assortment of statistical models. <strong>The recipe</strong>: start by chopping the hypothesis space into at least two hypotheses, then pin prior probabilities to each of your hypotheses (these sum to one), throw in the data, and let the whole thing simmer in the model until the sampler has done its work (Markov chain Monte Carlo, <a href="ch21b-bayesian-workflow.html#sec-mcmc-diagnostics" class="quarto-xref"><span>Section 23.2.2</span></a>). Now, take a sip of the updated posterior probabilities. If you did not like the taste, simply add more data or improve the model and do another round. Repeat, until satisfied.</p>
+</blockquote>
+<p>Imagine the priors as made of sticky stuff, holding back the amount of change in the probability from prior to posterior effected by data. This is needed, so that each piece of favourable new evidence would not lead to extreme fluctuations in your belief system. Importantly, the stickiness depends on the numerical value of the prior. Thus, the exact same evidence can have a dramatically smaller effect on the posterior, when the prior probability of your hypothesis is very large (close to one) or very small (close to zero). Remember the saying: extraordinary claims require extraordinary evidence – this is it! The prior probability of 1/2 has the least stickiness in terms of holding back how much the data changes the probability of the hypothesis in question. This means that to effect a prior-to-posterior change of a percentage point, you need to collect dramatically more evidence if your prior is far from 1/2. It also means that if you want your data to have the same effect on all the hypotheses in your hypothesis space, then you should use numerically identical priors for all the hypotheses. For instance, if you partitioned your hypothesis space into 5 hypotheses, then for each of them the prior probability will have to be 1/5. Such priors we call “non-informative” or “flat”; whether they deserve the name is a question for <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a>.</p>
+</section>
+<section id="decision-theory-the-short-version" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="decision-theory-the-short-version"><span class="header-section-number">1.4</span> Decision theory: the short version</h2>
+<p>Narrow rationality can be separated into two interlocking parts:</p>
+<ol type="1">
+<li><p>epistemic rationality maps our beliefs to reality.</p></li>
+<li><p>instrumental rationality uses these beliefs to chart an optimal course of action. Technically speaking, it maximises expected utility.</p></li>
+</ol>
+<p>Maximising expected utility entails: (1) mapping all the possible actions under consideration; (2) evaluating the consequences of each possible action in each possible state of the world.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> <a href="ch02-thinking-under-uncertainty.html" class="quarto-xref"><span>Chapter 2</span></a> develops decision under uncertainty.</p>
+<p>Obviously, some people are more rational than others. Psychologists believe that a rationally thinking person is characterised by a specific type of thinking: they collect information before making up their mind, seek various points of view, think extensively about a problem, calibrate the strength of their opinion to the evidence available, think about future consequences before taking action, explicitly weigh the pluses and minuses of situations before making a decision, and seek nuance while avoiding absolutism.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+</section>
+<section id="causality-the-short-version" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="causality-the-short-version"><span class="header-section-number">1.5</span> Causality: the short version</h2>
+<p>Causal hypothesis means that we believe that some specified cause produces or helps to produce some effects. Causal effects may be produced by the cause either always (think of colliding billiard balls), or with some probability/frequency (think of smoking causing cancer). Also, causes can be direct or indirect and a given effect may have several causes, which must either operate all together or in some combination to produce this effect. So it is often not a trivial task to squeeze the world into a causal mould.</p>
+<p>Causal thinking seems to be how our brains impose order onto the universe. At the very least, it is a major tool of scientists and conspiracy theorists. However, the concept of causality is metaphysical: we cannot be sure whether or not it corresponds to anything real in nature (if you are in doubt about this, ask a quantum physicist). Nevertheless, by mutual consent, we do have an operational view of causation. This view is not meant to solve the metaphysical conundrums of causality, but merely to provide an agreed convenience definition, which allows to incorporate causal thinking into epidemiological thinking in a more-or-less formal way. We will call this deliberate separation of the operational definition from the metaphysics the <strong>metaphysical firewall</strong>; <a href="02-causal-inference.html" class="quarto-xref"><span>Chapter 4</span></a> builds the experiment on this side of it, and <a href="ch04b-theories-of-causation.html" class="quarto-xref"><span>Chapter 5</span></a> surveys what lies on the other.</p>
+<p>The operational view is the counterfactual principle, according to which removing a cause should also remove (or at least modify) the effect. So, if we modify a hypothetical cause by experimental treatment and nothing changes in the purported effect, then we can (perhaps) say that we have falsified a causal hypothesis.</p>
+<p>“Counterfactual” means that a cause cannot be present and absent at the same time, unless we live in a multiverse. Thus, to test a causal hypothesis, we must employ a model wherein we can generate <em>in silico</em> both states of the world, and by comparing the predicted value of the “effect” at different values of the “cause” we can modify our beliefs on the hypothesis. The potential-outcomes framework of <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a> makes this exact.</p>
+<p>Example 1: By doing a randomised placebo-controlled drug study and employing a simple model, <span class="math inline">\(\text{outcome} = \text{intercept} + \text{slope} \times \text{drug} + \text{error}\)</span> with the drug coded 1/0 (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>), we can compare the modelled outcome for each group; if the drug causally influences the outcome, these model predictions will differ.</p>
+<p>Example 2: Was an extreme storm caused by global warming? We build a complicated model and run it many times under a global warming scenario, and in an alternative model specification that lacks global warming. If the global-warming scenario produces storms like this one with twice the frequency of the scenario without warming, then under the model half of such storms — a fraction <span class="math inline">\((2 - 1)/2 = 1/2\)</span> — are attributable to warming, and <span class="math inline">\(1/2\)</span> is the probability that this particular storm would not have happened without it.</p>
+</section>
+<section id="modelling-the-short-version" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="modelling-the-short-version"><span class="header-section-number">1.6</span> Modelling: the short version</h2>
+<p>Methodology does not deal directly with the genesis of theories, which is more art than science. This means that a methodologist does not try to build a full-fledged artificial scientist. Rather they try to build simple machines that think simple thoughts. Part II designs one such machine, Jaynes’s <em>robot</em>: an idealised reasoner whose only virtue is consistency, and which turns out to be forced to reason by the rules of probability (<a href="04-rational-certainty.html" class="quarto-xref"><span>Chapter 3</span></a>, <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a>). It is the standard against which reasoning is judged. The machine that does the day-to-day work is far humbler: the regression model, a quick idiot savant, and our major concern with it is that we must learn to see the world through its severely limited perspective in order to use its output properly in scientific inference — to think like an utterly alien mind, and somehow to enjoy it. Naturally, neither machine “thinks” in any meaningful sense, but it behoves us to pretend that they do, so that we can use their output more intuitively. For example, the class of models most often used to crunch simple treatment-versus-control experiments sees the world as consisting of normally distributed variables that depend linearly on perfectly randomised experimental treatments, where no sample is too small to reflect the population from which it was collected, and no logically possible effect or data variation is too big or too small — the model will believe in them all with equanimity. The scientist, of course, should know better, and this should be reflected in how they use the model and its predictions. All the modelling in the world cannot convert science into an objective endeavour.</p>
+<p>Behind every model is our understanding of the <strong>data-generating process</strong>, which is the collection of causal elementary mechanisms that generated the data, which goes into fitting the model. The data-generating process comprises the laws of nature, the experimental design (controls and such), the data collection (whether it is collected in multiple centres, etc.), and every other mechanism that can affect how the data come out.</p>
+<p>A major assumption of modelling is that our system is <strong>stationary</strong>, meaning that the data-generating mechanism does not change during the collection of data. This does not mean that the accumulating data cannot systematically change over time or between study centres, only that the underlying mechanisms do not change. For example, if we want to model the price of petrol, the model loses stationarity as soon as a new factor affecting the price emerges (electric cars).</p>
+<p>Our models should strive to reflect some relevant aspect(s) of the data generating mechanism, and by building several of them and comparing the results, there is a chance that we will learn something useful about the whole complex mechanism that is nature.</p>
+<p>What the models should not strive for, is to be “true” in the sense that they would precisely describe and/or predict the workings of the world. To understand why, think of a map versus the landscape. Any map that is “true” would be as big and as complex as the landscape it depicts, which means that basically it would have to be identical to it. Of course, this kind of map, or model, would be equally impractical and impossible to produce.</p>
+</section>
+<section id="the-plan-of-the-book" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="the-plan-of-the-book"><span class="header-section-number">1.7</span> The plan of the book</h2>
+<p>The book has five parts, and two threads run through them. The first thread is <em>graded belief</em>: probability as the logic of reasoning under uncertainty, with Bayes’ theorem as its engine. The second is <em>causal structure</em>: what a causal claim means, and what has to be true of the world and of the data for it to be answered. The parts take the threads in turn, and the last part weaves them together.</p>
+<ul>
+<li><strong>Part I, How to think</strong>, is the informal half. <a href="ch02-thinking-under-uncertainty.html" class="quarto-xref"><span>Chapter 2</span></a> asks how a person reasons well under uncertainty and catalogues the ways people reason badly. <a href="04-rational-certainty.html" class="quarto-xref"><span>Chapter 3</span></a> builds classical logic from two design assumptions for an idealised reasoner and shows where certainty ends. <a href="02-causal-inference.html" class="quarto-xref"><span>Chapter 4</span></a> explains what a causal claim means and why the randomised experiment answers it. <a href="ch04b-theories-of-causation.html" class="quarto-xref"><span>Chapter 5</span></a> surveys the theories of causation and says which one the book adopts, and why.</li>
+<li><strong>Part II, Probability is the logic of science</strong>, makes the first thread exact. <a href="ch05-probability-calculus.html" class="quarto-xref"><span>Chapter 6</span></a> lays down the rules of probability as axioms; <a href="ch06-distributions.html" class="quarto-xref"><span>Chapter 7</span></a> catalogues the distributions that serve as data models; <a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a> asks what the numbers mean and shows that a merely consistent reasoner is forced to the same rules; <a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a> turns Bayes’ theorem into the weight of evidence; <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> computes a posterior by hand.</li>
+<li><strong>Part III, Formal causation</strong>, makes the second thread exact. <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a> defines a causal effect as a contrast between potential outcomes; <a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a> draws the causal structure as a graph and reads off what must be adjusted for; <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a> does the adjustment by stratification and standardisation; <a href="ch13-target-trial-emulation.html" class="quarto-xref"><span>Chapter 14</span></a> emulates a trial in observational data; <a href="ch14-time-varying-confounding.html" class="quarto-xref"><span>Chapter 15</span></a> handles treatments that change over time.</li>
+<li><strong>Part IV, Beyond the back-door</strong>, treats the questions that confounding adjustment alone does not settle: mediation (<a href="ch15-mediation.html" class="quarto-xref"><span>Chapter 16</span></a>), interaction (<a href="ch16-interaction.html" class="quarto-xref"><span>Chapter 17</span></a>), instrumental variables (<a href="ch17-instrumental-variables.html" class="quarto-xref"><span>Chapter 18</span></a>), quasi-experimental designs (<a href="ch18-quasi-experimental.html" class="quarto-xref"><span>Chapter 19</span></a>), and what to do about the confounding one cannot measure (<a href="ch19-sensitivity-analysis.html" class="quarto-xref"><span>Chapter 20</span></a>).</li>
+<li><strong>Part V, Bayesian regression</strong>, is where the threads meet. Regression — from the linear model (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>) through adjustment (<a href="ch21-multiple-regression.html" class="quarto-xref"><span>Chapter 22</span></a>), the workflow of building and checking models (<a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a>), curves and interaction (<a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a>), generalised linear models (<a href="08-glm.html" class="quarto-xref"><span>Chapter 25</span></a>), rates and time (<a href="ch25-survival-rates.html" class="quarto-xref"><span>Chapter 26</span></a>), prediction without causation (<a href="ch22-predictive-regression.html" class="quarto-xref"><span>Chapter 27</span></a>) and multilevel structure (<a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a>) — is developed as a machine for counterfactual prediction. <a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a> is the capstone: a fitted Bayesian model predicts each patient’s outcome under treatment and under no treatment, and the difference, averaged over patients and carried through the posterior, is the causal effect with its full uncertainty. <a href="ch25-missing-data.html" class="quarto-xref"><span>Chapter 30</span></a> closes with the causal treatment of missing data.</li>
+</ul>
+<p>Two devices recur. A single simulated cohort of 50 000 patients, with a blood-pressure drug, a stroke outcome and a known causal structure, is analysed in Parts III to V, so that every method can be checked against a truth that is known. And the appendices carry the material the chapters lean on but do not stop for: exploratory practice (<a href="10-appendix-best-practices.html" class="quarto-xref"><span>Appendix A</span></a>), the <code>brms</code> interface (<a href="11-appendix-brms.html" class="quarto-xref"><span>Appendix C</span></a>), the frequentist alternative that the book sets aside (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a>), and the challenges to the Bayesian position itself (<a href="19-appendix-challenges.html" class="quarto-xref"><span>Appendix H</span></a>).</p>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Ioannidis JPA, Cripps S, Tanner MA, “Forecasting for COVID-19 has failed,” <em>Int J Forecast</em> 2022;38:423-438 (<a href="https://doi.org/10.1016/j.ijforecast.2020.08.004">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The posterior probability of <span class="math inline">\(H_1\)</span> is usually written <span class="math inline">\(P(H_1 \vert \text{data})\)</span>, but it is really <span class="math inline">\(P(H_1 \vert \text{data}, I)\)</span>, where <span class="math inline">\(I\)</span> is the background information that also fixes the prior; <span class="math inline">\(I\)</span> is omitted purely as a convenience, since it is present in every probability used in Bayesian inference (<a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>For the three hypotheses to be mutually exclusive, the correct specification would be H1: ESP, no bias; H2: no ESP, no bias; H3: agnostic towards ESP, bias. Here “no bias” means that the effect of bias &lt; true effect of ESP — bias need not be pressed to exactly zero.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Into how many slices to divide the hypothesis space depends on both the scientific importance of each hypothesis and on how well you can determine the probability of data under that hypothesis. It is a compromise between scientific needs and technical ability.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Technically, the evidence in the data for <span class="math inline">\(H_1\)</span> against <span class="math inline">\(H_2\)</span> is the likelihood ratio <span class="math inline">\(LR = P(\text{data} \vert H_1) / P(\text{data} \vert H_2)\)</span>, which runs from 0 to infinity; the <strong>weight of evidence</strong> is its logarithm (<a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a>), so that independent pieces of evidence add. <span class="math inline">\(LR = 1\)</span> means the data are equally likely under both hypotheses and carry no weight for <span class="math inline">\(H_1\)</span> against <span class="math inline">\(H_2\)</span>; <span class="math inline">\(LR &lt; 1\)</span> favours <span class="math inline">\(H_2\)</span> and <span class="math inline">\(LR &gt; 1\)</span> favours <span class="math inline">\(H_1\)</span>. It is always possible that there exists an <span class="math inline">\(H_3\)</span> which the data support far better than either.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>To calculate expected utility we take the product of the utility of each outcome with the probability of that outcome occurring, and then sum those products.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Stanovich KE, West RF, Toplak ME, <em>The Rationality Quotient: Toward a Test of Rational Thinking</em>, Cambridge, MA: MIT Press, 2016.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="A statement of purpose">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">A statement of purpose</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch02-thinking-under-uncertainty.html" class="pagination-link" aria-label="How to think under uncertainty">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -105,6 +105,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -148,7 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+ <span class="menu-text">A statement of purpose</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -160,6 +189,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
@@ -175,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -271,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+ <span class="menu-text">Part IV. Beyond the back-door</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -392,43 +427,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -450,8 +497,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-g-formula-over-time" id="toc-the-g-formula-over-time" class="nav-link" data-scroll-target="#the-g-formula-over-time"><span class="header-section-number">15.5</span> The g-formula over time</a></li>
   <li><a href="#static-and-dynamic-strategies" id="toc-static-and-dynamic-strategies" class="nav-link" data-scroll-target="#static-and-dynamic-strategies"><span class="header-section-number">15.6</span> Static and dynamic strategies</a></li>
   <li><a href="#the-fine-print" id="toc-the-fine-print" class="nav-link" data-scroll-target="#the-fine-print"><span class="header-section-number">15.7</span> The fine print</a></li>
-  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">15.8</span> Key points</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.9</span> Exercises</a></li>
+  <li><a href="#the-third-g-method-structural-nested-models-and-g-estimation" id="toc-the-third-g-method-structural-nested-models-and-g-estimation" class="nav-link" data-scroll-target="#the-third-g-method-structural-nested-models-and-g-estimation"><span class="header-section-number">15.8</span> The third g-method: structural nested models and g-estimation</a></li>
+  <li><a href="#where-part-iii-has-arrived-and-what-part-iv-adds" id="toc-where-part-iii-has-arrived-and-what-part-iv-adds" class="nav-link" data-scroll-target="#where-part-iii-has-arrived-and-what-part-iv-adds"><span class="header-section-number">15.9</span> Where Part III has arrived, and what Part IV adds</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">15.10</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.11</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
@@ -460,7 +509,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch10-potential-outcomes.html">Part III. Formal causation: counterfactuals and graphs</a></li><li class="breadcrumb-item"><a href="./ch14-time-varying-confounding.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></h1>
+<h1 class="title"><span id="sec-time-varying" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></h1>
 </div>
 
 
@@ -477,11 +526,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>In Chapter 12 a patient was treated once, and a fixed set of baseline confounders stood between treatment and outcome. Standardising over those confounders, or weighting by them, recovered the causal effect. Most clinical treatment is not like that. A drug is started, continued, stopped, and restarted over months or years, and the variables a clinician watches when deciding to treat — blood pressure, symptoms, lab values — change over time and are themselves moved by the treatment. This chapter is about that setting, and about why it defeats the methods of Chapter 12 when they are applied in the obvious way.</p>
-<p>The difficulty has a precise shape. A variable measured during follow-up can be a confounder of <em>later</em> treatment and, at the same time, a consequence of <em>earlier</em> treatment. Adjusting for it removes the confounding but blocks part of the effect; not adjusting for it leaves the confounding in place. Neither choice is correct. The g-methods — inverse-probability weighting and the g-formula — resolve this by accounting for the variable without conditioning on it in an outcome model.</p>
+<p>In <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a> a patient was treated once, and a fixed set of baseline confounders stood between treatment and outcome. Standardising over those confounders, or weighting by them, recovered the causal effect. Most clinical treatment is not like that. A drug is started, continued, stopped, and restarted over months or years, and the variables a clinician watches when deciding to treat — blood pressure, symptoms, lab values — change over time and are themselves moved by the treatment. This chapter is about that setting, and about why it defeats the methods of <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a> when they are applied in the obvious way.</p>
+<p>The difficulty has a precise shape. A variable measured during follow-up can be a confounder of <em>later</em> treatment and, at the same time, a consequence of <em>earlier</em> treatment. Adjusting for it removes the confounding but blocks part of the effect; not adjusting for it leaves the confounding in place. Neither choice is correct. The g-methods resolve this by accounting for the variable without conditioning on it in an outcome model. This chapter uses two of them, inverse-probability weighting and the g-formula; the third, g-estimation of structural nested models, is introduced at the end of the chapter.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <section id="when-the-confounder-is-also-a-consequence-of-treatment" class="level2" data-number="15.1">
 <h2 data-number="15.1" class="anchored" data-anchor-id="when-the-confounder-is-also-a-consequence-of-treatment"><span class="header-section-number">15.1</span> When the confounder is also a consequence of treatment</h2>
-<p>Consider our blood-pressure drug given over a sequence of visits. At each visit the clinician sees the patient’s current systolic blood pressure (SBP) and is more likely to start or continue the drug when SBP is high. The drug then lowers SBP at the next visit, and SBP drives the risk of stroke. So SBP sits in two roles at once. The diagram below shows two visits.</p>
+<p>Consider our blood-pressure drug given over a sequence of visits. At each visit the clinician sees the patient’s current systolic blood pressure (SBP) and is more likely to start or continue the drug when SBP is high. The drug then lowers SBP at the next visit, and SBP drives the risk of stroke. So SBP plays two roles at once. The diagram below shows two visits.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-feedback-dag" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -496,11 +545,11 @@ Figure&nbsp;15.1: Treatment-confounder feedback over two visits. SBP at visit 1 
 </div>
 </div>
 </div>
-<p>Read the arrows around <code>L1</code>. Because <code>L1 -&gt; A1</code> and <code>L1 -&gt; Y</code>, blood pressure at visit 1 is a confounder of the visit-1 treatment decision: to estimate the effect of <code>A1</code> we must account for it (Chapter 11). But <code>A0 -&gt; L1 -&gt; Y</code> is a causal path from earlier treatment to the outcome — the drug works partly <em>by</em> lowering blood pressure — so <code>L1</code> is a mediator of <code>A0</code>. Conditioning on a mediator blocks the path it lies on (Chapter 15), and <code>L1</code> is also a descendant of treatment, so conditioning on it opens a further bias. A single regression that includes <code>L1</code> cannot be right for both treatment decisions at once.</p>
+<p>Read the arrows around <code>L1</code>. Because <code>L1 -&gt; A1</code> and <code>L1 -&gt; Y</code>, blood pressure at visit 1 is a confounder of the visit-1 treatment decision: to estimate the effect of <code>A1</code> we must account for it (<a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a>). But <code>A0 -&gt; L1 -&gt; Y</code> is a causal path from earlier treatment to the outcome — the drug works partly <em>by</em> lowering blood pressure — so <code>L1</code> is a mediator of <code>A0</code>. Conditioning on a mediator blocks the path it lies on (<a href="ch15-mediation.html" class="quarto-xref"><span>Chapter 16</span></a>), and <code>L1</code> is also a descendant of treatment, so conditioning on it opens a further bias. A single regression that includes <code>L1</code> cannot be right for both treatment decisions at once.</p>
 </section>
 <section id="a-cohort-followed-over-time" class="level2" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="a-cohort-followed-over-time"><span class="header-section-number">15.2</span> A cohort followed over time</h2>
-<p>The longitudinal version of our master cohort puts this structure into data. Each patient is seen at five visits; at each visit we record blood pressure, the treatment decision for that interval, and whether a stroke occurred. The generator is in <code>R/simulate_cohort_longitudinal.R</code>; its three structural equations are the feedback in code:</p>
+<p>The longitudinal version of our master cohort puts this structure into data. It is the cohort that <a href="ch13-target-trial-emulation.html" class="quarto-xref"><span>Chapter 14</span></a> used to set up the design questions; this chapter defines it. Each patient is seen at five annual visits; at each visit we record blood pressure, the treatment decision for the coming interval, and whether a stroke occurred in it, so the cumulative outcome over the five visits is a five-year stroke risk. The generator is in <code>R/simulate_cohort_longitudinal.R</code>; its three structural equations are the feedback in code:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># at each visit k, for every patient still at risk:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>treat_prob <span class="ot">&lt;-</span> <span class="fu">plogis</span>(a0 <span class="sc">+</span> a_sbp<span class="sc">*</span>(sbp_prev <span class="sc">-</span> <span class="dv">140</span>)<span class="sc">/</span><span class="dv">10</span> <span class="sc">+</span> a_sev<span class="sc">*</span>severity <span class="sc">+</span> a_prev<span class="sc">*</span>treated_last)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>A          <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, treat_prob)               <span class="co"># high SBP -&gt; more likely treated</span></span>
@@ -510,7 +559,7 @@ Figure&nbsp;15.1: Treatment-confounder feedback over two visits. SBP at visit 1 
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>obs   <span class="ot">&lt;-</span> <span class="fu">simulate_cohort_longitudinal</span>(<span class="at">n =</span> <span class="dv">50000</span>, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>obs   <span class="ot">&lt;-</span> <span class="fu">simulate_cohort_longitudinal</span>(<span class="at">n =</span> N_COHORT, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">attr</span>(obs, <span class="st">"truth"</span>)          <span class="co"># the oracle, available because we built the cohort</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>obs<span class="sc">$</span>kf <span class="ot">&lt;-</span> <span class="fu">factor</span>(obs<span class="sc">$</span>k)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="fu">max</span>(obs<span class="sc">$</span>k)</span>
@@ -518,13 +567,18 @@ Figure&nbsp;15.1: Treatment-confounder feedback over two visits. SBP at visit 1 
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>obs <span class="sc">|&gt;</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="at">visit =</span> k, sbp_lag, A, sbp, Y, cum_A) <span class="sc">|&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">1</span>, <span class="at">caption =</span> <span class="st">"Two patients' trajectories (person-period format)."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div id="tbl-person-period" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-person-period-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;15.1: Two patients’ trajectories in person-period format: one row per patient per visit at risk.
+</figcaption>
+<div aria-describedby="tbl-person-period-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div>
-<table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Two patients' trajectories (person-period format).</caption>
+<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -645,7 +699,10 @@ Figure&nbsp;15.1: Treatment-confounder feedback over two visits. SBP at visit 1 
 </div>
 </div>
 </div>
-<p>Each row is one patient-visit. <code>sbp_lag</code> is the blood pressure the clinician saw when deciding this interval’s treatment <code>A</code>; <code>sbp</code> is the value after it; <code>cum_A</code> counts the intervals treated so far. The question is the effect of a <em>sustained strategy</em>, in the sense of Chapter 13: what would the five-year stroke risk be if every patient were treated at every visit (“always treat”) versus never treated (“never treat”)? Because we built the cohort, we can read off the answer.</p>
+</figure>
+</div>
+</div>
+<p>Each row of <a href="#tbl-person-period" class="quarto-xref">Table&nbsp;<span>15.1</span></a> is one patient-visit, the <strong>person-period</strong> format that every model below is fitted to. <code>sbp_lag</code> is the blood pressure the clinician saw when deciding this interval’s treatment <code>A</code>; <code>sbp</code> is the value after it; <code>cum_A</code> counts the intervals treated so far. The question is the effect of a <em>sustained strategy</em>, in the sense of <a href="ch13-target-trial-emulation.html" class="quarto-xref"><span>Chapter 14</span></a>: what would the five-year stroke risk be if every patient were treated at every visit (“always treat”) versus never treated (“never treat”)? Because we built the cohort, we can read off the answer.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -661,7 +718,21 @@ Figure&nbsp;15.1: Treatment-confounder feedback over two visits. SBP at visit 1 
 </section>
 <section id="the-dilemma-adjust-and-you-block-the-effect-do-not-and-you-confound" class="level2" data-number="15.3">
 <h2 data-number="15.3" class="anchored" data-anchor-id="the-dilemma-adjust-and-you-block-the-effect-do-not-and-you-confound"><span class="header-section-number">15.3</span> The dilemma: adjust and you block the effect, do not and you confound</h2>
-<p>A natural first attempt extends Chapter 12: fit a pooled model for the per-visit stroke hazard, adjust for the baseline confounders, summarise treatment by the cumulative number of treated intervals, and standardise to compare “always” with “never”. We define a small helper that standardises any fitted hazard model to the two strategies, then apply it.</p>
+<p>A natural first attempt extends <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a>: fit a pooled model for the per-visit stroke hazard, adjust for the baseline confounders, summarise treatment by the cumulative number of treated intervals, and standardise to compare “always” with “never”. We define a small helper that standardises any fitted hazard model to the two strategies, then apply it.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pooled logistic regression for a discrete-time hazard
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The outcome models of this chapter are fitted to the person-period rows: one row per patient per visit at risk, with <code>Y = 1</code> in the row in which the stroke occurs and no rows after it. A logistic regression of <code>Y</code> on the covariates then estimates the <strong>discrete-time hazard</strong>, the probability of a stroke in an interval given survival to its start, and the visit indicators <code>kf</code> let that hazard differ between visits. Because the rows of all visits are pooled into one sample, the model is called <em>pooled logistic regression</em>; when the per-interval hazards are small, as here, it approximates a Cox model with time-dependent covariates.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The five-year risk under a strategy is one minus the product over visits of one minus the hazard, which is what the helper <code>strategy_risk()</code> computes. Continuous-time hazard models are the subject of <a href="ch25-survival-rates.html" class="quarto-xref"><span>Chapter 26</span></a>.</p>
+<p>Every model in this chapter is a frequentist point estimate from <code>glm</code> or <code>lm</code>, kept that way so that each step of the two g-methods is visible in a few lines of code. The book’s Bayesian convention is restored in <a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a>, which refits the g-formula in <code>brms</code>, runs the forward simulation once per posterior draw, and recomputes this chapter’s strategy estimators on the same cohort beside it.</p>
+</div>
+</div>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -691,7 +762,7 @@ Figure&nbsp;15.1: Treatment-confounder feedback over two visits. SBP at visit 1 
 </div>
 </div>
 <p>This model adjusts for baseline severity but not for the time-varying blood pressure, and it is confounded: the estimated risk difference is -0.029, well short of the true -0.046. Treated intervals are the intervals with high blood pressure, so treatment keeps company with high stroke risk, and the protective effect is understated.</p>
-<p>The remedy from Chapter 12 was to adjust for the confounder. Here the confounder is blood pressure, so we add it to the model. Watch the coefficient on cumulative treatment.</p>
+<p>The remedy from <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a> was to adjust for the confounder. Here the confounder is blood pressure, so we add it to the model. Watch the coefficient on cumulative treatment.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -704,12 +775,12 @@ Figure&nbsp;15.1: Treatment-confounder feedback over two visits. SBP at visit 1 
       -0.14442816       -0.01800166 </code></pre>
 </div>
 </div>
-<p>Adding blood pressure pulls the per-interval treatment coefficient from -0.144 to -0.018 — close to zero. The drug acts largely by lowering blood pressure, and conditioning on blood pressure removes that pathway from the estimate. We have traded confounding for a blocked mediator. The two obvious uses of a regression sit on either side of the right answer, and no choice of what to put in a single outcome model lands on it.</p>
+<p>Adding blood pressure pulls the per-interval treatment coefficient from -0.144 to -0.018 — close to zero. (The coefficient is read directly here, against the book’s usual practice of reporting a standardised contrast, because the point is its collapse rather than its value: a model that conditions on blood pressure has no sustained-strategy contrast to standardise, since the blood pressure a strategy would produce is not in the data.) The drug acts largely by lowering blood pressure, and conditioning on blood pressure removes that pathway from the estimate. We have traded confounding for a blocked mediator. The two obvious uses of a regression lie on either side of the right answer, and no choice of what to put in a single outcome model lands on it.</p>
 </section>
 <section id="inverse-probability-weighting-over-time" class="level2" data-number="15.4">
 <h2 data-number="15.4" class="anchored" data-anchor-id="inverse-probability-weighting-over-time"><span class="header-section-number">15.4</span> Inverse-probability weighting over time</h2>
-<p>The way out is to stop conditioning on blood pressure in the outcome model and to use it instead to <em>weight</em>. This is the inverse-probability weighting of Chapter 12, extended across visits. At each visit we model the probability of the treatment the patient actually received, given the history up to that point, and weight each patient by the running product of the inverse probabilities. In the reweighted population, treatment at each visit is detached from the time-varying blood pressure, so the confounding is removed — but blood pressure is never conditioned on, so the mediated pathway survives.</p>
-<p>The weights are <em>stabilised</em>: the numerator model contains the baseline variables and past treatment, the denominator adds the time-varying blood pressure. Only the time-varying confounding is removed by the weights; the baseline variables are handled by including them in the final model.</p>
+<p>The way out is to stop conditioning on blood pressure in the outcome model and to use it instead to <em>weight</em>. This is the inverse-probability weighting of <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a>, extended across visits. At each visit we model the probability of the treatment the patient actually received, given the history up to that point, and weight each patient by the running product of the inverse probabilities. In the reweighted population, treatment at each visit is detached from the time-varying blood pressure, so the confounding is removed — but blood pressure is never conditioned on, so the mediated pathway survives.</p>
+<p>The weights are <em>stabilised</em>: the numerator model contains the baseline variables and past treatment, the denominator adds the time-varying blood pressure.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Only the time-varying confounding is removed by the weights; the baseline variables are handled by including them in the final model.</p>
 <p>The scheme below traces the construction. Read it as a pipeline: at each visit two propensity models produce a weight, the weights are multiplied along each patient’s path and trimmed, and one weighted outcome model then delivers the contrast. Nowhere is blood pressure put into an outcome model — its whole job is to shape the weights.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -732,7 +803,7 @@ Figure&nbsp;15.2: Inverse-probability weighting builds a pseudo-population. At e
 <li><strong>Running product is the weight.</strong> <code>cumprod(contrib)</code> along a patient’s visits gives the stabilised weight <code>sw</code>. A patient who happened to be treated exactly when their blood pressure made treatment likely gets a weight near one; a patient treated against the odds of their history gets a large weight.</li>
 <li><strong>What the weight buys.</strong> In the re-weighted pseudo-population, treatment at each visit is detached from blood pressure, so the time-varying confounding is gone — yet blood pressure was never entered into an outcome model, so the mediated path <code>A -&gt; SBP -&gt; Y</code> is left intact. This is the trade the g-formula made the other way.</li>
 <li><strong>Truncate.</strong> The weights have a long right tail (histories where treatment is nearly certain — a brush with positivity). <code>trunc</code> caps <code>sw</code> at the 1st and 99th percentiles, trading a little bias for stability.</li>
-<li><strong>Weighted outcome model — the MSM.</strong> Fit <code>Y ~ cum_A + baseline</code> with <code>weights = sw</code>. Blood pressure is absent because the weights already did its work. The baseline variables stay in the model directly, which is exactly why the weights are <em>stabilised</em> rather than carrying that confounding too.</li>
+<li><strong>Weighted outcome model: the marginal structural model (MSM).</strong> Fit <code>Y ~ cum_A + baseline</code> with <code>weights = sw</code>. The model is called <em>marginal</em> because it describes the risk under a strategy in the whole population, not the risk conditional on the time-varying covariates, and <em>structural</em> because its parameters are causal rather than associational.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Blood pressure is absent because the weights already did its work. The baseline variables stay in the model directly, which is exactly why the weights are <em>stabilised</em> rather than carrying that confounding too.</li>
 <li><strong>Standardise and contrast.</strong> <code>rd_always_vs_never</code> runs the fitted MSM forward with cumulative treatment counting up (“always”) and held at zero (“never”) and takes the difference — the risk difference between the two sustained strategies.</li>
 </ol>
 <div class="cell">
@@ -752,8 +823,8 @@ Figure&nbsp;15.2: Inverse-probability weighting builds a pseudo-population. At e
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>trunc <span class="ot">&lt;-</span> <span class="fu">quantile</span>(obs<span class="sc">$</span>sw, <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>))     <span class="co"># truncate extreme weights</span></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>obs   <span class="ot">&lt;-</span> obs <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">sw =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(sw, trunc[<span class="dv">1</span>]), trunc[<span class="dv">2</span>]))</span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>msm    <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y <span class="sc">~</span> cum_A <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> severity <span class="sc">+</span> kf,</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> quasibinomial, <span class="at">weights =</span> sw, <span class="at">data =</span> obs)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>msm    <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y <span class="sc">~</span> cum_A <span class="sc">+</span> age_c <span class="sc">+</span> diabetes <span class="sc">+</span> severity <span class="sc">+</span> kf,     <span class="co"># quasibinomial: accepts the</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> quasibinomial, <span class="at">weights =</span> sw, <span class="at">data =</span> obs) <span class="co"># non-integer weighted 0/1 rows</span></span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>ipw_rd <span class="ot">&lt;-</span> <span class="fu">rd_always_vs_never</span>(msm)</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean_weight =</span> <span class="fu">mean</span>(obs<span class="sc">$</span>sw), <span class="at">ipw_RD =</span> ipw_rd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -766,7 +837,7 @@ Figure&nbsp;15.2: Inverse-probability weighting builds a pseudo-population. At e
 </section>
 <section id="the-g-formula-over-time" class="level2" data-number="15.5">
 <h2 data-number="15.5" class="anchored" data-anchor-id="the-g-formula-over-time"><span class="header-section-number">15.5</span> The g-formula over time</h2>
-<p>The second g-method models the machinery directly and then simulates it. Where IP weighting <em>refused</em> to model blood pressure and reweighted around it, the g-formula does the opposite: it writes down how blood pressure evolves and how it drives the outcome, then runs that little world forward under each strategy and reads off the risk. We fit two models — one for how blood pressure evolves (given its past, treatment, and baseline) and one for the stroke hazard — then play the cohort forward under “always treat” and again under “never treat”. The key is that blood pressure is <em>re-simulated</em> at each step rather than held fixed, so the pathway from treatment through blood pressure to the outcome is preserved.</p>
+<p>The second g-method, Robins’s g-formula,<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> models the machinery directly and then simulates it. Where IP weighting <em>refused</em> to model blood pressure and reweighted around it, the g-formula does the opposite: it writes down how blood pressure evolves and how it drives the outcome, then runs that little world forward under each strategy and reads off the risk. We fit two models — one for how blood pressure evolves (given its past, treatment, and baseline) and one for the stroke hazard — then play the cohort forward under “always treat” and again under “never treat”. The key is that blood pressure is <em>re-simulated</em> at each step rather than held fixed, so the pathway from treatment through blood pressure to the outcome is preserved.</p>
 <p>The scheme below shows one trip through the loop. Read it as a recipe run separately for each strategy: treatment is <em>set</em> by the strategy, blood pressure is <em>redrawn</em> from its model, and the two feed the hazard before the loop carries the new blood pressure into the next visit.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -821,7 +892,7 @@ Figure&nbsp;15.3: The g-formula as forward simulation. For a fixed strategy, eac
 <pre><code>[1] -0.04845002</code></pre>
 </div>
 </div>
-<p>The g-formula estimate, -0.048, is close to the true -0.046. It uses blood pressure as a predictor at every step yet never conditions on it as if fixed, which is exactly what lets it adjust for the confounding while keeping the mediated effect. The price is the opposite of weighting’s: the g-formula needs a correct model for the confounder’s evolution as well as for the outcome, and it is only as good as those models.</p>
+<p>The g-formula estimate, -0.048, is close to the true -0.046. It uses blood pressure as a predictor at every step yet never conditions on it as if fixed, which is exactly what lets it adjust for the confounding while keeping the mediated effect. The price is the opposite of weighting’s: the g-formula needs a correct model for the confounder’s evolution as well as for the outcome, and it is only as good as those models. <a href="#tbl-g-scorecard" class="quarto-xref">Table&nbsp;<span>15.2</span></a> collects the five analyses.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -841,12 +912,17 @@ Figure&nbsp;15.3: The g-formula as forward simulation. For a fixed strategy, eac
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"mediator blocked (effect erased)"</span>,</span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">"recovers most of the effect"</span>,</span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>              <span class="st">"recovers the effect"</span>)</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="fu">kbl</span>(<span class="at">caption =</span> <span class="st">"Five analyses of the same cohort."</span>) <span class="sc">|&gt;</span> <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="fu">kbl</span>() <span class="sc">|&gt;</span> <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div id="tbl-g-scorecard" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-g-scorecard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;15.2: Five analyses of the same cohort: the always-versus-never risk difference from each, against the truth.
+</figcaption>
+<div aria-describedby="tbl-g-scorecard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div>
-<table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Five analyses of the same cohort.</caption>
+<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">method</th>
@@ -887,10 +963,13 @@ Figure&nbsp;15.3: The g-formula as forward simulation. For a fixed strategy, eac
 </div>
 </div>
 </div>
+</figure>
+</div>
+</div>
 </section>
 <section id="static-and-dynamic-strategies" class="level2" data-number="15.6">
 <h2 data-number="15.6" class="anchored" data-anchor-id="static-and-dynamic-strategies"><span class="header-section-number">15.6</span> Static and dynamic strategies</h2>
-<p>The two g-methods estimate the effect of a strategy, and the strategy need not be “always” or “never”. A clinician does not treat regardless; she treats when blood pressure is high. That is a <em>dynamic</em> strategy — treat at a visit if SBP exceeds a threshold — and it is often the policy of real interest (Chapter 13). The cohort’s oracle gives its five-year risk too:</p>
+<p>The two g-methods estimate the effect of a strategy, and the strategy need not be “always” or “never”. A clinician does not treat regardless; she treats when blood pressure is high. That is a <em>dynamic</em> strategy in the sense <a href="ch13-target-trial-emulation.html" class="quarto-xref"><span>Chapter 14</span></a> defined, treat at a visit if SBP exceeds a threshold, and it is often the policy of real interest. The cohort’s oracle gives its five-year risk too:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -906,30 +985,91 @@ Figure&nbsp;15.3: The g-formula as forward simulation. For a fixed strategy, eac
 </section>
 <section id="the-fine-print" class="level2" data-number="15.7">
 <h2 data-number="15.7" class="anchored" data-anchor-id="the-fine-print"><span class="header-section-number">15.7</span> The fine print</h2>
-<p>The assumptions of Chapter 12 return, now indexed by visit. <strong>Sequential exchangeability</strong> asks that, at each visit, the measured history is enough to make the treated and untreated comparable for that interval — no unmeasured time-varying confounding. <strong>Positivity</strong> must hold at every visit: at each history there is a real chance of either treatment. This is harder to satisfy over time, because a patient whose blood pressure makes treatment nearly certain contributes an extreme weight, which is why the weights had a long tail. <strong>Consistency</strong> requires that the strategy names a well-defined intervention at each visit.</p>
-<p>These methods do not lower the bar of causal reasoning; they raise it, because the assumptions must hold at every step. What they buy is the ability to ask a question that standard adjustment cannot answer at all: the effect of a treatment carried over time, when the reasons for treating it are themselves changed by it. The Bayesian version of the g-formula, with full posterior uncertainty on the strategy contrast, is the subject of Chapter 28.</p>
+<p>The assumptions of <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a> return, now indexed by visit. <strong>Sequential exchangeability</strong> asks that, at each visit, the measured history is enough to make the treated and untreated comparable for that interval — no unmeasured time-varying confounding. <strong>Positivity</strong> must hold at every visit: at each history there is a real chance of either treatment. This is harder to satisfy over time, because a patient whose blood pressure makes treatment nearly certain contributes an extreme weight, which is why the weights had a long tail. <strong>Consistency</strong> requires that the strategy names a well-defined intervention at each visit.</p>
+<p>These methods do not lower the bar of causal reasoning; they raise it, because the assumptions must hold at every step. What they buy is the ability to ask a question that standard adjustment cannot answer at all: the effect of a treatment carried over time, when the reasons for treating it are themselves changed by it. The Bayesian version of the g-formula, with full posterior uncertainty on the strategy contrast, is the subject of <a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a>.</p>
 </section>
-<section id="key-points" class="level2" data-number="15.8">
-<h2 data-number="15.8" class="anchored" data-anchor-id="key-points"><span class="header-section-number">15.8</span> Key points</h2>
+<section id="the-third-g-method-structural-nested-models-and-g-estimation" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="the-third-g-method-structural-nested-models-and-g-estimation"><span class="header-section-number">15.8</span> The third g-method: structural nested models and g-estimation</h2>
+<p>The two g-methods above model either the treatment (the weights) or the outcome and the confounder (the g-formula). The third, Robins’s <strong>structural nested mean model</strong> with <strong>g-estimation</strong>, models neither. It parameterises the causal contrast directly, and it is worth meeting here for two reasons: it is the estimator the g-methods literature was built around, and its formula omits terms that <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a> says a regression must normally keep, for a reason that is instructive.</p>
+<p>A structural nested mean model parameterises the effect of setting treatment to <span class="math inline">\(a\)</span> rather than to zero, within levels of a covariate <span class="math inline">\(V\)</span>, through a <strong>blip</strong> function:</p>
+<p><span class="math display">\[E[Y(a) - Y(0) \mid V] = a(\psi_0 + \psi_1 V)\]</span></p>
+<p>A blip function represents the conditional average treatment effect for a specific patient history or set of covariates. The left-hand side is a contrast of potential outcomes, not an outcome. Three consequences follow, which between them account for every missing term.</p>
+<p><strong>There is no intercept, because the contrast is zero at <span class="math inline">\(a = 0\)</span>.</strong> Setting <span class="math inline">\(a = 0\)</span> makes the left-hand side <span class="math inline">\(E[Y(0) - Y(0) \mid V]\)</span>, which is zero for every individual and every value of <span class="math inline">\(V\)</span>. A blip function with an intercept, <span class="math inline">\(\psi_{00} + a(\psi_0 + \psi_1 V)\)</span>, would assert that the effect of no treatment against no treatment is <span class="math inline">\(\psi_{00} \neq 0\)</span> which is a contradiction in terms.</p>
+<p><strong>There is no main effect of <span class="math inline">\(V\)</span>, because <span class="math inline">\(V\)</span>’s prognostic effect cancels in the difference.</strong> <span class="math inline">\(V\)</span> may be strongly related to the outcome, and usually is. It is absent here because it enters <span class="math inline">\(Y(a)\)</span> and <span class="math inline">\(Y(0)\)</span> identically. Where it does appear is in the untreated mean <span class="math inline">\(E[Y(0) \mid V]\)</span>, a separate nuisance quantity that estimation either models explicitly or, under g-estimation, sidesteps. Writing a main effect of <span class="math inline">\(V\)</span> into the blip would make the same assertion the intercept did: that the contrast of <span class="math inline">\(Y(0)\)</span> with itself depends on <span class="math inline">\(V\)</span>.</p>
+<p><strong><span class="math inline">\(\psi_1\)</span>, not <span class="math inline">\(\psi_0\)</span>, carries the effect modification.</strong> <span class="math inline">\(\psi_0\)</span> is the effect at <span class="math inline">\(V = 0\)</span>, and <span class="math inline">\(\psi_1\)</span> is how that effect changes with <span class="math inline">\(V\)</span>.</p>
+<p>The last point connects the blip function to the outcome models of Part V. Write the conditional mean of the <em>observed</em> outcome in fully interacted form,</p>
+<p><span class="math display">\[E[Y \mid A = a, V, L] = \alpha + \beta_1 a + \beta_2 V + \beta_3 aV + \beta_4^{\top} L,\]</span></p>
+<p>and take the difference between <span class="math inline">\(a = 1\)</span> and <span class="math inline">\(a = 0\)</span>. The result is <span class="math inline">\(\beta_1 + \beta_3 V\)</span>: the intercept and <span class="math inline">\(\beta_2 V\)</span> have cancelled. So <span class="math inline">\(\psi_0 = \beta_1\)</span> and <span class="math inline">\(\psi_1 = \beta_3\)</span> when the outcome model is correct. <strong>A blip function is what a fully interacted outcome model leaves behind once the contrast has been taken.</strong> The main effects were not dropped; they were differenced away. This is also why the interaction-by-default position of <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a> and the absence of main effects in a blip function are not in tension: they are statements about two different objects, the outcome model and the contrast.</p>
+<p>The cancellation can be seen directly. The three fits below differ only in <span class="math inline">\(\beta_2\)</span>, the prognostic effect of <span class="math inline">\(V\)</span>, and the same residual noise is used in each, so any movement in the blip would be real rather than sampling variation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">99</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="dv">4000</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>V  <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(nb, <span class="dv">1</span>, <span class="fl">0.5</span>)                      <span class="co"># modifier, also prognostic</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>L  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(nb)                               <span class="co"># a confounder</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>A  <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(nb, <span class="dv">1</span>, <span class="fu">plogis</span>(<span class="sc">-</span><span class="fl">0.3</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> L))   <span class="co"># treatment depends on L</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>e  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(nb)                               <span class="co"># the same noise in every scenario</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>blip_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(b2) {</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  Y  <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fl">0.8</span> <span class="sc">*</span> L <span class="sc">+</span> b2 <span class="sc">*</span> V <span class="sc">+</span> (<span class="fl">0.6</span> <span class="sc">+</span> <span class="fl">1.4</span> <span class="sc">*</span> V) <span class="sc">*</span> A <span class="sc">+</span> e</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  co <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> A <span class="sc">*</span> V <span class="sc">+</span> L))</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">`</span><span class="at">beta2 (V main effect)</span><span class="st">`</span> <span class="ot">=</span> b2, <span class="st">`</span><span class="at">fitted V coefficient</span><span class="st">`</span> <span class="ot">=</span> co[[<span class="st">"V"</span>]],</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">psi0 = coef A</span><span class="st">`</span> <span class="ot">=</span> co[[<span class="st">"A"</span>]], <span class="st">`</span><span class="at">psi1 = coef A:V</span><span class="st">`</span> <span class="ot">=</span> co[[<span class="st">"A:V"</span>]])</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">as.data.frame</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="sc">-</span><span class="dv">2</span>), blip_fit))), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  beta2 (V main effect) fitted V coefficient psi0 = coef A psi1 = coef A:V
+1                     0              -0.0029        0.5536          1.4496
+2                     3               2.9971        0.5536          1.4496
+3                    -2              -2.0029        0.5536          1.4496</code></pre>
+</div>
+</div>
+<p>The fitted <code>V</code> coefficient tracks <span class="math inline">\(\beta_2\)</span> down the rows. The two blip parameters do not move at all, to four decimal places, whether <span class="math inline">\(V\)</span>’s prognostic effect is absent, large and positive, or negative. The generating values were 0.6 and 1.4.</p>
+<p>The no-intercept form is not a stylistic preference; it is what makes g-estimation work. G-estimation removes the hypothesised effect from the observed outcome,</p>
+<p><span class="math display">\[H(\psi) = Y - A(\psi_0 + \psi_1 V),\]</span></p>
+<p>and searches for the <span class="math inline">\(\psi\)</span> that makes <span class="math inline">\(H(\psi)\)</span> independent of treatment given the measured confounders — the property <span class="math inline">\(Y(0)\)</span> has under conditional exchangeability (<a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>). For <span class="math inline">\(H(\psi)\)</span> to be a candidate <span class="math inline">\(Y(0)\)</span> it must leave the untreated untouched, and it does: at <span class="math inline">\(A = 0\)</span> the subtracted term is zero and <span class="math inline">\(H = Y\)</span>. Add an intercept to the blip and the same constant would be removed from treated and untreated alike, so <span class="math inline">\(H\)</span> would no longer equal <span class="math inline">\(Y\)</span> among the untreated and would no longer estimate <span class="math inline">\(Y(0)\)</span>. The omitted terms are what make the estimator valid.</p>
+<p><em>A concrete instance.</em> Structural nested models were introduced for occupational cohorts showing a healthy worker survivor effect: workers leave employment as their health declines, so past exposure affects later employment, which affects later exposure. Employment status is then a time-varying confounder that is itself affected by prior treatment, the configuration in which ordinary regression adjustment fails and g-methods are required, the setting of this chapter. A blip function such as <span class="math inline">\(E[Y(\bar a) - Y(\bar 0) \mid V] = \psi_0 \sum_k a_k\)</span>, where <span class="math inline">\(\bar a = (a_1, \dots, a_K)\)</span> is the whole exposure history and <span class="math inline">\(\bar 0\)</span> is never being exposed, expresses the effect of each additional year of exposure, with no main effect for employment status anywhere in it, because employment status has cancelled along with everything else common to the two potential outcomes. The method’s practical record in this setting is more modest than its theoretical standing, largely through model dependence and weak information about <span class="math inline">\(\psi\)</span>;<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> the <code>DTRreg</code> package implements g-estimation of these models in R.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+</section>
+<section id="where-part-iii-has-arrived-and-what-part-iv-adds" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="where-part-iii-has-arrived-and-what-part-iv-adds"><span class="header-section-number">15.9</span> Where Part III has arrived, and what Part IV adds</h2>
+<p>Part III has built one line of argument. A causal effect is a contrast of potential outcomes (<a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>); a graph says which variables make the treated and the untreated exchangeable (<a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a>); standardisation and weighting turn that exchangeability into an estimate (<a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a>); a protocol fixes what is being estimated and when the clock starts (<a href="ch13-target-trial-emulation.html" class="quarto-xref"><span>Chapter 14</span></a>); and when treatment and its confounders evolve together, the g-methods of this chapter do the same job over time. Every step rests on the same assumption, that the measured variables close every back-door path from treatment to outcome.</p>
+<p>Part IV takes up the questions this argument leaves open. The pathway through blood pressure that the g-methods were careful not to block is itself a causal question, how much of the drug’s effect runs through it, and <a href="ch15-mediation.html" class="quarto-xref"><span>Chapter 16</span></a> asks it directly. Whether the effect is one number or differs between patients, and on which scale, is the subject of <a href="ch16-interaction.html" class="quarto-xref"><span>Chapter 17</span></a>. And when exchangeability cannot be argued because the confounder is unmeasured, Part IV offers three further routes: a variable that moves treatment but nothing else (<a href="ch17-instrumental-variables.html" class="quarto-xref"><span>Chapter 18</span></a>), a natural experiment that assigns exposure as if at random (<a href="ch18-quasi-experimental.html" class="quarto-xref"><span>Chapter 19</span></a>), and the sensitivity analysis that asks how strong an unmeasured confounder would have to be to overturn the conclusion (<a href="ch19-sensitivity-analysis.html" class="quarto-xref"><span>Chapter 20</span></a>).</p>
+</section>
+<section id="key-points" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="key-points"><span class="header-section-number">15.10</span> Key points</h2>
 <ul>
 <li>A variable measured during follow-up can be a <strong>confounder of later treatment and a mediator of earlier treatment at once</strong>. Standard regression cannot handle both roles: leaving it out confounds the estimate, putting it in blocks the mediated effect.</li>
 <li><strong>G-methods</strong> resolve this by accounting for the time-varying confounder without conditioning on it in an outcome model — by <strong>weighting</strong> (inverse-probability weighting / marginal structural models) or by <strong>simulation</strong> (the g-formula).</li>
-<li>They are the same logic as Chapter 12 extended over time: IP weighting generalises the weighting estimator, the g-formula generalises standardisation. The single-time case was the special case with no feedback.</li>
+<li>They are the same logic as <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a> extended over time: IP weighting generalises the weighting estimator, the g-formula generalises standardisation. The single-time case was the special case with no feedback.</li>
 <li>The two carry <strong>opposite costs</strong>: weighting needs no outcome model but loses precision to unstable weights; the g-formula is efficient but needs a correct model for the confounder’s evolution.</li>
 <li>G-methods estimate the effect of a <strong>strategy</strong>, including dynamic treat-when-indicated strategies that standard regression cannot evaluate.</li>
+<li>The third g-method, <strong>g-estimation of a structural nested model</strong>, parameterises the causal contrast itself through a blip function that has no intercept and no main effect of the modifier, because both cancel in a contrast of potential outcomes.</li>
+<li>The estimates here are <strong>point estimates</strong>, kept frequentist so the mechanics stay visible; <a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a> gives the posterior version and recomputes the strategy estimators beside it.</li>
 </ul>
 </section>
-<section id="exercises" class="level2" data-number="15.9">
-<h2 data-number="15.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.9</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.11</span> Exercises</h2>
 <ol type="1">
 <li><p><strong>Watch the weights.</strong> Re-fit the IP-weighted model without truncating the weights, and again truncating at the 5th and 95th percentiles. How does the estimate change, and how does the largest weight change? Relate what you see to positivity.</p></li>
 <li><p><strong>Break sequential exchangeability.</strong> The generator’s treatment depends on blood pressure, which we measure. Modify it so treatment also depends on an <em>unmeasured</em> time-varying variable that affects stroke. Re-run the IP-weighted and g-formula estimates. Why do both now miss the truth?</p></li>
 <li><p><strong>A dynamic strategy by g-formula.</strong> Extend <code>gformula_risk()</code> to a dynamic strategy: treat at visit <code>k</code> only if the simulated blood pressure exceeds 140. Compare your estimate to the oracle’s <code>risk_dynamic</code>.</p></li>
 <li><p><strong>The cost of the mediator.</strong> Using the cohort, estimate the effect of treatment at the <em>final</em> visit only, adjusting for blood pressure at that visit. Is adjusting for blood pressure wrong here? Explain how this differs from adjusting for it when estimating the sustained-strategy effect.</p></li>
-<li><p><strong>Conceptual.</strong> A reviewer objects that the g-formula “just assumes the answer” by modelling blood pressure. Using the contrast between the two g-methods, explain what each one assumes and why neither assumes the effect it estimates. ```</p></li>
+<li><p><strong>Conceptual.</strong> A reviewer objects that the g-formula “just assumes the answer” by modelling blood pressure. Using the contrast between the two g-methods, explain what each one assumes and why neither assumes the effect it estimates.</p></li>
 </ol>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Daniel RM, Cousens SN, De Stavola BL, Kenward MG, Sterne JAC, “Methods for dealing with time-dependent confounding,” <em>Stat Med</em> 2013;32:1584-1618 (<a href="https://doi.org/10.1002/sim.5686">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>D’Agostino RB, Lee ML, Belanger AJ, Cupples LA, Anderson K, Kannel WB, “Relation of pooled logistic regression to time dependent Cox regression analysis: the Framingham Heart Study,” <em>Stat Med</em> 1990;9:1501-1515 (<a href="https://doi.org/10.1002/sim.4780091214">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Cole SR, Hernán MA, “Constructing inverse probability weights for marginal structural models,” <em>Am J Epidemiol</em> 2008;168:656-664 (<a href="https://doi.org/10.1093/aje/kwn164">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Robins JM, Hernán MA, Brumback B, “Marginal structural models and causal inference in epidemiology,” <em>Epidemiology</em> 2000;11:550-560 (<a href="https://doi.org/10.1097/00001648-200009000-00011">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Robins J, “A new approach to causal inference in mortality studies with a sustained exposure period—application to control of the healthy worker survivor effect,” <em>Math Modelling</em> 1986;7:1393-1512.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Joffe MM, “Structural nested models, g-estimation, and the healthy worker effect: the promise (mostly unrealized) and the pitfalls,” <em>Epidemiology</em> 2012;23:220-222 (<a href="https://doi.org/10.1097/EDE.0b013e318245f798">DOI</a>).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Wallace MP, Moodie EEM, Stephens DA, “An R Package for G-estimation of Structural Nested Mean Models,” <em>Epidemiology</em> 2017;28:e18-e20 (<a href="https://doi.org/10.1097/EDE.0000000000000586">DOI</a>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>The Bayesian Way to Causal Epidemiology - 4&nbsp; Causal inference and Experiment</title>
+<title>The Bayesian Way to Causal Epidemiology - 4&nbsp; Causation and the experiment</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -68,6 +102,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -81,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./02-causal-inference.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch01-introduction.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./02-causal-inference.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -112,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+ <span class="menu-text">A statement of purpose</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -124,6 +160,12 @@ ul.task-list li input[type="checkbox"] {
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
@@ -139,7 +181,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -235,7 +277,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+ <span class="menu-text">Part IV. Beyond the back-door</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -356,43 +398,55 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -409,26 +463,25 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#ancient-theories-of-causality" id="toc-ancient-theories-of-causality" class="nav-link active" data-scroll-target="#ancient-theories-of-causality"><span class="header-section-number">4.1</span> Ancient theories of causality</a></li>
   <li><a href="#hume" id="toc-hume" class="nav-link" data-scroll-target="#hume"><span class="header-section-number">4.2</span> Hume</a></li>
-  <li><a href="#kant" id="toc-kant" class="nav-link" data-scroll-target="#kant"><span class="header-section-number">4.3</span> Kant</a>
-  <ul class="collapse">
-  <li><a href="#analytic-and-synthetic-a-priori-and-a-posteriori" id="toc-analytic-and-synthetic-a-priori-and-a-posteriori" class="nav-link" data-scroll-target="#analytic-and-synthetic-a-priori-and-a-posteriori"><span class="header-section-number">4.3.1</span> Analytic and synthetic, a priori and a posteriori</a></li>
-  <li><a href="#the-answer-the-mind-supplies-the-form-of-experience" id="toc-the-answer-the-mind-supplies-the-form-of-experience" class="nav-link" data-scroll-target="#the-answer-the-mind-supplies-the-form-of-experience"><span class="header-section-number">4.3.2</span> The answer: the mind supplies the form of experience</a></li>
-  <li><a href="#newtonian-physics-as-exactly-true" id="toc-newtonian-physics-as-exactly-true" class="nav-link" data-scroll-target="#newtonian-physics-as-exactly-true"><span class="header-section-number">4.3.3</span> Newtonian physics as exactly true</a></li>
-  <li><a href="#one-story-and-where-this-book-stands-in-it" id="toc-one-story-and-where-this-book-stands-in-it" class="nav-link" data-scroll-target="#one-story-and-where-this-book-stands-in-it"><span class="header-section-number">4.3.4</span> One story, and where this book stands in it</a></li>
-  </ul></li>
-  <li><a href="#early-modern-experiment" id="toc-early-modern-experiment" class="nav-link" data-scroll-target="#early-modern-experiment"><span class="header-section-number">4.4</span> Early modern experiment</a></li>
-  <li><a href="#modern-experiment-randomized-and-controlled" id="toc-modern-experiment-randomized-and-controlled" class="nav-link" data-scroll-target="#modern-experiment-randomized-and-controlled"><span class="header-section-number">4.5</span> Modern experiment: randomized and controlled</a></li>
-  <li><a href="#useful-concepts-for-understanding-controlled-experiments" id="toc-useful-concepts-for-understanding-controlled-experiments" class="nav-link" data-scroll-target="#useful-concepts-for-understanding-controlled-experiments"><span class="header-section-number">4.6</span> Useful concepts for understanding controlled experiments</a></li>
-  <li><a href="#modern-models-causality-bind-randomized-experiment-with-observational-studies" id="toc-modern-models-causality-bind-randomized-experiment-with-observational-studies" class="nav-link" data-scroll-target="#modern-models-causality-bind-randomized-experiment-with-observational-studies"><span class="header-section-number">4.7</span> Modern models causality bind randomized experiment with observational studies</a></li>
+  <li><a href="#kants-response" id="toc-kants-response" class="nav-link" data-scroll-target="#kants-response"><span class="header-section-number">4.3</span> Kant’s response</a></li>
+  <li><a href="#mill-on-causes-from-regularity-to-the-controlled-comparison" id="toc-mill-on-causes-from-regularity-to-the-controlled-comparison" class="nav-link" data-scroll-target="#mill-on-causes-from-regularity-to-the-controlled-comparison"><span class="header-section-number">4.4</span> Mill on causes: from regularity to the controlled comparison</a></li>
+  <li><a href="#early-modern-experiment" id="toc-early-modern-experiment" class="nav-link" data-scroll-target="#early-modern-experiment"><span class="header-section-number">4.5</span> Early modern experiment</a></li>
+  <li><a href="#the-randomised-controlled-trial" id="toc-the-randomised-controlled-trial" class="nav-link" data-scroll-target="#the-randomised-controlled-trial"><span class="header-section-number">4.6</span> The randomised controlled trial</a></li>
+  <li><a href="#the-vocabulary-of-experimental-design" id="toc-the-vocabulary-of-experimental-design" class="nav-link" data-scroll-target="#the-vocabulary-of-experimental-design"><span class="header-section-number">4.7</span> The vocabulary of experimental design</a></li>
+  <li><a href="#the-experiment-as-the-ideal-one-simulated-trial" id="toc-the-experiment-as-the-ideal-one-simulated-trial" class="nav-link" data-scroll-target="#the-experiment-as-the-ideal-one-simulated-trial"><span class="header-section-number">4.8</span> The experiment as the ideal: one simulated trial</a></li>
+  <li><a href="#parallel-worlds-and-the-problem-randomisation-does-not-solve" id="toc-parallel-worlds-and-the-problem-randomisation-does-not-solve" class="nav-link" data-scroll-target="#parallel-worlds-and-the-problem-randomisation-does-not-solve"><span class="header-section-number">4.9</span> Parallel worlds, and the problem randomisation does not solve</a></li>
+  <li><a href="#what-this-chapter-sets-up" id="toc-what-this-chapter-sets-up" class="nav-link" data-scroll-target="#what-this-chapter-sets-up"><span class="header-section-number">4.10</span> What this chapter sets up</a></li>
+  <li><a href="#key-points" id="toc-key-points" class="nav-link" data-scroll-target="#key-points"><span class="header-section-number">4.11</span> Key points</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">4.12</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch02-thinking-under-uncertainty.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./02-causal-inference.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch01-introduction.html">Part I. How to think</a></li><li class="breadcrumb-item"><a href="./02-causal-inference.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></h1>
+<h1 class="title"><span id="sec-experiment" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></span></h1>
 </div>
 
 
@@ -445,29 +498,17 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>The logic chapter, <a href="04-rational-certainty.html" class="quarto-xref"><span>Chapter 3</span></a>, ended with a specification for a logic that grades belief; Part II builds it. Before that, this chapter and the next ask what the beliefs are <em>about</em> when a scientist says that one thing causes another. This chapter takes the historical route: how the idea of a cause was understood before anyone tried to test one, how Hume showed that no test of the usual kind can reveal a cause, and how the controlled experiment, from the air pump to the randomised trial, became the instrument that lets a causal claim be checked anyway. The chapter closes with the book’s first simulation, which shows what randomisation does to a set of data, and with the two problems that the rest of the book exists to solve: what to do when randomisation is not available, and how to reason when the evidence is uncertain. The philosophical accounts of causation that may or may not compete with the one this book uses are the subject of <a href="ch04b-theories-of-causation.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
 <section id="ancient-theories-of-causality" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="ancient-theories-of-causality"><span class="header-section-number">4.1</span> Ancient theories of causality</h2>
-<p>Aristotle (384-322) offers 4 types of answers to the question “why?”</p>
+<p>Aristotle (384–322 BC) offers four types of answer to the question “why?”</p>
 <ol type="1">
-<li><p>the <strong>material cause</strong> – this what things are made of.</p></li>
-<li><p>the <strong>formal cause</strong> may be expressed in a definition. It is a form and a pattern of a thing. the proportion of the length of strings is the reason for different notes played on a lyre being an octave away.</p></li>
-<li><p>the <strong>efficient cause</strong> – this the orgin of a change or state of rest. A person reaching a decision, a father who begets a child, a sculptor carving a statue, a doctor curing a patient.</p></li>
-<li><p>the <strong>final cause</strong> is the end goal why something is done (doctor works to make the patient healthy, a lung works to oxygenate the body, etc.). For living things the formal and final causes coincide (the realization of a mature organism is the goal towards which the an organism strives).</p></li>
+<li><p>the <strong>material cause</strong> – this is what things are made of.</p></li>
+<li><p>the <strong>formal cause</strong> may be expressed in a definition. It is a form and a pattern of a thing. The proportion of the lengths of strings is the reason for different notes played on a lyre being an octave away.</p></li>
+<li><p>the <strong>efficient cause</strong> – this is the origin of a change or state of rest. A person reaching a decision, a father who begets a child, a sculptor carving a statue, a doctor curing a patient.</p></li>
+<li><p>the <strong>final cause</strong> is the purpose for which something is done (a doctor works to make the patient healthy, a lung works to oxygenate the body, etc.). For living things the formal and final causes coincide (the realisation of a mature organism is the goal towards which an organism strives).</p></li>
 </ol>
-<p>Aristotles causes and effects are usually not single events, like causation is commonly seen in modern philosophy, but more complex entities, like human beings or proportions or the skill of the sculptor. Effects can also be states, actions, substances, events. According to Aristotle, following the four causes will result in an natural science kind of explanation of things. So, we can think of these as explanatory tools, especially in the context of biology (but note that for Aristotle, physics explanations were not that different – <strong>to AI: I need an expansion here, with ref</strong>)</p>
-<p><strong>Stoics</strong> saw causation differently.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> They disregard material, formal and final causes, but espouse several different forms of efficient causes. They also offer a <strong>universal law of causation</strong>: <em>A</em> causes that <em>B</em> is <em>F</em>, where <em>A</em> and <em>B</em> are bodies, and <em>F</em> is an abstract non-bodily entity, a <em>lekton</em>. For example, A - scalpel, B- flesh, F - predicate “being cut”. <em>A</em> is the active element, while <em>B</em> is the passive element (also called <em>matter</em>).</p>
-<ul>
-<li><p>Joint causes (<em>sunaita</em>) – two oxen in fromt of a cart, if neither alone can move it</p></li>
-<li><p>Auxiliary causes (<em>sumerga</em>) – if either ox can move the cart alone.</p></li>
-</ul>
-<blockquote class="blockquote">
-<p>Causes form a network, not always a chain.</p>
-</blockquote>
-<ul>
-<li><p>sustaining causes (<em>aitiai synektikai</em>) hold things together in time. Your body is held togehter by an active fluid, <em>pneuma</em> (breath), which causes the cohesion of the universe. You are kept alive by your soul, which is your sustaining cause. As soon as your sustaining cause ceases, you will die and start to decompose.</p></li>
-<li><p>other antecedent (<em>prokatrktikai</em>) causes retain their effects after ceasing to operate. Like a house that remains after the builders leave. An antecedent cause leaves something material to the matter that is itself a sustaining cause – this makes it possible for its effects to linger. When a patient catches a cold, the coldness of air is the antecedent cause and the subsequent fever is the sustaining cause of symptoms.</p></li>
-</ul>
-<p>The stoics accepted a strong causal determinism: (i) everything is caused by something, and (ii) every effect is fully determined by its cause(s). So, nothing happens without a cause and every cause is a necessitating cause (the effect cannot not happen, when there is cause). This unified series of causes and effects is the doctrine of fate. This, of course, brings on the question about free will. One way to get to free will is to posit with Epicurus (341-270) that the world is made of tiny atoms, which in addition to causal interactions have some amount of random unpredictable swerves. Or, alternatively, maybe the mind somehow has freedom of tought, although it is influenced by external causes (Chrysippus; b. 279 B.C.), or maybe there actually are no external antecedent causes for our will (Carneades; 214-129).</p>
+<p>Aristotle’s causes and effects are usually not single events, as causation is commonly seen in modern philosophy, but more complex entities, like human beings or proportions or the skill of the sculptor. Effects can also be states, actions, substances, events. According to Aristotle, following the four causes will result in a natural-science kind of explanation of things. The four causes are explanatory tools, and Aristotle applies them as readily to physics as to biology: the same four questions are asked of a falling stone as of a growing organism, and his general treatment of the scheme is in the <em>Physics</em>, not in the biological works.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Two features separate this scheme from what follows in this chapter. Its causes and effects are things, forms and ends rather than events; and it contains no procedure for <em>testing</em> a causal claim. The Stoics, who kept only efficient causes, are taken up in <a href="ch04b-theories-of-causation.html" class="quarto-xref"><span>Chapter 5</span></a> as an ancient precedent for the component-cause model.</p>
 </section>
 <section id="hume" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="hume"><span class="header-section-number">4.2</span> Hume</h2>
@@ -484,275 +525,278 @@ David Hume (1711–1776)
 <p>A Scottish philosopher and historian, born in Edinburgh. His main philosophical works are <em>A Treatise of Human Nature</em> (1739–1740), written before he turned thirty, and the shorter, more accessible <em>An Enquiry Concerning Human Understanding</em> (1748). Hume was an <strong>empiricist</strong>: he held that all knowledge of the world derives from sense experience, and that every genuine idea can be traced back to some sensory impression. He twice applied for a university chair and was twice rejected, largely on suspicion of irreligion; he earned his living as a librarian, essayist, and author of a best-selling history of England. His sceptical analyses of causation and of inductive inference are his most influential legacy, and they are the starting point of the story this section and the next one tell.</p>
 </div>
 </div>
-<p>It was David Hume who gave causality its modern (sceptical) philosophical form. For him, to speak of a causal connection, four conditions must hold: 1) a cause must directly interact with the effect in the physical world; 2) a cause always precedes the effect in time; 3) a cause leads to the effect without exception (there cannot be a cause without the effect, although there can be effects with more than one causes); 4) there is a necessary connection between cause and effect (this is power, force, or glue that makes the effect have to follow the cause, and it may or may not be “physical”). To complicate things further, he mentions a counterfactual view of causality: “if the first object had not been, the second never had existed”. So there is a “thing A”, which is cause, a “thing B” which is effect, a mysterious physical(?) connection between them, which grants them perfect co-existence over time: every time that A occurs, B must by necessity follow. Things are further muddied if one considers that day always follows night, without night causing the day; and that smoking sometimes, but not even in most cases, causes cancer. For Hume the difficulty was that it is impossible to verify empirically, or to deduce logically, that B always follows A. In addition, he shows that the necessary connection between cause and effect is nowhere to be found in the objects or their interaction, physical or otherwise, and that the only genuine impression of necessity is the one arising in the observing mind after repeated experience. This makes causality part of human psychology, rather than an empirically verifiable feature of the physical world.</p>
+<p>It was David Hume who gave causality its modern (sceptical) philosophical form. For him, to speak of a causal connection, four conditions must hold: 1) a cause must directly interact with the effect in the physical world; 2) a cause always precedes the effect in time; 3) a cause leads to the effect without exception (there cannot be a cause without the effect, although there can be effects with more than one cause); 4) there is a necessary connection between cause and effect (this is power, force, or any glue that makes the effect have to follow the cause, and it may or may not be “physical”). To complicate things further, he mentions a counterfactual view of causality: “if the first object had not been, the second never had existed”. So there is a “thing A”, which is cause, a “thing B” which is effect, a mysterious connection between them, which grants them perfect co-existence over time: every time that A occurs, B must by necessity follow. Things are further muddied if one considers that day always follows night, without night causing the day; and that smoking sometimes, but not even in most cases, causes cancer.</p>
+<p>For Hume the difficulty was that it is impossible to verify empirically, or to deduce logically, that B always follows A. In addition, he shows that the necessary connection between cause and effect is nowhere to be found in the objects or their interaction, physical or otherwise, and that the only genuine impression of necessity is the one arising in the observing mind after repeated experience. This makes causality part of human psychology, rather than an empirically verifiable feature of the physical world.</p>
 <blockquote class="blockquote">
-<p>an object may be contiguous and prior to another, without being consider’d as its cause. There is a NECESSARY CONNEXION to be taken into consideration; and that relation is of much greater importance than any of the other two above-mention’d (Hume, Treatise)</p>
+<p>an object may be contiguous and prior to another, without being consider’d as its cause. There is a NECESSARY CONNEXION to be taken into consideration; and that relation is of much greater importance than any of the other two above-mention’d.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 </blockquote>
-<p>According to Hume, since all our ideas ultimately derive from sense experience, and there is no sense impression of necessity in any single instance, the puzzle is where the idea of necessary connection comes from at all. Hume’s answer is that the idea originates not in the objects but in the mind. After repeatedly experiencing A followed by B, the mind forms a habit, so that upon seeing A it expects B. So necessity “is nothing but an internal impression of the mind, a determination to carry our thoughts from one object to another.” This is a relocation, not an elimination. Causation as it exists “in the objects” reduces to regular succession—constant conjunction—with no discoverable necessity. The necessity we feel is projected onto the world by our own habituated minds. This is why Hume concludes that causal reasoning rests on custom rather than reason: we cannot rationally justify the inference from past to future, yet nature compels us to make it anyway. Scholars disagree about how far Hume goes. On the traditional reading he denies real necessity in the world outright; on the “New Hume” or sceptical-realist reading, he only denies that we can know such necessity, while remaining agnostic about whether it exists. The two definitions of cause he gives (one in terms of constant conjunction, one in terms of the mind’s determination) are the main textual battleground for that debate.</p>
+<p>According to Hume, since all our ideas ultimately derive from sense experience, and there is no sense impression of necessity in any single instance, the puzzle is where the idea of necessary connection comes from. Hume’s answer is that the idea originates not in the objects but in the mind. After repeatedly experiencing A followed by B, the mind forms a habit, so that upon seeing A it expects B. So necessity “is nothing but an internal impression of the mind, a determination to carry our thoughts from one object to another.”</p>
+<p>This is a relocation, not an elimination. Causation as it exists “in the objects” reduces to regular succession—constant conjunction—with no discoverable necessity. The necessity we feel is projected onto the world by our own habituated minds. This is why Hume concludes that causal reasoning rests on custom rather than reason: we cannot rationally justify the inference from past to future, yet nature compels us to make it anyway.</p>
+<p>Scholars disagree about how far Hume goes. On the traditional reading he denies real necessity in the world outright; on the “New Hume” or sceptical-realist reading, he only denies that we can know such necessity, while remaining agnostic about whether it exists. The two definitions of cause he gives (one in terms of constant conjunction, one in terms of the mind’s determination) are the main textual battleground for that debate.</p>
 <p>Either way, Hume leaves empirical science in a difficult position. Its two core operations — inferring causes from observations, and generalising from observed cases to unobserved ones — turn out to have no rational justification, only a psychological one. The first systematic attempt to answer him came from Immanuel Kant, and the answer required rebuilding the theory of knowledge from the ground up.</p>
 </section>
-<section id="kant" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="kant"><span class="header-section-number">4.3</span> Kant</h2>
-<div class="callout callout-style-default callout-note callout-titled" title="Immanuel Kant (1724--1804)">
+<section id="kants-response" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="kants-response"><span class="header-section-number">4.3</span> Kant’s response</h2>
+<p>Immanuel Kant accepted Hume’s negative result and denied his premise.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> If everything we know came from sense data, Hume would be right: no amount of observation delivers necessity. But some of what we know, Kant argued, comes from the structure of the mind that receives the data, and causality is part of that structure. Every event has a cause, on this account, not because the world has been found to be that way but because a mind like ours cannot organise experience in any other way. The necessity Hume could not find in the objects becomes a condition the mind imposes.</p>
+<p>Kant’s account drives a hard bargain. He took Euclidean geometry and Newtonian mechanics to be knowledge of the same kind, certain in advance of experience. However, in the following century non-Euclidean geometries and then general relativity showed that both were actually empirical questions with answers Kant had ruled out. What survives is the shape of the idea: causal structure is <em>supplied</em> to the data rather than read off them. What did not survive was the guarantee. The details of Kant’s model of cognition, and the objections that were raised against it, are given in <a href="ch04b-theories-of-causation.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
+<p>The Hume–Kant episode sets the agenda for the rest of this book. Hume showed that causal necessity cannot be observed: what the data contain is association (constant conjunction), and the step from association to causation must be supplied from outside the data. Kant agreed, and located the supply in the fixed structure of the mind; the fate of his Newtonian guarantee shows the cost of taking that structure to be certain. The modern position, developed in Part III, accepts Hume’s point and drops Kant’s guarantee. The causal structure we impose on data is made explicit as assumptions — a counterfactual contrast we define (<a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>), a causal diagram we draw (<a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a>). Those assumptions are then defended, probed, and revised. Where Kant sought necessity, we settle for quantified uncertainty: probability theory as the logic of science (Part II).</p>
+</section>
+<section id="mill-on-causes-from-regularity-to-the-controlled-comparison" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="mill-on-causes-from-regularity-to-the-controlled-comparison"><span class="header-section-number">4.4</span> Mill on causes: from regularity to the controlled comparison</h2>
+<p>Half a century after Hume, John Stuart Mill set out the rules by which causes are in fact inferred from observation, in the chapter of his <em>System of Logic</em> titled “Of the four methods of experimental inquiry”.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Mill did not claim to have answered Hume; he just wanted to describe what scientists do, and his description has lasted. There are five methods, of which two matter for this book.</p>
+<p>The <strong>method of agreement</strong> looks at several instances in which an effect occurs and picks out the one circumstance they share: if every outbreak of a disease is preceded by the same contaminated water source and by nothing else in common, the water is the candidate cause. The <strong>method of difference</strong> compares two instances that are alike in every respect except one: if the effect occurs in the instance with the circumstance and not in the instance without it, the circumstance is the cause, or an indispensable part of it. The <strong>joint method</strong> applies both. The <strong>method of residues</strong> subtracts the effects of known causes and attributes the remainder to what is left. The <strong>method of concomitant variation</strong> looks for an effect that rises and falls with a circumstance that cannot be removed altogether: the more of the exposure, the more of the outcome. Epidemiology knows the last one as the dose–response relationship.</p>
+<p>The method of difference is the ancestor of the controlled experiment, and its wording contains the whole difficulty. The two instances must be alike <em>in every respect except one</em>. In the laboratory this can be approximated by construction: the same reagents, the same apparatus, one component added or withheld. Outside the laboratory it cannot. Two groups of patients, one treated and one not, differ in many respects other than the treatment, and the method of difference is silent about how to make them comparable. Mill knew this and confined the method to cases where the experimenter controls the circumstances. The randomised experiment, described below, is the device that recovers the “alike in every respect” premise for groups of people who are not alike as individuals; and the observational methods of Part III are what remains when even that device is unavailable, and the premise has to be argued for instead of bought.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Abduction narrows the field of possible causes">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Immanuel Kant (1724–1804)
+Abduction narrows the field of possible causes
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A Prussian philosopher who spent his entire life in and around Königsberg (now Kaliningrad, Russia), where he was professor of logic and metaphysics. Before turning to philosophy proper he worked on natural science: his 1755 cosmology proposed that the solar system condensed from a rotating cloud of matter (the nebular hypothesis), and Newtonian physics remained for him the model of what secure knowledge of nature looks like. His central work is the <em>Critique of Pure Reason</em> (1781, substantially revised 1787), which asks what the mind itself contributes to knowledge. Kant credited Hume with provoking the project: the recollection of Hume, he wrote, was what “first interrupted my dogmatic slumber” (<em>Prolegomena to Any Future Metaphysics</em>, 1783).</p>
+<p>Mill’s methods also leave one step unspoken. Each of them takes a list of circumstances as given and asks which of them is the cause; none says how a candidate gets onto the list. Charles Sanders Peirce named that step <strong>abduction</strong> and gave it a schema: a surprising fact C is observed; if A were true, C would be a matter of course; hence there is reason to suspect that A is true.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> For Peirce abduction is the first stage of inquiry, the one that produces a hypothesis worth testing, and the test itself, whether by Mill’s method of difference or by the randomised trial that descends from it, comes after. The simulation at the end of this chapter has this shape. A crude comparison that makes a protective drug look harmful is the surprising fact; “physicians give the drug to the sicker patients” is the hypothesis that would make it unsurprising; re-running the cohort with treatment assigned by coin flip is the test. In the book’s terms, drawing the causal graph of <a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a> is the abductive step and the estimation that follows is the test. And “C would be a matter of course under A” is a statement about how probable the data are given the hypothesis, the quantity that Part II calls the likelihood and makes numerical; the weak syllogism of <a href="04-rational-certainty.html" class="quarto-xref"><span>Chapter 3</span></a> is the same inference stated as a rule of plausibility.</p>
 </div>
 </div>
-<p>Kant accepted Hume’s negative result as far as it goes. If all our knowledge of the world came from sense data alone, then Hume’s sceptical conclusion would stand: no amount of observation can deliver necessity. Kant’s response was to deny the premise. Some knowledge, he argued, comes not from the sense data but from the structure of the mind that receives them — and that structure can be known in advance of any particular experience.</p>
-<section id="analytic-and-synthetic-a-priori-and-a-posteriori" class="level3" data-number="4.3.1">
-<h3 data-number="4.3.1" class="anchored" data-anchor-id="analytic-and-synthetic-a-priori-and-a-posteriori"><span class="header-section-number">4.3.1</span> Analytic and synthetic, a priori and a posteriori</h3>
-<p>To state his claim precisely, Kant introduced two distinctions between kinds of judgment.</p>
-<ul>
-<li>A judgment is <strong><em>a priori</em></strong> if it can be known independently of experience, and <strong><em>a posteriori</em></strong> if knowing it requires experience.</li>
-<li>A judgment is <strong>analytic</strong> if the predicate is already contained in the concept of the subject: “all bachelors are unmarried” is true by the meaning of the word <em>bachelor</em>, and denying it is self-contradictory. A judgment is <strong>synthetic</strong> if the predicate adds something not contained in the subject: “this bachelor smokes” reports a fact about the world, not about the meanings of words.</li>
-</ul>
-<p>Crossing the two distinctions gives four cells:</p>
-<table class="table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 41%">
-<col style="width: 43%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Analytic</th>
-<th>Synthetic</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong><em>A priori</em></strong></td>
-<td>“All bachelors are unmarried” — true by meaning; the territory of classical logic (Chapter 3)</td>
-<td>“7 + 5 = 12”; “every event has a cause” — <strong>Kant’s battleground</strong></td>
-</tr>
-<tr class="even">
-<td><strong><em>A posteriori</em></strong></td>
-<td>(empty — if a judgment is true by meaning, no experience is needed)</td>
-<td>“Smoking increases the risk of lung cancer” — ordinary empirical knowledge</td>
-</tr>
-</tbody>
-</table>
-<p>Three of the cells are unproblematic. Analytic a priori judgments are certain but uninformative: they unpack meanings without saying anything new about the world. Synthetic a posteriori judgments are the ordinary business of empirical science, and they inherit all of Hume’s problems. The interesting cell is the <strong>synthetic a priori</strong>: judgments that genuinely say something about the world, yet can be known with necessity, in advance of experience. Kant claimed this cell is occupied. His examples: arithmetic (“7 + 5 = 12” — the concept <em>12</em>, he argued, is not contained in the concepts <em>7</em>, <em>5</em>, and <em>addition</em>); geometry (“the straight line between two points is the shortest”); the causal principle itself (“every alteration must have a cause”); and the fundamental principles of Newtonian physics — in the <em>Critique</em> he cites the conservation of the quantity of matter and the equality of action and reaction as examples. The central question of the <em>Critique of Pure Reason</em> is then: how are synthetic a priori judgments possible?</p>
 </section>
-<section id="the-answer-the-mind-supplies-the-form-of-experience" class="level3" data-number="4.3.2">
-<h3 data-number="4.3.2" class="anchored" data-anchor-id="the-answer-the-mind-supplies-the-form-of-experience"><span class="header-section-number">4.3.2</span> The answer: the mind supplies the form of experience</h3>
-<p>Kant’s answer is a model of cognition. Real-world things-in-themselves (strictly unknowable) affect our senses and produce raw sensory material. Before that material can become experience, the mind processes it through two layers.</p>
-<p>The first layer is <strong>sensibility</strong>, whose forms are <strong>space and time</strong>. For Kant, space and time are not features of things-in-themselves, and not concepts abstracted from experience; they are <em>forms of intuition</em> — the mind’s own ordering framework, into which all sensory material must be fitted before it can be perceived at all. Whatever we experience, we necessarily experience as spatially and temporally ordered, because that ordering is what our receptive faculty does. This, for Kant, is why geometry is synthetic a priori: Euclidean geometry describes the form of space, and since space is the mind’s contribution, no possible experience could ever violate it.</p>
-<p>The second layer is the <strong>understanding</strong>, which organises the spatially and temporally ordered material under 12 a priori <strong>categories</strong>, the “pure concepts of the understanding.” Kant arranges them in four groups of three:</p>
-<ul>
-<li><p><strong>Quantity</strong> — Unity, Plurality, Totality</p></li>
-<li><p><strong>Quality</strong> — Reality, Negation, Limitation</p></li>
-<li><p><strong>Relation</strong> — Substance and accident (inherence/subsistence), Causality and dependence (cause and effect), Community a.k.a. Interaction.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
-<li><p><strong>Modality</strong> — Possibility/impossibility, Existence/non-existence, Necessity/contingency.</p></li>
-</ul>
-<p>Causality is on the list. It is not read off the world; it is one of the rules by which the mind turns a mere sequence of sensations into an objective, law-governed world of events. So the necessity Hume could not find in the objects becomes a condition the mind imposes as a precondition of any objective experience. That is why “every event has a cause” is, for Kant, necessarily true of everything we can ever experience — and why it says nothing at all about things-in-themselves.</p>
+<section id="early-modern-experiment" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="early-modern-experiment"><span class="header-section-number">4.5</span> Early modern experiment</h2>
+<p>Experiment has meant different things to different people. Sometimes it is used to test a theory, sometimes it is used to help formulate theories, and sometimes it is done just to get new experiences, or just for fun. It is also done to figure out why something does not work (testing new enzymes to find out why a PCR reaction does not work), or how to improve some process (component titration to improve some reaction). There is not a single reason for experimentation.</p>
+<p>Two great chemists took opposite views of where experiment stands in that list. Humphry Davy (1778–1829) placed it at the end of a chain that begins in observation: observation impresses facts on the mind, analogy connects them, experiment discovers new facts, and “analogy confirmed by experiment, becomes scientific truth”; his example is the air that collects on sunlit pondweed, which an inverted glass shows to feed a flame more brightly than the atmosphere does.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> Justus Liebig (1803–1873) held the reverse: an experiment is “only an aid to thought, like a calculation”, and one not preceded by an idea “bears the same relation to scientific research as a child’s rattle does to music”.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> Karl Popper took Liebig’s side in 1934: it is the theoretician who “shows the experimenter the way”, and theory “dominates the experimental work from its initial planning up to the finishing touches in the laboratory”.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>Joan Fisher Box, R. A. Fisher’s daughter and biographer, gives the fullest statement of what the experimenter is up against, and it is worth quoting at length:<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<blockquote class="blockquote">
+<p>The whole art and practice of scientific experimentation is comprised in the skillful interrogation of Nature. Observation has provided the scientist with a picture of Nature in some aspect, which has all the imperfections of a voluntary statement. He wishes to check his interpretation of this statement by asking specific questions aimed at establishing causal relationships. His questions, in the form of experimental operations, are necessarily particular, and he must rely on the consistency of Nature in making general deductions from her response in a particular instance or in predicting the outcome to be anticipated from similar operations on other occasions. His aim is to draw valid conclusions of determinate precision and generality from the evidence he elicits. Far from behaving consistently, however, Nature appears vacillating, coy, and ambiguous in her answers. She responds to the form of the question as it is set out in the field and not necessarily to the question in the experimenter’s mind; she does not interpret for him; she gives no gratuitous information; and she is a stickler for accuracy. In consequence, the experimenter who wants to compare two manurial treatments wastes his labor if, dividing his field into two equal parts, he dresses each half with one of his manures, grows a crop, and compares the yields from the two halves. The form of his question was: what is the difference between the yield of plot A under the first treatment and that of plot B under the second? He has not asked whether plot A would yield the same as plot B under uniform treatment, and he cannot distinguish plot effects from treatment effects, for Nature has recorded, as requested, not only the contribution of the manurial differences to the plot yields but also the contributions of differences in soil fertility, texture, drainage, aspect, microflora, and innumerable other variables.</p>
+</blockquote>
+<p>Fisher’s take on causality and experiment seems to be in direct succession with that of Francis Bacon, whose <em>Novum Organum</em> (1620)<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> argued rather masculinely for “taking nature by the forelock” and that real learning occurred not when nature was “free and at large,” but when nature was “under constraint and vexed; that is to say, when by art and the hand of man she is forced out of her natural state, and squeezed and moulded”. For Bacon experiment was a “lawful marriage between the empirical and rational faculty”.</p>
+<p>Robert Hooke’s memorandum on the business of the Royal Society (about 1663) drew the institutional consequence. The Society would improve the knowledge of natural things “by Experiments”, would “not own any hypothesis, system, or doctrine”, and would “question and canvass all opinions”, adopting none until “by mature debate and clear arguments, chiefly such as are deduced from legitimate experiments”, the matter was “demonstrated invincibly”.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<p>There are two types of experiments:</p>
+<ol type="1">
+<li>In an uncontrolled experiment we create some artificial conditions, which we would normally be unable to observe, and then see, what happens. Robert Boyle’s <em>New Experiments Physico-Mechanical, Touching the Spring of the Air and Its Effects</em> (1660) described such experiments in artificial vacuum, which were done to understand the nature of air, its effects on animals and respiration, and the relationship between the pressure (“spring of the air”) and volume of gas in a closed system. Essentially, such an experiment creates new experiences, and its detractors not unreasonably asked, why bother studying these new things that are generated, at great cost, by poorly understood unnatural means, when the world is filled with wholly natural phenomena, waiting for explanation.</li>
+</ol>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-kant-cognition" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-air-pump" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-kant-cognition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="02-causal-inference_files/figure-html/fig-kant-cognition-1.png" class="img-fluid figure-img" width="823">
+<div aria-describedby="fig-air-pump-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/air-pump.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kant-cognition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.1: Kant’s model of cognition. Things-in-themselves are unknowable; they supply raw sensory material, which the mind orders through the forms of intuition (space and time) and the categories of the understanding (including causality). Nature as we know it — including its causal structure — is the output of this processing, which is why its most general laws hold with necessity for us while saying nothing about things-in-themselves.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-air-pump-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: Joseph Wright of Derby, <em>An Experiment on a Bird in the Air Pump</em> (1768), National Gallery, London.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>For example, when people put a bird into a vacuum pump, it died; and adding a burning candle quickens the process. But building a really big vacuum pump and putting a child inside did not result in any harm to the child. So, without controls, what can we conclude from these experiments?</p>
+<ol start="2" type="1">
+<li>In a controlled experiment we compare (at least) two sets of conditions, and the comparison, not either condition alone, carries the conclusion.</li>
+</ol>
+<p>In 1644, Evangelista Torricelli performed the famous experiment of “argento vivo” (mercury). Several glass tubes of different diameters, sealed at one end, were filled with mercury. After placing a finger over the opening, they were upturned into a mercury basin. The level of mercury in the tubes initially fell, then stopping at a height of ‘one braccio, a quarter and a finger more’, leaving an empty space at the top. Its emptiness was confirmed by pouring water into the basin. When the bottom of the tube was lifted to the level of the water, the mercury drained out, while the water ‘rushed in with horrible force’ until the tube was full. Torricelli proclaimed that the space created by the descent of the mercury in the tube was vacuum, and that the air exerted on the mercury in the basin held up the column of mercury. He declared that his experiment proved two fundamental concepts: that nature did not abhor the void, and that the air had weight.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-barometer" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-barometer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/barometer.png" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-barometer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: Torricelli’s barometer.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Torricelli further documented that the height of the mercury in a barometer changed slightly each day and concluded that this was due to the changing pressure in the atmosphere. He wrote: “We live submerged at the bottom of an ocean of elementary air, which is known by incontestable experiments to have weight”.</p>
+<p>By 1646, Blaise Pascal had learned of Torricelli’s experiment. A confirmation of the influence of atmospheric pressure was given by the so-called “void within a void” experiment, successively performed in 1648 in several variants by Pascal, Robert Boyle, and others. If Torricelli’s experiment was performed inside a vacuum pump, the mercury would not remain in the vertical tube, but would descend completely into the basin. They also observed that when, in a control experiment, air was allowed back in, the mercury rose back up the tube.</p>
+<p>To decisively check Torricelli’s conclusions, in 1648 Pascal had a barometer carried up the mountain of Puy de Dôme, where his brother-in-law made several measurements at different altitudes (Pascal himself was too sickly to climb any mountains). Importantly, control measurements were done at appointed hours at the foot of the mountain by a local clergyman. Indeed, as the elevation increased the level of the mercury column gradually fell below that at normal ground level, while the control measurements were very stable, despite rapidly changing weather.</p>
+</section>
+<section id="the-randomised-controlled-trial" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="the-randomised-controlled-trial"><span class="header-section-number">4.6</span> The randomised controlled trial</h2>
+<p>Comparison against a control, as in Pascal’s mountain, removes the influence of everything that changes over time in the same way in both arms. It does not remove the influence of what differs <em>between</em> the arms at the start. When the units are people rather than tubes of mercury, they differ in age, in severity of illness and in a thousand unmeasured ways, and if the treated differ systematically from the untreated in any of these, the comparison confounds the treatment with the difference. This is <strong>confounding</strong>: a difference between the arms in something other than the treatment that itself affects the outcome, so that the comparison mixes the effect of the treatment with the effect of the difference. Part III (<a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>, <a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a>) makes the definition exact; <a href="ch04b-theories-of-causation.html" class="quarto-xref"><span>Chapter 5</span></a> takes up its clinical form, confounding by indication. The remedy is to let a randomisation device decide who is treated. R. A. Fisher introduced randomisation into agricultural experiments in the 1920s;<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> Austin Bradford Hill brought it into medicine in a series of seventeen <em>Lancet</em> articles in 1937, republished the same year as <em>Principles of Medical Statistics</em>, with the argument that groups formed by chance differ only by chance.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> The first randomised clinical trial in the modern sense, the Medical Research Council’s trial of streptomycin for pulmonary tuberculosis, reported in 1948; its randomisation was helped along by the shortage of the drug, which made it ethically possible to withhold it from half the patients.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> Evidence-based medicine as a movement followed some forty years later.</p>
+<p>Modern experiments in biomedicine are nearly always of the controlled kind; clinical trials that lack a control group still appear, and carry far less weight. The important properties of a clinical experiment are that it is <strong>controlled</strong>, <strong>randomised</strong> and, where possible, <strong>blinded</strong>. All true experiments have these features in common:</p>
+<ul>
+<li>They try to answer a <em>causal</em> question about the effect of a treatment on an outcome.</li>
+<li>They contain an experimental treatment that acts on the hypothesised cause and, by design, on nothing else that affects the outcome. (This is the demand that the treatment work <em>only through</em> the cause under study; it returns as the exclusion condition of an instrument in <a href="ch17-instrumental-variables.html" class="quarto-xref"><span>Chapter 18</span></a>.)</li>
+<li>Their results are relative to a control condition.</li>
+<li>Treatment is assigned at random, so that the treatment is the only factor that differs systematically between the arms.</li>
+</ul>
+<p>A good experiment requires both an appropriate design and an analysis that respects it. The structure of the analysis depends on the design, on the pre-treatment variables that were recorded, on the quality of the measurements, on dropouts and missing data, on blocks and clusters in the data, and on the size of the data set. <a href="#fig-statin-scheme" class="quarto-xref">Figure&nbsp;<span>4.3</span></a> gives the scheme as a graph, in the notation that <a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a> develops, beside the observational situation that it repairs.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-statin-scheme" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Two stacked causal graphs. Top panel, as observed: sedentary lifestyle points to statin, to LDL cholesterol and to heart attack; statin points to LDL cholesterol, which points to heart attack. Bottom panel, treatment randomised: a coin-flip box points to statin, and the arrow from lifestyle to statin is gone; the other arrows are unchanged.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-statin-scheme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-causal-inference_files/figure-html/fig-statin-scheme-1.png" class="img-fluid figure-img" alt="Two stacked causal graphs. Top panel, as observed: sedentary lifestyle points to statin, to LDL cholesterol and to heart attack; statin points to LDL cholesterol, which points to heart attack. Bottom panel, treatment randomised: a coin-flip box points to statin, and the arrow from lifestyle to statin is gone; the other arrows are unchanged." width="682">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-statin-scheme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: The same causal question as observed and as an experiment. A statin lowers LDL cholesterol, which causes heart attacks; a sedentary lifestyle causes heart attacks both directly and through LDL cholesterol. (a) In observational data people with different lifestyles take statins at different rates: the arrow from lifestyle to statin means that the statin and lifestyle effects on heart attack are entangled. (b) Randomisation replaces every arrow into the treatment by a coin flip. Lifestyle still causes heart attacks, but it no longer differs between the arms.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="newtonian-physics-as-exactly-true" class="level3" data-number="4.3.3">
-<h3 data-number="4.3.3" class="anchored" data-anchor-id="newtonian-physics-as-exactly-true"><span class="header-section-number">4.3.3</span> Newtonian physics as exactly true</h3>
-<p>For Kant this construction was not an abstract exercise; its payoff was a guarantee for the best science of his day. He took Euclidean geometry and the core of Newtonian physics to be bodies of synthetic a priori knowledge: not extremely well-confirmed hypotheses, but propositions <strong>exactly true</strong> (holding without approximation) and <strong>necessarily true</strong> (holding for any possible experience), certified in advance because they articulate the very framework the mind uses to construct the empirical world. In the <em>Metaphysical Foundations of Natural Science</em> (1786) he attempted to derive the fundamental laws of Newtonian mechanics — a law of inertia, the equality of action and reaction, the conservation of the quantity of matter — from the categories applied to the concept of matter in motion. Where Hume had left induction without rational support, Kant appeared to have secured physics against any conceivable revision.</p>
-<p>The subsequent history is instructive. In the nineteenth century Lobachevsky, Bolyai, and Riemann constructed consistent non-Euclidean geometries, showing that Euclid’s is not the only thinkable structure for space; which geometry physical space has thereby became an empirical question. In 1915 Einstein’s general theory of relativity answered it: the geometry of spacetime is non-Euclidean, depends on the distribution of matter, and Newtonian mechanics is an approximation, accurate at low velocities and in weak gravitational fields. The propositions Kant had certified as necessarily true of all possible experience turned out to be false of actual experience. One influential response (Reichenbach’s <em>relativised a priori</em>) kept Kant’s insight that every physical theory rests on framework assumptions that are not tested by data in the ordinary way, while giving up the claim that those assumptions are fixed and necessary: they are constitutive of a given theory, and they get revised when the theory is replaced.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Criticism of Kant's Synthetic A Priori">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Criticism of Kant’s Synthetic A Priori
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Kant claimed there’s a special kind of knowledge: statements that are informative about the world (synthetic) yet knowable without experience (a priori). His prime examples were mathematics (“7 + 5 = 12”), geometry (space is Euclidean), and basic physics (every event has a cause). This idea is the foundation of his whole philosophy — and it has been attacked from several directions.</p>
-<ol type="1">
-<li><p>Science undermined his examples. Kant treated Euclidean geometry and Newtonian causality as necessary truths built into how any mind must experience the world. But in the 19th century, mathematicians developed consistent non-Euclidean geometries, and Einstein’s general relativity later showed that physical space is actually not Euclidean. Quantum mechanics similarly challenged strict causality. If our supposedly unshakeable a priori knowledge turned out to be wrong, it was never a priori knowledge at all — just a very entrenched assumption.</p></li>
-<li><p>The empiricist attack: the category is empty. Logical positivists like A. J. Ayer and the Vienna Circle argued in the early 20th century that all meaningful statements are either analytic (true by definition, like “all bachelors are unmarried”) or synthetic and known through experience. On this view, mathematics is really analytic — it follows from definitions and logical rules and tells us nothing about the world itself. So the “synthetic a priori” is a confusion: Kant mistook complicated definitional truths for substantive knowledge.</p></li>
-<li><p>Quine: the whole distinction collapses. W. V. O. Quine went further in “Two Dogmas of Empiricism” (1951), arguing that the analytic/synthetic distinction itself cannot be drawn sharply. Every attempt to define “analytic” ends up circular. And if there’s no clean line between the two, Kant’s question — “how are synthetic a priori judgments possible?” — is badly posed. For Quine, no belief is immune to revision by experience, not even logic or math; some beliefs are just harder to give up than others.</p></li>
-<li><p>The psychology objection. Kant argued that space, time, and causality are structures the mind imposes on experience. But how could he possibly know this? He can’t step outside human cognition to check. His claims about the mind’s necessary structure look like empirical psychology dressed up as certainty.</p></li>
-<li><p>The “neglected alternative.” A classic objection (raised by Trendelenburg) points out a gap in Kant’s argument: even if space and time are forms our mind imposes, that doesn’t rule out that things in themselves are also spatial and temporal. Kant never justified excluding this possibility.</p></li>
-</ol>
-<p>Where things stand. Few philosophers today accept Kant’s specific examples of synthetic a priori knowledge. However, the underlying idea — that the mind actively structures experience rather than passively recording it — remains enormously influential in philosophy and cognitive science. And some philosophers (notably Saul Kripke) later argued for related categories like “necessary a posteriori” truths, showing that Kant’s way of carving up knowledge, though flawed, opened questions that are still alive.</p>
-</div>
-</div>
+<section id="the-vocabulary-of-experimental-design" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="the-vocabulary-of-experimental-design"><span class="header-section-number">4.7</span> The vocabulary of experimental design</h2>
+<p>The terms below recur throughout the book. The laboratory-specific parts of the vocabulary (positive and negative controls of a measuring system, technical and biological replicates, reproducibility) are collected in <a href="17-appendix-lab-design.html" class="quarto-xref"><span>Appendix B</span></a>.</p>
+<p><strong>Experimental system.</strong> Everything that is needed to produce the data: the study subjects (cell lines, mice, patients), the materials, the measuring apparatus, the protocol and the people who carry it out. The experimenter’s task is to infer, from the data and from knowledge of the system, the mechanism that generated the data; statistical modelling is the tool for that inference.</p>
+<p><strong>Experimental treatment.</strong> An action that changes the experimental system according to a causal hypothesis. By changing a hypothesised cause we aim to change a hypothesised effect. The treatment should not affect the outcome by any route other than the cause under study, and it should be one thing: if “treated” covers several doses or routes with different effects, the treatment effect is not defined. This is the <strong>consistency</strong> condition of <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>, one half of what that chapter calls SUTVA.</p>
+<p><strong>Interference.</strong> The other half of SUTVA is that one unit’s treatment does not affect another unit’s <em>outcome</em>. Testing a fertiliser on adjacent plots violates it, because the treated plot’s run-off reaches the control plot; vaccinating half a community violates it, because the vaccinated protect the unvaccinated. An epidemiologist may well hope for interference, since it increases the impact of a programme, but it changes what the treatment effect means. When interference is expected, one option is to assign treatment to whole groups beyond which interference is unlikely (villages, wards, classrooms), randomise at that level, and interpret the results at that level.</p>
+<p><strong>Units and outcomes.</strong> The experimental unit is whatever receives the treatment and is measured. Each unit usually carries other information as well: measured covariates and unmeasured ones. There are repeated-measures designs, in which the same unit is measured several times, and crossover designs, in which the experimental and control treatments are applied in sequence to the same unit (<a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a>). A <strong>primary outcome</strong> is a measurement specified before the data are collected, whose result is the main result of the study. <strong>Secondary outcomes</strong> come from additional measurements or subgroup analyses; they are reported as needing independent confirmation, because they are many, and because they are often examined when the primary result disappoints.</p>
+<p><strong>Control treatment, arms and the treatment effect.</strong> The control treatment is a comparison condition, often a placebo or the current standard of care, that provides the baseline against which the treatment is judged. The <strong>treatment arm</strong> and the <strong>control arm</strong> are the groups of units that receive each. The treatment effect on the difference scale is the mean outcome in the treatment arm minus the mean outcome in the control arm; <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a> gives it a precise definition and adds the other scales on which it can be stated.</p>
+<p><strong>Randomisation.</strong> Assigning units to arms with a random number generator. Full randomisation means that no attribute of a unit predicts which arm it lands in. It does <em>not</em> mean that the two arms contain an equal mix of units by every attribute: they are balanced in expectation, and any particular pair of arms is imbalanced by chance, more so when the arms are small. Randomisation removes bias from the comparison in the long run; it does not guarantee its absence in one sample.</p>
+<p><strong>Pre-treatment variables.</strong> Variables whose values are fixed before randomisation, such as age, sex or baseline disease severity. Randomisation makes them independent of the treatment; it does not make them independent of the outcome, and that is why they remain useful. Comparing their distributions across arms checks whether the randomisation worked as intended (<a href="#tbl-rct-balance" class="quarto-xref">Table&nbsp;<span>4.1</span></a> below does this), and adjusting for them in the analysis recovers precision without introducing bias (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>). Whether adjusting for a variable is <em>harmless</em> depends on where it stands in the causal structure, which is the subject of <a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a>.</p>
+<p><strong>Blocking.</strong> To increase the precision of the treatment-effect estimate, the sample is divided into blocks within which units are similar (by sex, age group or comorbidity), and randomisation is carried out within each block. The blocking variables enter the analysis model as ordinary predictors. <strong>Matching</strong> is the extreme case of blocking with one treated and one control unit per block; twins are the natural example. Blocking and matching help to the extent that units within a block are alike in their pre-treatment characteristics.</p>
+<p><strong>Clustering.</strong> Units often come in groups that share a source of variation: patients within a centre, mice within a cage, measurements within a reagent batch. Ignoring the cluster understates the uncertainty; modelling it (<a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a>) widens the intervals to what the design supports, and when treatment is assigned at the cluster level, the cluster is the unit of inference.</p>
+<p><strong>Blinding.</strong> A bias-reduction measure that hides the arm assignment from the participants, from the people who collect the data, or from the analysts. A weaker form keeps the assignment open but codes the data so that the analysis follows a pre-specified protocol and the codes are revealed only at the end.</p>
+<p><strong>Internal and external validity.</strong> A study has <strong>internal validity</strong> when its treatment-effect estimate is a valid estimate for the units it studied: the comparison is not confounded, the outcomes are measured without differential error, dropouts have not distorted the arms. Randomisation, blinding and pre-specification serve internal validity. A study has <strong>external validity</strong> when its result carries over to a population of interest: the patients in ordinary practice, the older and sicker groups that trials often exclude, another country. Random <em>sampling</em> from the target population serves external validity; random <em>assignment</em> does not, and a trial can have the first kind of validity without the second.</p>
 </section>
-<section id="one-story-and-where-this-book-stands-in-it" class="level3" data-number="4.3.4">
-<h3 data-number="4.3.4" class="anchored" data-anchor-id="one-story-and-where-this-book-stands-in-it"><span class="header-section-number">4.3.4</span> One story, and where this book stands in it</h3>
-<p>The Hume–Kant episode sets the agenda for the rest of this book. Hume showed that causal necessity cannot be observed: what the data contain is association (constant conjunction), and the step from association to causation must be supplied from outside the data. Kant agreed, and located the supply in the fixed structure of the mind; the fate of his Newtonian guarantee shows the cost of taking that structure to be certain. The modern position, developed in Part III, accepts Hume’s point and drops Kant’s guarantee. The causal structure we impose on data is made explicit as assumptions — a counterfactual contrast we define (Chapter 10), a causal diagram we draw (Chapter 11) — and those assumptions are defended, probed, and revised rather than certified. And where Kant sought necessity, we settle for quantified uncertainty: probability theory as the logic of science (Part II).</p>
-</section>
-</section>
-<section id="early-modern-experiment" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="early-modern-experiment"><span class="header-section-number">4.4</span> Early modern experiment</h2>
-<p>Experiment has meant different things to different people. Sometimes it is used to test a theory, sometimes it is used to help formulate theories, and sometimes it is done just to get new experiences, or just for fun. It is also done to figure out why something does not work (testing new enzymes to figure out, why my PCR reaction doesnt work), or how to improve some process (component titration to improve some reaction). There is not a single reason for experimentation.</p>
-<p>For different takes on experiments compare two great chemists, Davy and Leibig:</p>
-<blockquote class="blockquote">
-<p>The foundations of chemical philosophy, are observation, experiment, and analogy. By observation, facts are distinctly and minutely impressed on the mind. By analogy, similar facts are connected. By experiment, new facts are discovered; and, in the progression of knowledge, observation, guided by analogy, leads to experiment, and analogy confirmed by experiment, becomes scientific truth. To give an instance. - Whoever will consider with attention the slender green vegetable filaments (Conferva rivularis) which in the summer exist in almost all streams, lakes, or pools, under the different circumstances of shade and sunshine, will discover globules of air upon the filaments that are shaded. He will find that the effect is owing to the presence of light. This is an observation; but it gives no information respecting the nature of the air. Let a wine glass filled with water be inverted over the Conferva, the air will collect in the upper part of the glass, and when the glass is filled with air, it may be closed by the hand, placed in its usual position, and an inflamed taper introduced into it; the taper will burn with more brilliancy than in the atmosphere. This is an experiment. If the phenomena are reasoned upon, and the question is put, whether all vegetables ofthis kind, in fresh or in salt water, do not produce such air under like circumstances, the enquirer is guided by analogy: and when this is determined to be the case by new trials, a general scientific truth is established - That all Confervae in the sunshine produce a species of air that supports flame in a superior degree; which has been shown to be the case by various minute investigations. Humprey Davy (1778-1823)</p>
-</blockquote>
-<p>and</p>
-<blockquote class="blockquote">
-<p>In all investigations Bacon attaches a great deal of value to experiments. But he understands their meaning not at all. He thinks they are a sort of mechanism which once put in motion will bring about a result of their own. But in science all investigation is deductive or a priori. Experiment is only an aid to thought, like a calculation: the thought must always and necessarily precede it if it is to have any meaning. An empirical mode of research, in the usual sense of the term, does not exist. An experiment not preceded by theory, i.e.&nbsp;by an idea, bears the same relation to scientific research as a child’s rattle does to music. Justus Liebig (1803-73)</p>
-</blockquote>
-<p>Or the philosopher Karl Popper (1934)</p>
-<blockquote class="blockquote">
-<p>The theoretician puts certain definite questions to the experimenter, and the latter by his experiments tries to elicit a decisive answer to these questions, and to no others. All other questions he tries hard to exclude. . . . It is a mistake to suppose that the experimenter [. . . aims] ‘to lighten the task of the theoretician’, or . . . to furnish the theoretician with a basis for inductive generalizations. On the contrary the theoretician must long before have done his work, or at least the most important part of his work: he must have formulated his questions as sharply as possible. Thus it is he who shows the experimenter the way. But even the experimenter is not in the main engaged in making exact observations; his work is largely of a theoretical kind. Theory dominates the experimental work from its initial planning up to the finishing touches in the laboratory</p>
-</blockquote>
-<p>Or Joan Fisher Box (the daughter of R.A. Fisher)</p>
-<blockquote class="blockquote">
-<p>The whole art and practice of scientific experimentation is comprised in the skillful interrogation of Nature. Observation has provided the scientist with a picture of Nature in some aspect, which has all the imperfections of a voluntary statement. He wishes to check his interpretation of this statement by asking specific questions aimed at establishing causal relationships. His questions, in the form of experimental operations, are necessarily particular, and he must rely on the consistency of Nature in making general deductions from her response in a particular instance or in predicting the outcome to be anticipated from similar operations on other occasions. His aim is to draw valid conclusions of determinate precision and generality from the evidence he elicits. Far from behaving consistently, however, Nature appears vacillating, coy, and ambiguous in her answers. She responds to the form of the question as it is set out in the field and not necessarily to the question in the experimenter’s mind; she does not interpret for him; she gives no gratuitous information; and she is a stickler for accuracy. In consequence, the experimenter who wants to compare two manurial treatments wastes his labor if, dividing his field into two equal parts, he dresses each half with one of his manures, grows a crop, and compares the yields from the two halves. The form of his question was: what is the difference between the yield of plot A under the first treatment and that of plot B under the second? He has not asked whether plot A would yield the same as plot B under uniform treatment, and he cannot distinguish plot effects from treatment effects, for Nature has recorded, as requested, not only the contribution of the manurial differences to the plot yields but also the contributions of differences in soil fertility, texture, drainage, aspect, microflora, and innumerable other variables.</p>
-</blockquote>
-<p>Fisher’s take on causality and experiment seems to be in direct succession with that of Francis Bacon, whose Novum Organum (1620) argued rather masculinely for “taking nature by the forelock” and that real learning occurred not when nature was “free and at large,” but when nature was “under constraint and vexed; that is to say, when by art and the hand of man she is forced out of her natural state, and squeezed and moulded”. For Bacon experiment was a “lawful marriage between the empirical and rational faculty”.</p>
-<p>Or Robert Hooke (Memorandum on the Royal Society, 1663)</p>
-<blockquote class="blockquote">
-<p>The business of the Royal Society is to improve the knowledge of naturall things, and all useful Arts, Manufactures, Mechanick practices, Engynes and Inventions by Experiments (not meddling with Divinity, Metaphysics, Moralls, Politicks, Grammar, Rhetorick, or Logick). … to attempt the recovering of such allowable arts and inventions as are lost. … to examine all systems, theories, principles, hypotheses, ele- ments, histories, and experiments of things naturall, mathematicall, and mechanicall, invented, recorded, or practised, by any considerable author ancient or modern. In order to the compiling of a complete system of solid philosophy for explicating all phenomena produced by nature or art, and recording a rationall account of the causes of things. In the mean time this Society will not own any hypothesis, system, or doctrine of the principles of naturall philosophy, … nor the explication of any phenomena … not explicable by heat, cold, weight, figure, and the like, as effects produced thereby; nor dogmatically define nor fix axioms of scientificall things, but will question and canvass all opinions adopting nor adhering to none, till by mature debate and clear arguments, chiefly such as are deduced from legitimate experiments, the truth of such experiments be demonstrated invincibly.</p>
-</blockquote>
-<p>There are two types of experiments:</p>
-<ol type="1">
-<li>In an uncontrolled experiment we create some artificial conditions, which we would normally be unable to observe, and then see, what happens. Robert Boyle’s <em>New Experiments Physico-Mechanical, Touching the Spring of the Air and Its Effects</em> (1660) described such experiments in artificial vaccuum, which were done to understand the nature of air, its effects on animals and respiration, and the relationship between the pressure (“spring of the air”) and volume of gas in a closed system. Essentially, such an experiment creates new experiences, and its detractors not unreasonably asked, why bother studying these new things that are generated, at great cost, by poorly understood unnatural means, when the world is filled with wholly natural phenomena, waiting for explanation.</li>
-</ol>
+<section id="the-experiment-as-the-ideal-one-simulated-trial" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="the-experiment-as-the-ideal-one-simulated-trial"><span class="header-section-number">4.8</span> The experiment as the ideal: one simulated trial</h2>
+<p>The book’s running example is a simulated cohort of 50 000 hypertensive patients, some of whom take a blood-pressure-lowering drug, followed for stroke. The cohort is described fully in <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>; here it serves just one simple purpose. By virtue of simulation, we know the drug’s exact true effect, and we can easily generate a second version of the same cohort in which the drug is assigned by a coin flip instead of by physicians. Thus, comparing the two simulations shows what randomisation does.</p>
+<p>In the cohort as observed, physicians prescribe the drug more often to patients with more severe hypertension, and severity also raises the risk of stroke. In the randomised version every patient has the same chance of being treated regardless of severity, age or diabetes; nothing else about the patients, the drug or the outcome has changed.</p>
 <div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><embed src="figures/air-pump.pdf" class="img-fluid" style="width:100.0%"></p>
-<figcaption>Joseph Wright&lt;U+2019&gt;s An Experiment on a Bird in the Air Pump (1768) housed at the National Gallery, London.</figcaption>
-</figure>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df_obs <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> N_COHORT, <span class="at">seed =</span> <span class="dv">2024</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>params_rct <span class="ot">&lt;-</span> <span class="fu">modifyList</span>(<span class="fu">default_params</span>(),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">list</span>(<span class="at">d0 =</span> <span class="dv">0</span>, <span class="at">d_sev =</span> <span class="dv">0</span>, <span class="at">d_dm =</span> <span class="dv">0</span>, <span class="at">d_pref =</span> <span class="dv">0</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df_rct <span class="ot">&lt;-</span> <span class="fu">simulate_cohort</span>(<span class="at">n =</span> N_COHORT, <span class="at">seed =</span> <span class="dv">2024</span>, <span class="at">params =</span> params_rct)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>risk_ratio <span class="ot">&lt;-</span> <span class="cf">function</span>(d) <span class="fu">mean</span>(d<span class="sc">$</span>stroke[d<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">mean</span>(d<span class="sc">$</span>stroke[d<span class="sc">$</span>drug <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>rr_obs <span class="ot">&lt;-</span> <span class="fu">risk_ratio</span>(df_obs)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>rr_rct <span class="ot">&lt;-</span> <span class="fu">risk_ratio</span>(df_rct)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>truth  <span class="ot">&lt;-</span> <span class="fu">cohort_truth</span>(df_obs)      <span class="co"># the oracle: the effect we built in</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-</div>
-</div>
-<p>For example, when people but a bird into a vaccuum pump, it died; and adding a burning candle quickens the process. But building a really big vaccuum pump and putting a child inside did not result in any harm to the child. So, without controls, what can we conclude from these experiments?</p>
-<ol start="2" type="1">
-<li>In a controlled experiment we compare (at least) two sets of conditions.</li>
-</ol>
-<p>In 1644, Evangelista Torricelli performed the famous experiment of “argento vivo” (mercury). Several glass tubes of different diameters, sealed at one end, were filled with mercury. After placing a finger over the opening, they were upturned into a mercury basin. The level of mercury in the tubes initially fell, then stopping at a height of ‘one braccio, a quarter and a finger more’, leaving an empty space at the top. Its emptiness was confirmed by pouring water into the basin. When the bottom of the tube was lifted to the level of the water, the mercury drained out, while the water ‘rushed in with horrible force’ until the tube was full. Torricelli proclaimed that the space created by the descent of the mercury in the tube was vaccuum, and that the air exerted on the mercury in the basin held up the column of mercury. He declared that his experiment proved two fundamental concepts: that nature did not abhor the void, and that the air had weight.</p>
-<div class="cell" data-fig.margin="true">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><embed src="figures/barometer.pdf" class="img-fluid"></p>
-<figcaption>Torricelli’s barometer.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>Torricelli further documented that the height of the mercury in a barometer changed slightly each day and concluded that this was due to the changing pressure in the atmosphere. He wrote: “We live submerged at the bottom of an ocean of elementary air, which is known by incontestable experiments to have weight”.</p>
-<p>By 1646, Blaise Pascal had learned of Torricelli’s experiment. A confirmations of the influence of atmospheric pressure was given by the so-called “void within a void” experiment, successively performed in 1648 in several variants by Pascal, Robert Boyle, and others. If Torricelli’s experiment was performed inside a vacuum pump, the mercury would not remain in the vertical tube, but would descend completely into the basin. They also observed that when, in a control experiment, air was allowed back in, the mercury rose back up the tube.</p>
-<p>To decisevely check Torricelli’s conclusions, in 1648 Pascal had a barometer carried up the mountain of Puy de Dome, where his brother-in-law made several measurements at different altitudes (Pascal himself was too sickly to climb any mountains). Importantly, control measurements were done at appointed hours at the foot of the mountain by a local clergiman. Indeed, as the elevation increased the level of the mercury column gradually fell below that at normal ground level, while the control measurements were very stable, despite rapidly changing weather.</p>
-</section>
-<section id="modern-experiment-randomized-and-controlled" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="modern-experiment-randomized-and-controlled"><span class="header-section-number">4.5</span> Modern experiment: randomized and controlled</h2>
-<p>Modern clinical trials got their first theoretical exposition in 1921 when Austin Bradford Hill proposed that otherwise identical patients put into two groups, which would then be treated differently. If outcomes differed, then, he argued, we would know that the difference would be caused by the difference in treatment. As identical people are hard to come by, the additional ingredient was to randomly assign subjects into the groups, hoping that their natural differences would balance out on average. The first such trials were conducted only after World War II (1946, the effect of streptomycin on treatment of tuberculosis, where randomization was partially caused by extreme shortage of the antibiotic) and the movement for evidence based medicine started in earnest only in the 1990-ies, when the efficiency of drug discovery was already falling (the heyday of drug discovery was from 1950-ies to 1970-ies, when most oral drugs now in use were discovered).</p>
-<p>Modern experiments in biomedicine are nearly always of the controlled kind – although uncontrolled clinical studies do still happen, and should generally be ignored. The important parts of a clinical experiment is that it should be 1) controlled, 2) randomized, 3) blinded.</p>
-<p>All true experiments have this in common:</p>
-<ul>
-<li><p>They try to answer a <em>causal</em> question about the effect of treatment on an outcome.</p></li>
-<li><p>They contain an experimental treatment that modifies a cause, while not directly affecting the effect</p></li>
-<li><p>Their results are relative to control.</p></li>
-<li><p>They are randomized, so that the treatment is the only causal factor that varies between the experimental and control arms.</p></li>
-</ul>
-<p>A good experiment requires both appropriate design and data analysis. Specifically, the structure of data analysis models depends on the experimental design, but also on the known pre-treatment variables, on the quality of the actual experiment &amp; measuring apparatus (including study dropouts and missing data), on blocks and clusters in the data, and on the size of the dataset.</p>
+<p>The <strong>risk ratio</strong> is the stroke risk among the treated divided by the stroke risk among the untreated; a value below 1 means the treated fare better. In the cohort as observed the crude risk ratio is 1.67: the treated have a stroke 67% more often than the untreated, and the drug looks harmful. The true effect of the drug, which we know because we wrote the simulation, is a risk ratio of 0.60: the drug prevents about 40% of the strokes that would otherwise occur. The crude comparison has the sign wrong. In the randomised version of the same cohort the crude risk ratio is 0.58, within sampling error of the truth. The same arithmetic, on data produced by the same mechanism, gives the right answer as soon as the treatment is assigned at random.</p>
+<p>The balance table, <a href="#tbl-rct-balance" class="quarto-xref">Table&nbsp;<span>4.1</span></a>, shows why, and collects the two risk ratios. In the observed cohort the treated are more severely ill, older and more often diabetic than the untreated, and each of these raises the stroke risk on its own: the crude comparison is confounded by severity, age and diabetes. In the randomised cohort the two arms match on all three to within chance.</p>
 <div class="cell">
+<div id="tbl-rct-balance" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rct-balance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4.1: Pre-treatment characteristics, stroke risk and crude risk ratio by arm, in the cohort as observed and in the same cohort with treatment randomised. Severity is on a standardised scale (mean 0, sd 1 in the population). The risk ratio is treated over untreated; the true risk ratio built into the simulation is 0.60.
+</figcaption>
+<div aria-describedby="tbl-rct-balance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><embed src="figures/experiment.pdf" class="img-fluid"></p>
-<figcaption>A general scheme of a controlled experiment and an example, where statin is the treatment that lowers LDL cholesterol, which is a causal agent of heart attacs. Sedentiary lifestyle also causes heart attacks both directly and indirectly, through increasing LDL cholesterol accumulation. This makes it hard to disentangle the causal effects of LDL and lifestyle, unless we do a randomized experiment, where people with different lifestyles have an equal chance of being given statin or placebo.</figcaption>
+<div>
+<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">cohort</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">arm</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mean severity</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mean age</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">diabetes (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">stroke risk (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">risk ratio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td rowspan="2" style="text-align: left; vertical-align: middle !important;">as observed</td>
+<td style="text-align: left;">treated</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">64.3</td>
+<td style="text-align: right;">31.3</td>
+<td style="text-align: right;">5.82</td>
+<td rowspan="2" style="text-align: right; vertical-align: middle !important;">1.67</td>
+<td style="text-align: right;">27303</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">untreated</td>
+<td style="text-align: right;">-0.53</td>
+<td style="text-align: right;">59.4</td>
+<td style="text-align: right;">15.6</td>
+<td style="text-align: right;">3.48</td>
+<td style="text-align: right;">22697</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" style="text-align: left; vertical-align: middle !important;">treatment randomised</td>
+<td style="text-align: left;">treated</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">62.1</td>
+<td style="text-align: right;">24.4</td>
+<td style="text-align: right;">4.10</td>
+<td rowspan="2" style="text-align: right; vertical-align: middle !important;">0.58</td>
+<td style="text-align: right;">24908</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">untreated</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">62.1</td>
+<td style="text-align: right;">23.9</td>
+<td style="text-align: right;">7.06</td>
+<td style="text-align: right;">25092</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
 </figure>
 </div>
 </div>
-</div>
-<p>Every experiment entails a clearly defined <strong>experimental treatment</strong>, which is done to the <strong>experimental system</strong>. The experimental system consists of the experimental protocol plus materials that go into the experiment, plus the measuring apparatus and the people who do the actual experiment. The reason behind this is to see, whether the treatment changes the behaviour of the system. The application of treatment is random, so we can believe that in a large enough sample all other properties of the system that might affect the outcome of the experiment are equally proportioned between the treatment and control groups. From the comparison of the treatment arm of the experiment and the non-treatment (control) arm, an <strong>experimental effect</strong> is derived as the mean value of some repeated measurements in experimental arm minus the same in the control arm. Usually by “treatment” we try to very specifically disrupt a specific component of the system, and nothing else, and if we are successful, then by observing a strong experimental effect, we can conclude that whatever it was that</p>
+<p>Two things about this demonstration carry forward. First, randomisation did not change the <em>analysis</em>; a ratio of two proportions was wrong in one data set and right in the other. What changed is a fact about how the data arose, and no amount of looking at the second data set alone would reveal that fact. The causal reading of a comparison rests on knowledge about the design, not on the numbers. Second, the demonstration was possible because we could re-run the world with a different assignment mechanism. A study of real patients has one version only, the observed one, and the question of Part III is how far its data, together with assumptions that must be stated and defended, can stand in for the version that was never run.</p>
 </section>
-<section id="useful-concepts-for-understanding-controlled-experiments" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="useful-concepts-for-understanding-controlled-experiments"><span class="header-section-number">4.6</span> Useful concepts for understanding controlled experiments</h2>
+<section id="parallel-worlds-and-the-problem-randomisation-does-not-solve" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="parallel-worlds-and-the-problem-randomisation-does-not-solve"><span class="header-section-number">4.9</span> Parallel worlds, and the problem randomisation does not solve</h2>
+<p>Causal inference, at least in epidemiology, is a comparison between what happened and what would have happened otherwise. Ideally one would watch the same patient in two parallel worlds, treated in one and untreated in the other, and take the difference. We have access to one world, and the other is a <strong>counterfactual</strong>: real enough to define, impossible to observe. Holland named this the <strong>fundamental problem of causal inference</strong>,<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> and <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a> makes it precise. Without direct access to the second, counterfactual, world the next best thing is the randomised experiment, which gives up the individual comparison and compares two <em>groups</em> that differ, on average, only in the treatment.</p>
+<p>This is a lot to assume, and the assumptions do not vanish when the experiment succeeds. A randomised comparison gives an average effect in the population that was randomised, for the treatment as administered, over the follow-up that was observed. Whether that effect transfers to another population, to the treatment as it will be used, or to a longer time horizon, cannot be settled by randomisation. Even worse, most causal questions epidemiology asks cannot be randomised at all: nobody assigns smoking, poverty or a genotype by coin flip. For those questions the “alike in every respect except one” premise of Mill’s method of difference has to be <em>argued</em> from knowledge of how treatment was in fact assigned. Making that argument explicit, and finding out what follows when it fails, is what Part III is for.</p>
+</section>
+<section id="what-this-chapter-sets-up" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="what-this-chapter-sets-up"><span class="header-section-number">4.10</span> What this chapter sets up</h2>
+<p>Two things are now missing, and the two parts that follow supply them.</p>
+<p>The first is a logic of uncertainty. The claims in this chapter have been treated as true or false: the drug lowers risk, or it does not. Real evidence is graded. A trial with forty patients and one with forty thousand do not support the same confidence; a crude comparison and a randomised one do not carry the same weight; a prior expectation from pharmacology counts for something before the first patient is enrolled. <a href="04-rational-certainty.html" class="quarto-xref"><span>Chapter 3</span></a> argued that classical logic cannot express any of this. Part II builds the extension that can, and shows that it is forced, not chosen: a reasoner who grades belief consistently must grade it by the rules of probability.</p>
+<p>The second is a formal theory of the counterfactual. This chapter used “what would have happened otherwise” as an intuition. To do anything with observational data, the intuition has to become notation that says which quantity a study estimates and what has to be true of the design for the estimate to have a causal reading. That is the potential-outcomes framework of <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>, and the causal diagrams of <a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a> are the tool for saying, and checking, what has to be true. Before either, <a href="ch04b-theories-of-causation.html" class="quarto-xref"><span>Chapter 5</span></a> places the counterfactual account among the rival philosophical theories of causation and states the book’s metaphysical firewall (named in <a href="ch01-introduction.html" class="quarto-xref"><span>Chapter 1</span></a>): the counterfactual definition is an operational convenience for a decision-oriented science, not a claim about what causation is.</p>
+</section>
+<section id="key-points" class="level2" data-number="4.11">
+<h2 data-number="4.11" class="anchored" data-anchor-id="key-points"><span class="header-section-number">4.11</span> Key points</h2>
 <ul>
-<li><p>Experimental system - everything that is needed to produce the data that you got. The experimenters job is to infer from data and her knowldge about the experimental system, the data generating mechanism. For this, she uses statistical modeling. Experimental system includes study subjects (cell lines, mice, patients), chemicals, measuring apparatus, and experimenters. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p></li>
-<li><p>Experimental treatment - some action that disrupts the experimental system according to a scientific causal hypothesis. By disrupting/modifying a hypothetical cause we aim to change an hypothetical effect/outcome. Experimental treatment should not affect the outcome directly, or by any other way than through the specified cause. Also, there should be no hidden versions of treatments. That is, for treatment effects to be analyzable, all units must receive the same well-defined treatment(s). Also, there should be no interference, of the type of treatment of unit A affecting the treatment of unit B.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> For a study that is likely to have interference, one option is to assign the treatment at the level of a group beyond which interference is not likely, and then randomize at this level. Thus the subjects who are likely to transfer knowledge or behaviors among themselves, all get the same treatment. Then one should conservatively interpret results only at the group level.</p></li>
-<li><p>experimental subject/object of measurement is whatever is measured in the experiment. Often we have different kinds of information on each subject (measured variables and non-measured variables, like sex and age). There are also repated measurement designs, where a single sibject is measured several times over the course of study, and designs where both experimental and control treatments are applied in some sequence to the same subject.</p></li>
-<li><p>primary outcomes - pre-defined measurements, whose results will be discussed as the main result of the study</p></li>
-<li><p>secondary outcomes - results of <em>ad hoc</em> subgroup analyses, or of <em>ad hoc</em> measuring protocols, which will be discussed as needing independent study to verify. Secondary analyses are often done when the results of primary analyses fail to excite. They often suffer from multiple testing problem and tend to result is false alarms.</p></li>
-<li><p>Control treatment - a mock treatment that provides the baseline, against which the experimental effect is estimated.</p></li>
-<li><p>Treatment arm/sample - a group of subjects or measurment objects, to whom experimental treatment is applied.</p></li>
-<li><p>Control arm/sample - a group of subjects or measurment objects, to whom control treatment is applied.</p></li>
-<li><p>Experimental effect size ES = mean treatment arm value - mean control arm value.</p></li>
-<li><p>Positive control - a sensitivity control experiment of the experimental system, which shows experimental system generating data in the absense of experimental treatment.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p></li>
-<li><p>Negative control - a specificity control experiment of the experimental system, which shows experimental system, which lacks a necessary component, not generating data in the absence of experimental treatment.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> Positive and negative controls are often used for lab experiments, where managing the integrity of the experimental system can be a challenge, independent of aplication of a specific experimental/control treatment.</p></li>
-<li><p>randomization - choosing treatment and control arm subjects using a random number generator. Full randomization means that it is impossible to predict from any attribute of the subject, into which arm the subject will fall. It does not mean that actual samples will contain an equal mix of subjects by such attributes.</p></li>
-<li><p>Pre-treatment variables are the variables that are known before the act of randomization. Randomization will make them independent of the experimental outcome variable. They include both variables that do not change value over time and variables such as participant age, which change over time but cannot be affected by a treatment. One can check whether the randomization worked by comparing means or distributions of observed pre-treatment variables across randomized treatment groups.</p></li>
-<li><p>blocking - to increase the accuracy of ES estimation, one can divide the sample into blocks that contain subsamples of reduced variablity. There are equal number of blocks between the study arms, but not necessary equal number of subjects within paired blocks. The paired blocks are compared between the study arms. A typical block consists of a sex, age group, or comorbidity. Blocking variables are added to regression models as regular fixed effects.</p></li>
-<li><p>matching is an extreme case of blocking, where each block contains 1+1 subjects (one in each study arm). The subjects can be matched for several characteristics (age, comorbidity, sex, etc.). The most effective paired or blocked designs are when groupings arise naturally in the data, such as twins. It is good to match on a wide variety of characteristics using a dimension-reduction strategy such as Mahalanobis or propensity score matching.</p></li>
-<li><p>clustering - While in blocking we try to reduce variability within each cluster, in clustering, we try to group data such that they have the same variability. If a study is made in several centres, then each one might have its own bias and variablity and should be analysed together in a multilevel model. Incorporating cluster to the model reduces bias, but increases the uncertainty around our point estimates. Adding natural clusters (school, study centre, experimenter, chemical batch) is considered the honest thing to do in that the estimates from such models better reflect true uncertainty around the estimates.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p></li>
-<li><p>blinding is a bias reduction measure that blinds the assignment of subjects into study arms for (i) the people who collect data and/or</p>
-<ol start="2" type="i">
-<li>data analysts. Another form of blinding is to keep the group assignments in the open, but to code the data, so that its analysis is done using pre-specified protocols and without intermediate access to results, which are decoded at the very end of the analysis.</li>
-</ol></li>
-<li><p>technical replicate - experiment is replicated at technical level, often by running the same samples through measurement several times. Such analysis allows to assess the quality of measurement, but it does not capture biological variation in nature.</p></li>
-<li><p>biological replicate - study samples correspond to independently collected biological samples. The goal is to capture biological variation, and therefore to be able to generalize the results of the experiment to some biological level. If the data is clustered by cage, family, etc., then appropriate multilevel analysis is needed. Also, the more biological variation is covered in the experiment, the better the experiment is generalizable, but the larger sample size is needed to reliably estimate effects of a given size. Importantly, the sensitivity of the experiment goes down linearly with increasing variation in the data, while it goes up proportionally with the square root of increasing sample size. Therefore, it is much more costly to increase sensitivity by increasing N, rather than by decreasing SD.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> As a rule, one can only extrapolate results to the population, from which a representative sample was drawn for the study (random sampling is a good way of obtaining a representative sample). This level of extrapolation is called <strong>external validity</strong> of the study.</p></li>
-<li><p>reproducing the experiment means reanalysing the original data using the original analytic protocols, and getting pretty much exactly the same results.</p></li>
-<li><p>replicating the experiment means redoing the whole experiment, starting by collecting new data, and getting reasonably similar results. The idea is to use exactly the original protocols (although increasing the sample size, and maybe improving the analysis in a clearly defined way, may be permissible).<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p></li>
+<li>Aristotle’s four causes are a scheme for explanation, not a procedure for testing a causal claim; Hume showed that no procedure of the usual kind can reveal a cause, because what observation delivers is regular succession, never necessity.</li>
+<li>Kant relocated causal necessity into the structure of the mind and paid for it with a guarantee that physics later revoked. The modern position keeps his insight, that causal structure is supplied to the data, and drops the guarantee: the supplied structure is an assumption to be defended.</li>
+<li>Mill’s method of difference is the logic of the controlled comparison, and its premise, alike in every respect except one, is the whole problem of causal inference outside the laboratory.</li>
+<li>A controlled experiment lets the comparison, not either condition alone, carry the conclusion; randomisation extends it to units that are not alike, by making the arms differ only by chance.</li>
+<li>Randomisation balances pre-treatment variables in expectation, not in every sample; adjusting for them recovers precision. Blocking, clustering and blinding serve the same end of a clean comparison.</li>
+<li>In the book’s cohort the crude risk ratio has the wrong sign as observed (1.67) and the right value once treatment is randomised (0.58 against a truth of 0.60): the causal reading of a comparison rests on the design, not on the arithmetic.</li>
+<li>The fundamental problem of causal inference is that the counterfactual outcome is never observed. Randomisation sidesteps it for an average effect; when randomisation is impossible, its premise must be argued from knowledge of how treatment was assigned (Part III), with the uncertainty of that argument stated in the language of Part II.</li>
 </ul>
-<p>Causal inference is in essence a comparison between potential outcomes of what might have occurred under different scenarios. This could be between a factual state and one or more counterfactual states, representing what might have happened, or it could be a comparison among various counterfactuals. Thus, ideally one would compare, how the same individual fares in parallel universes. In one she would get the experimental treatment, in another the control treatment. Our lack of access to parallel universes is <strong>the fundamental problem of causation</strong>. Without the ability to inspect parallel universes the next best thing is <strong>controlled randomized experiment/trial</strong> (RCT), involving administering experimental treatment and control tratment to different groups of individuals, who are randomized in respect to all other variables that might affect the outcome of the experiment. Then (usually) the mean values of the two groups are compared to calculate the effect size.</p>
-<blockquote class="blockquote">
-<p>In practice, we can never ensure that treatment and control groups are balanced on all relevant pre-treatment characteristics. However, there are statistical approaches that may bring us closer. At the design stage, we can use randomization to ensure that treatment and control groups are balanced in expectation, and we can use blocking to reduce the variation in any imbalance. At the analysis stage, we can adjust for pre-treatment variables to correct for differences between the two groups to reduce bias in our estimate of the sample average treatment effect. We can further adjust for differences between sample and population if our goal is to estimate the population average treatment effect. (Gelman, Hill, and Vehtari, 2020).</p>
-</blockquote>
-<p>If asked, you should be able to answer:</p>
-<ol type="1">
-<li><p>What scientific question does your experiment address?</p></li>
-<li><p>What are the reasonable controls (negative and positive controls)? Every field has its own standards, as to which controls are required.</p></li>
-<li><p>Are there any blocking and/or clustering structures in the data that you should/could use in the analysis?</p></li>
-<li><p>How many times have you repeated your experiment? Can you explain your sample size? Specifically, have you done a formal power analysis?</p></li>
-<li><p>Do you have biological and/or technical replicates? What is the level of generalizability of your experiment?</p></li>
-<li><p>Have you excluded any failed experiments from analysis and if so, why? Do you have any missing, non-measured, data? How are you addressing this in analysis?</p></li>
-<li><p>How have you ensured reproducibility of your experiment? (publication of analysis code)</p></li>
-<li><p>How have you ensured replicability of the experiment? (publication and sharing arrangements of materials and methods)</p></li>
-<li><p>Have you pre-specified any aspects of data collection and/or analysis?</p></li>
-</ol>
 </section>
-<section id="modern-models-causality-bind-randomized-experiment-with-observational-studies" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="modern-models-causality-bind-randomized-experiment-with-observational-studies"><span class="header-section-number">4.7</span> Modern models causality bind randomized experiment with observational studies</h2>
-<p>A more modern version on causal analysis, which binds experiental scinece and epidemiology into a single coherent framework, is the counterfactual, a.k.a. potential outcomes approach. According to this model, each individual has a potential outcome under each treatment state, even though she can be observed in only one treatment state at any point in time. Because it is impossible to observe both outcomes at the same time for any individual, causal effects cannot be observed at the individual level. Thus, we need to estimate average causal effects for groups of individuals, defined by specific characteristics. To do so effectively, the process by which individuals of different types are exposed to the cause of interest must be modeled. If the modelling assumptions are defendable, and a suitable method for constructing an average contrast from the data is chosen, then an average difference can be given a causal interpretation. Experiment is an investigation where the system under study is under the control of the investigator. The individuals or material investigated, the nature of the treatments or manipulations under study and the measurement procedures are all selected by the investigator, whereas in an observational study some of these features, and in particular the allocation of individuals to treatment groups, are outside the investigator’s control. This brings us to the <strong>fundamental problem of causation</strong>: as comparison with control is necessary, how can we both do and not do the treatment? We could do treatment first and then the control (or <em>vice versa</em>), but this assumes temporal stability, causal transience (system response is not influenced by its history), and unit homogeneity. Or then, there is the statistical solution where we assume that there are many units of observation which, while not identical, taken together represent the population. We also assume that the exposure/treatment variable we manipulate (the cause) is independent of the variables that we measure. Only then can we measure experimental values in some people and control values in others to calculate the average causal effect.</p>
-<p>That is a lot of assumptions. Clearly, experimental results do not speak for themselves. Experimental systems are simplifications of reality involving physical models, and often statistical models as well. As experimental results are relative to control, they must be put into wider context and need interpretation.</p>
-<p>The randomization into groups with the intention to balance them means that increasing the sample size increases the probability of it being representative of the population. The goal is that any confounding factor besides the experimental manipulation, which could influence the result of the experiment, would be present in equal “concentration” in the study group and control group. <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
-<p>If this is the case, their influences on experimental results will cancel out. For this to work, we need (1) not too many confounding factors to partition and (2) not too small a sample. If the sample size is comparable with the number of confounding factors, some imbalance will likely be present and randomization cannot remove bias. Usually we have no idea about how many nuisance variables there might be in our experiment. As a rule of thumb, for RCTs with a sample size of at least 200, randomization should be “an insurance in the long run against substantial accidental bias between treatment groups”. The ´long run´ means that even with large samples randomization will not guarantee elimination of bias from a particular sample, it will only make it more likely.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
-<p>Biological experiments are usually not randomized and the independence of repeat experiments is achieved by varying as many components of the experimental system (buffer batches and enzyme preps) as possible and by trying to keep the compositions and treatments of the experimental and control groups as similar as possible. This leads naturally to paired designs where experimental and control groups are treated together as much as possible, and in parallel. The idea behind a paired design is that substantial fraction of random variation resides within the pairs, and we can take this into account in our analysis model structures.</p>
-<p>So how do we know that by treatment we treated the variable that we wanted treated, rather than something else? We simply need a simple enough experimental system, which means that we cannot study the world directly – need a simplified system that we can consistently disrupt with treatment. As every simplification constitutes an extra hypothesis, this makes it correspondingly harder to generalize back to the world.</p>
-<p>An experimental system consists of the biological object of measurement, reagents, machines, the experimenters, and the act of measurement. Experimental system has long-run quality properties: it has sensitivity and specificity. It has a measure of complexity and a measure of relevance to the real world. There is trade-off, by which a simple system is easy to interpret, but at the expense of external validity (genralizability). For instance, simplified <em>in vitro</em> systems presuppose that we understand <em>in vivo</em> conditions, less there be serious problems with external validity. And the in vivo sytems, which tend to have better external validity, are often harder to interpret (theres a bigger chance of confounding).</p>
+<section id="exercises" class="level2" data-number="4.12">
+<h2 data-number="4.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.12</span> Exercises</h2>
+<ol type="1">
+<li><strong>Weaker confounding.</strong> Re-run the two cohorts with the influence of severity on prescribing halved: <code>simulate_cohort(n = N_COHORT, seed = 2024, params = modifyList(default_params(), list(d_sev = 0.7)))</code>. Report the crude risk ratio and the balance table. Does the crude comparison still have the wrong sign? At what value of <code>d_sev</code> does it change sign, and why is the true effect unchanged throughout?</li>
+<li><strong>Randomised but not adhered to.</strong> Start from <code>params_rct</code> and imagine that patients randomised to the drug take it only if their severity is above the median (write this as a new <code>drug_taken</code> column). Compare the risk ratio by <em>randomised</em> arm with the risk ratio by <em>drug actually taken</em>. Which comparison still has a causal reading, and what does it estimate? (<a href="ch13-target-trial-emulation.html" class="quarto-xref"><span>Chapter 14</span></a> and <a href="ch17-instrumental-variables.html" class="quarto-xref"><span>Chapter 18</span></a> return to this contrast.)</li>
+<li><strong>Mill and the trial.</strong> State Mill’s method of difference as a rule for two groups of patients. Which word in the rule does randomisation supply, and which of Mill’s other four methods describes a dose–response study?</li>
+<li><strong>Hume’s four conditions.</strong> Apply Hume’s four conditions for a causal connection to the claim that smoking causes lung cancer. Which conditions hold, which fail, and which failure did Hume himself already worry about?</li>
+<li><strong>Blinding.</strong> A trial of a new analgesic is randomised but not blinded, and the outcome is self-reported pain. Describe two routes by which the treatment effect could be biased, name the design vocabulary for each, and say which of the two would be removed by blinding the analysts only.</li>
+<li><strong>Interference.</strong> A cluster-randomised trial vaccinates all children in half the villages of a district and compares infection rates with the other half. Which of the two SUTVA conditions is protected by randomising villages rather than children, which is not, and what does the trial’s treatment effect mean if vaccinated villages also protect their unvaccinated neighbours?</li>
+</ol>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Stoicism is a school of Hellenistic philosophy founded by Zeno of Citium in Athens in the early 3rd century BC. It lasted for 500 years.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Community is the category for mutual causal interaction — things acting on each other simultaneously and reciprocally. (Think of mutual gravitational attraction.) If things merely sat side by side with no reciprocal influence, we’d have no basis for regarding them as parts of a single, simultaneous whole. Community is the concept that binds coexisting substances into one interacting system.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Sometimes the term is used instead to denote a commonly used study organism, for which exist worked-out experimental systems in the previous sense. Examples include <em>E. coli</em> (genetical and biochemical methods), Mouse (genetical methods), and rat (physiological methods), <em>X. laevis</em> (cell biology methods), and dalmatian dog as a narcolepsia model.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Testing the effect of a fertilizer by randomly assigning adjacent plots to treatment or control is a classic example of interference. Vaccines that reduce the probability of a disease within a community could easily lead to violation. Note that an epidemiologist might well hope for interference to increase the impact of an intervention.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>A PCR reaction with a standard template/primers combo<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>A PCR reaction lacking template. Question: Why is omitting template a better idea than omitting the enzyme?<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>Blocking and pairing are effective to the extent that units within the same block or pair are similar to each other in their pre-treatment characteristics, so that splitting each block or pair ensures some level of pre-treatment balance between treatment and control groups. In contrast, clustered designs are typically less efficient than complete randomization. NB! Blocking, pairing and clustering are welcome additions to randomized experiments in the analysis stage where they help to improve the overall accuracy of the results. In general, adding pre-treatment variables to regression models often helps to reduce uncertainty around the estimates in randomized experiments.The exceptions are when a pre-treatment variable is causally irrelevant, or when DAG-based formal causal analysis indicates its omission.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>This is the reason why in clinical studies many patient groups that will eventually get the treatment are excluded from the trials that test the efficacy and safety of said treatment. As we are talking about patients, who are older and with more comorbidities, this is a serious problem.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>Conceptual replication means that it is not exatly the original experiment, but something conceptually similar, that is done. The usefulness of conceptual replication in verfying original results is uncertain.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p>Actually, we want all possible <em>combinations</em> of confounder levels be present with equal frequencies in study vs.&nbsp;control groups.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn11"><p>In most biochemical experimentation it is unclear what “random sample” even means, because the underlying population is imaginary.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Aristotle, <em>Physics</em> II.3 (194b16–195a3); for a modern exposition, Falcon A, “Aristotle on Causality,” <em>The Stanford Encyclopedia of Philosophy</em> (Zalta EN, ed.), <a href="https://plato.stanford.edu/entries/aristotle-causality/" class="uri">https://plato.stanford.edu/entries/aristotle-causality/</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Hume D, <em>A Treatise of Human Nature</em>, London: John Noon, 1739–1740, Book I, Part III, Sections 2 and 14.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Kant I, <em>Critik der reinen Vernunft</em>, Riga: Hartknoch, 1781 (second edition 1787); English as <em>Critique of Pure Reason</em>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Mill JS, <em>A System of Logic, Ratiocinative and Inductive</em>, London: John W. Parker, 1843, Book III, Chapter VIII, “Of the four methods of experimental inquiry”.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Charles Sanders Peirce (1839–1914), American logician and chemist by training, spent thirty years (1861–1891) at the United States Coast Survey measuring gravity with pendulums and held only one academic post, a part-time lectureship in logic at Johns Hopkins (1879–1884). He founded pragmatism and published little of his philosophy in his lifetime; most of it appeared posthumously in the <em>Collected Papers</em> (Hartshorne C, Weiss P, eds., Cambridge MA: Harvard University Press, 1931–1958). The abduction schema is from the Harvard Lectures on Pragmatism of 1903, <em>Collected Papers</em> 5.189. For a modern exposition see Douven I, “Abduction,” <em>The Stanford Encyclopedia of Philosophy</em> (Zalta EN, ed.), <a href="https://plato.stanford.edu/entries/abduction/" class="uri">https://plato.stanford.edu/entries/abduction/</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Davy H, <em>Elements of Chemical Philosophy</em>, London: J. Johnson, 1812, Introduction.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Liebig J, <em>Ueber Francis Bacon von Verulam und die Methode der Naturforschung</em>, Munich: Cotta, 1863.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Popper KR, <em>The Logic of Scientific Discovery</em>, London: Hutchinson, 1959 (English edition of <em>Logik der Forschung</em>, Vienna: Springer, 1934), section 30.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Box JF, <em>R. A. Fisher: The Life of a Scientist</em>, New York: Wiley, 1978.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Bacon F, <em>Novum Organum</em>, London, 1620.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Hooke R, memorandum on the business and design of the Royal Society (c.&nbsp;1663), printed in Weld CR, <em>A History of the Royal Society</em>, London: John W. Parker, 1848, vol.&nbsp;1.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Fisher RA, <em>The Design of Experiments</em>, Edinburgh: Oliver and Boyd, 1935.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Hill AB, <em>Principles of Medical Statistics</em>, London: The Lancet, 1937; first published as seventeen articles in <em>The Lancet</em>, 2 January to 24 April 1937.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Medical Research Council, “Streptomycin treatment of pulmonary tuberculosis,” <em>Br Med J</em> 1948;2:769-782 (<a href="https://doi.org/10.1136/bmj.2.4582.769">DOI</a>).<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Holland PW, “Statistics and Causal Inference,” <em>J Am Stat Assoc</em> 1986;81:945-960 (<a href="https://doi.org/10.1080/01621459.1986.10478354">DOI</a>).<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

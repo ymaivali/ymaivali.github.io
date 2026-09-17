@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>The Bayesian Way to Causal Epidemiology - 35&nbsp; Appendix: mgcv</title>
+<title>The Bayesian Way to Causal Epidemiology - Appendix F — mgcv</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./15-appendix-git.html" rel="next">
-<link href="./13-appendix-mcmc.html" rel="prev">
+<link href="./16-appendix-H0.html" rel="next">
+<link href="./18-appendix-correlation-structures.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./14-appendix-mgcv.html"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./14-appendix-mgcv.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -175,7 +175,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">A statement of purpose</span></span></a>
+ <span class="menu-text">A statement of purpose</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -187,6 +187,12 @@ window.Quarto = {
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
@@ -202,7 +208,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal inference and Experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -298,7 +304,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Part IV. Beyond the backdoor</span></a>
+ <span class="menu-text">Part IV. Beyond the back-door</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -419,43 +425,55 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Appendix: Exploratory Data Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Appendix: brms code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Appendix: brm model syntax</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-appendix-mcmc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span></a>
+  <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./15-appendix-git.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Appendix: Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -470,50 +488,43 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#executive-summary-polynomials-splines-and-tensor-products" id="toc-executive-summary-polynomials-splines-and-tensor-products" class="nav-link active" data-scroll-target="#executive-summary-polynomials-splines-and-tensor-products"><span class="header-section-number">35.1</span> Executive summary: polynomials, splines, and tensor products</a></li>
-  <li><a href="#from-polynomials-to-splines-a-more-technical-exposition" id="toc-from-polynomials-to-splines-a-more-technical-exposition" class="nav-link" data-scroll-target="#from-polynomials-to-splines-a-more-technical-exposition"><span class="header-section-number">35.2</span> From polynomials to splines: a more technical exposition</a>
+  <li><a href="#executive-summary-polynomials-splines-and-tensor-products" id="toc-executive-summary-polynomials-splines-and-tensor-products" class="nav-link active" data-scroll-target="#executive-summary-polynomials-splines-and-tensor-products"><span class="header-section-number">F.1</span> Executive summary: polynomials, splines, and tensor products</a></li>
+  <li><a href="#from-polynomials-to-splines-a-more-technical-exposition" id="toc-from-polynomials-to-splines-a-more-technical-exposition" class="nav-link" data-scroll-target="#from-polynomials-to-splines-a-more-technical-exposition"><span class="header-section-number">F.2</span> From polynomials to splines: a more technical exposition</a>
   <ul class="collapse">
-  <li><a href="#thin-plate-splines-the-default-for-s-in-mgcv" id="toc-thin-plate-splines-the-default-for-s-in-mgcv" class="nav-link" data-scroll-target="#thin-plate-splines-the-default-for-s-in-mgcv"><span class="header-section-number">35.2.1</span> Thin plate splines: the default for <code>s()</code> in mgcv</a></li>
-  <li><a href="#tensor-product-smooths-a-different-construction" id="toc-tensor-product-smooths-a-different-construction" class="nav-link" data-scroll-target="#tensor-product-smooths-a-different-construction"><span class="header-section-number">35.2.2</span> Tensor product smooths: a different construction</a></li>
+  <li><a href="#thin-plate-splines-the-default-for-s-in-mgcv" id="toc-thin-plate-splines-the-default-for-s-in-mgcv" class="nav-link" data-scroll-target="#thin-plate-splines-the-default-for-s-in-mgcv"><span class="header-section-number">F.2.1</span> Thin plate splines: the default for <code>s()</code> in mgcv</a></li>
+  <li><a href="#tensor-product-smooths-a-different-construction" id="toc-tensor-product-smooths-a-different-construction" class="nav-link" data-scroll-target="#tensor-product-smooths-a-different-construction"><span class="header-section-number">F.2.2</span> Tensor product smooths: a different construction</a></li>
   </ul></li>
-  <li><a href="#a-worked-sequence-of-models" id="toc-a-worked-sequence-of-models" class="nav-link" data-scroll-target="#a-worked-sequence-of-models"><span class="header-section-number">35.3</span> A worked sequence of models</a>
+  <li><a href="#a-worked-sequence-of-models" id="toc-a-worked-sequence-of-models" class="nav-link" data-scroll-target="#a-worked-sequence-of-models"><span class="header-section-number">F.3</span> A worked sequence of models</a>
   <ul class="collapse">
-  <li><a href="#one-smooth-per-covariate" id="toc-one-smooth-per-covariate" class="nav-link" data-scroll-target="#one-smooth-per-covariate"><span class="header-section-number">35.3.1</span> One smooth per covariate</a></li>
-  <li><a href="#a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product" id="toc-a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product" class="nav-link" data-scroll-target="#a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product"><span class="header-section-number">35.3.2</span> A joint smooth of two covariates: isotropic versus tensor product</a></li>
-  <li><a href="#separating-the-interaction-ti" id="toc-separating-the-interaction-ti" class="nav-link" data-scroll-target="#separating-the-interaction-ti"><span class="header-section-number">35.3.3</span> Separating the interaction: <code>ti()</code></a></li>
-  <li><a href="#treatment-effect-modification-by-smooths" id="toc-treatment-effect-modification-by-smooths" class="nav-link" data-scroll-target="#treatment-effect-modification-by-smooths"><span class="header-section-number">35.3.4</span> Treatment effect modification: <code>by =</code> smooths</a></li>
+  <li><a href="#one-smooth-per-covariate" id="toc-one-smooth-per-covariate" class="nav-link" data-scroll-target="#one-smooth-per-covariate"><span class="header-section-number">F.3.1</span> One smooth per covariate</a></li>
+  <li><a href="#a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product" id="toc-a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product" class="nav-link" data-scroll-target="#a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product"><span class="header-section-number">F.3.2</span> A joint smooth of two covariates: isotropic versus tensor product</a></li>
+  <li><a href="#separating-the-interaction-ti" id="toc-separating-the-interaction-ti" class="nav-link" data-scroll-target="#separating-the-interaction-ti"><span class="header-section-number">F.3.3</span> Separating the interaction: <code>ti()</code></a></li>
+  <li><a href="#treatment-effect-modification-by-smooths" id="toc-treatment-effect-modification-by-smooths" class="nav-link" data-scroll-target="#treatment-effect-modification-by-smooths"><span class="header-section-number">F.3.4</span> Treatment effect modification: <code>by =</code> smooths</a></li>
   </ul></li>
-  <li><a href="#mixing-factors-into-smooths-by-bs-re-bs-fs" id="toc-mixing-factors-into-smooths-by-bs-re-bs-fs" class="nav-link" data-scroll-target="#mixing-factors-into-smooths-by-bs-re-bs-fs"><span class="header-section-number">35.4</span> Mixing factors into smooths: <code>by =</code>, <code>bs = "re"</code>, <code>bs = "fs"</code></a>
+  <li><a href="#mixing-factors-into-smooths-by-bs-re-bs-fs" id="toc-mixing-factors-into-smooths-by-bs-re-bs-fs" class="nav-link" data-scroll-target="#mixing-factors-into-smooths-by-bs-re-bs-fs"><span class="header-section-number">F.4</span> Mixing factors into smooths: <code>by =</code>, <code>bs = "re"</code>, <code>bs = "fs"</code></a>
   <ul class="collapse">
-  <li><a href="#bs-re-parametric-random-effects" id="toc-bs-re-parametric-random-effects" class="nav-link" data-scroll-target="#bs-re-parametric-random-effects"><span class="header-section-number">35.4.1</span> <code>bs = "re"</code>: parametric random effects</a></li>
-  <li><a href="#bs-fs-factor-smooths-random-curves" id="toc-bs-fs-factor-smooths-random-curves" class="nav-link" data-scroll-target="#bs-fs-factor-smooths-random-curves"><span class="header-section-number">35.4.2</span> <code>bs = "fs"</code>: factor smooths (random curves)</a></li>
-  <li><a href="#syntax-reference" id="toc-syntax-reference" class="nav-link" data-scroll-target="#syntax-reference"><span class="header-section-number">35.4.3</span> Syntax reference</a></li>
+  <li><a href="#bs-re-parametric-random-effects" id="toc-bs-re-parametric-random-effects" class="nav-link" data-scroll-target="#bs-re-parametric-random-effects"><span class="header-section-number">F.4.1</span> <code>bs = "re"</code>: parametric random effects</a></li>
+  <li><a href="#bs-fs-factor-smooths-random-curves" id="toc-bs-fs-factor-smooths-random-curves" class="nav-link" data-scroll-target="#bs-fs-factor-smooths-random-curves"><span class="header-section-number">F.4.2</span> <code>bs = "fs"</code>: factor smooths (random curves)</a></li>
+  <li><a href="#syntax-reference" id="toc-syntax-reference" class="nav-link" data-scroll-target="#syntax-reference"><span class="header-section-number">F.4.3</span> Syntax reference</a></li>
   </ul></li>
-  <li><a href="#keep-the-treatment-effect-unpenalised" id="toc-keep-the-treatment-effect-unpenalised" class="nav-link" data-scroll-target="#keep-the-treatment-effect-unpenalised"><span class="header-section-number">35.5</span> Keep the treatment effect unpenalised</a></li>
-  <li><a href="#from-adjusted-gam-to-causal-contrast" id="toc-from-adjusted-gam-to-causal-contrast" class="nav-link" data-scroll-target="#from-adjusted-gam-to-causal-contrast"><span class="header-section-number">35.6</span> From adjusted GAM to causal contrast</a>
+  <li><a href="#keep-the-treatment-effect-unpenalised" id="toc-keep-the-treatment-effect-unpenalised" class="nav-link" data-scroll-target="#keep-the-treatment-effect-unpenalised"><span class="header-section-number">F.5</span> Keep the treatment effect unpenalised</a></li>
+  <li><a href="#from-adjusted-gam-to-causal-contrast" id="toc-from-adjusted-gam-to-causal-contrast" class="nav-link" data-scroll-target="#from-adjusted-gam-to-causal-contrast"><span class="header-section-number">F.6</span> From adjusted GAM to causal contrast</a>
   <ul class="collapse">
-  <li><a href="#worked-example-from-fit-to-ate" id="toc-worked-example-from-fit-to-ate" class="nav-link" data-scroll-target="#worked-example-from-fit-to-ate"><span class="header-section-number">35.6.1</span> Worked example: from fit to ATE</a></li>
-  <li><a href="#a-continuous-exposure-the-doseresponse-curve" id="toc-a-continuous-exposure-the-doseresponse-curve" class="nav-link" data-scroll-target="#a-continuous-exposure-the-doseresponse-curve"><span class="header-section-number">35.6.2</span> A continuous exposure: the dose–response curve</a></li>
-  <li><a href="#splines-in-causal-regression-a-working-checklist" id="toc-splines-in-causal-regression-a-working-checklist" class="nav-link" data-scroll-target="#splines-in-causal-regression-a-working-checklist"><span class="header-section-number">35.6.3</span> Splines in causal regression: a working checklist</a></li>
+  <li><a href="#worked-example-from-fit-to-ate" id="toc-worked-example-from-fit-to-ate" class="nav-link" data-scroll-target="#worked-example-from-fit-to-ate"><span class="header-section-number">F.6.1</span> Worked example: from fit to ATE</a></li>
+  <li><a href="#a-continuous-exposure-the-doseresponse-curve" id="toc-a-continuous-exposure-the-doseresponse-curve" class="nav-link" data-scroll-target="#a-continuous-exposure-the-doseresponse-curve"><span class="header-section-number">F.6.2</span> A continuous exposure: the dose–response curve</a></li>
+  <li><a href="#splines-in-causal-regression-a-working-checklist" id="toc-splines-in-causal-regression-a-working-checklist" class="nav-link" data-scroll-target="#splines-in-causal-regression-a-working-checklist"><span class="header-section-number">F.6.3</span> Splines in causal regression: a working checklist</a></li>
   </ul></li>
-  <li><a href="#a-practical-model-ladder" id="toc-a-practical-model-ladder" class="nav-link" data-scroll-target="#a-practical-model-ladder"><span class="header-section-number">35.7</span> A practical model ladder</a></li>
-  <li><a href="#when-the-gam-summary-is-not-enough-cross-fitting-and-doubly-robust-estimation" id="toc-when-the-gam-summary-is-not-enough-cross-fitting-and-doubly-robust-estimation" class="nav-link" data-scroll-target="#when-the-gam-summary-is-not-enough-cross-fitting-and-doubly-robust-estimation"><span class="header-section-number">35.8</span> When the GAM summary is not enough: cross-fitting and doubly robust estimation</a>
-  <ul class="collapse">
-  <li><a href="#the-doubly-robust-idea-aipw" id="toc-the-doubly-robust-idea-aipw" class="nav-link" data-scroll-target="#the-doubly-robust-idea-aipw"><span class="header-section-number">35.8.1</span> The doubly robust idea: AIPW</a></li>
-  <li><a href="#cross-fitting" id="toc-cross-fitting" class="nav-link" data-scroll-target="#cross-fitting"><span class="header-section-number">35.8.2</span> Cross-fitting</a></li>
-  <li><a href="#tmle-versus-aipw" id="toc-tmle-versus-aipw" class="nav-link" data-scroll-target="#tmle-versus-aipw"><span class="header-section-number">35.8.3</span> TMLE versus AIPW</a></li>
-  <li><a href="#superlearner-the-ensemble-layer" id="toc-superlearner-the-ensemble-layer" class="nav-link" data-scroll-target="#superlearner-the-ensemble-layer"><span class="header-section-number">35.8.4</span> SuperLearner: the ensemble layer</a></li>
-  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">35.8.5</span> R packages</a></li>
-  </ul></li>
+  <li><a href="#a-practical-model-ladder" id="toc-a-practical-model-ladder" class="nav-link" data-scroll-target="#a-practical-model-ladder"><span class="header-section-number">F.7</span> A practical model ladder</a></li>
+  <li><a href="#beyond-the-gam-summary" id="toc-beyond-the-gam-summary" class="nav-link" data-scroll-target="#beyond-the-gam-summary"><span class="header-section-number">F.8</span> Beyond the GAM summary</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./14-appendix-mgcv.html"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./14-appendix-mgcv.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Appendix: mgcv</span></h1>
+<h1 class="title"><span id="sec-app-mgcv" class="quarto-section-identifier">Appendix F — mgcv</span></h1>
 </div>
 
 
@@ -532,8 +543,8 @@ window.Quarto = {
 
 <p>This appendix is the technical companion to the regression chapters: what a spline is, how mgcv penalises it, and — the part that matters for this book — how to build splines into a regression whose purpose is causal estimation rather than curve description. The book fits its models with <code>brms</code>, and <code>brms</code> smooth terms are constructed by mgcv machinery, so everything below about bases, penalties and model structures carries over. (<code>brms</code> accepts <code>s()</code> and <code>t2()</code>; <code>te()</code> and <code>ti()</code> are mgcv-only.) We work in mgcv directly because it is fast to iterate with and because its vocabulary — <code>te()</code>, <code>ti()</code>, <code>by =</code>, <code>bs = "re"</code>, <code>bs = "fs"</code> — is what you will meet in documentation and applied papers.</p>
 <p>Throughout, one running example: a cohort study of a binary treatment <code>tx</code> (say, physiotherapy) on a continuous outcome <code>y</code> (a work-disability score), with confounders <code>age</code>, <code>bmi</code>, <code>sex</code>, and <code>region</code> (20 levels).</p>
-<section id="executive-summary-polynomials-splines-and-tensor-products" class="level2 page-columns page-full" data-number="35.1">
-<h2 data-number="35.1" class="anchored" data-anchor-id="executive-summary-polynomials-splines-and-tensor-products"><span class="header-section-number">35.1</span> Executive summary: polynomials, splines, and tensor products</h2>
+<section id="executive-summary-polynomials-splines-and-tensor-products" class="level2 page-columns page-full" data-number="F.1">
+<h2 data-number="F.1" class="anchored" data-anchor-id="executive-summary-polynomials-splines-and-tensor-products"><span class="header-section-number">F.1</span> Executive summary: polynomials, splines, and tensor products</h2>
 <p>Real biomedical relationships are rarely straight lines. Risk often rises gently, then steeply; dose–response curves plateau; effects of age bend at midlife. To fit such patterns we need models that can <em>bend</em>, and the choice of how to let them bend is an important decision in model building.</p>
 <p><strong>Polynomials bend globally.</strong> Adding squared and cubed terms to a regression lets the fit curve, and for mild curvature this works. The problem is that every part of the curve depends on every data point: a cluster of observations at one end of the <em>x</em>-range can tip the fitted line at the other end. Higher-degree polynomials oscillate near the boundaries and extrapolate badly.</p>
 <p><strong>Splines bend locally.</strong> A spline is built from many small, overlapping pieces, each active only in a narrow region of <em>x</em>. Wiggle introduced by a cluster of points stays where it belongs. Splines fit complex shapes — thresholds, plateaus, U-shapes — without disturbing parts of the curve where the data are well-behaved. This is the standard tool of modern flexible regression.</p>
@@ -550,15 +561,15 @@ window.Quarto = {
 <p>Start with <code>s()</code> per covariate. Add <code>te()</code> or <code>ti()</code> only when an interaction is biologically plausible and you have enough data to estimate it. Let the penalty handle wiggliness. Inspect each smooth visually before trusting it.</p>
 </blockquote>
 </section>
-<section id="from-polynomials-to-splines-a-more-technical-exposition" class="level2 page-columns page-full" data-number="35.2">
-<h2 data-number="35.2" class="anchored" data-anchor-id="from-polynomials-to-splines-a-more-technical-exposition"><span class="header-section-number">35.2</span> From polynomials to splines: a more technical exposition</h2>
+<section id="from-polynomials-to-splines-a-more-technical-exposition" class="level2 page-columns page-full" data-number="F.2">
+<h2 data-number="F.2" class="anchored" data-anchor-id="from-polynomials-to-splines-a-more-technical-exposition"><span class="header-section-number">F.2</span> From polynomials to splines: a more technical exposition</h2>
 <p>A polynomial regression model is the simplest way to let the conditional mean of <em>y</em> bend with <em>x</em>:</p>
-<p><span class="math display">\[E(y \mid x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p\]</span></p>
+<p><span class="math display">\[E(y \mid x) = \alpha + \beta_1 x + \beta_2 x^2 + \cdots + \beta_p x^p\]</span></p>
 <p>This is a <em>basis expansion</em>: we write the unknown function <em>f</em>(<em>x</em>) as a sum of known building blocks — here, the powers 1, <em>x</em>, <em>x</em>². The model is linear in <strong>β</strong> even though it is nonlinear in <em>x</em>.</p>
 
 <div class="no-row-height column-margin column-container"><div class="margin-aside">
 <p><strong>“Linear in β”</strong> means that if we fix the data and view the fitted value as a function of the coefficients, doubling every β doubles every fitted value, and the contributions of β₀, β₁, β₂, … add up. Concretely, define new variables <em>z</em>₁ = <em>x</em>, <em>z</em>₂ = <em>x</em>², <em>z</em>₃ = <em>x</em>³, and so on. Then</p>
-<p><span class="math display">\[E(y \mid x) = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3 z_3 + \cdots\]</span></p>
+<p><span class="math display">\[E(y \mid x) = \alpha + \beta_1 z_1 + \beta_2 z_2 + \beta_3 z_3 + \cdots\]</span></p>
 <p>is an ordinary multiple linear regression, with the <em>z</em>ⱼ playing the role of predictors. The relationship between <em>y</em> and the original <em>x</em> is curved — that’s the whole point — but the relationship between <em>y</em> and the constructed columns <em>z</em>ⱼ is a flat hyperplane.</p>
 <p>This is not a notational trick; it has two concrete consequences.</p>
 <p><strong>Estimation is a solved problem.</strong> Because the model is linear in β, the coefficients are obtained by ordinary least squares. The same is true for splines, which is why these methods are fast and stable on large datasets.</p>
@@ -582,16 +593,16 @@ Note
 <p>A practical question becomes: how many knots, and where? The <em>penalised</em> spline approach sidesteps this by using more knots than strictly needed and adding a wiggliness penalty to the objective:</p>
 <p><span class="math display">\[\text{minimize} \quad \sum_{i=1}^{n}\bigl(y_i - f(x_i)\bigr)^2 \; + \; \lambda \int f''(x)^2 \, dx.\]</span></p>
 <p>The first term rewards fit; the second penalises curvature. The smoothing parameter λ controls the trade-off and is chosen automatically — by REML or GCV — inside mgcv. Ordinary polynomial regression is then just the simplest, unpenalised, global case of this framework.</p>
-<section id="thin-plate-splines-the-default-for-s-in-mgcv" class="level3" data-number="35.2.1">
-<h3 data-number="35.2.1" class="anchored" data-anchor-id="thin-plate-splines-the-default-for-s-in-mgcv"><span class="header-section-number">35.2.1</span> Thin plate splines: the default for <code>s()</code> in mgcv</h3>
+<section id="thin-plate-splines-the-default-for-s-in-mgcv" class="level3" data-number="F.2.1">
+<h3 data-number="F.2.1" class="anchored" data-anchor-id="thin-plate-splines-the-default-for-s-in-mgcv"><span class="header-section-number">F.2.1</span> Thin plate splines: the default for <code>s()</code> in mgcv</h3>
 <p>When you write <code>s(x)</code> in mgcv, you get a <em>thin plate regression spline</em> by default. The thin plate spline (TPS) is the natural multivariate generalisation of the cubic smoothing spline: among all smooth functions of <em>d</em> variables passing close to the data, it minimises an integrated-squared-second-derivative penalty. In two dimensions the penalty is</p>
 <p><span class="math display">\[\iint \bigl( f_{xx}^2 + 2 f_{xy}^2 + f_{yy}^2 \bigr) \, dx \, dy,\]</span></p>
 <p>which is — literally — the bending energy of a thin metal plate forced through the data points. Hence the name.</p>
 <p>TPS does not require the analyst to choose knot locations; in its original form it places one basis function at every data point, with the smoothing penalty doing the regularisation. Wood’s <em>thin plate regression spline</em> is a low-rank truncation that keeps the most informative basis functions and discards the rest, giving essentially the same statistical behaviour at a fraction of the cost.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>The TPS penalty is <em>isotropic</em>: it treats all input directions equivalently. For a single covariate this is harmless, but with several covariates passed into one smooth — <code>s(x, z)</code> — isotropy means the same notion of wiggliness is applied to both, which is sensible only when <em>x</em> and <em>z</em> are on comparable scales (latitude and longitude, say, but not age in years and BMI in kg/m²).</p>
 </section>
-<section id="tensor-product-smooths-a-different-construction" class="level3" data-number="35.2.2">
-<h3 data-number="35.2.2" class="anchored" data-anchor-id="tensor-product-smooths-a-different-construction"><span class="header-section-number">35.2.2</span> Tensor product smooths: a different construction</h3>
+<section id="tensor-product-smooths-a-different-construction" class="level3" data-number="F.2.2">
+<h3 data-number="F.2.2" class="anchored" data-anchor-id="tensor-product-smooths-a-different-construction"><span class="header-section-number">F.2.2</span> Tensor product smooths: a different construction</h3>
 <p>When covariates are on different scales or play qualitatively different roles, mgcv offers tensor product smooths via <code>te()</code> and <code>ti()</code>. These are built differently from TPS: the joint basis is formed as products of one-dimensional marginal bases, and — the key point — each marginal direction gets its own smoothing parameter and its own penalty, so smoothness in <em>x</em> is regulated independently of smoothness in <em>z</em>. The fit is therefore invariant to rescaling either covariate. <code>te(x, z)</code> builds the full smooth (interaction plus marginals); <code>ti(x, z)</code> strips out the marginal main effects, which is the right choice for the ANOVA-style decomposition <code>s(x) + s(z) + ti(x, z)</code> described in the executive summary.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -606,8 +617,8 @@ Note
 <p><strong>(A)</strong> A polynomial basis of degree three over the interval [0, 1]: the constant, <em>x</em>, <em>x</em>², and <em>x</em>³. Each basis function is non-zero across the entire range of <em>x</em>, so the fitted coefficient on any one term influences the fitted curve everywhere. This is what is meant by a <em>global</em> basis. <strong>(B)</strong> A cubic B-spline basis on the same interval, defined by six interior knots evenly spaced across [0, 1]. Each basis function is a localised bump, non-zero only over a narrow neighbourhood of <em>x</em>. Changing the coefficient on one bump perturbs the fitted curve only in that neighbourhood; this is a <em>local</em> basis. <strong>(C)</strong> Three fits to the same simulated dataset (<em>n</em> = 120; true mean function <em>f</em>(<em>x</em>) = sin(2π<em>x</em>) + 0.5<em>x</em>; Gaussian noise, σ = 0.35). Grey points are the simulated observations. The dashed line is a degree-15 polynomial fitted by ordinary least squares; note the visible oscillation near <em>x</em> = 0 and <em>x</em> = 1 (this is boundary oscillation typical of high-degree polynomials). The dotted line is an unpenalised cubic regression spline with 20 basis functions, which tracks individual data points between knots. The solid red line is a penalised thin plate regression spline (<code>s(x, bs = "tp", k = 20)</code>) with the smoothing parameter λ chosen automatically by REML; it recovers the underlying smooth signal without chasing the noise. <strong>(D)</strong> The same thin plate spline as in panel C, but with λ fixed by hand at four contrasting values, from heavy penalisation (λ = 100) to almost none (λ = 10⁻⁵). With large λ the wiggliness penalty dominates and the fit collapses toward a straight line (over-smoothing); with small λ the penalty is negligible and the curve follows individual observations (under-smoothing). The dashed grey curve, identical across facets, is the REML-chosen fit from panel C and serves as a reference for the data-driven choice. Together, panels A–D show that splines extend polynomial regression by replacing global building blocks with local ones, and that the smoothing parameter — not the number of knots — is the practical dial controlling model complexity.</p>
 </section>
 </section>
-<section id="a-worked-sequence-of-models" class="level2" data-number="35.3">
-<h2 data-number="35.3" class="anchored" data-anchor-id="a-worked-sequence-of-models"><span class="header-section-number">35.3</span> A worked sequence of models</h2>
+<section id="a-worked-sequence-of-models" class="level2" data-number="F.3">
+<h2 data-number="F.3" class="anchored" data-anchor-id="a-worked-sequence-of-models"><span class="header-section-number">F.3</span> A worked sequence of models</h2>
 <p>We simulate the running example: 5000 observations; a continuous outcome <code>y</code>; a binary treatment <code>tx</code>; two continuous confounders on different scales (<code>age</code> in years, <code>bmi</code> in kg/m²) whose effects are nonlinear and interact; <code>sex</code>, which modifies the age curve; and <code>region</code> (20 levels) contributing a random-effect-like offset.</p>
 <div class="cell">
 <details class="code-fold">
@@ -619,7 +630,7 @@ Note
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">age    =</span> <span class="fu">runif</span>(n, <span class="dv">18</span>, <span class="dv">85</span>),                        <span class="co"># years</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">bmi    =</span> <span class="fu">rnorm</span>(n, <span class="dv">27</span>, <span class="dv">5</span>),                         <span class="co"># kg/m^2 — DIFFERENT scale from age</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">bmi    =</span> <span class="fu">rnorm</span>(n, <span class="dv">27</span>, <span class="dv">5</span>),                         <span class="co"># kg/m^2 - DIFFERENT scale from age</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sex    =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"F"</span>,<span class="st">"M"</span>), n, <span class="cn">TRUE</span>)),</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">region =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">paste0</span>(<span class="st">"R"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>), n, <span class="cn">TRUE</span>)),</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">tx     =</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.4</span>)</span>
@@ -650,8 +661,8 @@ Note
 6 78.19211 32.79925   F     R4  1 -2.54858434</code></pre>
 </div>
 </div>
-<section id="one-smooth-per-covariate" class="level3" data-number="35.3.1">
-<h3 data-number="35.3.1" class="anchored" data-anchor-id="one-smooth-per-covariate"><span class="header-section-number">35.3.1</span> One smooth per covariate</h3>
+<section id="one-smooth-per-covariate" class="level3" data-number="F.3.1">
+<h3 data-number="F.3.1" class="anchored" data-anchor-id="one-smooth-per-covariate"><span class="header-section-number">F.3.1</span> One smooth per covariate</h3>
 <p>The baseline structure is one penalised smooth per continuous confounder, with the treatment as a parametric term. <code>s(x)</code> uses the thin plate basis by default (<code>bs = "tp"</code>); each smooth gets one smoothing parameter and one wiggliness penalty. This model assumes the treatment shifts the entire response surface by a constant amount — the same shift at every age, every BMI, every region.</p>
 <div class="cell">
 <details class="code-fold">
@@ -669,8 +680,8 @@ Note
 </div>
 <p>Use this when you have no reason to expect the treatment effect to vary with the covariates and you want to adjust for them. It is also where any model-building sequence should start (see the model ladder below).</p>
 </section>
-<section id="a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product" class="level3" data-number="35.3.2">
-<h3 data-number="35.3.2" class="anchored" data-anchor-id="a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product"><span class="header-section-number">35.3.2</span> A joint smooth of two covariates: isotropic versus tensor product</h3>
+<section id="a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product" class="level3" data-number="F.3.2">
+<h3 data-number="F.3.2" class="anchored" data-anchor-id="a-joint-smooth-of-two-covariates-isotropic-versus-tensor-product"><span class="header-section-number">F.3.2</span> A joint smooth of two covariates: isotropic versus tensor product</h3>
 <p>You <em>can</em> write <code>s(age, bmi)</code> — a two-dimensional isotropic thin plate smooth. It uses a single λ for combined wiggliness in both directions, which assumes age and BMI are measured on the <em>same scale</em>: a change of 1 year and of 1 kg/m² are treated as equivalent distances. That is almost never appropriate for clinical covariates.</p>
 <div class="cell">
 <details class="code-fold">
@@ -733,8 +744,8 @@ Note
 </div>
 </div>
 </section>
-<section id="separating-the-interaction-ti" class="level3" data-number="35.3.3">
-<h3 data-number="35.3.3" class="anchored" data-anchor-id="separating-the-interaction-ti"><span class="header-section-number">35.3.3</span> Separating the interaction: <code>ti()</code></h3>
+<section id="separating-the-interaction-ti" class="level3" data-number="F.3.3">
+<h3 data-number="F.3.3" class="anchored" data-anchor-id="separating-the-interaction-ti"><span class="header-section-number">F.3.3</span> Separating the interaction: <code>ti()</code></h3>
 <p>If you want main-effects-plus-interaction as separable terms — to test the interaction, or to keep the main-effect smooths interpretable in plots — use <code>ti()</code>, which strips the marginal main effects out of the tensor product:</p>
 <div class="cell">
 <details class="code-fold">
@@ -744,10 +755,10 @@ Note
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">data =</span> dat, <span class="at">method =</span> <span class="st">"REML"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The advantage over <code>te(age, bmi)</code>: the <code>summary()</code> table isolates the pure interaction — its EDF and p-value are separated from the main effects, so you can read off whether the interaction matters. The fitted prediction surface is essentially the same as <code>te()</code>’s, so for prediction-driven workflows the two are interchangeable; for inferential reporting on the interaction, prefer the <code>ti()</code> form.</p>
+<p>The advantage over <code>te(age, bmi)</code>: the <code>summary()</code> table isolates the pure interaction — its EDF and p value are separated from the main effects, so you can read off whether the interaction matters. The fitted prediction surface is essentially the same as <code>te()</code>’s, so for prediction-driven workflows the two are interchangeable; for inferential reporting on the interaction, prefer the <code>ti()</code> form.</p>
 </section>
-<section id="treatment-effect-modification-by-smooths" class="level3" data-number="35.3.4">
-<h3 data-number="35.3.4" class="anchored" data-anchor-id="treatment-effect-modification-by-smooths"><span class="header-section-number">35.3.4</span> Treatment effect modification: <code>by =</code> smooths</h3>
+<section id="treatment-effect-modification-by-smooths" class="level3" data-number="F.3.4">
+<h3 data-number="F.3.4" class="anchored" data-anchor-id="treatment-effect-modification-by-smooths"><span class="header-section-number">F.3.4</span> Treatment effect modification: <code>by =</code> smooths</h3>
 <p>If you suspect the treatment effect depends on, say, age, let each arm have its own age curve:</p>
 <div class="cell">
 <details class="code-fold">
@@ -781,7 +792,7 @@ Check the class of the by variable
 <li><strong>Numeric</strong> (<code>tx</code> left as a 0/1 indicator): a <em>varying-coefficient</em> term, <code>tx</code> × f(age) — a single curve multiplied by the by variable, and <strong>not</strong> centred. <code>s(age)</code> is now required, because without it the <code>tx = 0</code> arm is modelled as flat in age. But the parametric <code>tx</code> becomes redundant, because <code>tx</code> × the constant part of f is already in the term’s unpenalised null space. Include it anyway and the design is rank-deficient: <code>gam()</code> reports <code>Rank: 20/21</code> and returns the <code>tx</code> coefficient as <code>0</code> with an <code>NaN</code> standard error.</li>
 </ul>
 <p>The numeric case is also the one that fails quietly in the other direction. Fitting <code>tx + s(age, by = tx)</code> with numeric <code>tx</code> — the formula that is correct for a factor — leaves the untreated arm with no age relation at all. On a simulation whose true effect at ages 45, 65 and 85 is −20.0, −13.0 and −6.0 mmHg, that model returns −29.6, −8.2 and <strong>+16.2</strong>: the sign is wrong at the top of the age range, and no diagnostic in the fit points at the cause.</p>
-<p><code>brms</code> builds its <code>s()</code> terms with the same mgcv machinery, so all of the above carries over. What differs is the failure mode of the rank-deficient numeric case: <code>gam()</code> detects the aliasing and drops the coefficient, whereas <code>brms</code> keeps both parameters and identifies them only through their prior, and only as a sum. Marginal contrasts from <code>avg_comparisons()</code> are unaffected, because they depend only on that sum, but the <code>tx</code> coefficient no longer means anything on its own and the ridge in the posterior makes sampling harder. Chapter 21 uses the unordered-factor form for this reason.</p>
+<p><code>brms</code> builds its <code>s()</code> terms with the same mgcv machinery, so all of the above carries over. What differs is the failure mode of the rank-deficient numeric case: <code>gam()</code> detects the aliasing and drops the coefficient, whereas <code>brms</code> keeps both parameters and identifies them only through their prior, and only as a sum. Marginal contrasts from <code>avg_comparisons()</code> are unaffected, because they depend only on that sum, but the <code>tx</code> coefficient no longer means anything on its own and the ridge in the posterior makes sampling harder. <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a> uses the unordered-factor form for this reason.</p>
 </div>
 </div>
 <p>If the treatment effect varies over the <em>joint</em> distribution of age and bmi — treatment helps young, low-BMI patients more, in a way that does not factor into “depends on age” plus “depends on bmi” — add <code>by = tx</code> to the interaction terms as well:</p>
@@ -802,11 +813,11 @@ Check the class of the by variable
 <p><code>m6</code> fits a separate age × bmi surface for each treatment arm. Powerful, but expensive in degrees of freedom — you need a lot of data, especially in the smaller arm, before this is identifiable. A conceptually equivalent alternative is to fit the two arms separately and compare predictions; doing it explicitly forces you to confront the per-arm sample size and is sometimes clearer to report. In a target trial emulation the separate-fits version corresponds to the g-computation style of outcome modelling; <code>m1</code> is the outcome-regression-with-treatment-indicator style.</p>
 </section>
 </section>
-<section id="mixing-factors-into-smooths-by-bs-re-bs-fs" class="level2" data-number="35.4">
-<h2 data-number="35.4" class="anchored" data-anchor-id="mixing-factors-into-smooths-by-bs-re-bs-fs"><span class="header-section-number">35.4</span> Mixing factors into smooths: <code>by =</code>, <code>bs = "re"</code>, <code>bs = "fs"</code></h2>
+<section id="mixing-factors-into-smooths-by-bs-re-bs-fs" class="level2" data-number="F.4">
+<h2 data-number="F.4" class="anchored" data-anchor-id="mixing-factors-into-smooths-by-bs-re-bs-fs"><span class="header-section-number">F.4</span> Mixing factors into smooths: <code>by =</code>, <code>bs = "re"</code>, <code>bs = "fs"</code></h2>
 <p>There are three ways to combine a factor with a smooth, and they make different statistical assumptions.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <code>by =</code> (above) fits fixed, freely-estimated per-level curves; <code>bs = "re"</code> treats factor levels as parametric random effects; <code>bs = "fs"</code> fits a full random <em>curve</em> per level. The choice is consequential for causal work, because two of the three apply shrinkage that you must keep away from the treatment contrast (next section).</p>
-<section id="bs-re-parametric-random-effects" class="level3" data-number="35.4.1">
-<h3 data-number="35.4.1" class="anchored" data-anchor-id="bs-re-parametric-random-effects"><span class="header-section-number">35.4.1</span> <code>bs = "re"</code>: parametric random effects</h3>
+<section id="bs-re-parametric-random-effects" class="level3" data-number="F.4.1">
+<h3 data-number="F.4.1" class="anchored" data-anchor-id="bs-re-parametric-random-effects"><span class="header-section-number">F.4.1</span> <code>bs = "re"</code>: parametric random effects</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -887,8 +898,8 @@ Note
 </div>
 </div>
 </section>
-<section id="bs-fs-factor-smooths-random-curves" class="level3" data-number="35.4.2">
-<h3 data-number="35.4.2" class="anchored" data-anchor-id="bs-fs-factor-smooths-random-curves"><span class="header-section-number">35.4.2</span> <code>bs = "fs"</code>: factor smooths (random curves)</h3>
+<section id="bs-fs-factor-smooths-random-curves" class="level3" data-number="F.4.2">
+<h3 data-number="F.4.2" class="anchored" data-anchor-id="bs-fs-factor-smooths-random-curves"><span class="header-section-number">F.4.2</span> <code>bs = "fs"</code>: factor smooths (random curves)</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -981,8 +992,8 @@ Caution
 </div>
 </div>
 </section>
-<section id="syntax-reference" class="level3" data-number="35.4.3">
-<h3 data-number="35.4.3" class="anchored" data-anchor-id="syntax-reference"><span class="header-section-number">35.4.3</span> Syntax reference</h3>
+<section id="syntax-reference" class="level3" data-number="F.4.3">
+<h3 data-number="F.4.3" class="anchored" data-anchor-id="syntax-reference"><span class="header-section-number">F.4.3</span> Syntax reference</h3>
 <table class="table">
 <colgroup>
 <col style="width: 33%">
@@ -1056,8 +1067,8 @@ Caution
 </table>
 </section>
 </section>
-<section id="keep-the-treatment-effect-unpenalised" class="level2" data-number="35.5">
-<h2 data-number="35.5" class="anchored" data-anchor-id="keep-the-treatment-effect-unpenalised"><span class="header-section-number">35.5</span> Keep the treatment effect unpenalised</h2>
+<section id="keep-the-treatment-effect-unpenalised" class="level2" data-number="F.5">
+<h2 data-number="F.5" class="anchored" data-anchor-id="keep-the-treatment-effect-unpenalised"><span class="header-section-number">F.5</span> Keep the treatment effect unpenalised</h2>
 <p>The treatment is the estimand of the study. It should not enter the model in any form that shrinks the treatment-effect contrast itself: not as <code>s(tx, bs = "re")</code>, not as an <code>"re"</code> margin in a tensor product. (A factor smooth <code>s(age, tx, bs = "fs")</code> pools the <em>roughness</em> of the arm curves, not the contrast between them — acceptable, with the two-level caveats above.) A continuous exposure is different: there the estimand is the whole dose–response <em>curve</em>, and a penalised <code>s(dose)</code> is the appropriate way to estimate a curve — the penalty regularises its shape, not its existence.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1078,17 +1089,17 @@ Note
 </div>
 </div>
 </section>
-<section id="from-adjusted-gam-to-causal-contrast" class="level2" data-number="35.6">
-<h2 data-number="35.6" class="anchored" data-anchor-id="from-adjusted-gam-to-causal-contrast"><span class="header-section-number">35.6</span> From adjusted GAM to causal contrast</h2>
+<section id="from-adjusted-gam-to-causal-contrast" class="level2" data-number="F.6">
+<h2 data-number="F.6" class="anchored" data-anchor-id="from-adjusted-gam-to-causal-contrast"><span class="header-section-number">F.6</span> From adjusted GAM to causal contrast</h2>
 <p>A flexible, well-adjusted GAM is the outcome model; it is not yet a causal estimate. Four points connect the two.</p>
 <ol type="1">
 <li><strong>The coefficient on <code>tx</code> is a conditional association.</strong> It is the effect of treatment <em>given</em> the flexibly modelled covariates, and only under the model’s homogeneity assumptions. For a marginal (population-averaged) effect — the ATE — use g-computation: predict counterfactual outcomes under <code>tx = 1</code> and <code>tx = 0</code> for everyone in the sample, then average and contrast. <code>marginaleffects::avg_comparisons()</code> does this directly on <code>gam</code>/<code>bam</code> fits (worked example below), consistent with the book-wide convention of reporting effects as model predictions rather than coefficients.</li>
 <li><strong>Flexibility is not confounding control.</strong> No amount of spline flexibility repairs a missing confounder, adjustment for a post-treatment variable, or collider stratification. Draw the DAG first; the DAG decides <em>what</em> goes into the model, the splines decide <em>how</em> it goes in. What splines do buy, causally, is protection against <em>residual confounding from mis-modelled functional form</em>: a confounder adjusted for linearly when its effect is curved is only partly adjusted for, and the leftover association contaminates the treatment estimate. Since spline coefficients were never going to be interpreted directly, this protection costs nothing under the marginal-effects convention.</li>
 <li><strong>If treatment effect modifiers are present, model them.</strong> Otherwise the conditional <code>tx</code> coefficient assumes a constant effect across age, bmi and region, and even the g-computed ATE averages over heterogeneity you have not examined. <code>s(age, by = tx)</code> plus <code>avg_comparisons(..., by = "age")</code> is the standard pattern.</li>
-<li><strong>When the ATE must survive a sceptical reviewer, use cross-fitting.</strong> Penalised fits have regularisation bias, and the <code>summary()</code> standard error on <code>tx</code> does not account for having estimated the nuisance structure flexibly. Doubly robust, cross-fitted estimators (AIPW, TMLE) are the defensible route; the GAM becomes one nuisance learner among several (last section).</li>
+<li><strong>When the ATE must survive a sceptical reviewer, use cross-fitting.</strong> Penalised fits have regularisation bias, and the <code>summary()</code> standard error on <code>tx</code> does not account for having estimated the nuisance structure flexibly. Doubly robust, cross-fitted estimators (AIPW, TMLE) are the defensible route; the GAM becomes one nuisance learner among several (<a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a>).</li>
 </ol>
-<section id="worked-example-from-fit-to-ate" class="level3" data-number="35.6.1">
-<h3 data-number="35.6.1" class="anchored" data-anchor-id="worked-example-from-fit-to-ate"><span class="header-section-number">35.6.1</span> Worked example: from fit to ATE</h3>
+<section id="worked-example-from-fit-to-ate" class="level3" data-number="F.6.1">
+<h3 data-number="F.6.1" class="anchored" data-anchor-id="worked-example-from-fit-to-ate"><span class="header-section-number">F.6.1</span> Worked example: from fit to ATE</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -1122,8 +1133,8 @@ Comparison: 1 - 0</code></pre>
 </div>
 </div>
 </section>
-<section id="a-continuous-exposure-the-doseresponse-curve" class="level3" data-number="35.6.2">
-<h3 data-number="35.6.2" class="anchored" data-anchor-id="a-continuous-exposure-the-doseresponse-curve"><span class="header-section-number">35.6.2</span> A continuous exposure: the dose–response curve</h3>
+<section id="a-continuous-exposure-the-doseresponse-curve" class="level3" data-number="F.6.2">
+<h3 data-number="F.6.2" class="anchored" data-anchor-id="a-continuous-exposure-the-doseresponse-curve"><span class="header-section-number">F.6.2</span> A continuous exposure: the dose–response curve</h3>
 <p>With a continuous exposure the estimand is a curve — the average dose–response function: the population mean outcome if everyone’s dose were set to <em>d</em>, traced over <em>d</em>. The exposure enters as a smooth, confounders enter as smooths, and g-computation traces the curve:</p>
 <div class="cell">
 <details class="code-fold">
@@ -1157,8 +1168,8 @@ Comparison: 1 - 0</code></pre>
 </div>
 <p>Note the grid stops at 6 although a few observations reach higher doses: report the curve only where the data have support. A penalised smooth <em>will</em> draw a confident-looking line into regions with two observations — there the shape is determined by the penalty, not the data. Check the exposure’s distribution (and its overlap across confounder strata — positivity) before choosing the reported range.</p>
 </section>
-<section id="splines-in-causal-regression-a-working-checklist" class="level3" data-number="35.6.3">
-<h3 data-number="35.6.3" class="anchored" data-anchor-id="splines-in-causal-regression-a-working-checklist"><span class="header-section-number">35.6.3</span> Splines in causal regression: a working checklist</h3>
+<section id="splines-in-causal-regression-a-working-checklist" class="level3" data-number="F.6.3">
+<h3 data-number="F.6.3" class="anchored" data-anchor-id="splines-in-causal-regression-a-working-checklist"><span class="header-section-number">F.6.3</span> Splines in causal regression: a working checklist</h3>
 <ol type="1">
 <li><strong>DAG first.</strong> Decide the adjustment set before deciding functional forms. Splines change <em>how</em> a confounder is adjusted for, never <em>whether</em> it should be.</li>
 <li><strong>Smooth every continuous confounder by default.</strong> A mis-modelled confounder leaves residual confounding that no diagnostic on the treatment coefficient will reveal. The penalty makes this nearly free: if the true relation is linear, the smooth is shrunk back to a line.</li>
@@ -1169,12 +1180,12 @@ Comparison: 1 - 0</code></pre>
 <li><strong>Check the basis dimension.</strong> <code>gam.check()</code> / <code>k.check()</code>; raise <code>k</code> where flagged. <code>k</code> caps flexibility, the penalty sets the effective flexibility below the cap.</li>
 <li><strong>Centre continuous covariates that enter interactions</strong> (e.g.&nbsp;age at 50, bmi at 27). It costs nothing in mgcv and prevents pathologies later, when the same model moves to <code>brms</code>, whose default priors assume roughly centred predictors.</li>
 <li><strong>REML for the final fit; ML for structure comparison</strong> (see the ladder below).</li>
-<li><strong>If the inference itself must be robust to flexible nuisance modelling</strong>, move to cross-fitted doubly robust estimation (next section) with the GAM as one candidate learner.</li>
+<li><strong>If the inference itself must be robust to flexible nuisance modelling</strong>, move to cross-fitted doubly robust estimation (<a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a>) with the GAM as one candidate learner.</li>
 </ol>
 </section>
 </section>
-<section id="a-practical-model-ladder" class="level2" data-number="35.7">
-<h2 data-number="35.7" class="anchored" data-anchor-id="a-practical-model-ladder"><span class="header-section-number">35.7</span> A practical model ladder</h2>
+<section id="a-practical-model-ladder" class="level2" data-number="F.7">
+<h2 data-number="F.7" class="anchored" data-anchor-id="a-practical-model-ladder"><span class="header-section-number">F.7</span> A practical model ladder</h2>
 <p>For the running example — establishing the effect of <code>tx</code> with flexible adjustment — a defensible progression is:</p>
 <ol type="1">
 <li><code>tx + s(age) + s(bmi) + sex + s(region, bs = "re")</code> — the average treatment effect with a sensibly adjusted baseline.</li>
@@ -1219,99 +1230,17 @@ Comparison: 1 - 0</code></pre>
 <li>the ATE still comes from <code>avg_comparisons(m_full, variables = "tx")</code>, not from the <code>tx</code> row of the summary table.</li>
 </ul>
 </section>
-<section id="when-the-gam-summary-is-not-enough-cross-fitting-and-doubly-robust-estimation" class="level2" data-number="35.8">
-<h2 data-number="35.8" class="anchored" data-anchor-id="when-the-gam-summary-is-not-enough-cross-fitting-and-doubly-robust-estimation"><span class="header-section-number">35.8</span> When the GAM summary is not enough: cross-fitting and doubly robust estimation</h2>
-<p>The step from “a flexible regression fit” to “a valid causal estimate with calibrated uncertainty” is bigger than it looks. Suppose you want the ATE of physiotherapy on work disability. The classical workflow — fit an adjusted regression, read off the treatment estimate and its interval — works when the regression is correctly specified. A GAM gets you much closer to correct specification than a linear model, but it introduces a new problem: penalised splines are <em>biased</em> estimators of the conditional mean. The penalty trades bias for variance, and the bias does not vanish at the root-n rate. When a biased nuisance estimate is plugged into a downstream effect estimate, the bias contaminates the effect estimate too, and the interval on the treatment term in <code>summary()</code> is no longer calibrated for the causal question. The same applies, more strongly, to machine-learning regressions (random forests, boosting) used as nuisance models. The doubly robust, cross-fitted machinery was built to recover valid inference in this setting.</p>
-<section id="the-doubly-robust-idea-aipw" class="level3" data-number="35.8.1">
-<h3 data-number="35.8.1" class="anchored" data-anchor-id="the-doubly-robust-idea-aipw"><span class="header-section-number">35.8.1</span> The doubly robust idea: AIPW</h3>
-<p>The augmented inverse probability weighted (AIPW) estimator combines two models:</p>
-<ul>
-<li>an <strong>outcome model</strong>: μ̂(x, a) = E[Y | X = x, A = a] — predicted outcome from confounders and treatment;</li>
-<li>a <strong>treatment model</strong> (propensity score): π̂(x) = P(A = 1 | X = x).</li>
-</ul>
-<p>The AIPW estimator of the ATE has the form</p>
-<p><span class="math display">\[\widehat{\text{ATE}} = \frac{1}{n} \sum_{i=1}^{n} \left[ \hat{\mu}(X_i, 1) - \hat{\mu}(X_i, 0) \right] + \text{IPW correction term}\]</span></p>
-<p>The correction term repairs residual bias in μ̂ using information from π̂. The “doubly robust” name refers to a remarkable property: the estimator is consistent if <em>either</em> μ̂ <em>or</em> π̂ is consistent — you do not need both. In applied work neither model is ever exactly right, but one usually captures the bulk of the structure.</p>
-<p>That property alone does not deliver valid intervals. For that you also need to prevent the nuisance models from being evaluated on the data they were fitted to.</p>
-</section>
-<section id="cross-fitting" class="level3" data-number="35.8.2">
-<h3 data-number="35.8.2" class="anchored" data-anchor-id="cross-fitting"><span class="header-section-number">35.8.2</span> Cross-fitting</h3>
-<p>If μ̂ and π̂ are fitted on the same data used to compute the AIPW estimate, the fitted values are over-fitted, which biases the estimator and shrinks its standard errors. Flexible learners overfit at rates that break the inferential guarantees. <strong>Cross-fitting</strong> removes the problem by splitting the data into K folds (typically 5 or 10) and, for each fold:</p>
-<ol type="1">
-<li>fit μ̂ and π̂ on the other K−1 folds;</li>
-<li>predict on the held-out fold only;</li>
-<li>compute the AIPW contributions on the held-out fold from those out-of-fold predictions.</li>
-</ol>
-<p>Averaging across folds yields an estimator with root-n convergence and an asymptotically normal sampling distribution, under conditions that let the nuisance models converge much more slowly (n^(1/4) rates suffice). This is the core of <em>double/debiased machine learning</em>;<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> the same device underlies TMLE.</p>
-</section>
-<section id="tmle-versus-aipw" class="level3" data-number="35.8.3">
-<h3 data-number="35.8.3" class="anchored" data-anchor-id="tmle-versus-aipw"><span class="header-section-number">35.8.3</span> TMLE versus AIPW</h3>
-<p>TMLE — targeted maximum likelihood estimation (van der Laan and colleagues) — refines the same idea. Where AIPW adds a correction term to the outcome-model average, TMLE <em>updates the outcome model itself</em> using information from the propensity score, then takes the plain average from the updated model. The two have the same asymptotic properties; TMLE often behaves somewhat better in finite samples and respects range constraints on the outcome (predicted probabilities stay in [0, 1]). For most applied purposes the choice is taste.</p>
-</section>
-<section id="superlearner-the-ensemble-layer" class="level3" data-number="35.8.4">
-<h3 data-number="35.8.4" class="anchored" data-anchor-id="superlearner-the-ensemble-layer"><span class="header-section-number">35.8.4</span> SuperLearner: the ensemble layer</h3>
-<p>Both AIPW and TMLE need μ̂ and π̂ from somewhere. Rather than commit to one learner, <strong>SuperLearner</strong> fits several candidates (a GLM, a GAM, a random forest, gradient boosting) and weights them into an ensemble by cross-validated stacking; the ensemble is then plugged into AIPW/TMLE as the nuisance estimator. This hedges against learner misspecification and is the default workflow in the <code>tmle3</code>/<code>sl3</code> ecosystem. Your GAM is one candidate in this stack — a good one, since splines handle the moderately complex confounder–outcome relationships typical of epidemiology — but the inference no longer relies on it being uniquely correct.</p>
-</section>
-<section id="r-packages" class="level3" data-number="35.8.5">
-<h3 data-number="35.8.5" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">35.8.5</span> R packages</h3>
-<ul>
-<li><strong><code>tmle3</code> / <code>sl3</code></strong> (van der Laan group). Most general; AIPW, TMLE, longitudinal extensions. Steep learning curve.</li>
-<li><strong><code>lmtp</code></strong> (Williams, Díaz). Built around <em>longitudinal modified treatment policies</em>; handles point-treatment ATEs as a special case and is the natural home once a target-trial specification involves sequential treatment. Built-in SuperLearner integration.</li>
-<li><strong><code>DoubleML</code></strong> (Bach et al.). Cross-fitted DML with a clean API for static settings; vocabulary leans econometric (partial effects) rather than epidemiological.</li>
-</ul>
-<p>A point-treatment ATE in <code>lmtp</code> is estimated as a contrast of two counterfactual population means, each obtained under a static shift (<code>tx</code> coded 0/1):</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtp)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>learners <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"SL.mean"</span>, <span class="st">"SL.glm"</span>, <span class="st">"SL.gam"</span>, <span class="st">"SL.ranger"</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>covars   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"bmi"</span>, <span class="st">"sex"</span>, <span class="st">"region"</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>fit_on  <span class="ot">&lt;-</span> <span class="fu">lmtp_tmle</span>(dat, <span class="at">trt =</span> <span class="st">"tx"</span>, <span class="at">outcome =</span> <span class="st">"y"</span>, <span class="at">baseline =</span> covars,</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">shift =</span> static_binary_on,      <span class="co"># everyone treated</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">outcome_type =</span> <span class="st">"continuous"</span>,</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">learners_outcome =</span> learners, <span class="at">learners_trt =</span> learners,</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">folds =</span> <span class="dv">10</span>)</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>fit_off <span class="ot">&lt;-</span> <span class="fu">lmtp_tmle</span>(dat, <span class="at">trt =</span> <span class="st">"tx"</span>, <span class="at">outcome =</span> <span class="st">"y"</span>, <span class="at">baseline =</span> covars,</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">shift =</span> static_binary_off,     <span class="co"># no one treated</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">outcome_type =</span> <span class="st">"continuous"</span>,</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">learners_outcome =</span> learners, <span class="at">learners_trt =</span> learners,</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">folds =</span> <span class="dv">10</span>)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lmtp_contrast</span>(fit_on, <span class="at">ref =</span> fit_off)   <span class="co"># ATE, SE and CI from the cross-fitted influence function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>Under the hood: 10-fold cross-fitting; each fold’s μ̂ and π̂ built from a SuperLearner ensemble; TMLE update; influence-function-based standard error. The result is a calibrated 95% interval for the ATE — the kind of quantity a <code>gam()</code> summary table cannot supply.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Computational cost is high.</strong> With 10 folds and a library of 4–5 learners, expect runtimes of minutes to hours on registry-sized data. Plan accordingly.</p>
-<p><strong>These methods do not remove unmeasured confounding.</strong> They give valid inference <em>under the causal assumptions</em> (exchangeability, positivity, consistency); they do not check those assumptions. The DAG work is as load-bearing as ever — this is better machinery downstream of it, not a substitute.</p>
-<p><strong>The design layer comes first.</strong> In a target trial emulation (see the target-trial-emulation chapter), the protocol — eligibility, time zero, grace periods — determines the estimand. AIPW/TMLE estimates that estimand more efficiently and with better-calibrated inference; it cannot repair a mis-specified design.</p>
-<p><strong>Do not expect a single number to be the answer.</strong> Valid causal estimation layers separate choices — design, identification, nuisance estimation, inference — and cross-fitted DR estimators keep those layers separate. A regression summary table conflates them, which is why the treatment p-value from a <code>bam()</code> fit should not be presented to a referee as a causal answer.</p>
-</div>
-</div>
-<p>For an entry point into the literature: <em>Causal Inference: What If</em> (Hernán &amp; Robins, free online) for the identification side; <em>Targeted Learning</em> (van der Laan &amp; Rose) for the estimation side; and the double machine learning paper for the cross-fitting argument.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<section id="beyond-the-gam-summary" class="level2" data-number="F.8">
+<h2 data-number="F.8" class="anchored" data-anchor-id="beyond-the-gam-summary"><span class="header-section-number">F.8</span> Beyond the GAM summary</h2>
+<p>A penalised fit is a biased estimator of the conditional mean, and the <code>summary()</code> interval on a treatment term does not account for the nuisance structure having been estimated flexibly. When the estimate itself must be defensible, the GAM becomes one nuisance learner inside a cross-fitted doubly robust estimator; <a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a> sets those estimators out, with a worked demonstration on the book’s cohort.</p>
 
 
-</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn1"><p>Wood SN, “Thin plate regression splines,” <em>J R Stat Soc Series B Stat Methodol</em> 2003;65:95-114 (<a href="https://doi.org/10.1111/1467-9868.00374">DOI</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Pedersen EJ, Miller DL, Simpson GL, Ross N, “Hierarchical generalized additive models in ecology: an introduction with mgcv,” <em>PeerJ</em> 2019;7:e6876 (<a href="https://doi.org/10.7717/peerj.6876">DOI</a>).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Chernozhukov V, Chetverikov D, Demirer M, Duflo E, Hansen C, Newey W, Robins J, “Double/debiased machine learning for treatment and structural parameters,” <em>Econom J</em> 2018;21:C1-C68 (<a href="https://doi.org/10.1111/ectj.12097">DOI</a>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Chernozhukov V, Chetverikov D, Demirer M, Duflo E, Hansen C, Newey W, Robins J, “Double/debiased machine learning for treatment and structural parameters,” <em>Econom J</em> 2018;21:C1-C68 (<a href="https://doi.org/10.1111/ectj.12097">DOI</a>).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1727,13 +1656,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./13-appendix-mcmc.html" class="pagination-link" aria-label="Appendix: MCMC">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Appendix: MCMC</span></span>
+      <a href="./18-appendix-correlation-structures.html" class="pagination-link" aria-label="Correlation structures for repeated measures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./15-appendix-git.html" class="pagination-link" aria-label="Appendix: Git">
-        <span class="nav-page-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Appendix: Git</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./16-appendix-H0.html" class="pagination-link" aria-label="Null hypothesis testing">
+        <span class="nav-page-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
