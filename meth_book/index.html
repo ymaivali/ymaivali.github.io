@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ülo Maiväli">
-<meta name="dcterms.date" content="2026-09-16">
+<meta name="dcterms.date" content="2026-09-22">
 
 <title>The Bayesian Way to Causal Epidemiology</title>
 <style>
@@ -426,7 +426,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#a-statement-of-purpose" id="toc-a-statement-of-purpose" class="nav-link active" data-scroll-target="#a-statement-of-purpose">A statement of purpose</a></li>
+  <li><a href="#a-statement-of-purpose" id="toc-a-statement-of-purpose" class="nav-link active" data-scroll-target="#a-statement-of-purpose">A statement of purpose</a>
+  <ul class="collapse">
+  <li><a href="#the-companion-skill" id="toc-the-companion-skill" class="nav-link" data-scroll-target="#the-companion-skill">The companion skill</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -452,7 +455,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 16, 2026</p>
+      <p class="date">September 22, 2026</p>
     </div>
   </div>
   
@@ -471,11 +474,16 @@ ul.task-list li input[type="checkbox"] {
 <p>The moral of this is twofold. Firstly, whatever we do in terms of fancy statistics and modelling, we should always try to understand, why we do it the way we do it. Any math that comes up in our work is in the service of some non-mathematical scientific argument, and if we cannot understand this relationship, then the math is spurious and should be considered a window-dressing to our limitations as scientists and human beings. The second moral is simple: show humility! After perusing this book, you should take it for granted that mathematical precision in epidemiological work is illusory (not only the point estimates, but our estimates about the uncertainty of these, are inherently uncertain) and no numerical probability value can carry over straight to our scientific arguments. This is why epidemiological papers have sections “Limitations of the Study” – to show the discrepancy between assumptions behind their calculations and what they actually suspect to be the case.</p>
 <p>To make it short: (i) we do things for a reason and (ii) we are humble about it.</p>
 <p>The book covers both experimental (randomised) studies and observational (epidemiological) studies and focuses on practical workflows rather than theoretical exposition. It experimental itself, as it’s written largely by AI (mostly Opus 4.7-5 models in Claude Code and Claude Science harnesses) and the AI-generated text is only lightly edited for readability, not that much for style. The references were checked by AI either from pubmed or from the web directly. The reader should note that the facts were generally not checked by human for accuracy. You are reading a book that is, in a sense, still in search of its author. I do hope that it will be read it with the help of AI, including for fact checking, as model progression will make it easier to identify errors of previous models. I will not include solutions to excercises, in the hope that for it will be pedagogically advantageous to elicit these with the help of AI.</p>
+<section id="the-companion-skill" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="the-companion-skill">The companion skill</h2>
+<p>A Claude skill built from this book is available as a download: <a href="https://ymaivali.github.io/meth_book/causal-epi-companion-student.zip">causal-epi-companion-student.zip</a>. It answers from the book’s own text rather than from general knowledge, names the chapter and section an answer comes from, and coaches the exercises without supplying the solutions. It is optional; the book is self-contained without it.</p>
+<p>To install it, open Claude, go to Customize, then Skills, and upload the zip file. Within a team organisation the same file is uploaded under Organisation settings, then Skills. The skill announces itself when it is used, and is switched off for a conversation by writing <code>companion off</code>.</p>
 <p>The reader is encouraged to report errors and offer suggestions directly to me at ymaivali@gmail.com</p>
 <p>Ülo Maiväli</p>
 <p>August, 2026</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
