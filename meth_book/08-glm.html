@@ -504,14 +504,17 @@ window.Quarto = {
   <li><a href="#unmeasured-causes-of-the-outcome" id="toc-unmeasured-causes-of-the-outcome" class="nav-link" data-scroll-target="#unmeasured-causes-of-the-outcome"><span class="header-section-number">25.3.2</span> Unmeasured causes of the outcome</a></li>
   <li><a href="#standardisation-is-not-damaged-by-the-same-paths" id="toc-standardisation-is-not-damaged-by-the-same-paths" class="nav-link" data-scroll-target="#standardisation-is-not-damaged-by-the-same-paths"><span class="header-section-number">25.3.3</span> Standardisation is not damaged by the same paths</a></li>
   </ul></li>
-  <li><a href="#choosing-the-link" id="toc-choosing-the-link" class="nav-link" data-scroll-target="#choosing-the-link"><span class="header-section-number">25.4</span> Choosing the link</a>
+  <li><a href="#sec-choosing-link" id="toc-sec-choosing-link" class="nav-link" data-scroll-target="#sec-choosing-link"><span class="header-section-number">25.4</span> Choosing the link</a>
   <ul class="collapse">
   <li><a href="#outcome-dependent-sampling" id="toc-outcome-dependent-sampling" class="nav-link" data-scroll-target="#outcome-dependent-sampling"><span class="header-section-number">25.4.1</span> Outcome-dependent sampling</a></li>
   <li><a href="#can-loo-choose-the-link" id="toc-can-loo-choose-the-link" class="nav-link" data-scroll-target="#can-loo-choose-the-link"><span class="header-section-number">25.4.2</span> Can <code>loo</code> choose the link?</a></li>
   </ul></li>
   <li><a href="#counts-and-rates" id="toc-counts-and-rates" class="nav-link" data-scroll-target="#counts-and-rates"><span class="header-section-number">25.5</span> Counts and rates</a></li>
   <li><a href="#fitting-two-links-is-a-weak-check-on-bias" id="toc-fitting-two-links-is-a-weak-check-on-bias" class="nav-link" data-scroll-target="#fitting-two-links-is-a-weak-check-on-bias"><span class="header-section-number">25.6</span> Fitting two links is a weak check on bias</a></li>
-  <li><a href="#what-the-multiplicative-scale-hides" id="toc-what-the-multiplicative-scale-hides" class="nav-link" data-scroll-target="#what-the-multiplicative-scale-hides"><span class="header-section-number">25.7</span> What the multiplicative scale hides</a></li>
+  <li><a href="#what-the-multiplicative-scale-hides" id="toc-what-the-multiplicative-scale-hides" class="nav-link" data-scroll-target="#what-the-multiplicative-scale-hides"><span class="header-section-number">25.7</span> What the multiplicative scale hides</a>
+  <ul class="collapse">
+  <li><a href="#sec-omit-product" id="toc-sec-omit-product" class="nav-link" data-scroll-target="#sec-omit-product"><span class="header-section-number">25.7.1</span> What omitting the product term asserts</a></li>
+  </ul></li>
   <li><a href="#outcomes-that-are-proportions" id="toc-outcomes-that-are-proportions" class="nav-link" data-scroll-target="#outcomes-that-are-proportions"><span class="header-section-number">25.8</span> Outcomes that are proportions</a></li>
   <li><a href="#discrimination-is-not-identification" id="toc-discrimination-is-not-identification" class="nav-link" data-scroll-target="#discrimination-is-not-identification"><span class="header-section-number">25.9</span> Discrimination is not identification</a></li>
   <li><a href="#where-this-leads" id="toc-where-this-leads" class="nav-link" data-scroll-target="#where-this-leads"><span class="header-section-number">25.10</span> Where this leads</a></li>
@@ -1316,8 +1319,8 @@ Table&nbsp;25.6: Percentage error of the standardised marginal risk difference a
 <p>The conclusion is narrower than “the logistic model is biased by unmeasured causes of the outcome”, and it is more useful. The <span class="math inline">\(U \rightarrow Y\)</span> path damages the <em>coefficient</em>, severely, and damages it in a way that has no counterpart under an identity link. It does not measurably damage the <em>standardised marginal contrast</em> obtained from the same fit. The threat is to reading coefficients, which is the practice this book avoids throughout, and not to the model’s capacity to deliver a causal estimand.</p>
 </section>
 </section>
-<section id="choosing-the-link" class="level2" data-number="25.4">
-<h2 data-number="25.4" class="anchored" data-anchor-id="choosing-the-link"><span class="header-section-number">25.4</span> Choosing the link</h2>
+<section id="sec-choosing-link" class="level2" data-number="25.4">
+<h2 data-number="25.4" class="anchored" data-anchor-id="sec-choosing-link"><span class="header-section-number">25.4</span> Choosing the link</h2>
 <p>Once the report is a standardised contrast, the link is no longer a decision about what to report. It remains a decision, and a scientific one, about three things.</p>
 <p>The first is <strong>how effects are assumed to combine</strong>. A model without interaction terms asserts, under the identity link, that the drug removes the same number of percentage points of risk from every patient; under the log link, that it multiplies every patient’s risk by the same factor; under the logit, that it multiplies every patient’s odds by the same factor. These are different claims about the world, and they are functional-form assumptions like any other, judged by fit, by posterior predictive checks (<a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a>) and by what is known of the mechanism, within limits set out at the end of this section. The mechanism that generates the cohort’s stroke risk is multiplicative in risk, which is why the log link is the specification that matches it and has been the book’s outcome model for this cohort since the callout of <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a>. The logistic model fitted to the same cohort is the misspecified one; its standardised contrasts absorbed the misspecification (<a href="#tbl-logit-standardised" class="quarto-xref">Table&nbsp;<span>25.4</span></a>), which is one more reason to report those and not the coefficient. Where the mechanism is unknown, a product term between treatment and the strongest baseline risk factor, fitted on any link, lets the data say how the effect varies, and <a href="ch16-interaction.html" class="quarto-xref"><span>Chapter 17</span></a> is the chapter on reading the answer.</p>
 <p>The logit’s claim is the one readers most often say they cannot picture, and it has a picture the book has already drawn. In the odds form of Bayes’ theorem (<a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a>) the posterior log-odds of an outcome are the prior log-odds plus the <strong>weight of evidence</strong>, the log likelihood ratio, and the weights of independent pieces of evidence add. If the covariates were conditionally independent given the outcome, the log-odds of stroke would be a baseline plus the sum of each covariate’s weight of evidence; and where a covariate’s log likelihood ratio is linear in the covariate, as it is for a normally distributed covariate with the same spread among those who will and will not have the event, that sum <em>is</em> a logistic regression, with each coefficient a weight of evidence per unit. Logistic regression is that model with the independence assumption relaxed: the coefficients are fitted jointly, so each is the evidence a covariate adds given the others. Linear on the logit scale therefore means <em>evidence accumulates additively</em>, a model of how an outcome is predicted or diagnosed from what is known about a patient, which is why the logit is the natural scale for the predictive models of <a href="ch22-predictive-regression.html" class="quarto-xref"><span>Chapter 27</span></a>. Linear on the log scale means <em>causes multiply risk</em>, a model of how an intervention acts. For the outcome model of a g-computation, which has only to predict each patient’s risk well under both treatments, either reading serves, and a reader need believe neither to use the fit.</p>
@@ -1900,22 +1903,266 @@ Table&nbsp;25.11: Standardised drug effect within diabetes strata, from the inte
 </div>
 <p>The product-term coefficient is 0.041 with a credible interval of [-0.132, 0.213], which contains zero comfortably: on the model’s own multiplicative scale there is no appreciable interaction. The same fitted model, standardised within strata (<a href="#tbl-int-strata" class="quarto-xref">Table&nbsp;<span>25.11</span></a>), gives risk differences of -0.0181 and -0.0491 — the drug averts about 2.7 times as many strokes per treated patient among the diabetic. On the additive scale the interaction is large.</p>
 <p>Nothing is inconsistent here. A constant risk ratio applied to a higher baseline risk removes a larger absolute amount, so a model that fits a constant ratio <em>implies</em> an additive interaction wherever a second factor moves the baseline. The consequence for practice is that a logistic or Poisson model reporting a non-significant product term has established nothing about the scale on which the decision will be taken, and the recommendation in the methodological literature is to report both scales with the stratum-specific effects alongside.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> The standardisation above is how the second scale is obtained from a model fitted on the first.</p>
+<section id="sec-omit-product" class="level3" data-number="25.7.1">
+<h3 data-number="25.7.1" class="anchored" data-anchor-id="sec-omit-product"><span class="header-section-number">25.7.1</span> What omitting the product term asserts</h3>
+<p>The model behind <a href="#tbl-int-strata" class="quarto-xref">Table&nbsp;<span>25.11</span></a> contains the product term, and the additive interaction it reports would have appeared without it: a log-link model with no product term fits one risk ratio for both strata, and one risk ratio applied to two baseline risks gives two risk differences. The converse case is the one that matters when deciding what to put in a model. As the first paragraph of <a href="#sec-choosing-link" class="quarto-xref"><span>Section 25.4</span></a> set out, a model without product terms makes one effect measure constant across strata, and the link decides which: the odds ratio under the logit, the risk ratio under the log link, the risk difference under the identity. When both factors affect the outcome, the other two measures then generally cannot also be constant (<a href="ch16-interaction.html" class="quarto-xref"><span>Chapter 17</span></a>). Omitting the product term is therefore a claim on every scale: no modification on the scale of the link, and on the other scales a modification whose size is determined by the baseline risks and not estimated from the data.</p>
+<p>The simulation below has two binary variables, a treatment <span class="math inline">\(X\)</span> and a covariate <span class="math inline">\(V\)</span> that confounds it. The treatment adds 0.20 to the risk in both strata of <span class="math inline">\(V\)</span>, whose baseline risks are 0.10 and 0.20, so the risk difference is the same in both strata, while the risk ratio (3.0 and 2.0) and the odds ratio (3.86 and 2.67) are not. Each of the three links is fitted with and without the product term to the same data, and every fit is standardised within strata of <span class="math inline">\(V\)</span>.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>p_cell <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.30</span>, <span class="fl">0.20</span>, <span class="fl">0.40</span>)   <span class="co"># risk at (X, V) = (0,0), (1,0), (0,1), (1,1)</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>gen_2x2 <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  V <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.4</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">ifelse</span>(V <span class="sc">==</span> <span class="dv">1</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span>))       <span class="co"># V also confounds X</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, p_cell[<span class="dv">1</span> <span class="sc">+</span> X <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> V])</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(X, V, Y)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">31</span>)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>d_om <span class="ot">&lt;-</span> <span class="fu">gen_2x2</span>(<span class="fl">1e4</span>)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="do">## logit and log: intercept near a 20% risk, effects up to about e^2 either way</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>pri_om    <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="fl">1.5</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>               <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>),    <span class="at">class =</span> <span class="st">"b"</span>))</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="do">## identity: the same statements in probability units</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>pri_om_id <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>               <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.2</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>               <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">2</span>),   <span class="at">class =</span> <span class="st">"sigma"</span>))</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>om_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(formula, family, prior, name)</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(formula, <span class="at">family =</span> family, <span class="at">data =</span> d_om, <span class="at">prior =</span> prior,</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">800</span>, <span class="at">warmup =</span> <span class="dv">400</span>, <span class="at">seed =</span> <span class="dv">1</span>, <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"models/ch24_omit_"</span>, name), <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>fits_om <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">logit, no product</span><span class="st">`</span>    <span class="ot">=</span> <span class="fu">om_fit</span>(Y <span class="sc">~</span> X <span class="sc">+</span> V, <span class="fu">bernoulli</span>(), pri_om,    <span class="st">"logit_main"</span>),</span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">log, no product</span><span class="st">`</span>      <span class="ot">=</span> <span class="fu">om_fit</span>(Y <span class="sc">~</span> X <span class="sc">+</span> V, <span class="fu">poisson</span>(),   pri_om,    <span class="st">"log_main"</span>),</span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">identity, no product</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">om_fit</span>(Y <span class="sc">~</span> X <span class="sc">+</span> V, <span class="fu">gaussian</span>(),  pri_om_id, <span class="st">"id_main"</span>),</span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">logit, product</span><span class="st">`</span>       <span class="ot">=</span> <span class="fu">om_fit</span>(Y <span class="sc">~</span> X <span class="sc">*</span> V, <span class="fu">bernoulli</span>(), pri_om,    <span class="st">"logit_int"</span>),</span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">log, product</span><span class="st">`</span>         <span class="ot">=</span> <span class="fu">om_fit</span>(Y <span class="sc">~</span> X <span class="sc">*</span> V, <span class="fu">poisson</span>(),   pri_om,    <span class="st">"log_int"</span>),</span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">identity, product</span><span class="st">`</span>    <span class="ot">=</span> <span class="fu">om_fit</span>(Y <span class="sc">~</span> X <span class="sc">*</span> V, <span class="fu">gaussian</span>(),  pri_om_id, <span class="st">"id_int"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>odds <span class="ot">&lt;-</span> <span class="cf">function</span>(p) p <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> p)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>truth_om <span class="ot">&lt;-</span> <span class="fu">c</span>(p_cell[<span class="dv">2</span>] <span class="sc">-</span> p_cell[<span class="dv">1</span>], p_cell[<span class="dv">4</span>] <span class="sc">-</span> p_cell[<span class="dv">3</span>],</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>              p_cell[<span class="dv">2</span>] <span class="sc">/</span> p_cell[<span class="dv">1</span>], p_cell[<span class="dv">4</span>] <span class="sc">/</span> p_cell[<span class="dv">3</span>],</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">odds</span>(p_cell[<span class="dv">2</span>]) <span class="sc">/</span> <span class="fu">odds</span>(p_cell[<span class="dv">1</span>]), <span class="fu">odds</span>(p_cell[<span class="dv">4</span>]) <span class="sc">/</span> <span class="fu">odds</span>(p_cell[<span class="dv">3</span>]))</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>by_V <span class="ot">&lt;-</span> <span class="cf">function</span>(m, comparison) {</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(m, <span class="at">variables =</span> <span class="st">"X"</span>, <span class="at">by =</span> <span class="st">"V"</span>, <span class="at">comparison =</span> comparison)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  a<span class="sc">$</span>estimate[<span class="fu">order</span>(a<span class="sc">$</span>V)]</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>om_measures <span class="ot">&lt;-</span> <span class="cf">function</span>(m)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">by_V</span>(m, <span class="st">"difference"</span>), <span class="fu">by_V</span>(m, <span class="st">"ratioavg"</span>), <span class="fu">exp</span>(<span class="fu">by_V</span>(m, <span class="st">"lnoravg"</span>)))</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>om_tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="at">truth =</span> truth_om, <span class="fu">t</span>(<span class="fu">sapply</span>(fits_om, om_measures)))</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(om_tab) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RD, V = 0"</span>, <span class="st">"RD, V = 1"</span>, <span class="st">"RR, V = 0"</span>, <span class="st">"RR, V = 1"</span>,</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"OR, V = 0"</span>, <span class="st">"OR, V = 1"</span>)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>om_tab <span class="sc">|&gt;</span></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">font_size =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-omit-product" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-omit-product-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;25.12: Stratum-specific effects of X from six fits to the same data, standardised within strata of V, as posterior means. The true risk difference is the same in both strata and the true risk ratio and odds ratio are not. Without a product term each link returns its own measure as constant; with it, the three links agree.
+</figcaption>
+<div aria-describedby="tbl-omit-product-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div>
+<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RD, V = 0</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RD, V = 1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RR, V = 0</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RR, V = 1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">OR, V = 0</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">OR, V = 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">truth</td>
+<td style="text-align: right;">0.200</td>
+<td style="text-align: right;">0.200</td>
+<td style="text-align: right;">3.000</td>
+<td style="text-align: right;">2.000</td>
+<td style="text-align: right;">3.857</td>
+<td style="text-align: right;">2.667</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">logit, no product</td>
+<td style="text-align: right;">0.169</td>
+<td style="text-align: right;">0.233</td>
+<td style="text-align: right;">2.593</td>
+<td style="text-align: right;">2.293</td>
+<td style="text-align: right;">3.200</td>
+<td style="text-align: right;">3.200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">log, no product</td>
+<td style="text-align: right;">0.154</td>
+<td style="text-align: right;">0.247</td>
+<td style="text-align: right;">2.417</td>
+<td style="text-align: right;">2.417</td>
+<td style="text-align: right;">2.924</td>
+<td style="text-align: right;">3.452</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">identity, no product</td>
+<td style="text-align: right;">0.201</td>
+<td style="text-align: right;">0.201</td>
+<td style="text-align: right;">3.015</td>
+<td style="text-align: right;">2.046</td>
+<td style="text-align: right;">3.884</td>
+<td style="text-align: right;">2.726</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">logit, product</td>
+<td style="text-align: right;">0.212</td>
+<td style="text-align: right;">0.188</td>
+<td style="text-align: right;">3.169</td>
+<td style="text-align: right;">1.953</td>
+<td style="text-align: right;">4.142</td>
+<td style="text-align: right;">2.551</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">log, product</td>
+<td style="text-align: right;">0.213</td>
+<td style="text-align: right;">0.189</td>
+<td style="text-align: right;">3.168</td>
+<td style="text-align: right;">1.956</td>
+<td style="text-align: right;">4.154</td>
+<td style="text-align: right;">2.558</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">identity, product</td>
+<td style="text-align: right;">0.215</td>
+<td style="text-align: right;">0.188</td>
+<td style="text-align: right;">3.212</td>
+<td style="text-align: right;">1.947</td>
+<td style="text-align: right;">4.214</td>
+<td style="text-align: right;">2.541</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Without the product term, each link returns its own measure as constant across strata, and only the identity link’s assumption is true here. The logit model reports risk differences of 0.169 and 0.233, a difference of 0.063 with a 95% credible interval of [0.053, 0.074], where the true difference is zero; the log-link model reports a larger one. The interval is narrow because the difference is a function of three well-determined coefficients in a model that has no parameter for it. Its width reflects the precision of those coefficients and carries no information from the data about modification.</p>
+<p>With the product term, the three links agree: their risk differences differ by at most 0.003 and their ratios by at most 2%, differences that come from the likelihoods and the priors and not from the links. With a binary treatment and one binary covariate, the product-term model has four parameters for four cells and is <strong>saturated</strong>: apart from the prior, its fitted risks are the four observed proportions, and the link constrains nothing. The modification on every scale is then estimated from the data, and the logit model recovers the homogeneous risk difference, -0.024 [-0.063, 0.017]. With more covariates the corresponding model interacts the treatment with every covariate, as in <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a>, which removes the link’s constraint between the treatment arms and keeps it within each arm.</p>
+<p>The logit product term in the same fit is -0.49 [-0.70, -0.27]: there is modification on the odds-ratio scale and none on the risk-difference scale. A product term whose interval excludes zero therefore establishes modification on the scale of the link only, in the same way that one whose interval includes zero establishes nothing about the other scales. Under a log link the imposed difference between the two risk differences is <span class="math inline">\((\text{RR} - 1)\)</span> times the difference between the baseline risks, from the identity in <a href="ch16-interaction.html" class="quarto-xref"><span>Chapter 17</span></a>, so it is largest along the strongest baseline risk factors. These are the first candidates for a product term.</p>
+<p>A common model-building rule treats the product term as a test: fit the term, keep it if its p value is below 0.05, and otherwise drop it. The rule is a frequentist procedure, so it is examined here as it is applied, with <code>glm</code> and the Wald test of the logit product term, in 400 simulated studies at each of three sample sizes from the same mechanism. In each study the final model is recorded as reporting risk-difference modification when its 95% confidence interval for the difference between the two risk differences excludes zero. The true difference is zero, so every such report is an error.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>sel_rep <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  d  <span class="ot">&lt;-</span> <span class="fu">gen_2x2</span>(n)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  mm <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y <span class="sc">~</span> X <span class="sc">+</span> V, <span class="at">family =</span> binomial, <span class="at">data =</span> d)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  mp <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y <span class="sc">~</span> X <span class="sc">*</span> V, <span class="at">family =</span> binomial, <span class="at">data =</span> d)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  p_xv <span class="ot">&lt;-</span> <span class="fu">summary</span>(mp)<span class="sc">$</span>coefficients[<span class="st">"X:V"</span>, <span class="st">"Pr(&gt;|z|)"</span>]</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  h_mm <span class="ot">&lt;-</span> <span class="fu">rd_diff</span>(mm); h_mp <span class="ot">&lt;-</span> <span class="fu">rd_diff</span>(mp)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  excl <span class="ot">&lt;-</span> <span class="cf">function</span>(h) h<span class="sc">$</span>conf.low <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">|</span> h<span class="sc">$</span>conf.high <span class="sc">&lt;</span> <span class="dv">0</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">sig  =</span> p_xv <span class="sc">&lt;</span> <span class="fl">0.05</span>,</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">excl</span>(h_mm), <span class="at">prod =</span> <span class="fu">excl</span>(h_mp),</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">rule =</span> <span class="cf">if</span> (p_xv <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="fu">excl</span>(h_mp) <span class="cf">else</span> <span class="fu">excl</span>(h_mm),</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">est_main =</span> h_mm<span class="sc">$</span>estimate)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">32</span>)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>sel_om <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_dfr</span>(<span class="fu">c</span>(<span class="dv">1000</span>, <span class="dv">2000</span>, <span class="dv">5000</span>), <span class="cf">function</span>(n) {</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">400</span>, <span class="fu">sel_rep</span>(n))</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">n =</span> n,</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">product term p &lt; 0.05 (%)</span><span class="st">`</span>  <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(r[<span class="st">"sig"</span>, ]),</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">without product term (%)</span><span class="st">`</span>    <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(r[<span class="st">"main"</span>, ]),</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">with product term (%)</span><span class="st">`</span>       <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(r[<span class="st">"prod"</span>, ]),</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">keep if p &lt; 0.05 (%)</span><span class="st">`</span>        <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(r[<span class="st">"rule"</span>, ]),</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">mean RD difference, without</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">mean</span>(r[<span class="st">"est_main"</span>, ]))</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div id="tbl-omit-select" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-omit-select-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;25.13: Percentage of 400 simulated studies per sample size in which the final model reports risk-difference modification (the 95% interval for the difference between the two risk differences excludes zero), when the true risk difference is the same in both strata. The first column is the share of studies in which the logit product term is significant; the last is the average difference reported by the model without the product term, against a truth of zero.
+</figcaption>
+<div aria-describedby="tbl-omit-select-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div>
+<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">product term p &lt; 0.05 (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">without product term (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">with product term (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">keep if p &lt; 0.05 (%)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mean RD difference, without</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">18.8</td>
+<td style="text-align: right;">98.8</td>
+<td style="text-align: right;">5.7</td>
+<td style="text-align: right;">82.5</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">30.5</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">72.0</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5000</td>
+<td style="text-align: right;">69.5</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">33.5</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>At n = 1,000 the product term is significant in 18.8% of studies. In the rest it is dropped, and the model without it reports risk-difference modification in nearly all of them, with an average difference of 0.066 against a truth of zero. The rule therefore reports a modification that does not exist in 82.5% of studies, against 5.7% for keeping the term in every study, which is close to the nominal 5%. The error rate falls as the sample grows, to 33.5% at n = 5,000, because the term is dropped less often, not because the model without it improves. Choosing by AIC is the same rule with a different threshold: for one added parameter, AIC prefers the larger model when the likelihood-ratio statistic exceeds 2, which is a test at <span class="math inline">\(\alpha = 0.157\)</span>.</p>
+<p>The percentages are specific to this mechanism, in which both <span class="math inline">\(X\)</span> and <span class="math inline">\(V\)</span> have large effects and the modification on the logit scale is present but too small to be detected reliably at these sample sizes. The direction of the error does not depend on the logit: had the truth been a constant odds ratio, an identity-link model without the product term would have reported modification on the odds-ratio scale in the same way. Replacing the logit by another non-identity link does not remove the error either: in <a href="#tbl-omit-product" class="quarto-xref">Table&nbsp;<span>25.12</span></a> the log-link model without the product term reports a larger difference between the risk differences than the logit model does. The remedy is the product term, not a different link. The conclusion is the one reached for continuous outcomes in <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a>, with a further reason that applies whenever an effect can be measured on more than one scale: omitting the product term fixes the stratum-specific effects on every scale except the link’s, and the data have no opportunity to correct them. The product term is therefore the default here as well, with a shrinkage prior on it where the cells are thin.</p>
+</section>
 </section>
 <section id="outcomes-that-are-proportions" class="level2" data-number="25.8">
 <h2 data-number="25.8" class="anchored" data-anchor-id="outcomes-that-are-proportions"><span class="header-section-number">25.8</span> Outcomes that are proportions</h2>
 <p>An outcome that is already a proportion — the fraction of a ward’s beds occupied, a score expressed on a 0-to-1 scale, the share of visits at which a treatment was delivered — is bounded like a probability but is not a count of successes out of a known number of trials. If the denominator <em>is</em> known, the outcome is a binomial count and belongs in a <code>binomial()</code> model with <code>trials()</code>; the cases below are those where it is not.</p>
 <p><strong>Linear model.</strong> As with the linear probability model, an identity link gives coefficients in the units of the proportion and predictions that can leave <span class="math inline">\([0,1]\)</span>. Adequate when the observed proportions occupy the middle of the range, say 0.2 to 0.8, and the target is a population average.</p>
 <p><strong>Fractional logistic regression.</strong> A logistic model fitted by quasi-likelihood to a non-integer outcome, <code>glm(y ~ x, family = quasibinomial(link = "logit"))</code>. It estimates the mean proportion consistently without asserting a full likelihood, at the cost of not being a generative model — which in a Bayesian workflow means there is nothing to put a prior on and nothing to check with a posterior predictive draw.</p>
-<p><strong>Beta regression.</strong> The beta distribution is the natural likelihood on the open interval <span class="math inline">\((0,1)\)</span>, and beta regression models its mean and precision, optionally as functions of predictors.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> In <code>brms</code>, <code>brm(bf(y ~ x, phi ~ x), family = Beta())</code>. Modelling <span class="math inline">\(\phi\)</span> as well as <span class="math inline">\(\mu\)</span> is distributional regression: it lets the <em>spread</em> of the proportion depend on the predictors, which is often the substantive point. The restriction is that the beta density is zero at 0 and 1, so a data set containing exact zeroes or ones cannot be fitted.</p>
-<p><strong>Zero- and one-inflated beta regression.</strong> Where exact boundary values occur, they are usually generated by a different process from the interior values — a ward with no occupied beds is not the low tail of a continuum. The remedy is a mixture: a logistic sub-model for whether the observation is at a boundary, and a beta sub-model for the interior. With zeroes only, <code>family = zero_inflated_beta()</code> adds one parameter, <code>zi</code>. With both zeroes and ones, <code>family = zero_one_inflated_beta()</code> adds two: <code>zoi</code>, the probability that an observation is at either boundary, and <code>coi</code>, the probability that a boundary observation is a one rather than a zero. Each may have its own linear predictor.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a></p>
+<p><strong>Beta regression.</strong> The beta distribution is the natural likelihood on the open interval <span class="math inline">\((0,1)\)</span>, and beta regression models its mean and precision, optionally as functions of predictors.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> In <code>brms</code>, <code>brm(bf(y ~ x, phi ~ x), family = Beta())</code>. Modelling <span class="math inline">\(\phi\)</span> as well as <span class="math inline">\(\mu\)</span> is distributional regression: it lets the <em>spread</em> of the proportion depend on the predictors, which is often the substantive point. The restriction is that the beta density is zero at 0 and 1, so a data set containing exact zeroes or ones cannot be fitted.</p>
+<p><strong>Zero- and one-inflated beta regression.</strong> Where exact boundary values occur, they are usually generated by a different process from the interior values — a ward with no occupied beds is not the low tail of a continuum. The remedy is a mixture: a logistic sub-model for whether the observation is at a boundary, and a beta sub-model for the interior. With zeroes only, <code>family = zero_inflated_beta()</code> adds one parameter, <code>zi</code>. With both zeroes and ones, <code>family = zero_one_inflated_beta()</code> adds two: <code>zoi</code>, the probability that an observation is at either boundary, and <code>coi</code>, the probability that a boundary observation is a one rather than a zero. Each may have its own linear predictor.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">brm</span>(</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(outcome <span class="sc">~</span> covariates,   <span class="co"># mu:  the mean of the interior values</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>     phi     <span class="sc">~</span> covariates,   <span class="co"># phi: their precision</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>     zoi     <span class="sc">~</span> covariates,   <span class="co"># zero-or-one inflation</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>     coi     <span class="sc">~</span> covariates),  <span class="co"># of the inflated values, the share that are ones</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> d, <span class="at">family =</span> <span class="fu">zero_one_inflated_beta</span>()</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">brm</span>(</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(outcome <span class="sc">~</span> covariates,   <span class="co"># mu:  the mean of the interior values</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>     phi     <span class="sc">~</span> covariates,   <span class="co"># phi: their precision</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>     zoi     <span class="sc">~</span> covariates,   <span class="co"># zero-or-one inflation</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>     coi     <span class="sc">~</span> covariates),  <span class="co"># of the inflated values, the share that are ones</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> d, <span class="at">family =</span> <span class="fu">zero_one_inflated_beta</span>()</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With ones but no zeroes, either model <span class="math inline">\(1 - y\)</span> with <code>zero_inflated_beta()</code>, or fix <code>coi</code> at 1 in the zero-one-inflated model.</p>
 </section>
@@ -1924,15 +2171,15 @@ Table&nbsp;25.11: Standardised drug effect within diabetes strata, from the inte
 <p>The remaining classical apparatus of logistic regression — the ROC curve, the area under it, the confusion matrix — measures something the rest of this chapter has not been about. It measures how well the fitted probabilities <strong>rank</strong> patients, which is a property of predictions and is silent on whether any coefficient is a causal effect. This section keeps the apparatus and puts it where it belongs; <a href="ch22-predictive-regression.html" class="quarto-xref"><span>Chapter 27</span></a> takes up prediction as a subject in its own right.</p>
 <p>The example is real data: hip-fracture patients in Estonia, and whether they received post-acute physical therapy.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>HF_data <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"data/HF_data.csv"</span>, <span class="at">delim =</span> <span class="st">";"</span>,</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">escape_double =</span> <span class="cn">FALSE</span>, <span class="at">trim_ws =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>HF_data <span class="ot">&lt;-</span> HF_data <span class="sc">|&gt;</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">PA_therapy =</span> <span class="fu">as.integer</span>(postacute_therapy_binned <span class="sc">==</span> <span class="st">"Yes"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>HF_data <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"data/HF_data.csv"</span>, <span class="at">delim =</span> <span class="st">";"</span>,</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">escape_double =</span> <span class="cn">FALSE</span>, <span class="at">trim_ws =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>HF_data <span class="ot">&lt;-</span> HF_data <span class="sc">|&gt;</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">PA_therapy =</span> <span class="fu">as.integer</span>(postacute_therapy_binned <span class="sc">==</span> <span class="st">"Yes"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>m_HF_binom1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(postacute_therapy_binned <span class="sc">~</span> age, <span class="at">data =</span> HF_data,</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="at">chains =</span> <span class="dv">1</span>,</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">file =</span> <span class="st">"models/m_HF_binom1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>m_HF_binom1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(postacute_therapy_binned <span class="sc">~</span> age, <span class="at">data =</span> HF_data,</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="at">chains =</span> <span class="dv">1</span>,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">file =</span> <span class="st">"models/m_HF_binom1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -1949,8 +2196,8 @@ Figure&nbsp;25.4: Probability of receiving post-acute physical therapy against a
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>pr_hf <span class="ot">&lt;-</span> <span class="fu">predictions</span>(m_HF_binom1, <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">90</span>)))</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>pr_hf[, <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"estimate"</span>, <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>pr_hf <span class="ot">&lt;-</span> <span class="fu">predictions</span>(m_HF_binom1, <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">90</span>)))</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>pr_hf[, <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"estimate"</span>, <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  Estimate 2.5 % 97.5 %
@@ -1961,25 +2208,25 @@ Figure&nbsp;25.4: Probability of receiving post-acute physical therapy against a
 <p>Older patients are less likely to receive therapy, and the model determines this well: the probability falls from about 0.43 at age 60 to 0.38 at age 90, with credible intervals that exclude no change. Note also that a majority of patients in every age group receive no post-acute therapy at all.</p>
 <p>Now add the other recorded variables, with no causal reasoning at all — the aim is a model that predicts.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>m_HF_binom2 <span class="ot">&lt;-</span> <span class="fu">brm</span>(postacute_therapy_binned <span class="sc">~</span> age <span class="sc">+</span> year <span class="sc">+</span> survived_PAC <span class="sc">+</span> sex <span class="sc">+</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                     county <span class="sc">+</span> comorbidity <span class="sc">+</span> management_method <span class="sc">+</span> acute_LOS <span class="sc">+</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                     postacute_LOS,</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> HF_data, <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="at">chains =</span> <span class="dv">1</span>,</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">file =</span> <span class="st">"models/m_HF_binom2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>m_HF_binom2 <span class="ot">&lt;-</span> <span class="fu">brm</span>(postacute_therapy_binned <span class="sc">~</span> age <span class="sc">+</span> year <span class="sc">+</span> survived_PAC <span class="sc">+</span> sex <span class="sc">+</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                     county <span class="sc">+</span> comorbidity <span class="sc">+</span> management_method <span class="sc">+</span> acute_LOS <span class="sc">+</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                     postacute_LOS,</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> HF_data, <span class="at">family =</span> <span class="fu">bernoulli</span>(), <span class="at">chains =</span> <span class="dv">1</span>,</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">file =</span> <span class="st">"models/m_HF_binom2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A <strong>ROC curve</strong> plots, for every possible classification cut-off, the proportion of true cases correctly called cases (<strong>sensitivity</strong>, the true-positive rate) against the proportion of true non-cases incorrectly called cases (one minus <strong>specificity</strong>). Fitted probabilities take any value in <span class="math inline">\((0,1)\)</span>; classifying requires choosing a threshold, and the curve traces what every threshold would give. The <strong>area under the curve</strong> summarises the whole curve into one number: the probability that a randomly chosen case is assigned a higher predicted risk than a randomly chosen non-case. It ranges from 0.5, for a model that ranks no better than a coin, to 1.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">fitted</span>(m_HF_binom1)[, <span class="st">"Estimate"</span>]</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">fitted</span>(m_HF_binom2)[, <span class="st">"Estimate"</span>]</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>roc1 <span class="ot">&lt;-</span> <span class="fu">roc</span>(HF_data<span class="sc">$</span>PA_therapy <span class="sc">~</span> p1, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>roc2 <span class="ot">&lt;-</span> <span class="fu">roc</span>(HF_data<span class="sc">$</span>PA_therapy <span class="sc">~</span> p2, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc2, <span class="at">cex.axis =</span> <span class="fl">0.7</span>, <span class="at">cex.lab =</span> <span class="fl">0.8</span>)</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc1, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.8</span>,</span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="fu">sprintf</span>(<span class="st">"full model, AUC %.3f"</span>, <span class="fu">auc</span>(roc2)),</span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">sprintf</span>(<span class="st">"age only, AUC %.3f"</span>,   <span class="fu">auc</span>(roc1))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">fitted</span>(m_HF_binom1)[, <span class="st">"Estimate"</span>]</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">fitted</span>(m_HF_binom2)[, <span class="st">"Estimate"</span>]</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>roc1 <span class="ot">&lt;-</span> <span class="fu">roc</span>(HF_data<span class="sc">$</span>PA_therapy <span class="sc">~</span> p1, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>roc2 <span class="ot">&lt;-</span> <span class="fu">roc</span>(HF_data<span class="sc">$</span>PA_therapy <span class="sc">~</span> p2, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc2, <span class="at">cex.axis =</span> <span class="fl">0.7</span>, <span class="at">cex.lab =</span> <span class="fl">0.8</span>)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc1, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.8</span>,</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="fu">sprintf</span>(<span class="st">"full model, AUC %.3f"</span>, <span class="fu">auc</span>(roc2)),</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">sprintf</span>(<span class="st">"age only, AUC %.3f"</span>,   <span class="fu">auc</span>(roc1))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-roc" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1993,9 +2240,9 @@ Figure&nbsp;25.5: ROC curves for the age-only model and the full predictive mode
 </div>
 </div>
 </div>
-<p>The age-only model has an AUC of 0.530. Its age effect was clearly determined and it discriminates barely better than chance. This is not a contradiction: a predictor can shift everyone’s risk by a well-established amount and still leave the risk distributions of cases and non-cases almost entirely overlapping. It is the reason the AUC is a poor criterion for deciding whether a risk factor belongs in a model — established risk factors routinely fail to move it.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></p>
+<p>The age-only model has an AUC of 0.530. Its age effect was clearly determined and it discriminates barely better than chance. This is not a contradiction: a predictor can shift everyone’s risk by a well-established amount and still leave the risk distributions of cases and non-cases almost entirely overlapping. It is the reason the AUC is a poor criterion for deciding whether a risk factor belongs in a model — established risk factors routinely fail to move it.<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a></p>
 <p>The full model reaches 0.783, and this is where the recasting matters. Among its predictors is <code>postacute_LOS</code>, the length of the post-acute care stay, which is a <em>consequence</em> of receiving post-acute therapy: the median is 23 days among those who received therapy and 0 among those who did not. It is an excellent predictor and it cannot appear in any model whose coefficients are to be read causally: conditioning on a descendant of the outcome is the error of <a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a>, and no coefficient in this fit survives it. The AUC cannot detect any of this. Discrimination and identification are separate properties, and a model can have as much of the first as one likes while having none of the second.</p>
-<p>Two further tools of the same family, the <strong>confusion matrix</strong> at a chosen cut-off and the <strong>calibration plot</strong>, are properties of predictions as well, and they belong with the predictive question. The in-sample versions that could be shown here would demonstrate the diagnostics without validating anything; <a href="ch22-predictive-regression.html" class="quarto-xref"><span>Chapter 27</span></a> computes both on held-out data, where they carry evidence, and sets out the hierarchy of calibration that a risk model is judged by.<a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a></p>
+<p>Two further tools of the same family, the <strong>confusion matrix</strong> at a chosen cut-off and the <strong>calibration plot</strong>, are properties of predictions as well, and they belong with the predictive question. The in-sample versions that could be shown here would demonstrate the diagnostics without validating anything; <a href="ch22-predictive-regression.html" class="quarto-xref"><span>Chapter 27</span></a> computes both on held-out data, where they carry evidence, and sets out the hierarchy of calibration that a risk model is judged by.<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a></p>
 </section>
 <section id="where-this-leads" class="level2" data-number="25.10">
 <h2 data-number="25.10" class="anchored" data-anchor-id="where-this-leads"><span class="header-section-number">25.10</span> Where this leads</h2>
@@ -2016,7 +2263,7 @@ Figure&nbsp;25.5: ROC curves for the age-only model and the full predictive mode
 <li>For genuine counts, unequal observation time enters as an <strong>offset</strong> <span class="math inline">\(\log(t_i)\)</span>, which turns a model of counts into a model of rates. Omitting it estimates a ratio of counts, which is a different quantity. The logarithm is forced: proportionality of the mean to exposure is multiplicative and the linear predictor is additive, so an additive offset can express it only under a log link. Using <span class="math inline">\(t_i\)</span> in place of <span class="math inline">\(\log t_i\)</span> asserts exponential growth in follow-up and is worse than no offset at all. Fixing the coefficient at 1 is itself the assumption; estimating it tests <span class="math inline">\(\mathbb{E}[Y] \propto t^{\gamma}\)</span>. <strong>Over-dispersion</strong> widens intervals without moving point estimates; the negative binomial supplies the second parameter.</li>
 <li>Because effects are reported as <strong>contrasts of predictions</strong>, one fitted model reports all three measures. Report the risk difference for decisions (its reciprocal is the number needed to treat), the risk ratio for transport between populations, and the odds ratio as an intermediate quantity, converted before it is reported.</li>
 <li>An outcome that is a <strong>proportion without a denominator</strong> is bounded but not binomial: fit it with a beta likelihood, with zero- or one-inflation where the boundaries are occupied by a different process, and model its precision as well as its mean when the spread is the substantive point.</li>
-<li>A product term is an interaction <strong>on the link scale only</strong>. A log-link model can show no multiplicative interaction and a large additive one at the same time (<a href="ch16-interaction.html" class="quarto-xref"><span>Chapter 17</span></a>); report both scales with the stratum-specific effects.</li>
+<li>A product term is an interaction <strong>on the link scale only</strong>. A log-link model can show no multiplicative interaction and a large additive one at the same time (<a href="ch16-interaction.html" class="quarto-xref"><span>Chapter 17</span></a>); report both scales with the stratum-specific effects. <strong>Omitting the product term is a claim on every scale</strong>: it makes the link’s measure constant across strata and fixes the modification on the other scales from the baseline risks. With a binary treatment and a binary covariate the product-term model is saturated and the choice of link no longer matters. Keeping the term only when it was significant reported a risk-difference modification that did not exist in 82.5% of simulated studies of 1,000 patients (<a href="#sec-omit-product" class="quarto-xref"><span>Section 25.7.1</span></a>).</li>
 <li><strong>ROC curves, AUC and confusion matrices measure discrimination</strong>, which is a property of predictions. A strong, well-determined risk factor may barely move the AUC, and a variable that is a consequence of the outcome may raise it substantially while destroying every causal reading of the model. For risk outputs, calibration matters more than discrimination.</li>
 </ul>
 </section>
@@ -2059,10 +2306,11 @@ Figure&nbsp;25.5: ROC curves for the age-only model and the full predictive mode
 <li id="fn17"><p>Two further links map the real line into <span class="math inline">\((0,1)\)</span> and are met in the literature. The <strong>probit</strong>, <span class="math inline">\(\Phi^{-1}(\mu) = \eta\)</span> with <span class="math inline">\(\Phi\)</span> the standard normal distribution function, arises wherever a binary outcome is conceived as a threshold crossed by an underlying normal quantity: the liability-threshold models of quantitative genetics, item-response models, signal-detection theory. The <strong>complementary log-log</strong>, <span class="math inline">\(\log\{-\log(1 - \mu)\} = \eta\)</span>, is asymmetric about <span class="math inline">\(\mu = 0.5\)</span> and is the proportional-hazards model for grouped survival data. Both are available in <code>brms</code> as <code>bernoulli(link = "probit")</code> and <code>bernoulli(link = "cloglog")</code>. Under a probit link the attenuation by an unmeasured cause of the outcome has a closed form: if <span class="math inline">\(\Phi^{-1}\{P(Y=1)\} = \alpha + \beta x + \gamma u\)</span> with <span class="math inline">\(U\)</span> normal, marginalising over <span class="math inline">\(U\)</span> gives <span class="math inline">\(P(Y = 1 \mid X) = \Phi\{(\alpha + \beta x) / \sqrt{1 + \gamma^2 \sigma_U^2}\}\)</span>, so every coefficient is divided by the same factor and the marginal model is still a probit. In practice the probit and the logit are interchangeable. Fitted to the 400,000 observations of the case-control simulation, which were generated on the logit scale, their treatment coefficients differ by a factor of 1.74, close to the asymptotic <span class="math inline">\(\pi/\sqrt{3} = 1.814\)</span>; their fitted probabilities nowhere differ by more than 0.0147, and their standardised risk differences by 0.24% of the true value. The complementary log-log is a genuine commitment about functional form rather than a reparameterisation. Neither link is used in this book.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn18"><p>Berchialla P, Sciannameo V, Urru S, Lanera C, Azzolina D, Gregori D, Baldi I, “Adjustment for Baseline Covariates to Increase Efficiency in RCTs with Binary Endpoint: A Comparison of Bayesian and Frequentist Approaches,” <em>Int J Environ Res Public Health</em> 2021;18:7758 (<a href="https://doi.org/10.3390/ijerph18157758">DOI</a>); Naimi AI, Cole SR, Kennedy EH, “An introduction to g methods,” <em>Int J Epidemiol</em> 2017;46:756-762 (<a href="https://doi.org/10.1093/ije/dyw323">DOI</a>).<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn19"><p>Knol MJ, VanderWeele TJ, “Recommendations for presenting analyses of effect modification and interaction,” <em>Int J Epidemiol</em> 2012;41:514-520 (<a href="https://doi.org/10.1093/ije/dyr218">DOI</a>).<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn20"><p>Ferrari S, Cribari-Neto F, “Beta Regression for Modelling Rates and Proportions,” <em>J Appl Stat</em> 2004;31:799-815 (<a href="https://doi.org/10.1080/0266476042000214501">DOI</a>).<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn21"><p>A worked treatment of zero-one-inflated beta models in <code>brms</code>, with code, is given by Matti Vuorre, “Analyze analog scale ratings with zero-one-inflated beta models” (<a href="https://mvuorre.github.io/posts/2019-02-18-analyze-analog-scale-ratings-with-zero-one-inflated-beta-models/" class="uri">https://mvuorre.github.io/posts/2019-02-18-analyze-analog-scale-ratings-with-zero-one-inflated-beta-models/</a>).<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn22"><p>Cook NR, “Use and misuse of the receiver operating characteristic curve in risk prediction,” <em>Circulation</em> 2007;115:928-935 (<a href="https://doi.org/10.1161/CIRCULATIONAHA.106.672402">DOI</a>).<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn23"><p>Van Calster B, McLernon DJ, van Smeden M, Wynants L, Steyerberg EW, “Calibration: the Achilles heel of predictive analytics,” <em>BMC Med</em> 2019;17:230 (<a href="https://doi.org/10.1186/s12916-019-1466-7">DOI</a>).<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>The design of this example, with two binary variables, these four cell risks and an exposure whose prevalence depends on the covariate, is taken from a teaching simulation by Kalle Kipper.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>Ferrari S, Cribari-Neto F, “Beta Regression for Modelling Rates and Proportions,” <em>J Appl Stat</em> 2004;31:799-815 (<a href="https://doi.org/10.1080/0266476042000214501">DOI</a>).<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>A worked treatment of zero-one-inflated beta models in <code>brms</code>, with code, is given by Matti Vuorre, “Analyze analog scale ratings with zero-one-inflated beta models” (<a href="https://mvuorre.github.io/posts/2019-02-18-analyze-analog-scale-ratings-with-zero-one-inflated-beta-models/" class="uri">https://mvuorre.github.io/posts/2019-02-18-analyze-analog-scale-ratings-with-zero-one-inflated-beta-models/</a>).<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>Cook NR, “Use and misuse of the receiver operating characteristic curve in risk prediction,” <em>Circulation</em> 2007;115:928-935 (<a href="https://doi.org/10.1161/CIRCULATIONAHA.106.672402">DOI</a>).<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24"><p>Van Calster B, McLernon DJ, van Smeden M, Wynants L, Steyerberg EW, “Calibration: the Achilles heel of predictive analytics,” <em>BMC Med</em> 2019;17:230 (<a href="https://doi.org/10.1186/s12916-019-1466-7">DOI</a>).<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
