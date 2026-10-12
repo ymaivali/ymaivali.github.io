@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./17-appendix-lab-design.html" rel="next">
+<link href="./13-appendix-graphics.html" rel="next">
 <link href="./ch25-missing-data.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -432,50 +432,56 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./13-appendix-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -556,6 +562,7 @@ window.Quarto = {
 <p>The goal is to check for general features of data (range, variation, distribution), as well as surprising and alarming features, like impossible values and other outliers. But also check possible co-dependencies in data by looking at co-variation between 2 or more variables. So EDA checks the data quality (and by this, the quality of the experiment and/or data collection), but it also tries to form a first impression about anything scientifically interesting in the data. EDA also gives hints about possible routes for data pre-processing for formal modelling.</p>
 <p>Always start your analysis by plotting out the data, and simple dependencies. Never start by formal modelling of the data.</p>
 <p>What separates exploration from confirmation is not the complexity of the tool but the status of the claim. A confirmatory analysis estimates a quantity that was specified before the data were seen; an exploratory analysis looks for structure, and the questions it ends up asking are chosen because of what the data turned out to look like. The same regression can serve either role. This distinction governs two things that recur throughout this appendix: which models belong in EDA (any of them, provided they are read as descriptions – see <a href="#sec-eda-models" class="quarto-xref"><span>Section A.8</span></a>), and what the intervals attached to them mean once the data have already been inspected (<a href="#sec-eda-intervals" class="quarto-xref"><span>Section A.9</span></a>).</p>
+<p>This appendix is about what to look at and how to interpret it. How to draw a graph so that it is read accurately – which visual encodings people judge well, how to arrange a comparison, how to show magnitude and uncertainty, and which display answers which question – is the subject of <a href="13-appendix-graphics.html" class="quarto-xref"><span>Appendix B</span></a>.</p>
 </section>
 <section id="sec-eda-screening" class="level2" data-number="A.2">
 <h2 data-number="A.2" class="anchored" data-anchor-id="sec-eda-screening"><span class="header-section-number">A.2</span> Before you plot: structure, legality and missingness</h2>
@@ -1011,7 +1018,7 @@ Figure&nbsp;A.2: Four displays of systolic blood pressure by treatment group in 
 </div>
 </div>
 </div>
-<p>Add a third variable to a scatter plot by colour or by facetting, not by point size or opacity: human perception judges position against a common axis accurately and judges area, angle and colour saturation poorly, so a fourth or fifth encoded variable is usually decoration rather than information. The same limit rules out comparing quantities by circle area or pie-slice angle in any display.</p>
+<p>Add a third variable to a scatter plot by colour or by facetting, not by point size or opacity: position against a common axis is judged accurately and area and colour saturation poorly (<a href="13-appendix-graphics.html#sec-gr-perception" class="quarto-xref"><span>Section B.2</span></a>), so a fourth or fifth encoded variable is usually decoration rather than information. The same displays are organised by the question each one answers, rather than by information loss, in <a href="13-appendix-graphics.html#sec-gr-six-questions" class="quarto-xref"><span>Section B.5.1</span></a>.</p>
 </section>
 <section id="examining-co-variation" class="level2" data-number="A.4">
 <h2 data-number="A.4" class="anchored" data-anchor-id="examining-co-variation"><span class="header-section-number">A.4</span> Examining co-variation</h2>
@@ -1272,59 +1279,7 @@ plate first second
 </section>
 <section id="plotting-for-publication" class="level2" data-number="A.6">
 <h2 data-number="A.6" class="anchored" data-anchor-id="plotting-for-publication"><span class="header-section-number">A.6</span> Plotting for publication</h2>
-<p>An exploratory plot is for finding the story; a publication figure presents a story already decided on, and every choice in it – axis ranges, aspect ratio, the geometry used to encode a quantity – moves the reader’s perception one way or the other. <a href="#tbl-eda-publication" class="quarto-xref">Table&nbsp;<span>A.2</span></a> collects the rules most often broken.</p>
-<div id="tbl-eda-publication" class="quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-eda-publication-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.2: Rules for publication figures.
-</figcaption>
-<div aria-describedby="tbl-eda-publication-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Rule</th>
-<th style="text-align: left;">Reason</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">No pie charts; show proportions as bars on a 0–1 axis</td>
-<td style="text-align: left;">angles and areas are judged poorly, lengths against a common baseline well</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">For continuous outcomes prefer dots or line segments at the means to bars, and show the individual points</td>
-<td style="text-align: left;">a bar implies a quantity that starts at zero and hides the data behind it</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Join points with lines only when the x-axis is continuous and intermediate values are meaningful</td>
-<td style="text-align: left;">a line asserts interpolation</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Avoid two y-axes unless they are transformations of each other (Celsius and Fahrenheit)</td>
-<td style="text-align: left;">two free scales can make any two series look related</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Choose axis ranges and the aspect ratio deliberately, and say so</td>
-<td style="text-align: left;">both change the perceived size of an effect and the perceived slope</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Do not draw a straight line through a curved association; use a smoother</td>
-<td style="text-align: left;">the line asserts a form the data do not have</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Maximise the share of ink that carries data; prefer black and white to greyscale, and greyscale to colour, when the message survives it</td>
-<td style="text-align: left;">every non-data element competes for the reader’s attention</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-<p>A figure may still be complicated and slow to read when nothing simpler carries the message; the rules bear on the elements that carry none.</p>
+<p>An exploratory plot is for finding the story; a publication figure presents a story already decided on, and every choice in it – axis ranges, aspect ratio, the geometry used to encode a quantity – moves the reader’s perception one way or the other. The rules for publication figures, with the experimental evidence for and against each, are in <a href="13-appendix-graphics.html" class="quarto-xref"><span>Appendix B</span></a>, and its checklist (<a href="13-appendix-graphics.html#sec-gr-checklist" class="quarto-xref"><span>Section B.9</span></a>) is the version to apply before a figure is submitted.</p>
 </section>
 <section id="data-summaries" class="level2" data-number="A.7">
 <h2 data-number="A.7" class="anchored" data-anchor-id="data-summaries"><span class="header-section-number">A.7</span> Data summaries</h2>
@@ -1333,12 +1288,12 @@ Table&nbsp;A.2: Rules for publication figures.
 <blockquote class="blockquote">
 <p>For description of central tendency use mean for symmetrical distributions, but the median for most datasets you come across.</p>
 </blockquote>
-<p>For the spread of the data the usual summary is the <strong>standard deviation</strong> (SD), which for a normal distribution covers about 68% of the values within one SD of the mean and 95% within two; for other shapes those numbers do not hold, and for log-normal data the multiplicative SD of <a href="#sec-eda-lognormal" class="quarto-xref"><span>Section A.7.1</span></a> is the right analogue. The SD describes the data. Its relative, the <strong>standard error of the mean</strong>, <span class="math inline">\(\text{SEM} = \text{SD}/\sqrt{n}\)</span>, describes the uncertainty of an estimate and belongs to inference, not description: <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a> sets out the sampling distribution it summarises, and <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> the posterior that takes its place in this book. Neither the SEM nor an interval built from it belongs on an exploratory figure of data points; the section on intervals below says why.</p>
+<p>For the spread of the data the usual summary is the <strong>standard deviation</strong> (SD), which for a normal distribution covers about 68% of the values within one SD of the mean and 95% within two; for other shapes those numbers do not hold, and for log-normal data the multiplicative SD of <a href="#sec-eda-lognormal" class="quarto-xref"><span>Section A.7.1</span></a> is the right analogue. The SD describes the data. Its relative, the <strong>standard error of the mean</strong>, <span class="math inline">\(\text{SEM} = \text{SD}/\sqrt{n}\)</span>, describes the uncertainty of an estimate and belongs to inference, not description: <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> sets out the sampling distribution it summarises, and <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> the posterior that takes its place in this book. Neither the SEM nor an interval built from it belongs on an exploratory figure of data points; the section on intervals below says why.</p>
 <p>An alternative to the SD is the <strong>MAD</strong>, the median absolute deviation. If the SD is calculated as</p>
 <p><span class="math display">\[SD = \sqrt{\frac{\sum(x_i - \bar x)^2}{n-1}}\]</span></p>
 <p>then the MAD is the median of the absolute distances from the median,</p>
 <p><span class="math display">\[MAD = \mathrm{median}\left(\vert x_i - \mathrm{median}(x) \vert\right)\]</span></p>
-<p>which is what R’s <code>mad()</code> computes. (R also rescales it by 1.4826 by default, so that for normal data the MAD is on the same scale as the SD; set <code>constant = 1</code> to switch that off.) The closely related <strong>mean</strong> absolute deviation, <span class="math inline">\(\sum \vert x_i - \bar x \vert / n\)</span>, is a different quantity: it uses the mean rather than the median twice over, and is correspondingly less resistant to outliers. The MAD is both more intuitive and much less sensitive to outliers than the SD (note the lack of the squaring operator). However, it does not have the neat mathematical properties of the SD (the SEM and the intervals built on it, <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a>).</p>
+<p>which is what R’s <code>mad()</code> computes. (R also rescales it by 1.4826 by default, so that for normal data the MAD is on the same scale as the SD; set <code>constant = 1</code> to switch that off.) The closely related <strong>mean</strong> absolute deviation, <span class="math inline">\(\sum \vert x_i - \bar x \vert / n\)</span>, is a different quantity: it uses the mean rather than the median twice over, and is correspondingly less resistant to outliers. The MAD is both more intuitive and much less sensitive to outliers than the SD (note the lack of the squaring operator). However, it does not have the neat mathematical properties of the SD (the SEM and the intervals built on it, <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>).</p>
 <p>As a convention, mean and SD should be used together, as median and MAD should be used together.</p>
 <p>Another useful summary of data variation is the interquartile range (IQR), the distance from the 25th to the 75th percentile, which covers the middle half of the data (this is exactly what the box in a boxplot does). It is usually reported as part of the five-number summary: the minimum value – 25th percentile – median – 75th percentile – maximum value.</p>
 <p>Beware of summarising data via min and max, as these depend on sample size. The more data you have, the further min and max tend to creep from the median. For the same reason, beware of estimating population distribution from the shape of the data distribution, as even highly non-symmetric distributions can appear near-normal with moderate sample sizes. Statistical normality tests should therefore be avoided (especially as with large n-s they always provide small p values, suggesting non-normality even with approximately normal data).</p>
@@ -1765,7 +1720,7 @@ Figure&nbsp;A.9: Left: raw clinic means (red) and partially pooled estimates (bl
 </div>
 </div>
 <p>Class enumeration is the main practical decision, and it is made by comparing information criteria across <span class="math inline">\(k\)</span>, supported by the bootstrapped likelihood-ratio test; in simulation studies the BIC and the bootstrap LRT perform best, and the ordinary likelihood-ratio test between <span class="math inline">\(k\)</span> and <span class="math inline">\(k+1\)</span> classes does not have its nominal distribution.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> Two practical points: the likelihood is multimodal, so always fit from many random starts (<code>nrep</code>), and with large <span class="math inline">\(n\)</span> the BIC will happily keep improving as classes are added, so the choice is partly a judgement about whether the extra class is interpretable and large enough to be useful.</p>
-<p>Here the BIC improves sharply up to three classes and then flattens. The three-class solution looks convincing (<a href="#tbl-eda-lca-profiles" class="quarto-xref">Table&nbsp;<span>A.3</span></a>):</p>
+<p>Here the BIC improves sharply up to three classes and then flattens. The three-class solution looks convincing (<a href="#tbl-eda-lca-profiles" class="quarto-xref">Table&nbsp;<span>A.2</span></a>):</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -1783,7 +1738,7 @@ Figure&nbsp;A.9: Left: raw clinic means (red) and partially pooled estimates (bl
 <div id="tbl-eda-lca-profiles" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-eda-lca-profiles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.3: Probability of each sign being present, by latent class.
+Table&nbsp;A.2: Probability of each sign being present, by latent class.
 </figcaption>
 <div aria-describedby="tbl-eda-lca-profiles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -2006,9 +1961,9 @@ Figure&nbsp;A.11: Distribution of the estimated probability of treatment among t
 <p>Start with the standard distinctions, which hold regardless of context.</p>
 <ul>
 <li>The <strong>SD</strong> shows the variation of the data. Do not put it on a graph that already shows the data points; report it in the text as mean (SD), or as median (MAD) for skewed data.</li>
-<li>The <strong>SEM</strong> shows the uncertainty of the mean, and should be neither plotted on its own nor read as a description of the data (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a>).</li>
-<li>A <strong>95% credible interval</strong> brackets the parameter with 95% posterior probability, given the model and the data (<a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a>). A <strong>95% confidence interval</strong> is a statement about the coverage of a procedure, tied to the p value by the identity that <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a> sets out; the two often coincide numerically under flat priors and mean different things. For this section the difference does not matter, because neither guarantee survives exploration.</li>
-<li>Show the uncertainty of the quantity you are talking about. If the claim is about a difference between two groups, show the interval for the difference, not two intervals for two means – and compute that difference as its own posterior, because two intervals that do or do not cross a line are not a comparison (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>; <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a> on Gelman and Stern).</li>
+<li>The <strong>SEM</strong> shows the uncertainty of the mean, and should be neither plotted on its own nor read as a description of the data (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>).</li>
+<li>A <strong>95% credible interval</strong> brackets the parameter with 95% posterior probability, given the model and the data (<a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a>). A <strong>95% confidence interval</strong> is a statement about the coverage of a procedure, tied to the p value by the identity that <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> sets out; the two often coincide numerically under flat priors and mean different things. For this section the difference does not matter, because neither guarantee survives exploration.</li>
+<li>Show the uncertainty of the quantity you are talking about. If the claim is about a difference between two groups, show the interval for the difference, not two intervals for two means – and compute that difference as its own posterior, because two intervals that do or do not cross a line are not a comparison (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>; <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> on Gelman and Stern).</li>
 <li>The band around a fitted curve is the continuous version of the same idea, and is preferable to a row of separate intervals when a curve is what the model fits.</li>
 </ul>
 <section id="why-these-guarantees-do-not-survive-exploration" class="level3" data-number="A.9.1">
@@ -2029,7 +1984,7 @@ Figure&nbsp;A.11: Distribution of the estimated probability of treatment among t
 <section id="reference-distributions-and-the-line-up" class="level3" data-number="A.9.3">
 <h3 data-number="A.9.3" class="anchored" data-anchor-id="reference-distributions-and-the-line-up"><span class="header-section-number">A.9.3</span> Reference distributions and the line-up</h3>
 <p>A better-founded exploratory alternative to an interval is to ask directly what the plot would look like if there were nothing there. Simulate data under the null – by permuting the variable of interest, or by drawing from the fitted null model, or from a posterior predictive distribution – plot the result the same way as the real data, and see whether the real plot is distinguishable.</p>
-<p>The formal version of this is the <strong>line-up protocol</strong>: the real plot is hidden among 19 null plots, and if you can pick it out, the pattern is significant at 5% in a well-defined sense – the plot plays the role of the test statistic, and human perception the role of the test.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> It is one of the few devices that gives visual discovery an inferential footing, and it takes about ten lines of code (<a href="#fig-eda-lineup" class="quarto-xref">Figure&nbsp;<span>A.12</span></a>).</p>
+<p>The formal version of this is the <strong>line-up protocol</strong>: the real plot is hidden among 19 null plots, and if you can pick it out, the pattern is significant at 5% in a well-defined sense – the plot plays the role of the test statistic, and human perception the role of the test.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> It is one of the few devices that gives visual discovery an inferential footing, and it takes about ten lines of code (<a href="#fig-eda-lineup" class="quarto-xref">Figure&nbsp;<span>A.12</span></a>). A related exercise, the <strong>Rorschach</strong>, shows only null plots, to calibrate how much structure pure noise produces at a given sample size; the <code>nullabor</code> package automates both.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a> For a published randomised trial in which permuted labels produced group differences much like the real one, see <a href="13-appendix-graphics.html#sec-gr-case-study" class="quarto-xref"><span>Section B.8.2</span></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -2087,7 +2042,7 @@ Figure&nbsp;A.12: A line-up. One of these 20 panels shows the real relationship 
 <li><strong>Range and legality.</strong> Minimum, maximum, number of distinct values, and impossible values for every variable. Negative concentrations, ages of 999, dates before the study started, proportions above 1.</li>
 <li><strong>Rounding and limits.</strong> Final-digit distribution for self-reported quantities; floor and ceiling effects; spikes at a detection limit.</li>
 <li><strong>Missingness.</strong> How much, in which variables, and what observed variables predict it? How many rows are complete on everything the intended model needs? (<a href="#sec-eda-missing" class="quarto-xref"><span>Section A.2.4</span></a>)</li>
-<li><strong>One variable at a time.</strong> Strip chart or histogram for each continuous variable; counts for each categorical one. Check for skew and bimodality.</li>
+<li><strong>One variable at a time.</strong> Strip chart or histogram for each continuous variable; counts for each categorical one. Check for skew and bimodality (<a href="13-appendix-graphics.html#sec-gr-six-questions" class="quarto-xref"><span>Section B.5.1</span></a>).</li>
 <li><strong>Scale.</strong> For each skewed positive variable, look at the log. If the log is symmetric, switch to the multiplicative summaries (<a href="#sec-eda-lognormal" class="quarto-xref"><span>Section A.7.1</span></a>).</li>
 <li><strong>Outcome type.</strong> For counts, the mean-variance relationship and the proportion of zeros; for event times, the Kaplan-Meier curve and the reverse Kaplan-Meier for follow-up (<a href="#sec-eda-counts" class="quarto-xref"><span>Section A.7.2</span></a>).</li>
 <li><strong>Two variables at a time.</strong> Scatter plots with smoothers for the pairs you care about; conditioned (facetted) versions of the same plot for the strata you care about. Never trust a correlation coefficient on its own (<a href="#sec-eda-corr-traps" class="quarto-xref"><span>Section A.4.1</span></a>).</li>
@@ -2124,6 +2079,7 @@ Figure&nbsp;A.12: A line-up. One of these 20 panels shows the real relationship 
 <li id="fn19"><p>Gelman A, Loken E, “The Statistical Crisis in Science,” <em>Am Sci</em> 2014;102:460-465 (<a href="https://doi.org/10.1511/2014.111.460">DOI</a>).<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn20"><p>Gelman A, Hill J, Yajima M, “Why We (Usually) Don’t Have to Worry About Multiple Comparisons,” <em>J Res Educ Eff</em> 2012;5:189-211 (<a href="https://doi.org/10.1080/19345747.2011.618213">DOI</a>).<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn21"><p>Buja A, Cook D, Hofmann H, Lawrence M, Lee EK, Swayne DF, Wickham H, “Statistical inference for exploratory data analysis and model diagnostics,” <em>Philos Trans A Math Phys Eng Sci</em> 2009;367:4361-4383 (<a href="https://doi.org/10.1098/rsta.2009.0120">DOI</a>).<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>Wickham H, Cook D, Hofmann H, Buja A, “Graphical inference for infovis,” <em>IEEE Trans Vis Comput Graph</em> 2010;16:973-979 (<a href="https://doi.org/10.1109/TVCG.2010.161">DOI</a>).<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -2544,8 +2500,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./17-appendix-lab-design.html" class="pagination-link" aria-label="Designing a laboratory experiment">
-        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./13-appendix-graphics.html" class="pagination-link" aria-label="Graphs as data representation">
+        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -430,50 +430,56 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./13-appendix-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -732,12 +738,12 @@ Figure&nbsp;9.1: Madame Marie’s hit rate as a continuous parameter. A uniform 
 <section id="updating-exchangeability-and-what-bayes-does-not-guarantee" class="level2" data-number="9.8">
 <h2 data-number="9.8" class="anchored" data-anchor-id="updating-exchangeability-and-what-bayes-does-not-guarantee"><span class="header-section-number">9.8</span> Updating, exchangeability, and what Bayes does not guarantee</h2>
 <p>Bayes’ theorem combines, in the logically optimal way, the evidence in the data (through the likelihood) with the data-independent beliefs (through the prior), and returns a posterior. There is no magic involved, just probability theory. Bayes’ theorem is not a truth machine — it combines the information put into it. If the prior or the likelihood is grossly wrong, there is no guarantee that the posterior converges on the truth, even in the long run (although under most realistic conditions it does).</p>
-<p>Two practical properties follow. First, the theorem works <strong>iteratively</strong>, and with no lower limit on the data: <span class="math inline">\(N = 1\)</span> is fine.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Yesterday’s posterior becomes today’s prior, new data enter as a new likelihood, and the updated posterior in turn becomes tomorrow’s prior; because the product rule does not care how the data are grouped, updating on a hundred observations one at a time gives the same posterior as updating on all hundred at once. Bayesian inference thereby recapitulates the piecemeal nature of scientific inference, and because evidence is additive on the log scale (the weight-of-evidence section), accumulating studies is addition. One consequence is that nothing stops an analyst computing the posterior after every new observation. The frequentist concern with <strong>stopping rules</strong> arises from the need to control long-run error rates and has no counterpart here — a contrast that <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> opens with and the significance-chasing section of <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a> spells out.</p>
+<p>Two practical properties follow. First, the theorem works <strong>iteratively</strong>, and with no lower limit on the data: <span class="math inline">\(N = 1\)</span> is fine.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Yesterday’s posterior becomes today’s prior, new data enter as a new likelihood, and the updated posterior in turn becomes tomorrow’s prior; because the product rule does not care how the data are grouped, updating on a hundred observations one at a time gives the same posterior as updating on all hundred at once. Bayesian inference thereby recapitulates the piecemeal nature of scientific inference, and because evidence is additive on the log scale (the weight-of-evidence section), accumulating studies is addition. One consequence is that nothing stops an analyst computing the posterior after every new observation. The frequentist concern with <strong>stopping rules</strong> arises from the need to control long-run error rates and has no counterpart here — a contrast that <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> opens with and the significance-chasing section of <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> spells out.</p>
 <p>Second, the data need not be independent draws from a fixed population. What the analysis requires is that they be <strong>exchangeable</strong>: that the joint probability of the observations be unchanged by reordering them, so that their order carries no information (<a href="ch07-meaning-and-robot.html" class="quarto-xref"><span>Chapter 8</span></a>). De Finetti’s representation theorem, met in that chapter, is what makes exchangeability enough: an exchangeable sequence is mathematically a sequence that is independent and identically distributed (<em>iid</em>; independence was defined in <a href="ch05-probability-calculus.html" class="quarto-xref"><span>Chapter 6</span></a>) <em>given</em> an unknown parameter, with a prior over that parameter — exactly the structure prior × likelihood assumes. The <em>iid</em> assumption of a frequentist analysis and the exchangeability judgement of a Bayesian one are therefore the same judgement about the data, made unconditionally in the first case and conditionally on the parameter in the second; what the Bayesian gains is the freedom to put a distribution on the unknown rather than treat it as fixed. Where the observations are <em>not</em> exchangeable — measurements ordered in time, patients clustered within hospitals — the model must say how they depend on one another, which is the work of Part V.</p>
 </section>
 <section id="where-this-leads" class="level2" data-number="9.9">
 <h2 data-number="9.9" class="anchored" data-anchor-id="where-this-leads"><span class="header-section-number">9.9</span> Where this leads</h2>
-<p>The theorem is in hand, in three forms: the direct form, the odds form, and the additive log form. What it has not yet done is compute a posterior that no conjugate pair hands over for free; <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> does that with the grid approximation, and states the credible interval that this chapter’s beta–binomial example only gestured at. The p value, which this chapter used only as a foil, is set out with its problems in <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a>. And the point on which everything here has turned — that evidence is comparative, and that a hypothesis left out of the space cannot be revived by any data — returns in Part III, where the hypotheses are causal structures and the omitted one is usually a confounder.</p>
+<p>The theorem is in hand, in three forms: the direct form, the odds form, and the additive log form. What it has not yet done is compute a posterior that no conjugate pair hands over for free; <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> does that with the grid approximation, and states the credible interval that this chapter’s beta–binomial example only gestured at. The p value, which this chapter used only as a foil, is set out with its problems in <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>. And the point on which everything here has turned — that evidence is comparative, and that a hypothesis left out of the space cannot be revived by any data — returns in Part III, where the hypotheses are causal structures and the omitted one is usually a confounder.</p>
 </section>
 <section id="key-points" class="level2" data-number="9.10">
 <h2 data-number="9.10" class="anchored" data-anchor-id="key-points"><span class="header-section-number">9.10</span> Key points</h2>

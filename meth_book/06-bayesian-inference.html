@@ -430,50 +430,56 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./13-appendix-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -530,7 +536,7 @@ window.Quarto = {
 
 
 <p>The previous chapter, <a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a>, left the posterior defined but, beyond the conjugate case, uncomputed: “the posterior is obtained numerically.” This chapter is that computation, done by hand. The method is <strong>grid approximation</strong> — evaluate prior × likelihood at a grid of parameter values and normalise — which is Bayes’ theorem from <a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a> applied directly, with no new ideas, only arithmetic. We use it on two data models, the <strong>binomial</strong> (one parameter) and the <strong>normal</strong> (two parameters), and on the way meet the practical apparatus of Bayesian work: the <strong>datapoint-by-datapoint update</strong> (the iterative updating of <a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a> made visible), <strong>prior predictive simulation</strong> (checking what a prior implies before seeing data), <strong>sampling from the posterior</strong>, and summarising a posterior by its mean and a <strong>credible interval</strong> (the 95% highest-density interval, HDI — the interval <a href="ch08-bayes-weight-of-evidence.html" class="quarto-xref"><span>Chapter 9</span></a> left to this chapter). Grid approximation does not scale beyond a few parameters; for that we need Markov chain Monte Carlo (<a href="ch21b-bayesian-workflow.html#sec-mcmc-diagnostics" class="quarto-xref"><span>Section 23.2.2</span></a>), and the regression models of Part V are fitted that way. The point of doing it on a grid first is that nothing is hidden.</p>
-<p>The chapter opens with a contrast between the frequentist and Bayesian workflows. The frequentist machinery itself — p values, significance, error rates — is set out in <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix G</span></a>; here it serves only to show how differently the two traditions organise an analysis.</p>
+<p>The chapter opens with a contrast between the frequentist and Bayesian workflows. The frequentist machinery itself — p values, significance, error rates — is set out in <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>; here it serves only to show how differently the two traditions organise an analysis.</p>
 <section id="two-workflows" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="two-workflows"><span class="header-section-number">10.1</span> Two workflows</h2>
 <p>Side by side, <a href="#tbl-two-workflows" class="quarto-xref">Table&nbsp;<span>10.1</span></a> sets out the two traditions’ typical procedures.</p>
@@ -866,7 +872,7 @@ Figure&nbsp;10.6: After three patients (died, died, survived): prior in black, p
 <li><p>Prior is your belief about the parameter value, modelled as a probability distribution.</p></li>
 <li><p>Prior does not have to be normal.</p></li>
 <li><p>Likelihood and prior(s) do not have to be represented by the same distribution.</p></li>
-<li><p>When prior and likelihood are both unimodal and broadly agree, the posterior is narrower than either — for normal distributions the precisions add — because it pools their information. This is the usual case, not a law: a prior that conflicts with the likelihood can produce a displaced or bimodal posterior, and a set of priors can even widen under conditioning (<a href="19-appendix-challenges.html" class="quarto-xref"><span>Appendix H</span></a>).</p></li>
+<li><p>When prior and likelihood are both unimodal and broadly agree, the posterior is narrower than either — for normal distributions the precisions add — because it pools their information. This is the usual case, not a law: a prior that conflicts with the likelihood can produce a displaced or bimodal posterior, and a set of priors can even widen under conditioning (<a href="19-appendix-challenges.html" class="quarto-xref"><span>Appendix I</span></a>).</p></li>
 </ul>
 <p>Next is the grid method for a posterior in two dimensions. Instead of multiplying likelihoods, we will add log-likelihoods (mathematically the same thing, numerically safer).</p>
 <p>The model is:</p>
@@ -1074,7 +1080,7 @@ Figure&nbsp;10.10: Triplot for the mean presidential height: prior, likelihood (
 </section>
 <section id="the-same-posterior-by-mcmc" class="level3" data-number="10.4.6">
 <h3 data-number="10.4.6" class="anchored" data-anchor-id="the-same-posterior-by-mcmc"><span class="header-section-number">10.4.6</span> The same posterior by MCMC</h3>
-<p>Grid approximation is exact up to the grid’s resolution, and hopeless beyond a handful of parameters: 100 points per parameter is <span class="math inline">\(100^k\)</span> evaluations. The general method is Markov chain Monte Carlo (MCMC), which produces the same kind of table of posterior samples without visiting every combination — a sampler wanders through parameter space, spending time in each region in proportion to its posterior probability. <a href="ch21b-bayesian-workflow.html#sec-mcmc-diagnostics" class="quarto-xref"><span>Section 23.2.2</span></a> explains how, and how to check that it worked; <a href="11-appendix-brms.html" class="quarto-xref"><span>Appendix C</span></a> sets out the <code>brms</code> interface used throughout the book. Here it is enough to fit the same model, with the same priors, and compare (<a href="#tbl-grid-vs-mcmc" class="quarto-xref">Table&nbsp;<span>10.4</span></a>).</p>
+<p>Grid approximation is exact up to the grid’s resolution, and hopeless beyond a handful of parameters: 100 points per parameter is <span class="math inline">\(100^k\)</span> evaluations. The general method is Markov chain Monte Carlo (MCMC), which produces the same kind of table of posterior samples without visiting every combination — a sampler wanders through parameter space, spending time in each region in proportion to its posterior probability. <a href="ch21b-bayesian-workflow.html#sec-mcmc-diagnostics" class="quarto-xref"><span>Section 23.2.2</span></a> explains how, and how to check that it worked; <a href="11-appendix-brms.html" class="quarto-xref"><span>Appendix D</span></a> sets out the <code>brms</code> interface used throughout the book. Here it is enough to fit the same model, with the same priors, and compare (<a href="#tbl-grid-vs-mcmc" class="quarto-xref">Table&nbsp;<span>10.4</span></a>).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>The Bayesian Way to Causal Epidemiology - Appendix B — Designing a laboratory experiment</title>
+<title>The Bayesian Way to Causal Epidemiology - Appendix C — Designing a laboratory experiment</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./11-appendix-brms.html" rel="next">
-<link href="./10-appendix-best-practices.html" rel="prev">
+<link href="./13-appendix-graphics.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./17-appendix-lab-design.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./17-appendix-lab-design.html"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -367,50 +367,56 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./13-appendix-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -425,20 +431,20 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#controls-of-the-experimental-system" id="toc-controls-of-the-experimental-system" class="nav-link active" data-scroll-target="#controls-of-the-experimental-system"><span class="header-section-number">B.1</span> Controls of the experimental system</a></li>
-  <li><a href="#replicates-generalisation-and-validity" id="toc-replicates-generalisation-and-validity" class="nav-link" data-scroll-target="#replicates-generalisation-and-validity"><span class="header-section-number">B.2</span> Replicates, generalisation and validity</a></li>
-  <li><a href="#paired-designs" id="toc-paired-designs" class="nav-link" data-scroll-target="#paired-designs"><span class="header-section-number">B.3</span> Paired designs</a></li>
-  <li><a href="#simple-systems-and-the-cost-of-simplicity" id="toc-simple-systems-and-the-cost-of-simplicity" class="nav-link" data-scroll-target="#simple-systems-and-the-cost-of-simplicity"><span class="header-section-number">B.4</span> Simple systems and the cost of simplicity</a></li>
-  <li><a href="#nine-questions-a-reviewer-will-ask" id="toc-nine-questions-a-reviewer-will-ask" class="nav-link" data-scroll-target="#nine-questions-a-reviewer-will-ask"><span class="header-section-number">B.5</span> Nine questions a reviewer will ask</a></li>
+  <li><a href="#controls-of-the-experimental-system" id="toc-controls-of-the-experimental-system" class="nav-link active" data-scroll-target="#controls-of-the-experimental-system"><span class="header-section-number">C.1</span> Controls of the experimental system</a></li>
+  <li><a href="#replicates-generalisation-and-validity" id="toc-replicates-generalisation-and-validity" class="nav-link" data-scroll-target="#replicates-generalisation-and-validity"><span class="header-section-number">C.2</span> Replicates, generalisation and validity</a></li>
+  <li><a href="#paired-designs" id="toc-paired-designs" class="nav-link" data-scroll-target="#paired-designs"><span class="header-section-number">C.3</span> Paired designs</a></li>
+  <li><a href="#simple-systems-and-the-cost-of-simplicity" id="toc-simple-systems-and-the-cost-of-simplicity" class="nav-link" data-scroll-target="#simple-systems-and-the-cost-of-simplicity"><span class="header-section-number">C.4</span> Simple systems and the cost of simplicity</a></li>
+  <li><a href="#nine-questions-a-reviewer-will-ask" id="toc-nine-questions-a-reviewer-will-ask" class="nav-link" data-scroll-target="#nine-questions-a-reviewer-will-ask"><span class="header-section-number">C.5</span> Nine questions a reviewer will ask</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./17-appendix-lab-design.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./17-appendix-lab-design.html"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-app-lab-design" class="quarto-section-identifier">Appendix B — Designing a laboratory experiment</span></h1>
+<h1 class="title"><span id="sec-app-lab-design" class="quarto-section-identifier">Appendix C — Designing a laboratory experiment</span></h1>
 </div>
 
 
@@ -456,16 +462,16 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>This appendix keeps the practical vocabulary of bench experiments that the main text no longer needs: the controls a laboratory uses to check that its measuring system works, the two kinds of replicate, what it means to reproduce or replicate a study, and the questions a reviewer will ask. It was written for a methods course that served laboratory scientists as well as epidemiologists, and it is left here for them. Nothing in Parts III to V depends on it. Note that <em>negative control</em> is used in this appendix in the laboratory sense (a run that lacks a necessary component); the epidemiological negative control of <a href="ch18-quasi-experimental.html" class="quarto-xref"><span>Chapter 19</span></a> and <a href="ch19-sensitivity-analysis.html" class="quarto-xref"><span>Chapter 20</span></a> is a different device with the same name.</p>
-<section id="controls-of-the-experimental-system" class="level2" data-number="B.1">
-<h2 data-number="B.1" class="anchored" data-anchor-id="controls-of-the-experimental-system"><span class="header-section-number">B.1</span> Controls of the experimental system</h2>
+<section id="controls-of-the-experimental-system" class="level2" data-number="C.1">
+<h2 data-number="C.1" class="anchored" data-anchor-id="controls-of-the-experimental-system"><span class="header-section-number">C.1</span> Controls of the experimental system</h2>
 <p>An experimental system is everything needed to produce the data: study material, reagents, instruments, protocol and the people running it. Before the treatment contrast can be trusted, the system itself has to be shown to work, and two kinds of control do that.</p>
 <ul>
 <li><p>Positive control - a sensitivity control experiment of the experimental system, which shows experimental system generating data in the absence of experimental treatment.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
 <li><p>Negative control - a specificity control experiment of the experimental system, which shows experimental system, which lacks a necessary component, not generating data in the absence of experimental treatment.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Positive and negative controls are often used for lab experiments, where managing the integrity of the experimental system can be a challenge, independent of application of a specific experimental/control treatment.</p></li>
 </ul>
 </section>
-<section id="replicates-generalisation-and-validity" class="level2" data-number="B.2">
-<h2 data-number="B.2" class="anchored" data-anchor-id="replicates-generalisation-and-validity"><span class="header-section-number">B.2</span> Replicates, generalisation and validity</h2>
+<section id="replicates-generalisation-and-validity" class="level2" data-number="C.2">
+<h2 data-number="C.2" class="anchored" data-anchor-id="replicates-generalisation-and-validity"><span class="header-section-number">C.2</span> Replicates, generalisation and validity</h2>
 <ul>
 <li><p>technical replicate - experiment is replicated at technical level, often by running the same samples through measurement several times. Such analysis allows to assess the quality of measurement, but it does not capture biological variation in nature.</p></li>
 <li><p>biological replicate - study samples correspond to independently collected biological samples. The goal is to capture biological variation, and therefore to be able to generalise the results of the experiment to some biological level. If the data is clustered by cage, family, etc., then appropriate multilevel analysis is needed. Also, the more biological variation is covered in the experiment, the better the experiment is generalisable, but the larger sample size is needed to reliably estimate effects of a given size. Importantly, the sensitivity of the experiment goes down linearly with increasing variation in the data, while it goes up proportionally with the square root of increasing sample size. Therefore, it is much more costly to increase sensitivity by increasing N, rather than by decreasing SD.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> As a rule, one can only extrapolate results to the population, from which a representative sample was drawn for the study (random sampling is a good way of obtaining a representative sample). This level of extrapolation is called <strong>external validity</strong> of the study.</p></li>
@@ -473,17 +479,17 @@ ul.task-list li input[type="checkbox"] {
 <li><p>replicating the experiment means redoing the whole experiment, starting by collecting new data, and getting reasonably similar results. The idea is to use exactly the original protocols (although increasing the sample size, and maybe improving the analysis in a clearly defined way, may be permissible).<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p></li>
 </ul>
 </section>
-<section id="paired-designs" class="level2" data-number="B.3">
-<h2 data-number="B.3" class="anchored" data-anchor-id="paired-designs"><span class="header-section-number">B.3</span> Paired designs</h2>
+<section id="paired-designs" class="level2" data-number="C.3">
+<h2 data-number="C.3" class="anchored" data-anchor-id="paired-designs"><span class="header-section-number">C.3</span> Paired designs</h2>
 <p>Biological experiments are usually not randomised<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> and the independence of repeat experiments is achieved by varying as many components of the experimental system (buffer batches and enzyme preps) as possible and by trying to keep the compositions and treatments of the experimental and control groups as similar as possible. This leads naturally to paired designs where experimental and control groups are treated together as much as possible, and in parallel. The idea behind a paired design is that substantial fraction of random variation resides within the pairs, and we can take this into account in our analysis model structures.</p>
 </section>
-<section id="simple-systems-and-the-cost-of-simplicity" class="level2" data-number="B.4">
-<h2 data-number="B.4" class="anchored" data-anchor-id="simple-systems-and-the-cost-of-simplicity"><span class="header-section-number">B.4</span> Simple systems and the cost of simplicity</h2>
+<section id="simple-systems-and-the-cost-of-simplicity" class="level2" data-number="C.4">
+<h2 data-number="C.4" class="anchored" data-anchor-id="simple-systems-and-the-cost-of-simplicity"><span class="header-section-number">C.4</span> Simple systems and the cost of simplicity</h2>
 <p>So how do we know that by treatment we treated the variable that we wanted treated, rather than something else? We simply need a simple enough experimental system, which means that we cannot study the world directly – need a simplified system that we can consistently disrupt with treatment. As every simplification constitutes an extra hypothesis, this makes it correspondingly harder to generalise back to the world.</p>
 <p>An experimental system consists of the biological object of measurement, reagents, machines, the experimenters, and the act of measurement. Experimental system has long-run quality properties: it has sensitivity and specificity. It has a measure of complexity and a measure of relevance to the real world. There is trade-off, by which a simple system is easy to interpret, but at the expense of external validity (generalisability). For instance, simplified <em>in vitro</em> systems presuppose that we understand <em>in vivo</em> conditions, less there be serious problems with external validity. And the in vivo systems, which tend to have better external validity, are often harder to interpret (there is a bigger chance of confounding).</p>
 </section>
-<section id="nine-questions-a-reviewer-will-ask" class="level2" data-number="B.5">
-<h2 data-number="B.5" class="anchored" data-anchor-id="nine-questions-a-reviewer-will-ask"><span class="header-section-number">B.5</span> Nine questions a reviewer will ask</h2>
+<section id="nine-questions-a-reviewer-will-ask" class="level2" data-number="C.5">
+<h2 data-number="C.5" class="anchored" data-anchor-id="nine-questions-a-reviewer-will-ask"><span class="header-section-number">C.5</span> Nine questions a reviewer will ask</h2>
 <p>If asked, you should be able to answer:</p>
 <ol type="1">
 <li><p>What scientific question does your experiment address?</p></li>
@@ -922,13 +928,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./10-appendix-best-practices.html" class="pagination-link" aria-label="Exploratory Data Analysis">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span>
+      <a href="./13-appendix-graphics.html" class="pagination-link" aria-label="Graphs as data representation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./11-appendix-brms.html" class="pagination-link" aria-label="brms code companion">
-        <span class="nav-page-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms code companion</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

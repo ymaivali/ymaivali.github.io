@@ -432,50 +432,56 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./13-appendix-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -576,7 +582,7 @@ Figure&nbsp;24.1: The fitted age curve for untreated patients under three proces
 </div>
 </div>
 </div>
-<p>The technical material – how the bases are constructed, what a thin-plate spline is, how tensor products handle two smooth predictors at once, and how the effective degrees of freedom are counted – is in <a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix F</span></a>, which works in <code>mgcv</code> directly. Everything in this chapter is fitted with <code>brms</code>, which accepts <code>s()</code> and <code>t2()</code> terms and estimates their smoothing parameters as part of the posterior. For a single continuous predictor the <code>brms</code> default (a thin-plate spline with a basis dimension of 10) is almost always enough; the basis dimension is an upper bound on flexibility, not a target, because the penalty decides how much of it is used.</p>
+<p>The technical material – how the bases are constructed, what a thin-plate spline is, how tensor products handle two smooth predictors at once, and how the effective degrees of freedom are counted – is in <a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix G</span></a>, which works in <code>mgcv</code> directly. Everything in this chapter is fitted with <code>brms</code>, which accepts <code>s()</code> and <code>t2()</code> terms and estimates their smoothing parameters as part of the posterior. For a single continuous predictor the <code>brms</code> default (a thin-plate spline with a basis dimension of 10) is almost always enough; the basis dimension is an upper bound on flexibility, not a target, because the penalty decides how much of it is used.</p>
 </section>
 <section id="why-age-gets-a-spline" class="level3" data-number="24.1.3">
 <h3 data-number="24.1.3" class="anchored" data-anchor-id="why-age-gets-a-spline"><span class="header-section-number">24.1.3</span> Why age gets a spline</h3>
@@ -794,7 +800,7 @@ Figure&nbsp;24.5: Two mutilated interaction models on the crossing data. Left: m
 <p>With one shared intercept (left panel) the fitted intercept is 1.01, near the grand mean of y (1.06), and the slopes are 0.27 for A and -0.18 for B, both far from the generating values of +1 and -1: a line that must pass through a shared intercept cannot also match its own group. With the intercept removed as well (right panel) the slopes are 1.03 and 0.58, and the sign of the B relation has reversed.</p>
 <p>The rule that follows is mechanical: include an interaction with all of its lower-order terms, and read the product coefficient as a modification of them. It is a default rather than a law, and the next section states the condition under which it can be broken.</p>
 <p>For the spline analogue the rule needs a qualification, because <code>s(age, by = drug)</code> constructs two different terms depending on how <code>drug</code> is coded, and only one of them behaves like a product term.</p>
-<p>When <code>drug</code> is a <strong>factor</strong>, as it is here, the term fits a separate age curve for each arm. Each of those curves is <em>centred</em> – constrained to sum to zero over the data – so neither can carry the difference in level between the arms, and the parametric <code>drug</code> term is required to supply it. A separate <code>s(age)</code> must <em>not</em> be added: the arm-specific curves already provide both age relations, and <code>s(age)</code> would be a third curve competing with them for the same signal. This is the form the model above uses, and the form <a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix F</span></a> treats as standard.</p>
+<p>When <code>drug</code> is a <strong>factor</strong>, as it is here, the term fits a separate age curve for each arm. Each of those curves is <em>centred</em> – constrained to sum to zero over the data – so neither can carry the difference in level between the arms, and the parametric <code>drug</code> term is required to supply it. A separate <code>s(age)</code> must <em>not</em> be added: the arm-specific curves already provide both age relations, and <code>s(age)</code> would be a third curve competing with them for the same signal. This is the form the model above uses, and the form <a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix G</span></a> treats as standard.</p>
 <p>When <code>drug</code> is a <strong>numeric</strong> 0/1 indicator, the term is instead a single curve multiplied by <code>drug</code> – a varying coefficient – and it is not centred. Now <code>s(age)</code> <em>is</em> required, because without it the untreated arm has no age relation at all, and the estimate is badly biased as a result. But the parametric <code>drug</code> term becomes redundant: <code>drug</code> times the constant part of the curve is already inside the term’s unpenalised component, so adding <code>drug</code> separately makes the design rank-deficient. <code>mgcv</code> reports this and drops the coefficient; <code>brms</code> leaves both in, identified only by their prior and only as a sum. Nothing that is reported as a marginal contrast is harmed by it, but the <code>drug</code> coefficient then means nothing on its own.</p>
 </div>
 </div>

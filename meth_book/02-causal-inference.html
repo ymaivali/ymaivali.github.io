@@ -403,50 +403,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./13-appendix-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -639,7 +645,7 @@ Figure&nbsp;4.3: The same causal question as observed and as an experiment. A st
 </section>
 <section id="the-vocabulary-of-experimental-design" class="level2" data-number="4.7">
 <h2 data-number="4.7" class="anchored" data-anchor-id="the-vocabulary-of-experimental-design"><span class="header-section-number">4.7</span> The vocabulary of experimental design</h2>
-<p>The terms below recur throughout the book. The laboratory-specific parts of the vocabulary (positive and negative controls of a measuring system, technical and biological replicates, reproducibility) are collected in <a href="17-appendix-lab-design.html" class="quarto-xref"><span>Appendix B</span></a>.</p>
+<p>The terms below recur throughout the book. The laboratory-specific parts of the vocabulary (positive and negative controls of a measuring system, technical and biological replicates, reproducibility) are collected in <a href="17-appendix-lab-design.html" class="quarto-xref"><span>Appendix C</span></a>.</p>
 <p><strong>Experimental system.</strong> Everything that is needed to produce the data: the study subjects (cell lines, mice, patients), the materials, the measuring apparatus, the protocol and the people who carry it out. The experimenter’s task is to infer, from the data and from knowledge of the system, the mechanism that generated the data; statistical modelling is the tool for that inference.</p>
 <p><strong>Experimental treatment.</strong> An action that changes the experimental system according to a causal hypothesis. By changing a hypothesised cause we aim to change a hypothesised effect. The treatment should not affect the outcome by any route other than the cause under study, and it should be one thing: if “treated” covers several doses or routes with different effects, the treatment effect is not defined. This is the <strong>consistency</strong> condition of <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>, one half of what that chapter calls SUTVA.</p>
 <p><strong>Interference.</strong> The other half of SUTVA is that one unit’s treatment does not affect another unit’s <em>outcome</em>. Testing a fertiliser on adjacent plots violates it, because the treated plot’s run-off reaches the control plot; vaccinating half a community violates it, because the vaccinated protect the unvaccinated. An epidemiologist may well hope for interference, since it increases the impact of a programme, but it changes what the treatment effect means. When interference is expected, one option is to assign treatment to whole groups beyond which interference is unlikely (villages, wards, classrooms), randomise at that level, and interpret the results at that level.</p>
