@@ -456,32 +456,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -956,7 +962,7 @@ Table&nbsp;26.4: The same model twice over, changing only the units in which age
 </figure>
 </div>
 </div>
-<p>A practical constraint decides which tensor product to use. <code>brms</code> implements <code>s()</code> and <code>t2()</code>; mgcv’s <code>te()</code> and <code>ti()</code> are not available, because they lack the random-effects representation <code>brms</code> builds its Stan code from — attempting one returns an error recommending <code>t2()</code>. Everything <a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix G</span></a> says about <code>te()</code> therefore has to be done with <code>t2()</code> in a <code>brms</code> fit; that appendix covers the constructions, the choice of marginal bases, and the ANOVA-style decomposition in full.</p>
+<p>A practical constraint decides which tensor product to use. <code>brms</code> implements <code>s()</code> and <code>t2()</code>; mgcv’s <code>te()</code> and <code>ti()</code> are not available, because they lack the random-effects representation <code>brms</code> builds its Stan code from — attempting one returns an error recommending <code>t2()</code>. Everything <a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix H</span></a> says about <code>te()</code> therefore has to be done with <code>t2()</code> in a <code>brms</code> fit; that appendix covers the constructions, the choice of marginal bases, and the ANOVA-style decomposition in full.</p>
 <p>Two choices remain: the variable the smooth is built on, and how much flexibility it is allowed. Both matter here more than they usually do, because the rate falls by an order of magnitude in the first month and then changes slowly for the rest of the year. A smooth in <span class="math inline">\(t\)</span> spends its flexibility uniformly across the year, which is to say mostly where nothing is happening, while a smooth in <span class="math inline">\(\log t\)</span> spends it where the data are dense and the curve is steep. The comparison is worth making explicitly rather than by assertion, and it is a comparison <code>loo</code> is for: two functional forms within one fixed adjustment set (<a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m_lin <span class="ot">&lt;-</span> <span class="fu">brm</span>(events <span class="sc">~</span> vac <span class="sc">+</span> <span class="fu">s</span>(t, <span class="at">by =</span> vac, <span class="at">k =</span> <span class="dv">8</span>) <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(pyears)),</span>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ülo Maiväli">
-<meta name="dcterms.date" content="2026-10-12">
+<meta name="dcterms.date" content="2026-10-14">
 
 <title>The Bayesian Way to Causal Epidemiology</title>
 <style>
@@ -392,32 +392,38 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -461,7 +467,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 12, 2026</p>
+      <p class="date">October 14, 2026</p>
     </div>
   </div>
   
@@ -476,10 +482,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="a-statement-of-purpose" class="level1 unnumbered">
 <h1 class="unnumbered">A statement of purpose</h1>
 <p>This book is focused on causal modelling in epidemiology, via the Bayesian route. Throughout, I try to show connections between scientific, statistical and causal thinking, which are bound together by probability theory, interpreted as logic.</p>
-<p>The general idea behind this lengthy exposition is to demolish walls between scientific thinking, statistical thinking and rational thinking in the real world. However, rationality is here taken in a narrow, technical sense, where we can norm it and check its correctness by mathematical methods. Normatively rational thinking operates in the mental space where assertions have truth value – i.e.&nbsp;the statement (proposition) you made can be either true or false, and nothing in between. Here we have the use of a mathematical framework that tells how to use the evidence to update your beliefs about the world, be it the real world, or the rather more abstract scientific world. As we will see, the truth value requirement requirement can be tricky even in the highly technical domain of counterfactual causal modelling, let alone in everyday decisions on where to go for vacation of whether to eat this piece of chocolate cake. It turns out that we will aquire a fancy toolbox for making data-driven inferences about practically everything, from said cake to medical treatments, while in most practical cases the tools work only so-so, because how we talk about the world cannot be precisely encoded into mathematically tractable language. In the end, we have to be content with doing the best job we can, using tools that are extremely well understood and work optimally under ideal conditions, while conceding that in actual scientific work, or in real life, this might not be good enough in any given use case.</p>
-<p>The moral of this is twofold. Firstly, whatever we do in terms of fancy statistics and modelling, we should always try to understand, why we do it the way we do it. Any math that comes up in our work is in the service of some non-mathematical scientific argument, and if we cannot understand this relationship, then the math is spurious and should be considered a window-dressing to our limitations as scientists and human beings. The second moral is simple: show humility! After perusing this book, you should take it for granted that mathematical precision in epidemiological work is illusory (not only the point estimates, but our estimates about the uncertainty of these, are inherently uncertain) and no numerical probability value can carry over straight to our scientific arguments. This is why epidemiological papers have sections “Limitations of the Study” – to show the discrepancy between assumptions behind their calculations and what they actually suspect to be the case.</p>
-<p>To make it short: (i) we do things for a reason and (ii) we are humble about it.</p>
-<p>The book covers both experimental (randomised) studies and observational (epidemiological) studies and focuses on practical workflows rather than theoretical exposition. It experimental itself, as it’s written largely by AI (mostly Opus 4.7-5 models in Claude Code and Claude Science harnesses) and the AI-generated text is only lightly edited for readability, not that much for style. The references were checked by AI either from pubmed or from the web directly. The reader should note that the facts were generally not checked by human for accuracy. You are reading a book that is, in a sense, still in search of its author. I do hope that it will be read it with the help of AI, including for fact checking, as model progression will make it easier to identify errors of previous models. I will not include solutions to excercises, in the hope that for it will be pedagogically advantageous to elicit these with the help of AI.</p>
+<p>The general idea behind this lengthy exposition is to demolish walls between scientific thinking, statistical thinking and rational thinking in the real world. However, rationality is here taken in a narrow, technical sense, where we can norm it and check its correctness by mathematical methods. Normatively rational thinking operates in the mental space where assertions have truth value – i.e.&nbsp;the statement (proposition) you made can be either true or false, and nothing in between. Here we have the use of a mathematical framework that tells how to use the evidence to update your beliefs about the world, be it the real world, or the rather more abstract scientific world. As we will see, the truth value requirement can be tricky even in the highly technical domain of counterfactual causal modelling, let alone in everyday decisions on where to go for vacation of whether to eat this piece of chocolate cake. In fact, we will aquire a fancy toolbox for making data-driven inferences about practically everything, from said cake to medical treatments, while in most practical cases the tools work only so-so, because how we talk about the world cannot be precisely encoded into mathematically tractable language. In the end, we have to be content with doing the best job we can, using tools that are extremely well understood and work optimally under ideal conditions, while conceding that in actual scientific work, or in real life, this might not be good enough in a given use case.</p>
+<p>The moral of this is twofold. Firstly, whatever we do in terms of statistics and modelling, we should always try to understand, why we do it the way we do it. Any math that comes up in our work is in the service of some non-mathematical scientific argument, and if we cannot understand this relationship, then the math is spurious and should be considered a window-dressing to our limitations as scientists and human beings. The second moral is simple: show humility! After perusing this book, you should take it for granted that mathematical precision in epidemiological work is illusory (not only the point estimates, but our estimates about the uncertainty of these, are inherently uncertain) and no numerical probability value should carry over straight to our scientific arguments. This is why epidemiological papers have sections “Limitations of the Study” – to show the discrepancy between assumptions behind their calculations and what they actually suspect to be the case.</p>
+<p>In short: (i) we do things for a reason and (ii) we are humble about it.</p>
+<p>The book covers both experimental (randomised) studies and observational (epidemiological) studies and focuses on practical workflows rather than theoretical exposition. It is experimental itself, as it’s written largely by AI (mostly Opus 4.7-5.5 models in Claude Code and Claude Science harnesses) and the AI-generated text is only lightly edited for readability, not that much for style. The references were checked by AI either from pubmed or from the web directly. The reader should note that the facts were generally not checked by human for accuracy. You are reading a book that is, in a sense, still in search of its author. I hope that it will be read with the help of AI, including for fact checking, as AI model progression will make it easier to identify errors of previous models. I will not include solutions to excercises, in the hope that for it will be pedagogically advantageous to elicit these with the help of AI.</p>
 <section id="the-companion-skill" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="the-companion-skill">The companion skill</h2>
 <p>A Claude skill built from this book is available as a download, in two editions. Take whichever fits how you are reading.</p>

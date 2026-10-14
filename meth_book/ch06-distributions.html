@@ -454,32 +454,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -820,7 +826,7 @@ The central limit theorem
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The simulation is an instance of the <strong>central limit theorem</strong>: if <span class="math inline">\(X_1, \dots, X_n\)</span> are independent draws from any one distribution with finite mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, the distribution of their sum approaches <span class="math inline">\(\text{Normal}(n\mu, \sigma\sqrt{n})\)</span> as <span class="math inline">\(n\)</span> grows — equivalently, their mean approaches <span class="math inline">\(\text{Normal}(\mu, \sigma/\sqrt{n})\)</span> — whatever the shape of the parent distribution. Twelve uniform draws already give a bell. How many terms are needed depends on how skewed the parent is; no fixed sample size such as 30 is part of the theorem, and <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> shows a skewed parent needing far more. This is why measurement errors, and quantities built from many additive influences, are so often approximately normal, and why the normal is the limit of so many of the distributions below.</p>
+<p>The simulation is an instance of the <strong>central limit theorem</strong>: if <span class="math inline">\(X_1, \dots, X_n\)</span> are independent draws from any one distribution with finite mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, the distribution of their sum approaches <span class="math inline">\(\text{Normal}(n\mu, \sigma\sqrt{n})\)</span> as <span class="math inline">\(n\)</span> grows — equivalently, their mean approaches <span class="math inline">\(\text{Normal}(\mu, \sigma/\sqrt{n})\)</span> — whatever the shape of the parent distribution. Twelve uniform draws already give a bell. How many terms are needed depends on how skewed the parent is; no fixed sample size such as 30 is part of the theorem, and <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a> shows a skewed parent needing far more. This is why measurement errors, and quantities built from many additive influences, are so often approximately normal, and why the normal is the limit of so many of the distributions below.</p>
 </div>
 </div>
 <p>This is close enough to a normal distribution. Let us model these data through an actual normal distribution. The parameter, which determines the exact shape of a binomial distribution, is probability of success (p). Similarly, the exact shape of the normal distribution is determined by two parameters, the <span class="math inline">\(\mu\)</span>, which determines the location of the peak, and the <span class="math inline">\(\sigma\)</span>, which determines the scale of the distribution (roughly speaking, the width of the thing).<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> We calculate these parameters directly from the simulated data, as is done by most classical statistical techniques. By fixing the values of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> we have <em>fitted</em> the model. The modelled distribution in <a href="#fig-growth-fit" class="quarto-xref">Figure&nbsp;<span>7.4</span></a> is very close to the data, which means that it is now easy to simulate new data from the normal model and, generally, to study the model as a stand-in for the physical world.</p>
@@ -1032,7 +1038,7 @@ Figure&nbsp;7.9: Student’s t distributions with 1, 3 and 30 degrees of freedom
 </div>
 </div>
 </div>
-<p>The distribution arises whenever a normal mean is standardised by an estimate of the standard deviation rather than its true value: this is why the t distribution governs the classical one- and two-sample t-tests (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>). It was derived by William Gosset, a chemist at the Guinness brewery in Dublin, publishing under the pseudonym “Student” because his employer treated such work as a trade secret.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>The distribution arises whenever a normal mean is standardised by an estimate of the standard deviation rather than its true value: this is why the t distribution governs the classical one- and two-sample t-tests (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a>). It was derived by William Gosset, a chemist at the Guinness brewery in Dublin, publishing under the pseudonym “Student” because his employer treated such work as a trade secret.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <p>The heavy tails have a second, modern use. Replacing a normal likelihood or prior with a t distribution makes a model <strong>robust</strong>: an outlying observation, which a normal would treat as nearly impossible and so allow to drag the fit towards itself, is accommodated by the heavier tail and exerts less leverage. Part V uses this device (<code>brms</code> provides it as the <code>student</code> family; <a href="12-appendix-brm-syntax.html" class="quarto-xref"><span>Appendix E</span></a>).</p>
 <p>The degrees of freedom also control which moments exist — a concrete illustration of the warning that closed the previous section. For <span class="math inline">\(\nu = 1\)</span> (the <strong>Cauchy</strong> distribution) the t distribution has no defined mean and no variance; for <span class="math inline">\(1 &lt; \nu \le 2\)</span> the mean is zero but the variance is infinite; only for <span class="math inline">\(\nu &gt; 2\)</span> are both finite. The R functions are <code>dt</code>, <code>pt</code>, <code>qt</code>, <code>rt</code>, each taking the argument <code>df</code>.</p>
 <div class="cell">
@@ -1114,7 +1120,7 @@ Figure&nbsp;7.11: Gamma densities at rate 1 for shapes 1 (= exponential), 2 and 
 </div>
 </div>
 </div>
-<p>The mean is <span class="math inline">\(\alpha/\beta\)</span> and the variance <span class="math inline">\(\alpha/\beta^2\)</span>. The gamma is the natural model for a positive continuous quantity — a concentration, a duration, a cost — and two other distributions are gammas in disguise. The <strong>chi-squared</strong> distribution of classical tests (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>) is a gamma with shape <span class="math inline">\(\nu/2\)</span> and rate <span class="math inline">\(1/2\)</span>. And the <strong>negative binomial</strong> of the Poisson section is a gamma–Poisson mixture: counts that are Poisson given a rate, with the rate itself varying from unit to unit according to a gamma distribution. The R functions are <code>dgamma</code>, <code>pgamma</code>, <code>qgamma</code>, <code>rgamma</code>.</p>
+<p>The mean is <span class="math inline">\(\alpha/\beta\)</span> and the variance <span class="math inline">\(\alpha/\beta^2\)</span>. The gamma is the natural model for a positive continuous quantity — a concentration, a duration, a cost — and two other distributions are gammas in disguise. The <strong>chi-squared</strong> distribution of classical tests (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a>) is a gamma with shape <span class="math inline">\(\nu/2\)</span> and rate <span class="math inline">\(1/2\)</span>. And the <strong>negative binomial</strong> of the Poisson section is a gamma–Poisson mixture: counts that are Poisson given a rate, with the rate itself varying from unit to unit according to a gamma distribution. The R functions are <code>dgamma</code>, <code>pgamma</code>, <code>qgamma</code>, <code>rgamma</code>.</p>
 </section>
 <section id="the-beta-distribution" class="level2" data-number="7.8">
 <h2 data-number="7.8" class="anchored" data-anchor-id="the-beta-distribution"><span class="header-section-number">7.8</span> The beta distribution</h2>

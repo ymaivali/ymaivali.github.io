@@ -456,32 +456,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -1059,7 +1065,7 @@ Table&nbsp;28.5: Marginal risk differences for uncontrolled hypertension, from t
 <section id="repeated-measures-when-the-group-is-the-patient" class="level2" data-number="28.9">
 <h2 data-number="28.9" class="anchored" data-anchor-id="repeated-measures-when-the-group-is-the-patient"><span class="header-section-number">28.9</span> Repeated measures: when the group is the patient</h2>
 <p>Every model so far has treated the group as a clinic and the patients inside it as unordered. Repeated measurements on one patient are a grouping structure like any other: <code>(1 | id)</code> gives each patient an intercept, <code>(time | id)</code> gives each patient a trajectory, and what this chapter said about partial pooling, cluster-level confounding and the Mundlak device carries over with the patient in the clinic’s place. A within-patient contrast is identified by the same argument as a within-clinic one, and a patient’s mean exposure plays the part of the clinic prescribing rate.</p>
-<p>What changes is that the group now has an internal order, and that order carries information the clinic models discard. Two readings taken a week apart are usually more alike than two taken three years apart, and a random intercept cannot say so: it implies the same correlation between every pair of a patient’s measurements whatever the interval between them, which is <strong>compound symmetry</strong> – reasonable for patients in a clinic, who have no natural order, and usually wrong for a series in time. The structures that relax it – autoregressive and moving-average residuals, an unstructured covariance over a few fixed visits, Gaussian processes in elapsed time – are a decision about the intervals and the fitted trajectory rather than about identification, and <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix F</span></a> sets them out with their <code>brms</code> terms. The causal question a repeated exposure raises, treatment at one visit changing the confounders of the next, is a different matter and was the subject of <a href="ch14-time-varying-confounding.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
+<p>What changes is that the group now has an internal order, and that order carries information the clinic models discard. Two readings taken a week apart are usually more alike than two taken three years apart, and a random intercept cannot say so: it implies the same correlation between every pair of a patient’s measurements whatever the interval between them, which is <strong>compound symmetry</strong> – reasonable for patients in a clinic, who have no natural order, and usually wrong for a series in time. The structures that relax it – autoregressive and moving-average residuals, an unstructured covariance over a few fixed visits, Gaussian processes in elapsed time – are a decision about the intervals and the fitted trajectory rather than about identification, and <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix G</span></a> sets them out with their <code>brms</code> terms. The causal question a repeated exposure raises, treatment at one visit changing the confounders of the next, is a different matter and was the subject of <a href="ch14-time-varying-confounding.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
 </section>
 <section id="practical-notes" class="level2" data-number="28.10">
 <h2 data-number="28.10" class="anchored" data-anchor-id="practical-notes"><span class="header-section-number">28.10</span> Practical notes</h2>
@@ -1097,7 +1103,7 @@ Things that come up when fitting these models
 <li>With a non-linear link, a multilevel model’s coefficient is a <strong>cluster-specific</strong> effect and is not the population-average effect. Report marginal contrasts, and choose deliberately between averaging over the observed clusters (<code>re_formula = NULL</code>), setting the cluster effect to zero (<code>re_formula = NA</code>, which is not an average cluster), and generalising to a new cluster (<code>allow_new_levels = TRUE</code>).</li>
 <li>Mundlak’s equality with the fixed-effect estimate holds only when the cluster means of <strong>every</strong> patient-level covariate are in the model, not the exposure’s alone.</li>
 <li><strong>Predictive fit cannot rank adjustment sets.</strong> <code>loo</code> preferred the random-intercept model over complete pooling decisively and said nothing about which estimate was nearer the causal truth.</li>
-<li><strong>Repeated measurements</strong> on a patient are a grouping structure with an internal order. A random intercept implies compound symmetry, the same correlation whatever the gap between two readings; the structures that relax it are collected in <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix F</span></a>, and they concern intervals and trajectories, not identification.</li>
+<li><strong>Repeated measurements</strong> on a patient are a grouping structure with an internal order. A random intercept implies compound symmetry, the same correlation whatever the gap between two readings; the structures that relax it are collected in <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix G</span></a>, and they concern intervals and trajectories, not identification.</li>
 </ul>
 </section>
 <section id="exercises" class="level2" data-number="28.13">
@@ -1109,7 +1115,7 @@ Things that come up when fitting these models
 <li><p><strong>Which average, and how much does it matter?</strong> For the binary outcome, compute the marginal risk difference under <code>re_formula = NULL</code> and <code>re_formula = NA</code> for the cohort as it is, and then after multiplying <code>sd_qual</code> by three. Plot the two estimates against <span class="math inline">\(\sigma_\alpha\)</span>. Derive, or argue from the shape of the logistic curve, why the gap grows with <span class="math inline">\(\sigma_\alpha\)</span> and why it would be zero with an identity link.</p></li>
 <li><p><strong>Conceptual: three studies.</strong> For each of the following, say whether the grouping structure is a nuisance, a confounder, or the object of interest, and what you would fit. (a) A trial randomising patients to the drug within each of 12 hospitals. (b) A trial randomising 12 hospitals to a prescribing policy. (c) An observational study of whether hospitals with electronic prescribing have lower stroke rates. For (c), state which back-door paths a clinic-level fixed effect would and would not block.</p></li>
 <li><p><strong>What the model cannot tell you.</strong> The chapter reports that <code>loo</code> prefers the random-intercept model over the complete-pooling one decisively. Explain, in terms of what <code>loo</code> estimates, why that preference carries no information about which estimate is closer to the causal truth. Then construct a modification of the simulation in which <code>loo</code> prefers the model with the <em>larger</em> causal error, and say what feature of your modification makes it possible.</p></li>
-<li><p><strong>The patient as the group.</strong> The longitudinal cohort of <a href="ch14-time-varying-confounding.html" class="quarto-xref"><span>Chapter 15</span></a> (<code>R/simulate_cohort_longitudinal.R</code>) measures each patient’s pressure at five annual visits and updates it by an autoregressive rule. On a random subset of a few thousand patients, fit <code>sbp ~ A + (1 | id)</code> and then add <code>ar(time = k, gr = id)</code>, and compare the correlation each model implies between a patient’s first and fifth readings (the structures are set out in <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix F</span></a>). Which one does the data-generating process actually follow, and what does the random intercept alone get wrong about it?</p></li>
+<li><p><strong>The patient as the group.</strong> The longitudinal cohort of <a href="ch14-time-varying-confounding.html" class="quarto-xref"><span>Chapter 15</span></a> (<code>R/simulate_cohort_longitudinal.R</code>) measures each patient’s pressure at five annual visits and updates it by an autoregressive rule. On a random subset of a few thousand patients, fit <code>sbp ~ A + (1 | id)</code> and then add <code>ar(time = k, gr = id)</code>, and compare the correlation each model implies between a patient’s first and fifth readings (the structures are set out in <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix G</span></a>). Which one does the data-generating process actually follow, and what does the random intercept alone get wrong about it?</p></li>
 </ol>
 
 

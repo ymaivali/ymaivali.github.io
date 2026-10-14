@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Bayesian Way to Causal Epidemiology - Appendix F — What each regression model assumes about the world</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./18-appendix-correlation-structures.html" rel="next">
+<link href="./12-appendix-brm-syntax.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./21-appendix-model-ladder.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">The Bayesian Way to Causal Epidemiology</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ymaivali/ymaivali.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A statement of purpose</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I. How to think</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-thinking-under-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How to think under uncertainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-rational-certainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Rational thinking under certainty</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-causal-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causation and the experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04b-theories-of-causation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Theories of causation: the counterfactual among rivals</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II. Probability is the logic of science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-probability-calculus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Probability as a calculus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-meaning-and-robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">What probability means, and the robot</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-bayes-weight-of-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayes’ theorem and the weight of evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian inference in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Part III. Formal causation: counterfactuals and graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-potential-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The potential-outcomes framework</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-dags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Causal diagrams (DAGs)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-stratification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Causal analysis without regression: stratification and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-target-trial-emulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Target trial emulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-time-varying-confounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Time-varying confounding and g-methods</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Part IV. Beyond the back-door</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch15-mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">DAG-based mediation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch16-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Effect modification versus interaction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch17-instrumental-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Instrumental variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch18-quasi-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The quasi-experimental zoo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch19-sensitivity-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Sensitivity analysis and unmeasured confounding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Part V. Bayesian regression: models to counterfactual predictions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Linear regression, causally</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Multiple regression: adjustment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21b-bayesian-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">The Bayesian workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch21c-curves-and-interaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Curves and Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Generalised linear models and the scale of effects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-survival-rates.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival modelling: rates, risks and time</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch22-predictive-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Acausal predictive regression — a different game</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-multilevel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Multilevel models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch24-bayesian-g-computation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian g-computation and standardisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch25-missing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">DAG-guided missing data and imputation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-appendix-best-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-appendix-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Graphs as data representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-appendix-lab-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Designing a laboratory experiment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-appendix-brms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">brms code companion</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-appendix-brm-syntax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#how-to-read-a-formula-as-a-set-of-claims" id="toc-how-to-read-a-formula-as-a-set-of-claims" class="nav-link active" data-scroll-target="#how-to-read-a-formula-as-a-set-of-claims"><span class="header-section-number">F.1</span> How to read a formula as a set of claims</a></li>
+  <li><a href="#model-1-one-distribution-for-everyone" id="toc-model-1-one-distribution-for-everyone" class="nav-link" data-scroll-target="#model-1-one-distribution-for-everyone"><span class="header-section-number">F.2</span> Model 1: one distribution for everyone</a></li>
+  <li><a href="#model-2-two-means-one-spread" id="toc-model-2-two-means-one-spread" class="nav-link" data-scroll-target="#model-2-two-means-one-spread"><span class="header-section-number">F.3</span> Model 2: two means, one spread</a></li>
+  <li><a href="#model-3-two-means-two-spreads" id="toc-model-3-two-means-two-spreads" class="nav-link" data-scroll-target="#model-3-two-means-two-spreads"><span class="header-section-number">F.4</span> Model 3: two means, two spreads</a></li>
+  <li><a href="#model-4-a-second-predictor-added" id="toc-model-4-a-second-predictor-added" class="nav-link" data-scroll-target="#model-4-a-second-predictor-added"><span class="header-section-number">F.5</span> Model 4: a second predictor, added</a></li>
+  <li><a href="#model-5-the-drugs-effect-may-change-with-age" id="toc-model-5-the-drugs-effect-may-change-with-age" class="nav-link" data-scroll-target="#model-5-the-drugs-effect-may-change-with-age"><span class="header-section-number">F.6</span> Model 5: the drug’s effect may change with age</a></li>
+  <li><a href="#model-6-a-product-term-without-its-main-effect" id="toc-model-6-a-product-term-without-its-main-effect" class="nav-link" data-scroll-target="#model-6-a-product-term-without-its-main-effect"><span class="header-section-number">F.7</span> Model 6: a product term without its main effect</a></li>
+  <li><a href="#model-7-age-as-a-curve" id="toc-model-7-age-as-a-curve" class="nav-link" data-scroll-target="#model-7-age-as-a-curve"><span class="header-section-number">F.8</span> Model 7: age as a curve</a></li>
+  <li><a href="#model-8-the-clinic-as-a-set-of-labels" id="toc-model-8-the-clinic-as-a-set-of-labels" class="nav-link" data-scroll-target="#model-8-the-clinic-as-a-set-of-labels"><span class="header-section-number">F.9</span> Model 8: the clinic as a set of labels</a></li>
+  <li><a href="#model-9-the-clinic-as-a-draw-from-a-population" id="toc-model-9-the-clinic-as-a-draw-from-a-population" class="nav-link" data-scroll-target="#model-9-the-clinic-as-a-draw-from-a-population"><span class="header-section-number">F.10</span> Model 9: the clinic as a draw from a population</a>
+  <ul class="collapse">
+  <li><a href="#the-drugs-effect-may-differ-between-clinics" id="toc-the-drugs-effect-may-differ-between-clinics" class="nav-link" data-scroll-target="#the-drugs-effect-may-differ-between-clinics"><span class="header-section-number">F.10.1</span> The drug’s effect may differ between clinics</a></li>
+  </ul></li>
+  <li><a href="#what-the-model-was-never-told" id="toc-what-the-model-was-never-told" class="nav-link" data-scroll-target="#what-the-model-was-never-told"><span class="header-section-number">F.11</span> What the model was never told</a></li>
+  <li><a href="#the-claims-model-by-model" id="toc-the-claims-model-by-model" class="nav-link" data-scroll-target="#the-claims-model-by-model"><span class="header-section-number">F.12</span> The claims, model by model</a></li>
+  <li><a href="#the-procedure-for-any-model" id="toc-the-procedure-for-any-model" class="nav-link" data-scroll-target="#the-procedure-for-any-model"><span class="header-section-number">F.13</span> The procedure, for any model</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-appendix-best-practices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./21-appendix-model-ladder.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-app-model-ladder" class="quarto-section-identifier">Appendix F — What each regression model assumes about the world</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>One can view a regression formula as a short list of claims about how the outcome came about. In effect, we pretend that the regression model is a thinking machine and its formula defines, how it sees the world. For example, the model <code>sbp ~ drug</code> knows that every patient’s systolic pressure is a draw from a normal distribution (regardless of the actual distribution visible in the data); that the distribution has one of two means, depending on treatment; that its spread is the same for everyone, regardless of treatment; and that nothing else that differs between patients matters. If you use this model then, by default, you accept those claims, at least for the duration of the analysis.</p>
+<p>This appendix makes the worldviews of some common model classes explicit. It takes one outcome, systolic blood pressure, and three predictors, a drug, age and the clinic, and fits a sequence of models in which each step changes one claim. For every model it states the model, lists what the model assumes about the world, sets that list beside what a reader with clinical and epidemiological knowledge would assume, and reports what the fitted model says. The comparison of the two lists is the exercise. The fitted numbers show what following a claim costs when the claim is wrong.</p>
+<p>The data are the clustered cohort of <a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a>: 3 211 patients in 80 clinics, with post-baseline systolic pressure <code>sbp</code> in mmHg, treatment <code>drug</code> (0/1), <code>age</code> in years (and <code>age_c</code>, age in decades centred at 62), and <code>clinic</code>. The grouping variable is called a clinic here; everything said about it applies to a hospital, a ward, a practice or any other grouping of patients. The cohort is simulated, so the drug’s true average effect on pressure is known: -12.05 mmHg. The data also contain <code>severity</code>, the latent illness severity that drives both prescribing and pressure (confounding by indication). The reader knows that it exists. It is withheld from the models until the end, because the point of the exercise is to see what a model does with the variables it is given and with those it is not.</p>
+<section id="how-to-read-a-formula-as-a-set-of-claims" class="level2" data-number="F.1">
+<h2 data-number="F.1" class="anchored" data-anchor-id="how-to-read-a-formula-as-a-set-of-claims"><span class="header-section-number">F.1</span> How to read a formula as a set of claims</h2>
+<p>A <code>brms</code> formula fixes four things, and a change at any one of them is a different claim about the world.</p>
+<ol type="1">
+<li><strong>The distribution.</strong> <code>family = gaussian()</code> says the outcome, given everything the model is told (e.g.&nbsp;given the predictors), is normally distributed. This is a claim about the shape and the tails of the unexplained variation, not about the raw outcome.</li>
+<li><strong>Which parameters are modelled.</strong> By default only the mean is a function of the predictors; the spread <span class="math inline">\(\sigma\)</span> is constant for everyone. <code>bf(sbp ~ drug, sigma ~ drug)</code> makes the spread a function of treatment as well.</li>
+<li><strong>The functional form.</strong> <code>drug + age_c</code> says the two contributions add and that age’s contribution is a straight line; <code>drug * age_c</code> lets the drug’s contribution change with age; <code>s(age)</code> lets age’s contribution be a curve.</li>
+<li><strong>Which units share parameters.</strong> <code>sbp ~ drug</code> gives all patients the same parameters. <code>+ clinic</code> gives each clinic its own baseline, estimated on its own. <code>+ (1 | clinic)</code> gives each clinic its own baseline but says the baselines are draws from one distribution.</li>
+</ol>
+<p>The priors are a fifth list, and they are part of what the model assumes. This appendix keeps them weakly informative on the mmHg scale and the same from one model to the next, so that the differences between models come from structure. <a href="12-appendix-brm-syntax.html" class="quarto-xref"><span>Appendix E</span></a> maps the full syntax; <a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a> is where the priors are examined.</p>
+<p>For each model below, the reader is asked to write two lists before looking at the fit: what the formula assumes, and what she assumes. Where the two disagree, the fit will show which way the disagreement pushes the estimate. <a href="#tbl-ladder-assumptions" class="quarto-xref">Table&nbsp;<span>F.2</span></a> collects the first list for every model.</p>
+</section>
+<section id="model-1-one-distribution-for-everyone" class="level2" data-number="F.2">
+<h2 data-number="F.2" class="anchored" data-anchor-id="model-1-one-distribution-for-everyone"><span class="header-section-number">F.2</span> Model 1: one distribution for everyone</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pri_1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">145</span>, <span class="dv">20</span>),   <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.1</span>), <span class="at">class =</span> <span class="st">"sigma"</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> pri_1,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">"models/ladder_m1"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu, \sigma)\]</span></p>
+<p><strong>What the model assumes.</strong></p>
+<ol type="1">
+<li>Every patient’s pressure is a draw from the same normal distribution. Two numbers describe the population, a centre <span class="math inline">\(\mu\)</span> and a spread <span class="math inline">\(\sigma\)</span>; the distribution is symmetric and its tails fall off at the normal’s rate.</li>
+<li>Patients are exchangeable. Which row a value came from carries no information, so the model’s prediction is the same for every patient. This is a statement about the model’s state of knowledge, not about the world: pressure may depend on age, but the model is not told age, so patients are indistinguishable to it.</li>
+<li>Draws are independent. Having seen one patient, the model learns about <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> and nothing else that bears on the next patient.</li>
+</ol>
+<p><strong>What you know.</strong> You know each patient’s treatment, age and clinic, so for you the patients are not exchangeable. They are exchangeable only conditionally, among patients alike on those variables. Model 1 uses none of that knowledge. Pressure rises with age, is lowered by the drug, and differs between clinics, so the one distribution is a mixture of many. Its <span class="math inline">\(\sigma\)</span> is not biological variation or measurement noise alone; it is the sum of every difference the model is not told about. A single clinic reading is a noisy measure of a patient’s usual pressure, so part of <span class="math inline">\(\sigma\)</span> is measurement. Two patients from the same clinic are more alike than two from different clinics, which contradicts claim 3; the consequence is for the intervals, which are computed as if each patient contributed independent information. The normal distribution allows negative pressures; at this centre and spread that is a formal defect with no practical consequence.</p>
+<p><strong>What the fit says.</strong> The model’s whole description of the world is a normal curve with mean 142.2 mmHg and standard deviation 11.7 mmHg (<a href="#fig-ladder-one-normal" class="quarto-xref">Figure&nbsp;<span>F.1</span></a>). The figure separates two objects that are easy to confuse. The top panel is the posterior: what the model has learned about its two parameters, each pinned down to a fraction of a mmHg by 3 211 patients. The bottom panel is the predictive distribution: what the model expects for one patient’s pressure, which is as wide as <span class="math inline">\(\sigma\)</span> and does not narrow as patients accumulate. Models 2 and 3 are drawn the same way. <code>sbp ~ 1</code> is what <a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a> calls complete pooling (of information).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ladder-one-normal" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ladder-one-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="21-appendix-model-ladder_files/figure-html/fig-ladder-one-normal-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ladder-one-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;F.1: Model 1. Top: the posterior distributions of the two parameters, the mean and the spread, with 50% and 95% intervals; this is what the model has learned about the population. Bottom: the predictive distribution for individual BPs, modellled as the normal curve, against the data (data used to fit the model are shown as the gray histogram). There is an excellent correpsondence between the predicted patients (the blue curve) and the actual patients (the grey histogram). Everything the model does not know about a patient is in the width of the lower curve.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Before reading on, write down how much of this <span class="math inline">\(\sigma\)</span> you expect to be removed by telling the model about treatment, about age and about the clinic. The later models report the answer. The gap between your guess and the result is informative about which variable carries the most variation in pressure, and that need not be the variable that carries the most confounding.</p>
+</div>
+</div>
+</section>
+<section id="model-2-two-means-one-spread" class="level2" data-number="F.3">
+<h2 data-number="F.3" class="anchored" data-anchor-id="model-2-two-means-one-spread"><span class="header-section-number">F.3</span> Model 2: two means, one spread</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pri_b <span class="ot">&lt;-</span> <span class="fu">c</span>(pri_1, <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="at">class =</span> <span class="st">"b"</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug, <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> pri_b,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">"models/ladder_m2"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu_i, \sigma), \qquad \mu_i = \alpha + \beta\, \text{drug}_i\]</span></p>
+<p><strong>What the model assumes.</strong></p>
+<ol type="1">
+<li>There are two sub-populations, with means <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\alpha + \beta\)</span>.</li>
+<li>The spread is the same in both. The model does not assume that every treated patient’s pressure is shifted by <span class="math inline">\(\beta\)</span>; it records a difference in means and asserts that the spread is unchanged, which a constant shift would produce but which other patterns would produce as well.</li>
+<li>Within each arm, patients are exchangeable in the same sense as in model 1. The model has no term for anything else, so whatever else differs between the arms is attributed to <span class="math inline">\(\beta\)</span>.</li>
+<li><span class="math inline">\(\beta\)</span> is the difference in mean pressure between the two groups as they are. The formula does not know whether that difference is the drug’s effect.</li>
+</ol>
+<p><strong>What you know.</strong> For <span class="math inline">\(\beta\)</span> to be the drug’s effect, the arms must be exchangeable in the causal sense of <a href="ch10-potential-outcomes.html" class="quarto-xref"><span>Chapter 11</span></a>, <span class="math inline">\(Y(a) \perp A\)</span>: the treated would have had the untreated arm’s pressure had they not been treated. The model neither assumes this nor checks it. Doctors treat the sick. Patients given the drug had higher pressure and greater illness severity before treatment, so causal exchangeability fails in a known direction: <span class="math inline">\(\beta\)</span> will be the drug’s effect plus the pre-treatment difference between the arms. In these data the treated are also older, by 4.2 years on average. Whether <span class="math inline">\(\beta\)</span> is a causal effect is settled by this knowledge, not by the fit (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>).</p>
+<p><strong>What the fit says.</strong> The treated have higher mean pressure than the untreated, by 1.05 mmHg (95% interval 0.23 to 1.84). The truth is -12.05. The sign is wrong because the difference between the arms is dominated by who was treated, not by what the treatment did. The spread has barely changed from model 1, 11.72 against 11.73 mmHg: in these data treatment explains almost none of the variation in pressure, because its effect is cancelled by the selection into treatment. <a href="#fig-ladder-two-means" class="quarto-xref">Figure&nbsp;<span>F.2</span></a> shows the posteriors of the two arm means, which overlap little, above the two predictive distributions, which overlap almost entirely: a difference the model is confident about can still be small against the spread of individual pressures.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ladder-two-means" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ladder-two-means-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="21-appendix-model-ladder_files/figure-html/fig-ladder-two-means-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ladder-two-means-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;F.2: Model 2. Top: the posterior distributions of the two arm means, with 50% and 95% intervals. Bottom: the predictive distribution for patients in each arm against the data; the two curves differ in location by the difference of the means and have identical spread. The model is nearly certain about the means and the means say little about where individual patients pressures will be.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>List what you know about the people who are prescribed a blood-pressure drug that the model has not been told. For each item, say whether it raises or lowers pressure, and whether it is more common among the treated. Items that do both are confounders, and the direction of their bias on <span class="math inline">\(\beta\)</span> follows from the two signs.</p>
+</div>
+</div>
+</section>
+<section id="model-3-two-means-two-spreads" class="level2" data-number="F.4">
+<h2 data-number="F.4" class="anchored" data-anchor-id="model-3-two-means-two-spreads"><span class="header-section-number">F.4</span> Model 3: two means, two spreads</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## no prior on class sigma here: sigma is modelled, so it is not a parameter</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pri_3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">145</span>, <span class="dv">20</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">25</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">2.5</span>, <span class="fl">0.5</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>, <span class="at">dpar =</span> <span class="st">"sigma"</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.5</span>),   <span class="at">class =</span> <span class="st">"b"</span>,         <span class="at">dpar =</span> <span class="st">"sigma"</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">brm</span>(<span class="fu">bf</span>(sbp <span class="sc">~</span> drug, sigma <span class="sc">~</span> drug), <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">prior =</span> pri_3, <span class="at">file =</span> <span class="st">"models/ladder_m3"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu_i, \sigma_i), \qquad \mu_i = \alpha + \beta\, \text{drug}_i, \qquad \log \sigma_i = \gamma_0 + \gamma_1\, \text{drug}_i\]</span></p>
+<p><strong>What the model assumes.</strong> As model 2, except that the spread may differ between the arms. The spread is modelled on the log scale, so <span class="math inline">\(\exp(\gamma_1)\)</span> is the ratio of the treated to the untreated standard deviation. This is distributional regression: a predictor is allowed to act on a parameter other than the mean. The claim that nothing else differs between the arms is unchanged.</p>
+<p><strong>What you know.</strong> A drug’s effect differs between patients, through dose, adherence, the cause of the hypertension and the patient’s physiology, so the pressures of treated patients may be more spread out than those of untreated patients if the effect varies, or less spread out if the drug lowers the highest pressures most. The treated are also a selected group, which can change their spread in either direction. The model reports the net result and cannot separate these sources.</p>
+<p><strong>What the fit says.</strong> The fitted standard deviations are 11.4 mmHg among the untreated and 12.0 mmHg among the treated, a ratio of 1.05 (95% interval 1.00 to 1.10). <a href="#fig-ladder-two-spreads" class="quarto-xref">Figure&nbsp;<span>F.3</span></a> shows the posteriors of both means and both spreads above the predictive distributions, whose widths now differ. The difference in means is 1.04 mmHg, against 1.05 in model 2. With a single binary predictor the two group means are estimated from their own groups whether or not the spreads are tied together, so modelling <span class="math inline">\(\sigma\)</span> changes the contrast only through the weighting of the uncertainty. What it changes is the predictive distribution for each arm, and the status of model 2’s equal-spread claim, which is now estimated rather than imposed. Most of the extra spread among the treated has a cause that model 8 names: the clinic. Which clinic a patient attends predicts both whether the patient is treated and the patient’s baseline pressure, so the two arms draw on different mixes of clinics, and the treated arm carries more of the between-clinic variation.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ladder-two-spreads" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ladder-two-spreads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="21-appendix-model-ladder_files/figure-html/fig-ladder-two-spreads-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ladder-two-spreads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;F.3: Model 3. Top: the posterior distributions of the two arm means and of the two arm spreads, with 50% and 95% intervals; model 2 forced the spreads to be one number. Bottom: the predictive distribution for patients in each arm against the data, now with an arm-specific spread.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Which parameter of the outcome’s distribution does your scientific question concern? A question about whether the drug lowers pressure is about the mean; a question about whether it makes pressure more predictable, or about how many treated patients remain above a threshold, is about the spread as well. A model that fixes <span class="math inline">\(\sigma\)</span> cannot answer the second kind of question.</p>
+</div>
+</div>
+</section>
+<section id="model-4-a-second-predictor-added" class="level2" data-number="F.5">
+<h2 data-number="F.5" class="anchored" data-anchor-id="model-4-a-second-predictor-added"><span class="header-section-number">F.5</span> Model 4: a second predictor, added</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">+</span> age_c, <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> pri_b,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">"models/ladder_m4"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu_i, \sigma), \qquad \mu_i = \alpha + \beta_1\, \text{drug}_i + \beta_2\, \text{age}_i\]</span></p>
+<p><strong>What the model assumes.</strong></p>
+<ol type="1">
+<li>Age’s contribution is a straight line: each decade adds <span class="math inline">\(\beta_2\)</span> mmHg, the same amount at 45 as at 85.</li>
+<li>The two contributions add up. The drug’s effect is <span class="math inline">\(\beta_1\)</span> at every age; equivalently, the age slope is the same in both arms, so the two fitted lines are parallel (<a href="#fig-ladder-lines" class="quarto-xref">Figure&nbsp;<span>F.4</span></a>, left).</li>
+<li>There is identical patient-level variation for all ages and both arms (so, every combination of arm and age is populated by patients with identical standard deviation in BPs).</li>
+<li>Nothing else differs between treated and untreated patients of the same age. <span class="math inline">\(\beta_1\)</span> is now the difference in mean pressure between treated and untreated patients <strong>of the same age</strong>, which is a different quantity from model 2’s <span class="math inline">\(\beta\)</span>.</li>
+</ol>
+<p><strong>What you know.</strong> Blood pressure rises with age, and the treated patients are older, so part of model 2’s inferiority was lack of age in the model; claim 4 is an improvement on model 2. But as severity is actually the main reason for treatment and it is not in the model, claim 4 is still seriously wrong. Whether the rise with age is linear between 40 and 90, and whether the drug works equally at all ages, are assumptions you may or may not be prepared to make; the model makes both silently.</p>
+<p><strong>What the model fit says.</strong> A decade of aging adds 3.66 mmHg. As the drug’s coefficient is -0.50 mmHg (95% interval -1.34 to 0.30), adjusting for age moved it by only the meagre 1.5 mmHg towards the truth, because the model was told about age and not about severity, and it reports the within-age difference, which is still mostly severity. The spread fell from 11.7 to 11.1 mmHg: age explains more of the variation in pressure than treatment does, in these data.</p>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Of the three predictors in this appendix, which could move the drug’s estimate towards the truth if added, and which could not? The answer depends on whether the variable is a cause of both treatment and pressure, not on how much of the variation in pressure it explains. Age reduced the unexplained spread by 0.6 mmHg and moved the estimate by 1.5 mmHg.</p>
+</div>
+</div>
+</section>
+<section id="model-5-the-drugs-effect-may-change-with-age" class="level2" data-number="F.6">
+<h2 data-number="F.6" class="anchored" data-anchor-id="model-5-the-drugs-effect-may-change-with-age"><span class="header-section-number">F.6</span> Model 5: the drug’s effect may change with age</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">*</span> age_c, <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> pri_b,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">"models/ladder_m5"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu_i, \sigma), \qquad \mu_i = \alpha + \beta_1\, \text{drug}_i + \beta_2\, \text{age}_i + \beta_3\, \text{drug}_i \times \text{age}_i\]</span></p>
+<p><strong>What the model assumes.</strong> The drug’s effect is <span class="math inline">\(\beta_1 + \beta_3\, \text{age}_i\)</span>, a straight-line function of age; equivalently, the age slope differs between the arms by <span class="math inline">\(\beta_3\)</span>, so the two fitted lines may cross (<a href="#fig-ladder-lines" class="quarto-xref">Figure&nbsp;<span>F.4</span></a>, centre). The dependence on age is restricted to a straight line, the spread is still one number, and the claim that nothing else differs is unchanged. <span class="math inline">\(\beta_1\)</span> is the drug’s effect at <code>age_c = 0</code>, that is at age 62; it is not a main effect in any sense independent of where age was centred.</p>
+<p><strong>What you know.</strong> Whether a blood-pressure drug works differently in older patients is a clinical question with plausible mechanisms on both sides. Write down which direction you expect and roughly how large a difference per decade you would find surprising. The model will report one straight line through whatever the pattern is.</p>
+<p><strong>What the fit says.</strong> The interaction coefficient is -0.49 mmHg per decade (95% interval -1.25 to 0.23). The interval includes zero and also includes differences of a few mmHg across the age range, so the data are compatible with the drug acting the same at every age and with a moderate dependence; the interval, not the point estimate, is the finding. The drug’s estimated effect at age 45 is 0.33 mmHg and at age 85 it is -1.64 mmHg. Averaged over the cohort’s age distribution, the marginal contrast is -0.52 mmHg, against -0.50 from the additive model: including the interaction did not change the headline value and turned model 4’s silent claim into an estimated quantity. This is why <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a> includes interactions by default when the modifier is plausible and the cells are populated.</p>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Model 4 asserted <span class="math inline">\(\beta_3 = 0\)</span> without estimating it. Model 5 estimates it. Omitting a term is far from a neutral choice; it forces a point mass at zero for it. When would you prefer the omission, and what would you need to know about the world to justify it?</p>
+</div>
+</div>
+</section>
+<section id="model-6-a-product-term-without-its-main-effect" class="level2" data-number="F.7">
+<h2 data-number="F.7" class="anchored" data-anchor-id="model-6-a-product-term-without-its-main-effect"><span class="header-section-number">F.7</span> Model 6: a product term without its main effect</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m6 <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">+</span> drug<span class="sc">:</span>age_c, <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> pri_b,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">"models/ladder_m6"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu_i, \sigma), \qquad \mu_i = \alpha + \beta_1\, \text{drug}_i + \beta_3\, \text{drug}_i \times \text{age}_i\]</span></p>
+<p><strong>What the model assumes.</strong> Age affects pressure only among the treated. Among the untreated, mean pressure is the same at 45 and at 85 (the flat line in <a href="#fig-ladder-lines" class="quarto-xref">Figure&nbsp;<span>F.4</span></a>, right). Stated in words, no one with clinical knowledge would accept this claim. Written as a formula it is easy mess up, because it looks like “the drug’s effect depends on age, and I am not interested in age’s own effect”. However, the formula does not express the second half of that sentence.</p>
+<p><strong>What you know.</strong> Pressure rises with age in everyone. Claim 1 is false.</p>
+<p><strong>What the fit says.</strong> The product term is 3.44 mmHg per decade and the drug coefficient is 0.34 mmHg. The product term has absorbed the age effect among the treated, since that is the only place the model lets age act, and the fitted lines now say that the drug raises pressure in the old and lowers it in the young, by amounts that are artefacts of the omitted term. Nothing in the fit’s diagnostics flags this; the model is a worse description of the data than model 5, but a reader looking only at this model’s output would see a confident interaction. <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a> states the only conditions under which a main effect may be dropped.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ladder-lines" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ladder-lines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="21-appendix-model-ladder_files/figure-html/fig-ladder-lines-1.png" class="img-fluid figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ladder-lines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;F.4: Models 4 to 6. Mean pressure by age and treatment arm as each model fits it, with the patients as points. Left: additive, the lines are parallel by assumption. Centre: with the drug by age interaction, the lines may differ in slope and the data say they barely do. Right: the interaction without age’s main effect, which forces the untreated line to be flat and manufactures an age-dependent drug effect.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Write model 6’s claim about the untreated in one sentence of plain English. If you would not defend the sentence, do not fit the formula. The same test applies to any term dropped from a model: what does its absence assert?</p>
+</div>
+</div>
+</section>
+<section id="model-7-age-as-a-curve" class="level2" data-number="F.8">
+<h2 data-number="F.8" class="anchored" data-anchor-id="model-7-age-as-a-curve"><span class="header-section-number">F.8</span> Model 7: age as a curve</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pri_7 <span class="ot">&lt;-</span> <span class="fu">c</span>(pri_b, <span class="fu">prior</span>(<span class="fu">student_t</span>(<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">10</span>), <span class="at">class =</span> <span class="st">"sds"</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>m7 <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">+</span> <span class="fu">s</span>(age), <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> pri_7,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.95</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">"models/ladder_m7"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu_i, \sigma), \qquad \mu_i = \alpha + \beta_1\, \text{drug}_i + f(\text{age}_i)\]</span></p>
+<p><strong>What the model assumes.</strong> Age’s contribution is a smooth function <span class="math inline">\(f\)</span> whose shape is learned from the data, built from a set of basis functions with a penalty on roughness whose strength is itself estimated (<a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix H</span></a>). The model no longer assumes a straight line. It still assumes that the curve is smooth, with no jumps; that it is the same in both arms, so the drug adds a constant at every age (<code>s(age, by = drug)</code> would free that, as in <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a>); that the spread is one number; and that nothing else differs.</p>
+<p><strong>What you know.</strong> The relation between age and pressure may steepen or flatten over the adult range, and the oldest patients in a cohort are a selected group. A spline removes the need to decide the shape in advance. It does not remove the need to decide that age belongs in the model and why: here it is there to adjust for confounding, and a confounder entered with the wrong shape leaves residual confounding behind.</p>
+<p><strong>What the fit says.</strong> The fitted curve for untreated patients departs from model 4’s straight line by at most 0.6 mmHg anywhere between 42 and 88 years (<a href="#fig-ladder-spline" class="quarto-xref">Figure&nbsp;<span>F.5</span></a>). The drug’s marginal contrast is -0.51 mmHg, against -0.50 under the straight line. On these data the straight line was adequate, and the spline is how that was found out: a claim model 4 imposed has become a result. In data where the curve is not straight, the two drug estimates would differ, and the spline’s would be the one to report.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ladder-spline" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ladder-spline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="21-appendix-model-ladder_files/figure-html/fig-ladder-spline-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ladder-spline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;F.5: Model 7. Mean pressure of untreated patients by age as the spline fits it (solid line with 95% band), with model 4’s straight line dashed. The spline was free to curve and did not need to.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A spline frees the shape of one relation and leaves every other claim in place. List the claims model 7 still makes. Which of them would you free next, and what would the formula be?</p>
+</div>
+</div>
+</section>
+<section id="model-8-the-clinic-as-a-set-of-labels" class="level2" data-number="F.9">
+<h2 data-number="F.9" class="anchored" data-anchor-id="model-8-the-clinic-as-a-set-of-labels"><span class="header-section-number">F.9</span> Model 8: the clinic as a set of labels</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m8 <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">+</span> age_c <span class="sc">+</span> clinic, <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> pri_b,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">"models/ladder_m8"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu_i, \sigma), \qquad \mu_i = \alpha_{j[i]} + \beta_1\, \text{drug}_i + \beta_2\, \text{age}_i\]</span></p>
+<p>where <span class="math inline">\(j[i]\)</span> is the clinic of patient <span class="math inline">\(i\)</span> and the 80 baselines <span class="math inline">\(\alpha_j\)</span> are estimated separately, one reference clinic and 79 contrasts.</p>
+<p><strong>A note on the notation.</strong> A reader who expects the model to be written as <span class="math inline">\(y = \beta_0 + \beta_1\, \text{drug} + \beta_2\, \text{age} + \beta_3\, \text{clinic}\)</span> should resist the last term. The clinic is a label, not a quantity: a coefficient multiplying it would make clinic C40 twice clinic C20. What R does with a factor in a formula is expand it into indicator variables, one for every clinic except the first, so the line the software fits is</p>
+<p><span class="math display">\[\begin{aligned}
+y_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &amp;= \beta_0 + \beta_1\, \text{drug}_i + \beta_2\, \text{age}_i + \gamma_2\, [\text{clinic}_i = \text{C02}] + \gamma_3\, [\text{clinic}_i = \text{C03}] + \dots + \gamma_{80}\, [\text{clinic}_i = \text{C80}]
+\end{aligned}\]</span></p>
+<p>where <span class="math inline">\([\cdot]\)</span> is 1 when the condition holds and 0 otherwise. For a patient at clinic C01 every indicator is 0 and the baseline is <span class="math inline">\(\beta_0\)</span>; for a patient at clinic C07 one indicator is 1 and the baseline is <span class="math inline">\(\beta_0 + \gamma_7\)</span>. The bracket notation <span class="math inline">\(\alpha_{j[i]}\)</span> is the same thing written compactly, with <span class="math inline">\(\alpha_1 = \beta_0\)</span> and <span class="math inline">\(\alpha_j = \beta_0 + \gamma_j\)</span> for the rest. In the <code>brms</code> output the <span class="math inline">\(\gamma_j\)</span> appear as <code>clinicC02</code> to <code>clinicC80</code>, each a difference from the reference clinic, which is why the clinic contrasts below are reported relative to C01. Which clinic is the reference is a choice of parametrisation (R takes the first level of the factor) and changes nothing in the fitted baselines.</p>
+<p><strong>What the model assumes.</strong></p>
+<ol type="1">
+<li>Each clinic has its own baseline pressure, which are not pooled. Each clinic has its own prior, independent of the others, so learning that one clinic’s baseline is high changes nothing in what the model expects for another clinic’s baseline.</li>
+<li>The drug’s effect, the age slope and the spread <span class="math inline">\(\sigma\)</span> are the same in every clinic. These three are estimated from all clinics together, so one clinic’s data informs the others; only the baselines are kept apart.</li>
+<li>The clinics are a fixed set of labels. The model has no parameter for a clinic and can say nothing about one.</li>
+<li>Nothing is assumed about how the baselines relate to anything else, including to how much a clinic prescribes.</li>
+<li><span class="math inline">\(\beta_1\)</span> is a within-clinic comparison: treated against untreated patients of the same age <strong>in the same clinic</strong>. Clinics in which every patient is treated, or none is, contribute nothing to it.</li>
+</ol>
+<p><strong>What you know.</strong> Clinics differ in their patients, in how BP is measured and in how readily they prescribe. A clinic that prescribes heavily may also serve sicker patients or measure differently. Claim 4 means the model does not need to know which of these is true; claim 5 means it compares patients only with others from the same clinic, so whatever the clinic does to BP cancels. The cost is in claim 1: a clinic with 6 patients gets a baseline estimated from 6 patients.</p>
+<p><strong>What the fit says.</strong> The drug’s within-clinic contrast is -4.38 mmHg (95% interval -5.22 to -3.52), the largest move so far: 3.9 mmHg from model 4. The clinic carried confounding. In this cohort the clinics that prescribe most are also the clinics whose patients’ untreated pressure is highest, for reasons no measured variable records (<a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a>, <a href="09-multilevel.html#fig-clinic-dag" class="quarto-xref">Figure&nbsp;<span>28.1</span></a>), and comparing within clinic removes that part of the bias. The spread fell to 10.2 mmHg. The clinic contrasts range from -9.0 to 16.1 mmHg relative to the reference clinic, and the widest 95% interval among them spans 17.0 mmHg, which is the small clinics’ baselines being estimated on their own. The residual spread by arm, which model 3 found to differ and which was 10.7 mmHg among the untreated and 11.4 among the treated after model 4, is now 10.0 and 10.2: most of the extra spread among the treated was between-clinic variation.</p>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Model 8 moved the drug’s estimate more than age did. Age explains more of the variation in pressure. State, in terms of the two arrows a confounder needs, why the variable that explains less variation removed more bias.</p>
+</div>
+</div>
+</section>
+<section id="model-9-the-clinic-as-a-draw-from-a-population" class="level2" data-number="F.10">
+<h2 data-number="F.10" class="anchored" data-anchor-id="model-9-the-clinic-as-a-draw-from-a-population"><span class="header-section-number">F.10</span> Model 9: the clinic as a draw from a population</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pri_ml <span class="ot">&lt;-</span> <span class="fu">c</span>(pri_b, <span class="fu">prior</span>(<span class="fu">student_t</span>(<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">10</span>), <span class="at">class =</span> <span class="st">"sd"</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m9 <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">+</span> age_c <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> clinic), <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">prior =</span> pri_ml, <span class="at">file =</span> <span class="st">"models/ladder_m9"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[\begin{aligned}
+y_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &amp;= \alpha_{j[i]} + \beta_1\, \text{drug}_i + \beta_2\, \text{age}_i \\
+\alpha_j &amp;\sim \text{Normal}(\alpha, \sigma_\alpha)
+\end{aligned}\]</span></p>
+<p><strong>A note on the notation.</strong> The note under model 8 showed the clinic term expand into one indicator per clinic, each with its own coefficient. Model 9 is the same line with the clinic term treated as a random quantity rather than as a set of coefficients, and it is often written with the two sources of variation shown separately:</p>
+<p><span class="math display">\[\begin{aligned}
+y_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &amp;= \alpha + u_{j[i]} + \beta_1\, \text{drug}_i + \beta_2\, \text{age}_i \\
+u_j &amp;\sim \text{Normal}(0, \sigma_\alpha)
+\end{aligned}\]</span></p>
+<p>Here <span class="math inline">\(\alpha\)</span> is the overall intercept, <span class="math inline">\(u_j\)</span> is clinic <span class="math inline">\(j\)</span>’s deviation from it, shared by every patient in that clinic, and <span class="math inline">\(\sigma\)</span> is, as in every model above, the spread of patients around their clinic’s line. The two displays are one model, with <span class="math inline">\(\alpha_j = \alpha + u_j\)</span>. Mixed-model texts often write the same model with the patient-level spread as an explicit error term added to the mean, <span class="math inline">\(y_i = \mu_i + \varepsilon_i\)</span> with <span class="math inline">\(\varepsilon_i \sim \text{Normal}(0, \sigma)\)</span>; that <span class="math inline">\(\varepsilon_i\)</span> is the first line of the display, not a further parameter. In the <code>brms</code> output, <span class="math inline">\(\alpha\)</span> is the population-level <code>Intercept</code>, <span class="math inline">\(\sigma_\alpha\)</span> is <code>sd(Intercept)</code> under the group-level effects for <code>clinic</code>, <span class="math inline">\(\sigma\)</span> is <code>sigma</code>, and the <span class="math inline">\(u_j\)</span> are returned by <code>ranef()</code>. The difference from model 8 is not the notation but the line <span class="math inline">\(u_j \sim \text{Normal}(0, \sigma_\alpha)\)</span>, which model 8 does not have.</p>
+<p><strong>What the model assumes.</strong> As model 8, with two changes and one addition.</p>
+<ol type="1">
+<li>The clinic baselines are draws from one normal distribution with spread <span class="math inline">\(\sigma_\alpha\)</span>, which is estimated. What is learned about the other clinics’ baselines now informs each clinic’s baseline: a small clinic’s baseline is pulled towards the overall mean by an amount that depends on its size and on <span class="math inline">\(\sigma_\alpha\)</span> (partial pooling, <a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a>). This is exchangeability one level up: the clinics, not the patients, are now the units whose labels carry no information.</li>
+<li>The model can say something about a clinic not in the data: its baseline is a draw from the same distribution.</li>
+<li>The addition: the clinic draws are <strong>independent of the predictors</strong>. A clinic’s baseline tells the model nothing about how many of its patients are treated. Model 8 made no such claim.</li>
+</ol>
+<p><strong>What you know.</strong> Claim 3 is doubtful for the reason given under model 8: prescribing habits and the patients a clinic serves go together. The claim is a structural assumption, and it is the price of claims 1 and 2.</p>
+<p><strong>What the fit says.</strong> The drug’s contrast is -3.88 mmHg (95% interval -4.75 to -2.99), 0.5 mmHg back towards the confounded estimate relative to model 8. That is the cost of claim 3 in these data: because the clinic baselines are correlated with prescribing, treating them as independent draws lets part of the between-clinic difference re-enter the drug’s coefficient. <a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a> gives the mechanism and the repair (the Mundlak term). The between-clinic spread is 4.4 mmHg (95% interval 3.6 to 5.3), a quantity model 8 did not have.</p>
+<section id="the-drugs-effect-may-differ-between-clinics" class="level3" data-number="F.10.1">
+<h3 data-number="F.10.1" class="anchored" data-anchor-id="the-drugs-effect-may-differ-between-clinics"><span class="header-section-number">F.10.1</span> The drug’s effect may differ between clinics</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m9b <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">+</span> age_c <span class="sc">+</span> (drug <span class="sc">|</span> clinic), <span class="at">data =</span> clinics, <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">prior =</span> <span class="fu">c</span>(pri_ml, <span class="fu">prior</span>(<span class="fu">lkj</span>(<span class="dv">2</span>), <span class="at">class =</span> <span class="st">"cor"</span>)),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">file =</span> <span class="st">"models/ladder_m9b"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span class="math display">\[\begin{aligned}
+y_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &amp;= \alpha_{j[i]} + (\beta_1 + b_{j[i]})\, \text{drug}_i + \beta_2\, \text{age}_i \\
+(\alpha_j, b_j) &amp;\sim \text{Normal}\big((\alpha, 0), \Sigma\big)
+\end{aligned}\]</span></p>
+<p><strong>What the model assumes.</strong> The drug’s effect in clinic <span class="math inline">\(j\)</span> is <span class="math inline">\(\beta_1 + b_j\)</span>, with the clinic deviations <span class="math inline">\(b_j\)</span> drawn from a normal distribution of spread <span class="math inline">\(\sigma_b\)</span> and allowed to correlate with the baselines. Every earlier model asserted <span class="math inline">\(\sigma_b = 0\)</span>. Claim 3 of model 9 still holds, now for both sets of draws.</p>
+<p><strong>What you know.</strong> A drug’s effect can differ between clinics through dosing practice, adherence support, co-prescribing and the patients served. This model has a parameter for the thing you knew; the earlier models did not.</p>
+<p><strong>What the fit says.</strong> The clinic-to-clinic spread of the drug’s effect is 2.7 mmHg (95% interval 1.5 to 4.1); the simulation built it in as 3.2. The correlation between a clinic’s baseline and its drug effect is 0.12 (95% interval -0.33 to 0.61). The average effect over patients is -3.62 mmHg, still far from the truth for the reason the whole ladder has shown. <a href="#fig-ladder-slopes" class="quarto-xref">Figure&nbsp;<span>F.6</span></a> sets each clinic’s estimated deviation against the one built into the simulation. The two agree with a correlation of 0.55. The estimates are pulled towards zero, most strongly for the small clinics, and they also absorb each clinic’s own confounding: the within-clinic difference in severity between the arms differs from clinic to clinic, and the estimated deviations correlate with it at 0.32. The model cannot tell a clinic where the drug works better from a clinic where the treated are less sick than elsewhere.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ladder-slopes" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ladder-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="21-appendix-model-ladder_files/figure-html/fig-ladder-slopes-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ladder-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;F.6: Model 9 with varying slopes. Each clinic’s estimated deviation from the average drug effect (posterior mean and 95% interval) against the deviation built into the simulation, both on the scale of the effect, so that a positive value is a weaker effect. Point size is clinic size. Small clinics are pulled towards zero: the model’s claim that the deviations come from one distribution is what pulls them.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Compare">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compare
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Three questions about the clinic have three different models: how high is pressure at clinic C07 (model 9), does the drug lower pressure (model 8, or model 9 with the repair of <a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a>), and does it work equally well everywhere (the varying-slope model). Which of the three is your question? The formula that answers one does not answer the others.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="what-the-model-was-never-told" class="level2" data-number="F.11">
+<h2 data-number="F.11" class="anchored" data-anchor-id="what-the-model-was-never-told"><span class="header-section-number">F.11</span> What the model was never told</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m10  <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">+</span> age_c <span class="sc">+</span> severity <span class="sc">+</span> clinic, <span class="at">data =</span> clinics,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> pri_b,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="st">"models/ladder_m10"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>m10b <span class="ot">&lt;-</span> <span class="fu">brm</span>(sbp <span class="sc">~</span> drug <span class="sc">+</span> age_c <span class="sc">+</span> severity <span class="sc">+</span> (drug <span class="sc">|</span> clinic), <span class="at">data =</span> clinics,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">prior =</span> <span class="fu">c</span>(pri_ml, <span class="fu">prior</span>(<span class="fu">lkj</span>(<span class="dv">2</span>), <span class="at">class =</span> <span class="st">"cor"</span>)),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="st">"models/ladder_m10b"</span>, <span class="at">file_refit =</span> <span class="st">"on_change"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Every model above was told something true and nothing about severity, and each reported the drug’s effect as the difference that remained after what it was told. The reader knew from the start that severity drives both prescribing and pressure. Given to the within-clinic model, it returns -12.05 mmHg (95% interval -12.79 to -11.26); given to the varying-slope model, -11.54 (-12.32 to -10.75). The truth is -12.05. The 0.5 mmHg between the two estimates is model 9’s independence claim again, and <a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a> gives the repair. Severity does little for the clinic-specific deviations of the drug’s effect: their correlation with the built-in deviations rises from 0.55 to 0.59, because what limits them is the size of the clinics, not the confounder. <a href="#tbl-ladder-estimates" class="quarto-xref">Table&nbsp;<span>F.1</span></a> lists every estimate in the ladder.</p>
+<div class="cell">
+<div id="tbl-ladder-estimates" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ladder-estimates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;F.1: The drug’s estimated effect on systolic pressure under each model, as a marginal contrast with its 95% posterior interval, and the residual spread. The truth is in the last row.
+</figcaption>
+<div aria-describedby="tbl-ladder-estimates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div>
+<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">effect on sbp (mmHg)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">lower 95%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">upper 95%</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">sigma</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2: drug</td>
+<td style="text-align: left;">1.04</td>
+<td style="text-align: left;">0.23</td>
+<td style="text-align: left;">1.84</td>
+<td style="text-align: left;">11.72</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3: drug, sigma ~ drug</td>
+<td style="text-align: left;">1.04</td>
+<td style="text-align: left;">0.23</td>
+<td style="text-align: left;">1.85</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4: drug + age_c</td>
+<td style="text-align: left;">-0.50</td>
+<td style="text-align: left;">-1.34</td>
+<td style="text-align: left;">0.30</td>
+<td style="text-align: left;">11.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5: drug * age_c</td>
+<td style="text-align: left;">-0.52</td>
+<td style="text-align: left;">-1.32</td>
+<td style="text-align: left;">0.27</td>
+<td style="text-align: left;">11.08</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6: drug + drug:age_c</td>
+<td style="text-align: left;">0.38</td>
+<td style="text-align: left;">-0.42</td>
+<td style="text-align: left;">1.20</td>
+<td style="text-align: left;">11.42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7: drug + s(age)</td>
+<td style="text-align: left;">-0.51</td>
+<td style="text-align: left;">-1.26</td>
+<td style="text-align: left;">0.27</td>
+<td style="text-align: left;">11.07</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">8: drug + age_c + clinic</td>
+<td style="text-align: left;">-4.38</td>
+<td style="text-align: left;">-5.22</td>
+<td style="text-align: left;">-3.52</td>
+<td style="text-align: left;">10.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9: drug + age_c + (1 | clinic)</td>
+<td style="text-align: left;">-3.88</td>
+<td style="text-align: left;">-4.75</td>
+<td style="text-align: left;">-2.99</td>
+<td style="text-align: left;">10.22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9: drug + age_c + (drug | clinic)</td>
+<td style="text-align: left;">-3.62</td>
+<td style="text-align: left;">-4.51</td>
+<td style="text-align: left;">-2.73</td>
+<td style="text-align: left;">10.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">drug + age_c + severity + clinic</td>
+<td style="text-align: left;">-12.05</td>
+<td style="text-align: left;">-12.79</td>
+<td style="text-align: left;">-11.26</td>
+<td style="text-align: left;">8.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">drug + age_c + severity + (drug | clinic)</td>
+<td style="text-align: left;">-11.54</td>
+<td style="text-align: left;">-12.32</td>
+<td style="text-align: left;">-10.75</td>
+<td style="text-align: left;">8.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">the truth</td>
+<td style="text-align: left;">-12.05</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Three things in the table are general, not features of this cohort.</p>
+<ul>
+<li><strong>How much variation a variable explains and how much bias it removes are governed by different things.</strong> Variance explained depends on the variable’s arrow into pressure alone; bias removed depends on that arrow together with the arrow into treatment. In this cohort age, the clinic and severity reduced the unexplained spread by 0.6, 0.9 and 2.1 mmHg, and moved the drug’s estimate by 1.5, 3.9 and 7.7 mmHg: the same order, but not the same proportions. A strong prognostic factor that played no part in prescribing would reduce the spread and move the estimate not at all.</li>
+<li><strong>A model’s freedom and the world’s structure are different things.</strong> Models 3, 5 and 7 each freed a claim and found that the data did not need the freedom. That is a result, obtained by estimating something the earlier model had fixed. A model that fixes a claim never reports whether the claim held.</li>
+<li><strong>The formula names what the model is told, not what the world used.</strong> No fit diagnostic distinguishes model 8 from the final model. Both converge, both fit, and one is wrong about the drug by a factor of nearly three. The difference between them is a variable the reader knew about and the formula did not name. Which variables the formula must name is decided by a causal diagram (<a href="ch11-dags.html" class="quarto-xref"><span>Chapter 12</span></a>), before any model is fitted.</li>
+</ul>
+</section>
+<section id="the-claims-model-by-model" class="level2" data-number="F.12">
+<h2 data-number="F.12" class="anchored" data-anchor-id="the-claims-model-by-model"><span class="header-section-number">F.12</span> The claims, model by model</h2>
+<div id="tbl-ladder-assumptions" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ladder-assumptions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;F.2: What each formula fixes and what it frees. Every model also assumes a normal distribution for the unexplained variation and, until the clinic enters, independence between patients.
+</figcaption>
+<div aria-describedby="tbl-ladder-assumptions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 28%">
+<col style="width: 14%">
+<col style="width: 10%">
+<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Formula</th>
+<th style="text-align: left;">Mean depends on</th>
+<th style="text-align: left;">Spread</th>
+<th style="text-align: left;">Drug effect</th>
+<th style="text-align: left;">Age</th>
+<th style="text-align: left;">Clinic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"><code>sbp ~ 1</code></td>
+<td style="text-align: left;">nothing</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">not in the model</td>
+<td style="text-align: left;">not in the model</td>
+<td style="text-align: left;">not in the model</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;"><code>sbp ~ drug</code></td>
+<td style="text-align: left;">treatment</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">not in the model</td>
+<td style="text-align: left;">not in the model</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;"><code>bf(sbp ~ drug, sigma ~ drug)</code></td>
+<td style="text-align: left;">treatment</td>
+<td style="text-align: left;">one per arm</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">not in the model</td>
+<td style="text-align: left;">not in the model</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;"><code>sbp ~ drug + age_c</code></td>
+<td style="text-align: left;">treatment, age</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">same at every age</td>
+<td style="text-align: left;">straight line, same in both arms</td>
+<td style="text-align: left;">not in the model</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;"><code>sbp ~ drug * age_c</code></td>
+<td style="text-align: left;">treatment, age</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">straight-line function of age</td>
+<td style="text-align: left;">straight line, slope differs by arm</td>
+<td style="text-align: left;">not in the model</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6</td>
+<td style="text-align: left;"><code>sbp ~ drug + drug:age_c</code></td>
+<td style="text-align: left;">treatment, age among the treated</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">straight-line function of age</td>
+<td style="text-align: left;">none among the untreated</td>
+<td style="text-align: left;">not in the model</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7</td>
+<td style="text-align: left;"><code>sbp ~ drug + s(age)</code></td>
+<td style="text-align: left;">treatment, age</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">same at every age</td>
+<td style="text-align: left;">smooth curve, same in both arms</td>
+<td style="text-align: left;">not in the model</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8</td>
+<td style="text-align: left;"><code>sbp ~ drug + age_c + clinic</code></td>
+<td style="text-align: left;">treatment, age, clinic</td>
+<td style="text-align: left;">one number, shared</td>
+<td style="text-align: left;">same in every clinic</td>
+<td style="text-align: left;">straight line</td>
+<td style="text-align: left;">own baseline per clinic, not pooled, unrelated to prescribing</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9</td>
+<td style="text-align: left;"><code>sbp ~ drug + age_c + (1 \| clinic)</code></td>
+<td style="text-align: left;">treatment, age, clinic</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">same in every clinic</td>
+<td style="text-align: left;">straight line</td>
+<td style="text-align: left;">baselines drawn from one distribution, independent of prescribing</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9</td>
+<td style="text-align: left;"><code>sbp ~ drug + age_c + (drug \| clinic)</code></td>
+<td style="text-align: left;">treatment, age, clinic</td>
+<td style="text-align: left;">one number</td>
+<td style="text-align: left;">varies by clinic, around one mean</td>
+<td style="text-align: left;">straight line</td>
+<td style="text-align: left;">baselines and effects drawn jointly, independent of prescribing</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="the-procedure-for-any-model" class="level2" data-number="F.13">
+<h2 data-number="F.13" class="anchored" data-anchor-id="the-procedure-for-any-model"><span class="header-section-number">F.13</span> The procedure, for any model</h2>
+<p>Before fitting a model, write the two lists. The questions below produce the first.</p>
+<ol type="1">
+<li><strong>Which distribution, and does it match what you know about the outcome?</strong> Its support (can the outcome be negative, is it bounded, is it a count), its shape, and its tails.</li>
+<li><strong>Which parameters are modelled, and which are held constant across patients?</strong> A model of the mean alone asserts that the spread, and every other parameter of the distribution, is the same for everyone.</li>
+<li><strong>For each predictor: in which parameter does it act, in what functional form, and with what does it interact?</strong> Every term that is not there is a claim that its coefficient is zero.</li>
+<li><strong>Which units are assumed to share parameters?</strong> Patients within a clinic, measurements within a patient. Whether the groups are nested or crossed is a fact about the design (<a href="12-appendix-brm-syntax.html" class="quarto-xref"><span>Appendix E</span></a>). A varying effect adds the claim that the group draws are independent of the predictors.</li>
+<li><strong>What is not in the formula at all?</strong> Among the omitted variables, which are causes of the outcome, and of those, which also predict treatment? The answer comes from a diagram, not from the data.</li>
+<li><strong>What do the priors say, in the units of the outcome?</strong> A prior is wide or narrow only relative to the scale of its predictor (<a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a>).</li>
+</ol>
+<p>The second list is what you know about blood pressure, about who is prescribed a drug for it, about how age acts on it and about how clinics differ. Where the lists disagree, either the formula changes or the disagreement is recorded as a limitation with a stated direction. A model that is fitted without the two lists being written has made the first list anyway; the only difference is that no one has read it.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./12-appendix-brm-syntax.html" class="pagination-link" aria-label="brms formula syntax: a map">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">brms formula syntax: a map</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./18-appendix-correlation-structures.html" class="pagination-link" aria-label="Correlation structures for repeated measures">
+        <span class="nav-page-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

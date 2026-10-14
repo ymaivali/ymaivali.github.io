@@ -456,32 +456,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -1845,7 +1851,7 @@ Table&nbsp;25.10: Percentage error of the standardised marginal risk difference 
 <li><strong>Spend the effort on the covariate specification, not on the link.</strong> In the simulation above, correcting the functional form of <span class="math inline">\(L\)</span> moved the answer from 47% to 1.9%; changing the link moved it by 10%.</li>
 <li><strong>Check overlap before adding flexibility</strong>, for the reason in the final two columns of the table.</li>
 <li>If the estimate matters, use an estimator that does not depend on one outcome model being correct — the doubly robust and targeted maximum likelihood estimators, which combine an outcome model with a treatment model and are consistent if either is right (<a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a>).<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></li>
-<li>Report a link comparison, if at all, as a note on specification, and only when it was planned in advance. Chosen after the fact, the link is an unusually clean forking path (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>). If links or families are compared on fit, the rule of <a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a> applies unchanged: <code>loo</code> ranks functional forms within a fixed adjustment set and cannot audit the covariates, and it scores only the outcomes that were observed, as the previous section showed.</li>
+<li>Report a link comparison, if at all, as a note on specification, and only when it was planned in advance. Chosen after the fact, the link is an unusually clean forking path (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a>). If links or families are compared on fit, the rule of <a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a> applies unchanged: <code>loo</code> ranks functional forms within a fixed adjustment set and cannot audit the covariates, and it scores only the outcomes that were observed, as the previous section showed.</li>
 </ol>
 <p>One conflation to guard against, because it is the likeliest thing a reader will take from a recommendation to fit two models. Agreement between links is <strong>not</strong> evidence against unmeasured confounding. Every model in this section shares the same adjustment set and therefore the same identification assumptions; all of them would be wrong together if a back-door path were open. Link robustness is a statement about functional form, and functional form is the smaller of the two problems.</p>
 </section>

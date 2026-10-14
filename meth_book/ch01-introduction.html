@@ -420,32 +420,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -528,7 +534,7 @@ window.Quarto = {
 </section>
 <section id="bayesian-inference-the-short-version" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="bayesian-inference-the-short-version"><span class="header-section-number">1.3</span> Bayesian inference: the short version</h2>
-<p>We want to find out, whether Madame Marie has extra-sensory perception (ESP). We present her with playing cards and let her guess what is on each card. We compare her data with simulated datasets that assume no ESP and find that hers stand out. Say that only 1 in 10 000 simulated datasets gives a fraction of correct guesses equal to or greater than Madame Marie’s (<span class="math inline">\(p = 10^{-4}\)</span>; the p value is set out in <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>). We can interpret this result as showing that the data are inconsistent with the hypothesis that Marie picks cards completely randomly. But can we interpret this as weighty evidence for ESP? And, if so, does this mean that we should now put high confidence on this hypothesis? The answer is “it depends”. It depends on:</p>
+<p>We want to find out, whether Madame Marie has extra-sensory perception (ESP). We present her with playing cards and let her guess what is on each card. We compare her data with simulated datasets that assume no ESP and find that hers stand out. Say that only 1 in 10 000 simulated datasets gives a fraction of correct guesses equal to or greater than Madame Marie’s (<span class="math inline">\(p = 10^{-4}\)</span>; the p value is set out in <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a>). We can interpret this result as showing that the data are inconsistent with the hypothesis that Marie picks cards completely randomly. But can we interpret this as weighty evidence for ESP? And, if so, does this mean that we should now put high confidence on this hypothesis? The answer is “it depends”. It depends on:</p>
 <ol type="1">
 <li><p>Our prior beliefs on whether Marie is clairvoyant. If we think this very unlikely (our prior probability is a lot less than <span class="math inline">\(10^{-4}\)</span>), then the evidence obtained is clearly not enough to change our minds. To arrive at a prior probability, we should ask both about how likely is ESP as a general mechanism, and then, whether we know something about the individual that would make her more or less likely than average to have such abilities. This is complicated, and there is no guarantee that two reasonable people would arrive at the same prior probabilities. This does not mean that we should ignore our prior beliefs because we find it hard to precisely quantify them. It does mean that we introduce a new source of uncertainty, which means that in practical analysis we might want to try out a range of priors to see how robust our inference is to the choice of prior. For any uncertainty in our data, models and priors, we must strive to carry it forward all the way into our conclusions, rather than to pretend that it does not exist.</p></li>
 <li><p>the inference from data also depends on how we choose to divide the <em>hypothesis space</em> into testable hypotheses. The hypothesis space is the set of all mutually exclusive and exhaustive hypotheses, exactly one of which must be true. So if we define our hypothesis space as consisting of two hypotheses, one of which (H1) is that “Marie has ESP”, then the other one (H2) must be that “Marie has no ESP”. If we start by giving H1 the prior probability of 1/100 000 then that means that the H2 must have a prior probability of 1 - 1/100 000. The probabilities always sum to unity across the hypothesis space. This means that if, after taking account of the data, the posterior probability of H1 is determined as 1/10, then the P(H2) must be 9/10.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> But what happens when we slice the cake differently, into three hypotheses: H1 (ESP), H2 (no ESP) and H3 (bias), the last one encompassing all mechanisms that would shift the results away from completely random card picking?<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Some of these will be conscious (fraud) and some unconscious (the experimenter might give involuntary signals to Marie), so the H3 is itself a hodgepodge of very different hypotheses.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The priors would change: P(H1) = 1/100 000, P(H3) = 1/10, say, and P(H2) = 1 - 0.1 - 1/100 000. Now it becomes crucial how well the data correspond to not only H2 (very poorly), but also to H3 (quite well). And if data is equally compatible with H1 and H3, and the prior probability of H3, P(H3) &gt;&gt; P(H1), then the same data turn out quite useless in promoting H1 for us. And again, the posterior probabilities will sum to unity across the 3 hypotheses.</p></li>
@@ -584,7 +590,7 @@ window.Quarto = {
 <li><strong>Part IV, Beyond the back-door</strong>, treats the questions that confounding adjustment alone does not settle: mediation (<a href="ch15-mediation.html" class="quarto-xref"><span>Chapter 16</span></a>), interaction (<a href="ch16-interaction.html" class="quarto-xref"><span>Chapter 17</span></a>), instrumental variables (<a href="ch17-instrumental-variables.html" class="quarto-xref"><span>Chapter 18</span></a>), quasi-experimental designs (<a href="ch18-quasi-experimental.html" class="quarto-xref"><span>Chapter 19</span></a>), and what to do about the confounding one cannot measure (<a href="ch19-sensitivity-analysis.html" class="quarto-xref"><span>Chapter 20</span></a>).</li>
 <li><strong>Part V, Bayesian regression</strong>, is where the threads meet. Regression — from the linear model (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>) through adjustment (<a href="ch21-multiple-regression.html" class="quarto-xref"><span>Chapter 22</span></a>), the workflow of building and checking models (<a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a>), curves and interaction (<a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a>), generalised linear models (<a href="08-glm.html" class="quarto-xref"><span>Chapter 25</span></a>), rates and time (<a href="ch25-survival-rates.html" class="quarto-xref"><span>Chapter 26</span></a>), prediction without causation (<a href="ch22-predictive-regression.html" class="quarto-xref"><span>Chapter 27</span></a>) and multilevel structure (<a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a>) — is developed as a machine for counterfactual prediction. <a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a> is the capstone: a fitted Bayesian model predicts each patient’s outcome under treatment and under no treatment, and the difference, averaged over patients and carried through the posterior, is the causal effect with its full uncertainty. <a href="ch25-missing-data.html" class="quarto-xref"><span>Chapter 30</span></a> closes with the causal treatment of missing data.</li>
 </ul>
-<p>Two devices recur. A single simulated cohort of 50 000 patients, with a blood-pressure drug, a stroke outcome and a known causal structure, is analysed in Parts III to V, so that every method can be checked against a truth that is known. And the appendices carry the material the chapters lean on but do not stop for: exploratory practice (<a href="10-appendix-best-practices.html" class="quarto-xref"><span>Appendix A</span></a>), the <code>brms</code> interface (<a href="11-appendix-brms.html" class="quarto-xref"><span>Appendix D</span></a>), the frequentist alternative that the book sets aside (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>), and the challenges to the Bayesian position itself (<a href="19-appendix-challenges.html" class="quarto-xref"><span>Appendix I</span></a>).</p>
+<p>Two devices recur. A single simulated cohort of 50 000 patients, with a blood-pressure drug, a stroke outcome and a known causal structure, is analysed in Parts III to V, so that every method can be checked against a truth that is known. And the appendices carry the material the chapters lean on but do not stop for: exploratory practice (<a href="10-appendix-best-practices.html" class="quarto-xref"><span>Appendix A</span></a>), the <code>brms</code> interface (<a href="11-appendix-brms.html" class="quarto-xref"><span>Appendix D</span></a>), the frequentist alternative that the book sets aside (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a>), and the challenges to the Bayesian position itself (<a href="19-appendix-challenges.html" class="quarto-xref"><span>Appendix J</span></a>).</p>
 
 
 </section>

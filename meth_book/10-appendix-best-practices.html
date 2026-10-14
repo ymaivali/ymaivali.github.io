@@ -456,32 +456,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -1288,12 +1294,12 @@ plate first second
 <blockquote class="blockquote">
 <p>For description of central tendency use mean for symmetrical distributions, but the median for most datasets you come across.</p>
 </blockquote>
-<p>For the spread of the data the usual summary is the <strong>standard deviation</strong> (SD), which for a normal distribution covers about 68% of the values within one SD of the mean and 95% within two; for other shapes those numbers do not hold, and for log-normal data the multiplicative SD of <a href="#sec-eda-lognormal" class="quarto-xref"><span>Section A.7.1</span></a> is the right analogue. The SD describes the data. Its relative, the <strong>standard error of the mean</strong>, <span class="math inline">\(\text{SEM} = \text{SD}/\sqrt{n}\)</span>, describes the uncertainty of an estimate and belongs to inference, not description: <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> sets out the sampling distribution it summarises, and <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> the posterior that takes its place in this book. Neither the SEM nor an interval built from it belongs on an exploratory figure of data points; the section on intervals below says why.</p>
+<p>For the spread of the data the usual summary is the <strong>standard deviation</strong> (SD), which for a normal distribution covers about 68% of the values within one SD of the mean and 95% within two; for other shapes those numbers do not hold, and for log-normal data the multiplicative SD of <a href="#sec-eda-lognormal" class="quarto-xref"><span>Section A.7.1</span></a> is the right analogue. The SD describes the data. Its relative, the <strong>standard error of the mean</strong>, <span class="math inline">\(\text{SEM} = \text{SD}/\sqrt{n}\)</span>, describes the uncertainty of an estimate and belongs to inference, not description: <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a> sets out the sampling distribution it summarises, and <a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a> the posterior that takes its place in this book. Neither the SEM nor an interval built from it belongs on an exploratory figure of data points; the section on intervals below says why.</p>
 <p>An alternative to the SD is the <strong>MAD</strong>, the median absolute deviation. If the SD is calculated as</p>
 <p><span class="math display">\[SD = \sqrt{\frac{\sum(x_i - \bar x)^2}{n-1}}\]</span></p>
 <p>then the MAD is the median of the absolute distances from the median,</p>
 <p><span class="math display">\[MAD = \mathrm{median}\left(\vert x_i - \mathrm{median}(x) \vert\right)\]</span></p>
-<p>which is what R’s <code>mad()</code> computes. (R also rescales it by 1.4826 by default, so that for normal data the MAD is on the same scale as the SD; set <code>constant = 1</code> to switch that off.) The closely related <strong>mean</strong> absolute deviation, <span class="math inline">\(\sum \vert x_i - \bar x \vert / n\)</span>, is a different quantity: it uses the mean rather than the median twice over, and is correspondingly less resistant to outliers. The MAD is both more intuitive and much less sensitive to outliers than the SD (note the lack of the squaring operator). However, it does not have the neat mathematical properties of the SD (the SEM and the intervals built on it, <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>).</p>
+<p>which is what R’s <code>mad()</code> computes. (R also rescales it by 1.4826 by default, so that for normal data the MAD is on the same scale as the SD; set <code>constant = 1</code> to switch that off.) The closely related <strong>mean</strong> absolute deviation, <span class="math inline">\(\sum \vert x_i - \bar x \vert / n\)</span>, is a different quantity: it uses the mean rather than the median twice over, and is correspondingly less resistant to outliers. The MAD is both more intuitive and much less sensitive to outliers than the SD (note the lack of the squaring operator). However, it does not have the neat mathematical properties of the SD (the SEM and the intervals built on it, <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a>).</p>
 <p>As a convention, mean and SD should be used together, as median and MAD should be used together.</p>
 <p>Another useful summary of data variation is the interquartile range (IQR), the distance from the 25th to the 75th percentile, which covers the middle half of the data (this is exactly what the box in a boxplot does). It is usually reported as part of the five-number summary: the minimum value – 25th percentile – median – 75th percentile – maximum value.</p>
 <p>Beware of summarising data via min and max, as these depend on sample size. The more data you have, the further min and max tend to creep from the median. For the same reason, beware of estimating population distribution from the shape of the data distribution, as even highly non-symmetric distributions can appear near-normal with moderate sample sizes. Statistical normality tests should therefore be avoided (especially as with large n-s they always provide small p values, suggesting non-normality even with approximately normal data).</p>
@@ -1961,9 +1967,9 @@ Figure&nbsp;A.11: Distribution of the estimated probability of treatment among t
 <p>Start with the standard distinctions, which hold regardless of context.</p>
 <ul>
 <li>The <strong>SD</strong> shows the variation of the data. Do not put it on a graph that already shows the data points; report it in the text as mean (SD), or as median (MAD) for skewed data.</li>
-<li>The <strong>SEM</strong> shows the uncertainty of the mean, and should be neither plotted on its own nor read as a description of the data (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a>).</li>
-<li>A <strong>95% credible interval</strong> brackets the parameter with 95% posterior probability, given the model and the data (<a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a>). A <strong>95% confidence interval</strong> is a statement about the coverage of a procedure, tied to the p value by the identity that <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> sets out; the two often coincide numerically under flat priors and mean different things. For this section the difference does not matter, because neither guarantee survives exploration.</li>
-<li>Show the uncertainty of the quantity you are talking about. If the claim is about a difference between two groups, show the interval for the difference, not two intervals for two means – and compute that difference as its own posterior, because two intervals that do or do not cross a line are not a comparison (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>; <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> on Gelman and Stern).</li>
+<li>The <strong>SEM</strong> shows the uncertainty of the mean, and should be neither plotted on its own nor read as a description of the data (<a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a>).</li>
+<li>A <strong>95% credible interval</strong> brackets the parameter with 95% posterior probability, given the model and the data (<a href="06-bayesian-inference.html" class="quarto-xref"><span>Chapter 10</span></a>). A <strong>95% confidence interval</strong> is a statement about the coverage of a procedure, tied to the p value by the identity that <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a> sets out; the two often coincide numerically under flat priors and mean different things. For this section the difference does not matter, because neither guarantee survives exploration.</li>
+<li>Show the uncertainty of the quantity you are talking about. If the claim is about a difference between two groups, show the interval for the difference, not two intervals for two means – and compute that difference as its own posterior, because two intervals that do or do not cross a line are not a comparison (<a href="07-linear-regression.html" class="quarto-xref"><span>Chapter 21</span></a>; <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a> on Gelman and Stern).</li>
 <li>The band around a fitted curve is the continuous version of the same idea, and is preferable to a row of separate intervals when a curve is what the model fits.</li>
 </ul>
 <section id="why-these-guarantees-do-not-survive-exploration" class="level3" data-number="A.9.1">

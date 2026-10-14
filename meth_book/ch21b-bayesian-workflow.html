@@ -456,32 +456,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -962,7 +968,7 @@ The same workflow, fitted by maximum likelihood
 </div>
 <div class="callout-body-container callout-body">
 <p>Little of <a href="#fig-workflow" class="quarto-xref">Figure&nbsp;<span>23.2</span></a> is specifically Bayesian, and it is worth separating what changes from what does not.</p>
-<p><strong>Unchanged.</strong> The estimand, the DAG, the adjustment set and the identification assumptions are paradigm-independent. So is the last block: g-computation is not a Bayesian procedure, and a frequentist analysis of this study would fit <code>gam(sbp ~ drug + s(age, by = drug))</code> with <code>mgcv</code> (<a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix G</span></a>), predict every patient twice and average the difference in the same way. Neither paradigm can rescue a wrong adjustment set, and the choice between them has no bearing on whether the causal claim is licensed at all.</p>
+<p><strong>Unchanged.</strong> The estimand, the DAG, the adjustment set and the identification assumptions are paradigm-independent. So is the last block: g-computation is not a Bayesian procedure, and a frequentist analysis of this study would fit <code>gam(sbp ~ drug + s(age, by = drug))</code> with <code>mgcv</code> (<a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix H</span></a>), predict every patient twice and average the difference in the same way. Neither paradigm can rescue a wrong adjustment set, and the choice between them has no bearing on whether the causal claim is licensed at all.</p>
 <p><strong>Absent.</strong> There is no prior, so there is no prior predictive check. The restraint that the priors supplied must then come from somewhere else, usually a penalty term, or it is missing. That matters least where this chapter said it matters least – n = 4 000 with a simple additive model – and most where it said it matters most: thin interaction cells and flexible smooths, where an unpenalised fit is free to chase noise a prior would have restrained.</p>
 <p><strong>Renamed.</strong> <code>loo</code> and AIC estimate the same quantity, out-of-sample predictive accuracy, so the warning attached to <code>loo</code> transfers to AIC unaltered. The posterior predictive check has a counterpart in simulation-based residual diagnostics, although it is less routine.</p>
 <p><strong>Harder.</strong> Propagating uncertainty to the contrast. The Bayesian workflow obtains the posterior of the marginal effect by pushing each draw through the g-computation, which is why the last stage costs one line of code. Maximum likelihood must recover the standard error of a non-linear function of the parameters by the delta method or by bootstrapping, and the bootstrap has to wrap the whole procedure, model selection included, to be valid. This is a difference in what is easy to get right, not in what can be identified.</p>

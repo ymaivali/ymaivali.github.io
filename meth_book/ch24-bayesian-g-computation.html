@@ -456,32 +456,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -1465,7 +1471,7 @@ Table&nbsp;29.9: Plug-in and doubly robust estimates of the risk difference unde
 </div>
 </div>
 <p>Read <a href="#tbl-dr" class="quarto-xref">Table&nbsp;<span>29.9</span></a> by rows. With both models right, the plug-in and the augmented estimate agree to 0.0024, and both are within a standard error of the truth. With the outcome model wrong, the plug-in recovers only 35% of the effect — the binning failure of <a href="12-stratification.html" class="quarto-xref"><span>Chapter 13</span></a> in another form — while the augmented estimate recovers 91%, because the correctly specified propensity model carries it. With the propensity model wrong and the outcome model right, the correction is small (-0.0009) and the estimate stays close to the plug-in. With both wrong, neither term can repair the other, and the augmented estimate is as biased as the plug-in. Two chances, not three.</p>
-<p><strong>Cross-fitting.</strong> The last row replaces both parametric models with penalised splines (<a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix G</span></a>), so that neither functional form has to be guessed. That freedom has a price. A penalised or machine-learned fit is a biased estimator of the conditional mean — the penalty trades bias for variance, and the bias does not shrink at the <span class="math inline">\(\sqrt{n}\)</span> rate — and when such a fit is evaluated on the same patients it was fitted to, the residuals it produces are too small, which biases the correction term and understates its standard error. <strong>Cross-fitting</strong> removes the second problem: split the data into folds, fit both nuisance models on all folds but one, predict on the held-out fold, and assemble the estimator from out-of-fold predictions only. Under conditions that let the nuisance fits converge much more slowly than <span class="math inline">\(\sqrt{n}\)</span>, the cross-fitted estimator is asymptotically normal with a calibrated interval, which is the result behind double/debiased machine learning<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> and targeted learning alike. The last row of <a href="#tbl-dr" class="quarto-xref">Table&nbsp;<span>29.9</span></a> was computed that way, with five folds.</p>
+<p><strong>Cross-fitting.</strong> The last row replaces both parametric models with penalised splines (<a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix H</span></a>), so that neither functional form has to be guessed. That freedom has a price. A penalised or machine-learned fit is a biased estimator of the conditional mean — the penalty trades bias for variance, and the bias does not shrink at the <span class="math inline">\(\sqrt{n}\)</span> rate — and when such a fit is evaluated on the same patients it was fitted to, the residuals it produces are too small, which biases the correction term and understates its standard error. <strong>Cross-fitting</strong> removes the second problem: split the data into folds, fit both nuisance models on all folds but one, predict on the held-out fold, and assemble the estimator from out-of-fold predictions only. Under conditions that let the nuisance fits converge much more slowly than <span class="math inline">\(\sqrt{n}\)</span>, the cross-fitted estimator is asymptotically normal with a calibrated interval, which is the result behind double/debiased machine learning<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> and targeted learning alike. The last row of <a href="#tbl-dr" class="quarto-xref">Table&nbsp;<span>29.9</span></a> was computed that way, with five folds.</p>
 <p><strong>Targeted maximum likelihood, and the ensemble layer.</strong> Targeted maximum likelihood estimation (TMLE) is the same idea with the correction applied differently: instead of adding a weighted residual to the plug-in average, it updates the outcome model itself, using the propensity score, and then takes the plain average from the updated fit. The two have the same large-sample properties; TMLE respects the range of the outcome, so predicted risks stay within <span class="math inline">\([0, 1]\)</span>, and often behaves better in finite samples.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> Both need <span class="math inline">\(\hat\mu\)</span> and <span class="math inline">\(\hat\pi\)</span> from somewhere, and the usual practice is not to commit to one learner: <strong>SuperLearner</strong> fits several candidates — a GLM, a GAM, a random forest, boosted trees — and combines them by cross-validated weights, so that the inference no longer depends on any one of them being right.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> In R the <code>tmle3</code> and <code>sl3</code> packages of the van der Laan group are the most general; <code>lmtp</code> is built around longitudinal strategies and treats a point-treatment contrast as the special case sketched below; <code>DoubleML</code> implements the cross-fitted econometric version.</p>
 <div class="cell">
 <details class="code-fold">

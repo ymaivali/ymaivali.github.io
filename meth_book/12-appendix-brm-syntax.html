@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./18-appendix-correlation-structures.html" rel="next">
+<link href="./21-appendix-model-ladder.html" rel="next">
 <link href="./11-appendix-brms.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -454,32 +454,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./21-appendix-model-ladder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./18-appendix-correlation-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-appendix-mgcv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">mgcv</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-appendix-H0.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Null hypothesis testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-appendix-challenges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Challenges to the Bayesian position</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
@@ -527,7 +533,7 @@ window.Quarto = {
 </header>
 
 
-<p>This appendix is a map of the <code>brms</code> model formula, checked against <code>brms</code> 2.23.0, the version installed when the book was built. It is not a substitute for the package documentation — <code>?brmsformula</code>, <code>?addition-terms</code>, <code>?autocor-terms</code> and the vignettes (<code>vignette(package = "brms")</code>) are the reference, and they change with the package — but it collects in one place the constructs the book uses, says where each is used, and records what has changed in <code>brms</code> since the first draft of this appendix was written. Worked, runnable examples with priors and post-processing are in <a href="11-appendix-brms.html" class="quarto-xref"><span>Appendix D</span></a>; the correlation structures for repeated measures have their own appendix, <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix F</span></a>.</p>
+<p>This appendix is a map of the <code>brms</code> model formula, checked against <code>brms</code> 2.23.0, the version installed when the book was built. It is not a substitute for the package documentation — <code>?brmsformula</code>, <code>?addition-terms</code>, <code>?autocor-terms</code> and the vignettes (<code>vignette(package = "brms")</code>) are the reference, and they change with the package — but it collects in one place the constructs the book uses, says where each is used, and records what has changed in <code>brms</code> since the first draft of this appendix was written. Worked, runnable examples with priors and post-processing are in <a href="11-appendix-brms.html" class="quarto-xref"><span>Appendix D</span></a>; the correlation structures for repeated measures have their own appendix, <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix G</span></a>.</p>
 <section id="the-formula-in-one-line" class="level2" data-number="E.1">
 <h2 data-number="E.1" class="anchored" data-anchor-id="the-formula-in-one-line"><span class="header-section-number">E.1</span> The formula in one line</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>response <span class="sc">|</span> addition_terms <span class="sc">~</span> population_terms <span class="sc">+</span> (group_terms <span class="sc">|</span> grouping) <span class="sc">+</span> special_terms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -559,7 +565,7 @@ window.Quarto = {
 <li><code>y ~ x + (1 | school) + (1 | class)</code> — crossed, with a predictor.</li>
 <li><code>y ~ x + (0 + x | school) + (1 | class)</code> — the slope varies by school, the intercept by class.</li>
 <li><code>y ~ x1 * x2 + (x1 * x2 | school)</code> — a global intercept, two main effects and an interaction; a school-level deviation for each of the four; the six correlations among those deviations; and the variance parameters. <code>y ~ x1 + x2 + (x1 + x2 | school)</code> is the simpler model to fit beside it.</li>
-<li><code>y ~ time + (time | g) + ar(time = time, gr = person, p = 2)</code> — a varying time trend plus AR(2) residual autocorrelation within person (<a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix F</span></a>).</li>
+<li><code>y ~ time + (time | g) + ar(time = time, gr = person, p = 2)</code> — a varying time trend plus AR(2) residual autocorrelation within person (<a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix G</span></a>).</li>
 <li><code>y ~ (1 | mm(g1, g2))</code> — multi-membership: each unit belongs to two groups at once, with <code>mmc(x1, x2)</code> for a covariate that differs between the memberships.</li>
 <li><code>y ~ sex + (1 | gr(school, by = sex))</code> — separate group-level SDs (and correlations) for the sub-populations defined by <code>sex</code>; <code>gr()</code> also takes <code>cor = FALSE</code> (the <code>||</code> form) and <code>id =</code> (the <code>|p|</code> form).</li>
 </ol>
@@ -567,7 +573,7 @@ window.Quarto = {
 </section>
 <section id="nested-and-crossed-grouping-factors" class="level2" data-number="E.3">
 <h2 data-number="E.3" class="anchored" data-anchor-id="nested-and-crossed-grouping-factors"><span class="header-section-number">E.3</span> Nested and crossed grouping factors</h2>
-<p>A grouping factor is <strong>nested</strong> in another when each of its levels occurs within exactly one level of the other — patients within one clinic, classes within one school — and <strong>crossed</strong> when its levels recur across the other’s — patients seen by several doctors, schools observed in several years. Nesting is written <code>(1 | school/class)</code>, which <code>brms</code> expands to <code>(1 | school) + (1 | school:class)</code>; the interaction term is what makes “Class 1” in one school a different group from “Class 1” in another. Crossed factors are written as separate terms, <code>(1 | doctor) + (1 | patient)</code>, and may be fully crossed (every patient sees every doctor) or partially. The two can appear together: <code>(1 | hospital/patient) + (1 | doctor)</code> for patients nested in hospitals and doctors working across them. The rule is that grouping factors that are not nested are crossed, and whether they are nested is a fact about the design rather than something the data can be trusted to reveal: a class label reused across schools looks crossed to the software unless the nesting is written out. <a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a> fits the book’s clustered cohort, patients within clinics; <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix F</span></a> handles repeated measures within patients.</p>
+<p>A grouping factor is <strong>nested</strong> in another when each of its levels occurs within exactly one level of the other — patients within one clinic, classes within one school — and <strong>crossed</strong> when its levels recur across the other’s — patients seen by several doctors, schools observed in several years. Nesting is written <code>(1 | school/class)</code>, which <code>brms</code> expands to <code>(1 | school) + (1 | school:class)</code>; the interaction term is what makes “Class 1” in one school a different group from “Class 1” in another. Crossed factors are written as separate terms, <code>(1 | doctor) + (1 | patient)</code>, and may be fully crossed (every patient sees every doctor) or partially. The two can appear together: <code>(1 | hospital/patient) + (1 | doctor)</code> for patients nested in hospitals and doctors working across them. The rule is that grouping factors that are not nested are crossed, and whether they are nested is a fact about the design rather than something the data can be trusted to reveal: a class label reused across schools looks crossed to the software unless the nesting is written out. <a href="09-multilevel.html" class="quarto-xref"><span>Chapter 28</span></a> fits the book’s clustered cohort, patients within clinics; <a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix G</span></a> handles repeated measures within patients.</p>
 </section>
 <section id="time-courses" class="level2" data-number="E.4">
 <h2 data-number="E.4" class="anchored" data-anchor-id="time-courses"><span class="header-section-number">E.4</span> Time courses</h2>
@@ -752,18 +758,18 @@ Table&nbsp;E.3: Special terms (right of <code>~</code>).
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>s(x)</code>, <code>s(x, by = f)</code>, <code>t2(x, z)</code></td>
-<td style="text-align: left;">Penalised smooths, as in <code>mgcv</code> (<a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix G</span></a>); <code>t2()</code> for tensor-product interactions</td>
+<td style="text-align: left;">Penalised smooths, as in <code>mgcv</code> (<a href="14-appendix-mgcv.html" class="quarto-xref"><span>Appendix H</span></a>); <code>t2()</code> for tensor-product interactions</td>
 <td style="text-align: left;"><a href="ch21b-bayesian-workflow.html" class="quarto-xref"><span>Chapter 23</span></a>, <a href="ch21c-curves-and-interaction.html" class="quarto-xref"><span>Chapter 24</span></a>, <a href="ch24-bayesian-g-computation.html" class="quarto-xref"><span>Chapter 29</span></a>, <a href="ch25-survival-rates.html" class="quarto-xref"><span>Chapter 26</span></a> (<code>t2()</code>)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>gp(x)</code>, <code>gp(x, by = f, gr = TRUE)</code></td>
 <td style="text-align: left;">Gaussian process over <code>x</code></td>
-<td style="text-align: left;"><a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix F</span></a></td>
+<td style="text-align: left;"><a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix G</span></a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>ar(time, gr, p)</code>, <code>ma()</code>, <code>arma()</code>, <code>cosy()</code>, <code>unstr()</code>, <code>car()</code>, <code>sar()</code>, <code>fcor()</code></td>
 <td style="text-align: left;">Autocorrelation terms, written in the formula or in <code>autocor = ~ …</code></td>
-<td style="text-align: left;"><a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix F</span></a> (<code>ar</code>, <code>cosy</code>, <code>unstr</code>)</td>
+<td style="text-align: left;"><a href="18-appendix-correlation-structures.html" class="quarto-xref"><span>Appendix G</span></a> (<code>ar</code>, <code>cosy</code>, <code>unstr</code>)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>offset(log(t))</code></td>
@@ -823,7 +829,7 @@ Table&nbsp;E.4: Response families. Every family’s distributional parameters ca
 <tr class="even">
 <td style="text-align: left;"><code>student()</code></td>
 <td style="text-align: left;">Continuous with heavy tails; <code>nu</code> estimated</td>
-<td style="text-align: left;"><a href="ch06-distributions.html" class="quarto-xref"><span>Chapter 7</span></a> (pointer), <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix H</span></a> (robust t-test)</td>
+<td style="text-align: left;"><a href="ch06-distributions.html" class="quarto-xref"><span>Chapter 7</span></a> (pointer), <a href="16-appendix-H0.html" class="quarto-xref"><span>Appendix I</span></a> (robust t-test)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>bernoulli()</code></td>
@@ -1417,8 +1423,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./18-appendix-correlation-structures.html" class="pagination-link" aria-label="Correlation structures for repeated measures">
-        <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Correlation structures for repeated measures</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./21-appendix-model-ladder.html" class="pagination-link" aria-label="the clustered cohort of the multilevel chapter: sbp, drug, age, clinic">
+        <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">the clustered cohort of the multilevel chapter: sbp, drug, age, clinic</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
